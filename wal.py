@@ -15,8 +15,7 @@ def get_args():
     parser.add_argument('-t', help='Fix artifacts in VTE Terminals. (Termite, xfce4-terminal)', action='store_true')
     parser.add_argument('-x', help='Use extended 16-color palette.', action='store_true')
 
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 def main():
