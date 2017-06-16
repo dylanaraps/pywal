@@ -1,4 +1,18 @@
+#!/usr/bin/env python
+#
+# wal - Generate and change colorschemes on the fly.
+#
+# Created by Dylan Araps
+
 import argparse
+import os
+from pathlib import Path
+from os.path import expanduser
+
+# Internal variables.
+cache_dir = expanduser("~") + "/.cache/wal"
+color_count = 16
+os = os.uname
 
 
 def get_args():
@@ -18,8 +32,18 @@ def get_args():
     return parser.parse_args()
 
 
+def get_colors(img):
+    image = Path(img)
+
+    if image.is_file():
+        print("File exists!")
+    else:
+        print("File doesn't exist. :(")
+
+
 def main():
     args = get_args()
+    get_colors(args.i)
     return 0
 
 
