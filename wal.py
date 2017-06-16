@@ -6,6 +6,9 @@
 
 import argparse
 import os
+import pathlib
+import subprocess
+import re
 from pathlib import Path
 from os.path import expanduser
 
@@ -36,9 +39,42 @@ def get_colors(img):
     image = Path(img)
 
     if image.is_file():
-        print("File exists!")
-    else:
-        print("File doesn't exist. :(")
+        colors = []
+
+        # Create colorscheme dir.
+        pathlib.Path(cache_dir + "/schemes").mkdir(parents=True, exist_ok=True)
+        cache_file = cache_dir + "/schemes/" + img.replace('/', '_')
+
+        # Cache the wallpaper name.
+        wal = open(cache_dir + "/wal", 'w')
+        wal.write(img)
+        wal.close()
+
+        # Long-ass imagemagick command.
+        magic = subprocess.Popen(["convert", img, "+dither", "-colors",
+                str(color_count), "-unique-colors", "txt:-"],
+                stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+
+
+        # Create a list of hex colors.
+        for color in magic.stdout:
+            print(color)
+            hex = re.search('#.{6}', str(color))
+
+            if hex:
+                colors.append(hex.group(0))
+
+
+        # Remove the first element which isn't a color.
+        del colors[0]
+
+        # Cache the colorscheme.
+        scheme = open(cache_file, 'w')
+
+        for color in colors:
+            scheme.write(color + "\n")
+
+        scheme.close()
 
 
 def main():
