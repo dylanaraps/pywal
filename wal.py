@@ -77,7 +77,6 @@ def reload_colors():
     quit()
 
 
-
 def get_image(img):
     """Validate image input."""
     image = Path(img)
