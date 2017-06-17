@@ -146,7 +146,13 @@ def get_colors(img):
             scheme.write(color + "\n")
         scheme.close()
 
+    print("colors: Generated colorscheme")
     return colors
+
+
+def set_special(index, color):
+    """Build the escape sequence for special colors."""
+    return "\\033]" + str(index) + ";" + color + "\\007"
 
 
 def set_color(index, color):
@@ -154,9 +160,20 @@ def set_color(index, color):
     return "\\033]4;" + str(index) + ";" + color + "\\007"
 
 
-def send_sequences(colors):
+def send_sequences(colors, vte):
     """Send colors to all open terminals."""
-    sequences = set_color(1, colors[9])
+    sequences = set_special(10, colors[15])
+    sequences += set_special(11, colors[0])
+    sequences += set_special(12, colors[15])
+    sequences += set_special(13, colors[15])
+    sequences += set_special(14, colors[0])
+
+    # This escape sequence doesn't work in VTE terminals.
+    if not vte:
+        sequences += set_special(708, colors[0])
+
+    sequences += set_color(0, colors[0])
+    sequences += set_color(1, colors[9])
     sequences += set_color(2, colors[10])
     sequences += set_color(3, colors[11])
     sequences += set_color(4, colors[12])
@@ -171,6 +188,27 @@ def send_sequences(colors):
     sequences += set_color(14, colors[14])
     sequences += set_color(15, colors[15])
 
+    # Hardcode color 8 to a grey color.
+    brightness = int(colors[0][1])
+
+    if 0 <= brightness <= 1:
+        sequences += set_color(8, "#666666")
+
+    elif brightness == 2:
+        sequences += set_color(8, "#757575")
+
+    elif 3 <= brightness <= 4:
+        sequences += set_color(8, "#999999")
+
+    elif brightness == 5:
+        sequences += set_color(8, "#8a8a8a")
+
+    elif 6 <= brightness <= 9:
+        sequences += set_color(8, "#a1a1a1")
+
+    else:
+        sequences += set_color(8, colors[7])
+
     # Set a blank color that isn't affected by bold highlighting.
     sequences += set_color(66, colors[0])
 
@@ -182,6 +220,8 @@ def send_sequences(colors):
         term_file = open(term, 'w')
         term_file.write(sequences)
         term_file.close()
+
+    print("colors: Set terminal colors")
 
 
 def set_wallpaper(img):
@@ -222,7 +262,7 @@ def main():
     pathlib.Path(CACHE_DIR + "/schemes").mkdir(parents=True, exist_ok=True)
 
     colors = get_colors(image)
-    send_sequences(colors)
+    send_sequences(colors, args.t)
     set_wallpaper(image)
 
     return 0
