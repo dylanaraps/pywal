@@ -6,6 +6,7 @@ import argparse
 import re
 import subprocess
 import random
+import glob
 
 import os
 from os.path import expanduser
@@ -104,7 +105,12 @@ def get_colors(img):
     # Cache file.
     cache_file = Path(CACHE_DIR + "/schemes/" + img.replace('/', '_'))
 
-    if not cache_file.is_file():
+    if cache_file.is_file():
+        with open(cache_file) as file:
+            colors = file.readlines()
+
+        colors = [x.strip() for x in colors]
+    else:
         # Cache the wallpaper name.
         wal = open(CACHE_DIR + "/wal", 'w')
         wal.write(img + "\n")
@@ -119,6 +125,42 @@ def get_colors(img):
             scheme.write(color + "\n")
         scheme.close()
 
+    return colors
+
+
+def set_color(index, color):
+    """Build the escape sequence we need for each color."""
+    return "\\033]4;" + str(index) + ";" + color + "\\007"
+
+
+def send_sequences(colors):
+    """Send colors to all open terminals."""
+    sequences = set_color(1, colors[9])
+    sequences += set_color(2, colors[10])
+    sequences += set_color(3, colors[11])
+    sequences += set_color(4, colors[12])
+    sequences += set_color(5, colors[13])
+    sequences += set_color(6, colors[14])
+    sequences += set_color(7, colors[15])
+    sequences += set_color(9, colors[9])
+    sequences += set_color(10, colors[10])
+    sequences += set_color(11, colors[11])
+    sequences += set_color(12, colors[12])
+    sequences += set_color(13, colors[13])
+    sequences += set_color(14, colors[14])
+    sequences += set_color(15, colors[15])
+
+    # Set a blank color that isn't affected by bold highlighting.
+    sequences += set_color(66, colors[0])
+
+    # Decode the string.
+    sequences = bytes(sequences, "utf-8").decode("unicode_escape")
+
+    for term in glob.glob("/dev/pts/[0-9]*"):
+        term_file = open(term, 'w')
+        term_file.write(sequences)
+        term_file.close()
+
 
 def main():
     """Main script function."""
@@ -128,7 +170,9 @@ def main():
     # Create colorscheme dir.
     pathlib.Path(CACHE_DIR + "/schemes").mkdir(parents=True, exist_ok=True)
 
-    get_colors(image)
+    colors = get_colors(image)
+    send_sequences(colors)
+
     return 0
 
 
