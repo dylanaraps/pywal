@@ -77,18 +77,36 @@ def get_image(img):
             return rand_img
 
 
+def magic(color_count, img):
+    """Call Imagemagick to generate a scheme."""
+    colors = subprocess.Popen(["convert", img, "+dither", "-colors",
+                               str(color_count), "-unique-colors", "txt:-"],
+                              stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE)
+
+    return colors.stdout
+
+
 def gen_colors(img):
     """Generate a color palette using imagemagick."""
     colors = []
 
-    # Long-ass imagemagick command.
-    magic = subprocess.Popen(["convert", img, "+dither", "-colors",
-                              str(COLOR_COUNT), "-unique-colors", "txt:-"],
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE)
+    # Generate initial scheme.
+    magic_output = magic(COLOR_COUNT, img).readlines()
+
+    # If imagemagick finds less than 16 colors, use a larger source number
+    # of colors.
+    index = 0
+    while len(magic_output) - 1 <= 15:
+        index += 1
+        magic_output = magic(COLOR_COUNT + index, img).readlines()
+
+        print("colors: Imagemagick couldn't generate a", COLOR_COUNT,
+              "color palette, trying a larger palette size",
+              COLOR_COUNT + index)
 
     # Create a list of hex colors.
-    for color in magic.stdout:
+    for color in magic_output:
         hex_color = re.search('#.{6}', str(color))
 
         if hex_color:
@@ -156,6 +174,7 @@ def send_sequences(colors):
     # Decode the string.
     sequences = bytes(sequences, "utf-8").decode("unicode_escape")
 
+    # Send the sequences to all open terminals.
     for term in glob.glob("/dev/pts/[0-9]*"):
         term_file = open(term, 'w')
         term_file.write(sequences)
