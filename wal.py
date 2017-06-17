@@ -10,6 +10,7 @@ import shutil
 
 import subprocess
 from subprocess import call
+from subprocess import Popen
 
 import os
 from os.path import expanduser
@@ -94,10 +95,10 @@ def get_image(img):
 
 def magic(color_count, img):
     """Call Imagemagick to generate a scheme."""
-    colors = subprocess.Popen(["convert", img, "+dither", "-colors",
-                               str(color_count), "-unique-colors", "txt:-"],
-                              stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE)
+    colors = Popen(["convert", img, "+dither", "-colors",
+                    str(color_count), "-unique-colors", "txt:-"],
+                   stdout=subprocess.PIPE,
+                   stderr=subprocess.PIPE)
 
     return colors.stdout
 
@@ -235,33 +236,38 @@ def send_sequences(colors, vte):
         term_file.write(sequences)
         term_file.close()
 
+    # Cache the sequences.
+    sequence_file = open(CACHE_DIR + "/sequences", 'w')
+    sequence_file.write(sequences)
+    sequence_file.close()
+
     print("colors: Set terminal colors")
 
 
 def set_wallpaper(img):
     """Set the wallpaper."""
     if shutil.which("feh"):
-        call(["feh", "--bg-fill", img])
+        Popen(["feh", "--bg-fill", img])
 
     elif shutil.which("nitrogen"):
-        call(["nitrogen", "--set-zoom-fill", img])
+        Popen(["nitrogen", "--set-zoom-fill", img])
 
     elif shutil.which("bgs"):
-        call(["bgs", img])
+        Popen(["bgs", img])
 
     elif shutil.which("hsetroot"):
-        call(["hsetroot", "-fill", img])
+        Popen(["hsetroot", "-fill", img])
 
     elif shutil.which("habak"):
-        call(["habak", "-mS", img])
+        Popen(["habak", "-mS", img])
 
     elif OS == "Darwin":
-        call(["osascript", "-e", "'tell application \"Finder\" to set \
+        Popen(["osascript", "-e", "'tell application \"Finder\" to set \
               desktop picture to POSIX file\'", img, "\'"])
 
     else:
-        call(["gsettings", "set", "org.gnome.desktop.background",
-              "picture-uri", img])
+        Popen(["gsettings", "set", "org.gnome.desktop.background",
+               "picture-uri", img])
 
     print("wallpaper: Set the new wallpaper")
     return 0
