@@ -253,6 +253,16 @@ def set_wallpaper(img):
     return 0
 
 
+def export_plain(colors):
+    """Export colors to a plain text file."""
+    plain_file = CACHE_DIR + "/" + "colors"
+
+    term_file = open(plain_file, 'w')
+    for color in colors:
+        term_file.write(color + "\n")
+    term_file.close()
+
+
 def main():
     """Main script function."""
     args = get_args()
@@ -264,6 +274,7 @@ def main():
     colors = get_colors(image)
     send_sequences(colors, args.t)
     set_wallpaper(image)
+    export_plain(colors)
 
     return 0
 
