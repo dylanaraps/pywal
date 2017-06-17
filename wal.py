@@ -1,85 +1,124 @@
-#!/usr/bin/env python
-#
-# wal - Generate and change colorschemes on the fly.
-#
-# Created by Dylan Araps
-
+"""
+wal - Generate and change colorschemes on the fly.
+Created by Dylan Araps
+"""
 import argparse
-import os
-import pathlib
-import subprocess
 import re
-from pathlib import Path
+import subprocess
+import random
+
+import os
 from os.path import expanduser
 
+import pathlib
+from pathlib import Path
+
+
 # Internal variables.
-cache_dir = expanduser("~") + "/.cache/wal"
-color_count = 16
-os = os.uname
+CACHE_DIR = expanduser("~") + "/.cache/wal"
+COLOR_COUNT = 16
+OS = os.uname
 
 
 def get_args():
-    parser = argparse.ArgumentParser(description='wal - Generate colorschemes on the fly')
+    """Get the script arguments."""
+    description = "wal - Generate colorschemes on the fly"
+    arg = argparse.ArgumentParser(description=description)
 
-    parser.add_argument('-a', help='Set terminal background transparency. *Only works in URxvt*', metavar='0-100', type=int)
-    parser.add_argument('-c', help='Delete all cached colorschemes.', action='store_true')
-    parser.add_argument('-f', help='Load colors directly from a colorscheme file.', metavar='"/path/to/colors"')
-    parser.add_argument('-i', help='Which image or directory to use.', metavar='"/path/to/img.jpg"')
-    parser.add_argument('-n', help='Skip setting the wallpaper.', action='store_true')
-    parser.add_argument('-o', help='External script to run after "wal".', metavar='script_name')
-    parser.add_argument('-q', help='Quiet mode, don\'t print anything.', action='store_true')
-    parser.add_argument('-r', help='Reload current colorscheme.', action='store_true')
-    parser.add_argument('-t', help='Fix artifacts in VTE Terminals. (Termite, xfce4-terminal)', action='store_true')
-    parser.add_argument('-x', help='Use extended 16-color palette.', action='store_true')
+    # Add the args.
+    arg.add_argument('-a', metavar='0-100', type=int,
+                     help='Set terminal background transparency. \
+                           *Only works in URxvt*')
 
-    return parser.parse_args()
+    arg.add_argument('-c', action='store_true',
+                     help='Delete all cached colorschemes.')
+
+    arg.add_argument('-f', metavar='"/path/to/colors"',
+                     help='Load colors directly from a colorscheme file.')
+
+    arg.add_argument('-i', metavar='"/path/to/img.jpg"', required=True,
+                     help='Which image or directory to use.')
+
+    arg.add_argument('-n', action='store_true',
+                     help='Skip setting the wallpaper.')
+
+    arg.add_argument('-o', metavar='script_name',
+                     help='External script to run after "wal".')
+
+    arg.add_argument('-q', action='store_true',
+                     help='Quiet mode, don\'t print anything.')
+
+    arg.add_argument('-r', action='store_true',
+                     help='Reload current colorscheme.')
+
+    arg.add_argument('-t', action='store_true',
+                     help='Fix artifacts in VTE Terminals. \
+                           (Termite, xfce4-terminal)')
+
+    arg.add_argument('-x', action='store_true',
+                     help='Use extended 16-color palette.')
+
+    return arg.parse_args()
 
 
-def get_colors(img):
+def get_image(img):
+    """Validate image input."""
     image = Path(img)
 
     if image.is_file():
-        colors = []
+        return image
 
-        # Create colorscheme dir.
-        pathlib.Path(cache_dir + "/schemes").mkdir(parents=True, exist_ok=True)
-        cache_file = cache_dir + "/schemes/" + img.replace('/', '_')
+    elif image.is_dir():
+        rand = random.choice(os.listdir(image))
+        rand_img = Path(str(image) + "/" + rand)
 
-        # Cache the wallpaper name.
-        wal = open(cache_dir + "/wal", 'w')
-        wal.write(img)
-        wal.close()
-
-        # Long-ass imagemagick command.
-        magic = subprocess.Popen(["convert", img, "+dither", "-colors",
-                str(color_count), "-unique-colors", "txt:-"],
-                stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        if rand_img.is_file():
+            return rand_img
 
 
-        # Create a list of hex colors.
-        for color in magic.stdout:
-            print(color)
-            hex = re.search('#.{6}', str(color))
+def get_colors(img):
+    """Generate a colorscheme using imagemagick."""
+    colors = []
 
-            if hex:
-                colors.append(hex.group(0))
+    # Create colorscheme dir.
+    pathlib.Path(CACHE_DIR + "/schemes").mkdir(parents=True, exist_ok=True)
 
+    # Cache file.
+    cache_file = CACHE_DIR + "/schemes/" + img.replace('/', '_')
 
-        # Remove the first element which isn't a color.
-        del colors[0]
+    # Cache the wallpaper name.
+    wal = open(CACHE_DIR + "/wal", 'w')
+    wal.write(img + "\n")
+    wal.close()
 
-        # Cache the colorscheme.
-        scheme = open(cache_file, 'w')
+    # Long-ass imagemagick command.
+    magic = subprocess.Popen(["convert", img, "+dither", "-colors",
+                              str(COLOR_COUNT), "-unique-colors", "txt:-"],
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
 
-        for color in colors:
-            scheme.write(color + "\n")
+    # Create a list of hex colors.
+    for color in magic.stdout:
+        hex_color = re.search('#.{6}', str(color))
 
-        scheme.close()
+        if hex_color:
+            colors.append(hex_color.group(0))
+
+    # Remove the first element, which isn't a color.
+    del colors[0]
+
+    # Cache the colorscheme.
+    scheme = open(cache_file, 'w')
+    for color in colors:
+        scheme.write(color + "\n")
+    scheme.close()
 
 
 def main():
+    """Main script function."""
     args = get_args()
-    get_colors(args.i)
+    image = str(get_image(args.i))
+    get_colors(image)
     return 0
 
 
