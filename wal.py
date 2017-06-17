@@ -76,20 +76,9 @@ def get_image(img):
             return rand_img
 
 
-def get_colors(img):
-    """Generate a colorscheme using imagemagick."""
+def gen_colors(img):
+    """Generate a color palette using imagemagick."""
     colors = []
-
-    # Create colorscheme dir.
-    pathlib.Path(CACHE_DIR + "/schemes").mkdir(parents=True, exist_ok=True)
-
-    # Cache file.
-    cache_file = CACHE_DIR + "/schemes/" + img.replace('/', '_')
-
-    # Cache the wallpaper name.
-    wal = open(CACHE_DIR + "/wal", 'w')
-    wal.write(img + "\n")
-    wal.close()
 
     # Long-ass imagemagick command.
     magic = subprocess.Popen(["convert", img, "+dither", "-colors",
@@ -107,17 +96,38 @@ def get_colors(img):
     # Remove the first element, which isn't a color.
     del colors[0]
 
-    # Cache the colorscheme.
-    scheme = open(cache_file, 'w')
-    for color in colors:
-        scheme.write(color + "\n")
-    scheme.close()
+    return colors
+
+
+def get_colors(img):
+    """Generate a colorscheme using imagemagick."""
+    # Cache file.
+    cache_file = Path(CACHE_DIR + "/schemes/" + img.replace('/', '_'))
+
+    if not cache_file.is_file():
+        # Cache the wallpaper name.
+        wal = open(CACHE_DIR + "/wal", 'w')
+        wal.write(img + "\n")
+        wal.close()
+
+        # Generate the colors.
+        colors = gen_colors(img)
+
+        # Cache the colorscheme.
+        scheme = open(cache_file, 'w')
+        for color in colors:
+            scheme.write(color + "\n")
+        scheme.close()
 
 
 def main():
     """Main script function."""
     args = get_args()
     image = str(get_image(args.i))
+
+    # Create colorscheme dir.
+    pathlib.Path(CACHE_DIR + "/schemes").mkdir(parents=True, exist_ok=True)
+
     get_colors(image)
     return 0
 
