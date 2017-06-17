@@ -4,9 +4,12 @@ Created by Dylan Araps
 """
 import argparse
 import re
-import subprocess
 import random
 import glob
+import shutil
+
+import subprocess
+from subprocess import call
 
 import os
 from os.path import expanduser
@@ -181,6 +184,35 @@ def send_sequences(colors):
         term_file.close()
 
 
+def set_wallpaper(img):
+    """Set the wallpaper."""
+    if shutil.which("feh"):
+        call(["feh", "--bg-fill", img])
+
+    elif shutil.which("nitrogen"):
+        call(["nitrogen", "--set-zoom-fill", img])
+
+    elif shutil.which("bgs"):
+        call(["bgs", img])
+
+    elif shutil.which("hsetroot"):
+        call(["hsetroot", "-fill", img])
+
+    elif shutil.which("habak"):
+        call(["habak", "-mS", img])
+
+    elif OS == "Darwin":
+        call(["osascript", "-e", "'tell application \"Finder\" to set \
+              desktop picture to POSIX file \"'\"", img, "\""])
+
+    else:
+        call(["gsettings", "set", "org.gnome.desktop.background",
+              "picture-uri", img])
+
+    print("wallpaper: Set the new wallpaper")
+    return 0
+
+
 def main():
     """Main script function."""
     args = get_args()
@@ -191,6 +223,7 @@ def main():
 
     colors = get_colors(image)
     send_sequences(colors)
+    set_wallpaper(image)
 
     return 0
 
