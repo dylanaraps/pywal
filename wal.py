@@ -373,6 +373,12 @@ def main():
     # Get the args.
     args = get_args()
 
+    # If no args were passed.
+    if not len(sys.argv) > 1:
+        print("error: wal needs to be given arguments to run.")
+        print("       Refer to 'wal -h' for more info.")
+        exit(1)
+
     # -q
     if args.q:
         sys.stdout = open('/dev/null', 'w')
