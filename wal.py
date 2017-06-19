@@ -142,38 +142,29 @@ def magic(color_count, img):
     """Call Imagemagick to generate a scheme."""
     colors = Popen(["convert", img, "+dither", "-colors",
                     str(color_count), "-unique-colors", "txt:-"],
-                   stdout=subprocess.PIPE,
-                   stderr=subprocess.PIPE)
+                   stdout=subprocess.PIPE)
 
-    return colors.stdout
+    return colors.stdout.readlines()
 
 
 def gen_colors(img):
     """Generate a color palette using imagemagick."""
-    colors = []
-
     # Generate initial scheme.
-    magic_output = magic(COLOR_COUNT, img).readlines()
+    magic_output = magic(COLOR_COUNT, img)
 
     # If imagemagick finds less than 16 colors, use a larger source number
     # of colors.
     index = 0
     while len(magic_output) - 1 <= 15:
         index += 1
-        magic_output = magic(COLOR_COUNT + index, img).readlines()
+        magic_output = magic(COLOR_COUNT + index, img)
 
         print("colors: Imagemagick couldn't generate a", COLOR_COUNT,
               "color palette, trying a larger palette size",
               COLOR_COUNT + index)
 
     # Create a list of hex colors.
-    search = re.search
-    append = colors.append
-    for color in magic_output:
-        hex_color = search('#.{6}', str(color))
-
-        if hex_color:
-            append(hex_color.group(0))
+    colors = [re.search('#.{6}', str(col)).group(0) for col in magic_output]
 
     # Remove the first element, which isn't a color.
     del colors[0]
