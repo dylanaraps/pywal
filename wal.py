@@ -60,6 +60,9 @@ def get_args():
                      help='Fix artifacts in VTE Terminals. \
                            (Termite, xfce4-terminal)')
 
+    arg.add_argument('-x', action='store_true',
+                     help='Use extended 16-color palette.')
+
     return arg.parse_args()
 
 
@@ -277,7 +280,7 @@ def get_grey(colors):
     }.get(int(colors[0][1]), colors[7])
 
 
-def send_sequences(colors, vte):
+def send_sequences(colors, vte, extended_palette):
     """Send colors to all open terminals."""
     seq = []
     seq.append(set_special(10, colors[15]))
@@ -290,15 +293,28 @@ def send_sequences(colors, vte):
     if not vte:
         seq.append(set_special(708, colors[0]))
 
-    seq.append(set_color(0, colors[0]))
-    seq.append(set_color(1, colors[9]))
-    seq.append(set_color(2, colors[10]))
-    seq.append(set_color(3, colors[11]))
-    seq.append(set_color(4, colors[12]))
-    seq.append(set_color(5, colors[13]))
-    seq.append(set_color(6, colors[14]))
-    seq.append(set_color(7, colors[15]))
-    seq.append(set_color(8, get_grey(colors)))
+    # If -x is used, use all 16 colors.
+    if extended_palette:
+        seq.append(set_color(0, colors[0]))
+        seq.append(set_color(1, colors[1]))
+        seq.append(set_color(2, colors[2]))
+        seq.append(set_color(3, colors[3]))
+        seq.append(set_color(4, colors[4]))
+        seq.append(set_color(5, colors[5]))
+        seq.append(set_color(6, colors[6]))
+        seq.append(set_color(7, colors[7]))
+        seq.append(set_color(8, colors[8]))
+    else:
+        seq.append(set_color(0, colors[0]))
+        seq.append(set_color(1, colors[9]))
+        seq.append(set_color(2, colors[10]))
+        seq.append(set_color(3, colors[11]))
+        seq.append(set_color(4, colors[12]))
+        seq.append(set_color(5, colors[13]))
+        seq.append(set_color(6, colors[14]))
+        seq.append(set_color(7, colors[15]))
+        seq.append(set_color(8, get_grey(colors)))
+
     seq.append(set_color(9, colors[9]))
     seq.append(set_color(10, colors[10]))
     seq.append(set_color(11, colors[11]))
@@ -451,7 +467,7 @@ def main():
     colors = process_colors(args)
 
     # Set the colors.
-    send_sequences(colors, args.t)
+    send_sequences(colors, args.t, args.x)
     export_plain(colors)
     export_xrdb(colors)
 
