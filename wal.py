@@ -4,13 +4,14 @@ wal - Generate and change colorschemes on the fly.
 Created by Dylan Araps
 """
 import argparse
-import re
-import random
 import glob
-import shutil
-import subprocess
 import os
 import pathlib
+import random
+import re
+import shutil
+import subprocess
+import sys
 
 
 # wal files.
@@ -34,15 +35,8 @@ def get_args():
     arg = argparse.ArgumentParser(description=description)
 
     # Add the args.
-    # arg.add_argument('-a', metavar='0-100', type=int,
-    #                  help='Set terminal background transparency. \
-    #                        *Only works in URxvt*')
-
     arg.add_argument('-c', action='store_true',
                      help='Delete all cached colorschemes.')
-
-    # arg.add_argument('-f', metavar='"/path/to/colors"',
-    #                  help='Load colors directly from a colorscheme file.')
 
     arg.add_argument('-i', metavar='"/path/to/img.jpg"',
                      help='Which image or directory to use.')
@@ -53,8 +47,8 @@ def get_args():
     arg.add_argument('-o', metavar='"script_name"',
                      help='External script to run after "wal".')
 
-    # arg.add_argument('-q', action='store_true',
-    #                  help='Quiet mode, don\'t print anything.')
+    arg.add_argument('-q', action='store_true',
+                     help='Quiet mode, don\'t print anything.')
 
     arg.add_argument('-r', action='store_true',
                      help='Reload current colorscheme.')
@@ -62,9 +56,6 @@ def get_args():
     arg.add_argument('-t', action='store_true',
                      help='Fix artifacts in VTE Terminals. \
                            (Termite, xfce4-terminal)')
-
-    # arg.add_argument('-x', action='store_true',
-    #                  help='Use extended 16-color palette.')
 
     return arg.parse_args()
 
@@ -381,6 +372,11 @@ def main():
     """Main script function."""
     # Get the args.
     args = get_args()
+
+    # -q
+    if args.q:
+        sys.stdout = open('/dev/null', 'w')
+        sys.stderr = open('/dev/null', 'w')
 
     # -c
     if args.c:
