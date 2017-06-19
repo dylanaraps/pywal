@@ -112,6 +112,12 @@ def get_image(img):
     """Validate image input."""
     image = Path(img)
 
+    # Check if the user has Imagemagick installed.
+    if not shutil.which("convert"):
+        print("error: imagemagick not found, exiting...")
+        print("error: wal requires imagemagick to function.")
+        exit(1)
+
     if image.is_file():
         return image
 
