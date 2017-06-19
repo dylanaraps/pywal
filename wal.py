@@ -109,11 +109,7 @@ def process_colors(args):
 
         # Import the colorscheme from file.
         if cache_file.is_file():
-            with open(cache_file) as file:
-                colors = file.readlines()
-
-            # Strip newlines from each list element.
-            colors = [x.strip() for x in colors]
+            colors = read_colors(cache_file)
 
             if len(colors) < 16:
                 print("error: Invalid colorscheme file chosen.")
@@ -121,6 +117,17 @@ def process_colors(args):
         else:
             print("error: Colorscheme file not found.")
             exit(1)
+
+    return colors
+
+
+def read_colors(color_file):
+    """Read colors from a file"""
+    with open(color_file) as file:
+        colors = file.readlines()
+
+    # Strip newlines from each list element.
+    colors = [x.strip() for x in colors]
 
     return colors
 
@@ -222,11 +229,8 @@ def get_colors(img):
         file.write("%s\n" % (img))
 
     if cache_file.is_file():
-        with open(cache_file) as file:
-            colors = file.readlines()
+        colors = read_colors(cache_file)
 
-        # Strip newlines from each list element.
-        colors = [x.strip() for x in colors]
     else:
         print("colors: Generating a colorscheme...")
 
