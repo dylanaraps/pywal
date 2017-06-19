@@ -23,7 +23,6 @@ XRDB_FILE = "%s%s" % (CACHE_DIR, "xcolors")
 
 # Internal variables.
 COLOR_COUNT = 16
-OS = os.uname
 
 
 # ARGS {{{
@@ -201,7 +200,7 @@ def set_color(index, color):
     return "\\033]4;%s;%s\\007" % (str(index), color)
 
 
-def get_grey(color, color2):
+def get_grey(colors):
     """Set a grey color based on brightness of color0"""
     return {
         0: "#666666",
@@ -214,7 +213,7 @@ def get_grey(color, color2):
         7: "#a1a1a1",
         8: "#a1a1a1",
         9: "#a1a1a1",
-    }.get(int(color[1]), color2)
+    }.get(int(colors[0][1]), colors[7])
 
 
 def send_sequences(colors, vte):
@@ -238,7 +237,7 @@ def send_sequences(colors, vte):
     seq.append(set_color(5, colors[13]))
     seq.append(set_color(6, colors[14]))
     seq.append(set_color(7, colors[15]))
-    seq.append(set_color(8, get_grey(colors[0], colors[7])))
+    seq.append(set_color(8, get_grey(colors)))
     seq.append(set_color(9, colors[9]))
     seq.append(set_color(10, colors[10]))
     seq.append(set_color(11, colors[11]))
@@ -276,6 +275,8 @@ def send_sequences(colors, vte):
 
 def set_wallpaper(img):
     """Set the wallpaper."""
+    uname = os.uname
+
     if shutil.which("feh"):
         subprocess.Popen(["feh", "--bg-fill", img])
 
@@ -291,7 +292,7 @@ def set_wallpaper(img):
     elif shutil.which("habak"):
         subprocess.Popen(["habak", "-mS", img])
 
-    elif OS == "Darwin":
+    elif uname == "Darwin":
         subprocess.Popen(["osascript", "-e", "'tell application \"Finder\" to set \
                            desktop picture to POSIX file\'" + img + "\'"])
 
@@ -354,7 +355,7 @@ def export_xrdb(colors):
            colors[13],
            colors[14],
            colors[15],
-           get_grey(colors[0], colors[7]),
+           get_grey(colors),
            colors[9],
            colors[10],
            colors[11],
@@ -378,19 +379,19 @@ def export_xrdb(colors):
 
 def main():
     """Main script function."""
-    # Create colorscheme dir.
-    pathlib.Path(SCHEME_DIR).mkdir(parents=True, exist_ok=True)
-
+    # Get the args.
     args = get_args()
 
     # -c
     if args.c:
         shutil.rmtree(SCHEME_DIR)
-        quit()
 
     # -r
     if args.r:
         reload_colors(args.t)
+
+    # Create colorscheme dir.
+    pathlib.Path(SCHEME_DIR).mkdir(parents=True, exist_ok=True)
 
     # -i
     if args.i:
