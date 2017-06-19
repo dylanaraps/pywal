@@ -19,8 +19,15 @@ import pathlib
 from pathlib import Path
 
 
+# wal files.
+CACHE_DIR = "%s%s" % (expanduser("~"), "/.cache/wal/")
+SCHEME_DIR = "%s%s" % (CACHE_DIR, "schemes/")
+SEQUENCE_FILE = "%s%s" % (CACHE_DIR, "sequences")
+WAL_FILE = "%s%s" % (CACHE_DIR, "wal")
+PLAIN_FILE = "%s%s" % (CACHE_DIR, "colors")
+XRDB_FILE = "%s%s" % (CACHE_DIR, "xcolors")
+
 # Internal variables.
-CACHE_DIR = expanduser("~") + "/.cache/wal/"
 COLOR_COUNT = 16
 OS = os.uname
 
@@ -74,7 +81,7 @@ def process_args(args):
 
     # -c
     if args.c:
-        shutil.rmtree(CACHE_DIR + "schemes")
+        shutil.rmtree(SCHEME_DIR)
 
     # -r
     if args.r:
@@ -88,7 +95,7 @@ def process_args(args):
 
 def reload_colors(vte):
     """Reload colors."""
-    with open(CACHE_DIR + "sequences") as file:
+    with open(SEQUENCE_FILE) as file:
         sequences = file.read()
 
     # If vte mode was used, remove the problem sequence.
@@ -123,7 +130,8 @@ def get_image(img):
 
     elif image.is_dir():
         rand = random.choice(os.listdir(image))
-        rand_img = Path(str(image) + "/" + rand)
+        rand_img = "%s/%s" % (str(image), rand)
+        rand_img = Path(rand_img)
 
         if rand_img.is_file():
             return rand_img
@@ -173,7 +181,8 @@ def gen_colors(img):
 def get_colors(img):
     """Generate a colorscheme using imagemagick."""
     # Cache file.
-    cache_file = Path(CACHE_DIR + "schemes/" + img.replace('/', '_'))
+    cache_file = "%s%s" % (SCHEME_DIR, img.replace('/', '_'))
+    cache_file = Path(cache_file)
 
     if cache_file.is_file():
         with open(cache_file) as file:
@@ -182,8 +191,9 @@ def get_colors(img):
         colors = [x.strip() for x in colors]
     else:
         # Cache the wallpaper name.
-        wal = open(CACHE_DIR + "wal", 'w')
-        wal.write(img + "\n")
+        wal = open(WAL_FILE, 'w')
+        wal.write(img)
+        wal.write("\n")
         wal.close()
 
         # Generate the colors.
@@ -192,7 +202,8 @@ def get_colors(img):
         # Cache the colorscheme.
         scheme = open(cache_file, 'w')
         for color in colors:
-            scheme.write(color + "\n")
+            scheme.write(color)
+            scheme.write("\n")
         scheme.close()
 
     print("colors: Generated colorscheme")
@@ -207,12 +218,12 @@ def get_colors(img):
 
 def set_special(index, color):
     """Build the escape sequence for special colors."""
-    return "\\033]" + str(index) + ";" + color + "\\007"
+    return "\\033]%s;%s\\007" % (str(index), color)
 
 
 def set_color(index, color):
     """Build the escape sequence we need for each color."""
-    return "\\033]4;" + str(index) + ";" + color + "\\007"
+    return "\\033]4;%s;%s\\007" % (str(index), color)
 
 
 def get_grey(color, color2):
@@ -239,35 +250,39 @@ def get_grey(color, color2):
 
 def send_sequences(colors, vte):
     """Send colors to all open terminals."""
-    sequences = set_special(10, colors[15])
-    sequences += set_special(11, colors[0])
-    sequences += set_special(12, colors[15])
-    sequences += set_special(13, colors[15])
-    sequences += set_special(14, colors[0])
+    seq = []
+    seq.append(set_special(10, colors[15]))
+    seq.append(set_special(11, colors[0]))
+    seq.append(set_special(12, colors[15]))
+    seq.append(set_special(13, colors[15]))
+    seq.append(set_special(14, colors[0]))
 
     # This escape sequence doesn't work in VTE terminals.
     if not vte:
-        sequences += set_special(708, colors[0])
+        seq.append(set_special(708, colors[0]))
 
-    sequences += set_color(0, colors[0])
-    sequences += set_color(1, colors[9])
-    sequences += set_color(2, colors[10])
-    sequences += set_color(3, colors[11])
-    sequences += set_color(4, colors[12])
-    sequences += set_color(5, colors[13])
-    sequences += set_color(6, colors[14])
-    sequences += set_color(7, colors[15])
-    sequences += set_color(8, get_grey(colors[0], colors[7]))
-    sequences += set_color(9, colors[9])
-    sequences += set_color(10, colors[10])
-    sequences += set_color(11, colors[11])
-    sequences += set_color(12, colors[12])
-    sequences += set_color(13, colors[13])
-    sequences += set_color(14, colors[14])
-    sequences += set_color(15, colors[15])
+    seq.append(set_color(0, colors[0]))
+    seq.append(set_color(1, colors[9]))
+    seq.append(set_color(2, colors[10]))
+    seq.append(set_color(3, colors[11]))
+    seq.append(set_color(4, colors[12]))
+    seq.append(set_color(5, colors[13]))
+    seq.append(set_color(6, colors[14]))
+    seq.append(set_color(7, colors[15]))
+    seq.append(set_color(8, get_grey(colors[0], colors[7])))
+    seq.append(set_color(9, colors[9]))
+    seq.append(set_color(10, colors[10]))
+    seq.append(set_color(11, colors[11]))
+    seq.append(set_color(12, colors[12]))
+    seq.append(set_color(13, colors[13]))
+    seq.append(set_color(14, colors[14]))
+    seq.append(set_color(15, colors[15]))
 
     # Set a blank color that isn't affected by bold highlighting.
-    sequences += set_color(66, colors[0])
+    seq.append(set_color(66, colors[0]))
+
+    # Create the string.
+    sequences = ''.join(seq)
 
     # Decode the string.
     sequences = bytes(sequences, "utf-8").decode("unicode_escape")
@@ -279,7 +294,7 @@ def send_sequences(colors, vte):
         term_file.close()
 
     # Cache the sequences.
-    sequence_file = open(CACHE_DIR + "sequences", 'w')
+    sequence_file = open(SEQUENCE_FILE, 'w')
     sequence_file.write(sequences)
     sequence_file.close()
 
@@ -329,47 +344,67 @@ def set_wallpaper(img):
 
 def export_plain(colors):
     """Export colors to a plain text file."""
-    plain_file = CACHE_DIR + "colors"
-
-    file = open(plain_file, 'w')
+    file = open(PLAIN_FILE, 'w')
     for color in colors:
-        file.write(color + "\n")
+        file.write(color)
+        file.write("\n")
     file.close()
 
 
 def export_xrdb(colors):
     """Export colors to xrdb."""
-    x_colors = "URxvt*foreground: " + colors[15] + "\n"
-    x_colors += "XTerm*foreground: " + colors[15] + "\n"
-    x_colors += "URxvt*background: " + colors[0] + "\n"
-    x_colors += "XTerm*background: " + colors[0] + "\n"
-    x_colors += "URxvt*cursorColor: " + colors[15] + "\n"
-    x_colors += "XTerm*cursorColor: " + colors[15] + "\n"
-    x_colors += "*.color0: " + colors[0] + "\n"
-    x_colors += "*.color1: " + colors[9] + "\n"
-    x_colors += "*.color2: " + colors[10] + "\n"
-    x_colors += "*.color3: " + colors[11] + "\n"
-    x_colors += "*.color4: " + colors[12] + "\n"
-    x_colors += "*.color5: " + colors[13] + "\n"
-    x_colors += "*.color6: " + colors[14] + "\n"
-    x_colors += "*.color7: " + colors[15] + "\n"
-    x_colors += "*.color8: " + get_grey(colors[0], colors[7]) + "\n"
-    x_colors += "*.color9: " + colors[9] + "\n"
-    x_colors += "*.color10: " + colors[10] + "\n"
-    x_colors += "*.color11: " + colors[11] + "\n"
-    x_colors += "*.color12: " + colors[12] + "\n"
-    x_colors += "*.color13: " + colors[13] + "\n"
-    x_colors += "*.color14: " + colors[14] + "\n"
-    x_colors += "*.color15: " + colors[15] + "\n"
+    x_colors = """
+    URxvt*foreground:  %s
+    XTerm*forefround:  %s
+    URxvt*background:  %s
+    XTerm*background:  %s
+    URxvt*cursorColor: %s
+    XTerm*cursorColor: %s
+    *.color0:  %s
+    *.color1:  %s
+    *.color2:  %s
+    *.color3:  %s
+    *.color4:  %s
+    *.color5:  %s
+    *.color6:  %s
+    *.color7:  %s
+    *.color8:  %s
+    *.color9:  %s
+    *.color10: %s
+    *.color11: %s
+    *.color12: %s
+    *.color13: %s
+    *.color14: %s
+    *.color15: %s
+    """ % (colors[15],
+           colors[15],
+           colors[0],
+           colors[0],
+           colors[15],
+           colors[15],
+           colors[0],
+           colors[9],
+           colors[10],
+           colors[11],
+           colors[12],
+           colors[13],
+           colors[14],
+           colors[15],
+           get_grey(colors[0], colors[7]),
+           colors[9],
+           colors[10],
+           colors[11],
+           colors[12],
+           colors[13],
+           colors[14],
+           colors[15])
 
-    xrdb_file = CACHE_DIR + "xcolors"
-
-    file = open(xrdb_file, 'w')
+    file = open(XRDB_FILE, 'w')
     file.write(x_colors)
     file.close()
 
     # Merge the colors into the X db so new terminals use them.
-    call(["xrdb", "-merge", "<<<", xrdb_file])
+    call(["xrdb", "-merge", XRDB_FILE])
 
     print("export: Exported xrdb colors.")
 
@@ -379,20 +414,20 @@ def export_xrdb(colors):
 
 def main():
     """Main script function."""
+    # Create colorscheme dir.
+    pathlib.Path(SCHEME_DIR).mkdir(parents=True, exist_ok=True)
+
     args = get_args()
     process_args(args)
 
     if args.i:
         image = str(get_image(args.i))
 
-        # Set the wallpaper.
-        set_wallpaper(image)
-
-        # Create colorscheme dir.
-        pathlib.Path(CACHE_DIR + "schemes").mkdir(parents=True, exist_ok=True)
-
         # Get the colors.
         colors = get_colors(image)
+
+        # Set the wallpaper.
+        set_wallpaper(image)
 
         # Set the colors.
         send_sequences(colors, args.t)
