@@ -12,6 +12,7 @@ import re
 import shutil
 import subprocess
 import sys
+from wal import export
 
 
 # wal files.
@@ -19,8 +20,6 @@ CACHE_DIR = "%s%s" % (os.path.expanduser("~"), "/.cache/wal/")
 SCHEME_DIR = "%s%s" % (CACHE_DIR, "schemes/")
 SEQUENCE_FILE = "%s%s" % (CACHE_DIR, "sequences")
 WAL_FILE = "%s%s" % (CACHE_DIR, "wal")
-PLAIN_FILE = "%s%s" % (CACHE_DIR, "colors")
-XRDB_FILE = "%s%s" % (CACHE_DIR, "xcolors")
 
 # Internal variables.
 COLOR_COUNT = 16
@@ -261,6 +260,9 @@ def set_special(index, color):
 
 def set_color(index, color):
     """Build the escape sequence we need for each color."""
+    global x_colors
+    x_colors.append("*.color%s: %s\n" % (str(index), color))
+
     return "\\033]4;%s;%s\\007" % (str(index), color)
 
 
@@ -306,6 +308,7 @@ def send_sequences(colors, vte, extended_palette):
         seq.append(set_color(8, colors[8]))
     else:
         seq.append(set_color(0, colors[0]))
+        seq.append(set_color(8, colors[8]))
         seq.append(set_color(1, colors[9]))
         seq.append(set_color(2, colors[10]))
         seq.append(set_color(3, colors[11]))
@@ -313,7 +316,6 @@ def send_sequences(colors, vte, extended_palette):
         seq.append(set_color(5, colors[13]))
         seq.append(set_color(6, colors[14]))
         seq.append(set_color(7, colors[15]))
-        seq.append(set_color(8, get_grey(colors)))
 
     seq.append(set_color(9, colors[9]))
     seq.append(set_color(10, colors[10]))
@@ -384,76 +386,6 @@ def set_wallpaper(img):
 # }}}
 
 
-# EXPORT COLORS {{{
-
-
-def export_plain(colors):
-    """Export colors to a plain text file."""
-    with open(PLAIN_FILE, 'w') as file:
-        file.write('\n'.join(colors))
-
-
-def export_xrdb(colors):
-    """Export colors to xrdb."""
-    x_colors = """
-    URxvt*foreground:  %s
-    XTerm*forefround:  %s
-    URxvt*background:  %s
-    XTerm*background:  %s
-    URxvt*cursorColor: %s
-    XTerm*cursorColor: %s
-    *.color0:  %s
-    *.color1:  %s
-    *.color2:  %s
-    *.color3:  %s
-    *.color4:  %s
-    *.color5:  %s
-    *.color6:  %s
-    *.color7:  %s
-    *.color8:  %s
-    *.color9:  %s
-    *.color10: %s
-    *.color11: %s
-    *.color12: %s
-    *.color13: %s
-    *.color14: %s
-    *.color15: %s
-    """ % (colors[15],
-           colors[15],
-           colors[0],
-           colors[0],
-           colors[15],
-           colors[15],
-           colors[0],
-           colors[9],
-           colors[10],
-           colors[11],
-           colors[12],
-           colors[13],
-           colors[14],
-           colors[15],
-           get_grey(colors),
-           colors[9],
-           colors[10],
-           colors[11],
-           colors[12],
-           colors[13],
-           colors[14],
-           colors[15])
-
-    # Write the colors to the file.
-    with open(XRDB_FILE, 'w') as file:
-        file.write(x_colors)
-
-    # Merge the colors into the X db so new terminals use them.
-    subprocess.Popen(["xrdb", "-merge", XRDB_FILE])
-
-    print("export: Exported xrdb colors.")
-
-
-# }}}
-
-
 def main():
     """Main script function."""
     # Get the args.
@@ -466,10 +398,22 @@ def main():
     # Get the colors.
     colors = process_colors(args)
 
+    # Set Grey.
+    if not args.x:
+        colors[8] = get_grey(colors)
+
     # Set the colors.
+    x_colors = []
     send_sequences(colors, args.t, args.x)
-    export_plain(colors)
-    export_xrdb(colors)
+
+    print(x_colors)
+
+    # Export the colors.
+    export.plain(colors, "%s%s" % (CACHE_DIR, "colors"))
+    # export.xrdb(x_colors, "%s%s" % (CACHE_DIR, "xcolors"))
+    export.scss(colors, "%s%s" % (CACHE_DIR, "colors.scss"))
+    export.shell(colors, "%s%s" % (CACHE_DIR, "colors.sh"))
+    export.css(colors, "%s%s" % (CACHE_DIR, "colors.css"))
 
     # -o
     if args.o:
@@ -481,4 +425,5 @@ def main():
     return 0
 
 
-main()
+if __name__ == "__main__":
+    main()
