@@ -25,30 +25,33 @@ COLOR_COUNT = 16
 OS = os.uname
 
 
+# ARGS {{{
+
+
 def get_args():
     """Get the script arguments."""
     description = "wal - Generate colorschemes on the fly"
     arg = argparse.ArgumentParser(description=description)
 
     # Add the args.
-    arg.add_argument('-a', metavar='0-100', type=int,
-                     help='Set terminal background transparency. \
-                           *Only works in URxvt*')
+    # arg.add_argument('-a', metavar='0-100', type=int,
+    #                  help='Set terminal background transparency. \
+    #                        *Only works in URxvt*')
 
     arg.add_argument('-c', action='store_true',
                      help='Delete all cached colorschemes.')
 
-    arg.add_argument('-f', metavar='"/path/to/colors"',
-                     help='Load colors directly from a colorscheme file.')
+    # arg.add_argument('-f', metavar='"/path/to/colors"',
+    #                  help='Load colors directly from a colorscheme file.')
 
     arg.add_argument('-i', metavar='"/path/to/img.jpg"',
                      help='Which image or directory to use.')
 
-    arg.add_argument('-n', action='store_true',
-                     help='Skip setting the wallpaper.')
+    # arg.add_argument('-n', action='store_true',
+    #                  help='Skip setting the wallpaper.')
 
-    arg.add_argument('-o', metavar='script_name',
-                     help='External script to run after "wal".')
+    # arg.add_argument('-o', metavar='script_name',
+    #                  help='External script to run after "wal".')
 
     # arg.add_argument('-q', action='store_true',
     #                  help='Quiet mode, don\'t print anything.')
@@ -78,6 +81,11 @@ def process_args(args):
         reload_colors(args.t)
 
 
+# }}}
+
+
+# RELOAD COLORS {{{
+
 def reload_colors(vte):
     """Reload colors."""
     with open(CACHE_DIR + "sequences") as file:
@@ -92,6 +100,12 @@ def reload_colors(vte):
 
     print(sequences, end='')
     quit()
+
+
+# }}}
+
+
+# COLORSCHEME GENERATION {{{
 
 
 def get_image(img):
@@ -179,6 +193,12 @@ def get_colors(img):
     return colors
 
 
+# }}}
+
+
+# SEND SEQUENCES {{{
+
+
 def set_special(index, color):
     """Build the escape sequence for special colors."""
     return "\\033]" + str(index) + ";" + color + "\\007"
@@ -260,6 +280,12 @@ def send_sequences(colors, vte):
     print("colors: Set terminal colors")
 
 
+# }}}
+
+
+# WALLPAPER SETTING {{{
+
+
 def set_wallpaper(img):
     """Set the wallpaper."""
     if shutil.which("feh"):
@@ -287,6 +313,12 @@ def set_wallpaper(img):
 
     print("wallpaper: Set the new wallpaper")
     return 0
+
+
+# }}}
+
+
+# EXPORT COLORS {{{
 
 
 def export_plain(colors):
@@ -334,6 +366,9 @@ def export_xrdb(colors):
     call(["xrdb", "-merge", "<<<", xrdb_file])
 
     print("export: Exported xrdb colors.")
+
+
+# }}}
 
 
 def main():
