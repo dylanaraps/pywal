@@ -311,7 +311,7 @@ def set_wallpaper(img):
 
     elif OS == "Darwin":
         Popen(["osascript", "-e", "'tell application \"Finder\" to set \
-              desktop picture to POSIX file\'", img, "\'"])
+              desktop picture to POSIX file\'" + img + "\'"])
 
     else:
         Popen(["gsettings", "set", "org.gnome.desktop.background",
