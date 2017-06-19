@@ -82,6 +82,7 @@ def process_args(args):
     # -c
     if args.c:
         shutil.rmtree(SCHEME_DIR)
+        quit()
 
     # -r
     if args.r:
@@ -166,11 +167,13 @@ def gen_colors(img):
               COLOR_COUNT + index)
 
     # Create a list of hex colors.
+    search = re.search
+    append = colors.append
     for color in magic_output:
-        hex_color = re.search('#.{6}', str(color))
+        hex_color = search('#.{6}', str(color))
 
         if hex_color:
-            colors.append(hex_color.group(0))
+            append(hex_color.group(0))
 
     # Remove the first element, which isn't a color.
     del colors[0]
@@ -184,27 +187,22 @@ def get_colors(img):
     cache_file = "%s%s" % (SCHEME_DIR, img.replace('/', '_'))
     cache_file = Path(cache_file)
 
+    # Cache the wallpaper name.
+    with open(WAL_FILE, 'w') as file:
+        file.write("%s\n" % (img))
+
     if cache_file.is_file():
         with open(cache_file) as file:
             colors = file.readlines()
 
         colors = [x.strip() for x in colors]
     else:
-        # Cache the wallpaper name.
-        wal = open(WAL_FILE, 'w')
-        wal.write(img)
-        wal.write("\n")
-        wal.close()
-
         # Generate the colors.
         colors = gen_colors(img)
 
         # Cache the colorscheme.
-        scheme = open(cache_file, 'w')
-        for color in colors:
-            scheme.write(color)
-            scheme.write("\n")
-        scheme.close()
+        with open(cache_file, 'w') as file:
+            file.write("\n".join(colors))
 
     print("colors: Generated colorscheme")
     return colors
@@ -289,14 +287,12 @@ def send_sequences(colors, vte):
 
     # Send the sequences to all open terminals.
     for term in glob.glob("/dev/pts/[0-9]*"):
-        term_file = open(term, 'w')
-        term_file.write(sequences)
-        term_file.close()
+        with open(term, 'w') as file:
+            file.write(sequences)
 
     # Cache the sequences.
-    sequence_file = open(SEQUENCE_FILE, 'w')
-    sequence_file.write(sequences)
-    sequence_file.close()
+    with open(SEQUENCE_FILE, 'w') as file:
+        file.write(sequences)
 
     print("colors: Set terminal colors")
 
@@ -344,11 +340,8 @@ def set_wallpaper(img):
 
 def export_plain(colors):
     """Export colors to a plain text file."""
-    file = open(PLAIN_FILE, 'w')
-    for color in colors:
-        file.write(color)
-        file.write("\n")
-    file.close()
+    with open(PLAIN_FILE, 'w') as file:
+        file.write('\n'.join(colors))
 
 
 def export_xrdb(colors):
@@ -399,9 +392,9 @@ def export_xrdb(colors):
            colors[14],
            colors[15])
 
-    file = open(XRDB_FILE, 'w')
-    file.write(x_colors)
-    file.close()
+    # Write the colors to the file.
+    with open(XRDB_FILE, 'w') as file:
+        file.write(x_colors)
 
     # Merge the colors into the X db so new terminals use them.
     call(["xrdb", "-merge", XRDB_FILE])
