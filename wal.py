@@ -41,6 +41,9 @@ def get_args():
     arg.add_argument('-i', metavar='"/path/to/img.jpg"',
                      help='Which image or directory to use.')
 
+    arg.add_argument('-f', metavar='"/path/to/colors"',
+                     help='Load colors directly from a colorscheme file.')
+
     arg.add_argument('-n', action='store_true',
                      help='Skip setting the wallpaper.')
 
@@ -85,7 +88,48 @@ def process_args(args):
 # }}}
 
 
+# PROCESS COLORS {{{
+
+
+def process_colors(args):
+    """Process colors."""
+    # -i
+    if args.i:
+        image = str(get_image(args.i))
+
+        # Get the colors.
+        colors = get_colors(image)
+
+        # Set the wallpaper.
+        if not args.n:
+            set_wallpaper(image)
+    # -f
+    elif args.f:
+        cache_file = pathlib.Path(args.f)
+
+        # Import the colorscheme from file.
+        if cache_file.is_file():
+            with open(cache_file) as file:
+                colors = file.readlines()
+
+            # Strip newlines from each list element.
+            colors = [x.strip() for x in colors]
+
+            if len(colors) < 16:
+                print("error: Invalid colorscheme file chosen.")
+                exit(1)
+        else:
+            print("error: Colorscheme file not found.")
+            exit(1)
+
+    return colors
+
+
+# }}}
+
+
 # RELOAD COLORS {{{
+
 
 def reload_colors(vte):
     """Reload colors."""
@@ -399,21 +443,13 @@ def main():
     # Create colorscheme dir.
     pathlib.Path(SCHEME_DIR).mkdir(parents=True, exist_ok=True)
 
-    # -i
-    if args.i:
-        image = str(get_image(args.i))
+    # Get the colors.
+    colors = process_colors(args)
 
-        # Get the colors.
-        colors = get_colors(image)
-
-        # Set the wallpaper.
-        if not args.n:
-            set_wallpaper(image)
-
-        # Set the colors.
-        send_sequences(colors, args.t)
-        export_plain(colors)
-        export_xrdb(colors)
+    # Set the colors.
+    send_sequences(colors, args.t)
+    export_plain(colors)
+    export_xrdb(colors)
 
     # -o
     if args.o:
