@@ -48,8 +48,8 @@ def get_args():
     arg.add_argument('-i', metavar='"/path/to/img.jpg"',
                      help='Which image or directory to use.')
 
-    # arg.add_argument('-n', action='store_true',
-    #                  help='Skip setting the wallpaper.')
+    arg.add_argument('-n', action='store_true',
+                     help='Skip setting the wallpaper.')
 
     arg.add_argument('-o', metavar='"script_name"',
                      help='External script to run after "wal".')
@@ -400,7 +400,8 @@ def main():
         colors = get_colors(image)
 
         # Set the wallpaper.
-        set_wallpaper(image)
+        if not args.n:
+            set_wallpaper(image)
 
         # Set the colors.
         send_sequences(colors, args.t)
