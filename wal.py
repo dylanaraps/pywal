@@ -385,6 +385,9 @@ def main():
     if args.i:
         image = str(get_image(args.i))
 
+        # Set the wallpaper.
+        set_wallpaper(image)
+
         # Create colorscheme dir.
         pathlib.Path(CACHE_DIR + "schemes").mkdir(parents=True, exist_ok=True)
 
@@ -393,7 +396,6 @@ def main():
 
         # Set the colors.
         send_sequences(colors, args.t)
-        set_wallpaper(image)
         export_plain(colors)
         export_xrdb(colors)
 
