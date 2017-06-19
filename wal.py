@@ -7,19 +7,13 @@ import re
 import random
 import glob
 import shutil
-
 import subprocess
-from subprocess import call, Popen
-
 import os
-from os.path import expanduser
-
 import pathlib
-from pathlib import Path
 
 
 # wal files.
-CACHE_DIR = "%s%s" % (expanduser("~"), "/.cache/wal/")
+CACHE_DIR = "%s%s" % (os.path.expanduser("~"), "/.cache/wal/")
 SCHEME_DIR = "%s%s" % (CACHE_DIR, "schemes/")
 SEQUENCE_FILE = "%s%s" % (CACHE_DIR, "sequences")
 WAL_FILE = "%s%s" % (CACHE_DIR, "wal")
@@ -117,7 +111,7 @@ def reload_colors(vte):
 
 def get_image(img):
     """Validate image input."""
-    image = Path(img)
+    image = pathlib.Path(img)
 
     # Check if the user has Imagemagick installed.
     if not shutil.which("convert"):
@@ -131,7 +125,7 @@ def get_image(img):
     elif image.is_dir():
         rand = random.choice(os.listdir(image))
         rand_img = "%s/%s" % (str(image), rand)
-        rand_img = Path(rand_img)
+        rand_img = pathlib.Path(rand_img)
 
         if rand_img.is_file():
             wal_img = rand_img
@@ -142,9 +136,9 @@ def get_image(img):
 
 def magic(color_count, img):
     """Call Imagemagick to generate a scheme."""
-    colors = Popen(["convert", img, "+dither", "-colors",
-                    str(color_count), "-unique-colors", "txt:-"],
-                   stdout=subprocess.PIPE)
+    colors = subprocess.Popen(["convert", img, "+dither", "-colors",
+                               str(color_count), "-unique-colors", "txt:-"],
+                              stdout=subprocess.PIPE)
 
     return colors.stdout.readlines()
 
@@ -178,7 +172,7 @@ def get_colors(img):
     """Generate a colorscheme using imagemagick."""
     # Cache file.
     cache_file = "%s%s" % (SCHEME_DIR, img.replace('/', '_'))
-    cache_file = Path(cache_file)
+    cache_file = pathlib.Path(cache_file)
 
     # Cache the wallpaper name.
     with open(WAL_FILE, 'w') as file:
@@ -299,27 +293,27 @@ def send_sequences(colors, vte):
 def set_wallpaper(img):
     """Set the wallpaper."""
     if shutil.which("feh"):
-        Popen(["feh", "--bg-fill", img])
+        subprocess.Popen(["feh", "--bg-fill", img])
 
     elif shutil.which("nitrogen"):
-        Popen(["nitrogen", "--set-zoom-fill", img])
+        subprocess.Popen(["nitrogen", "--set-zoom-fill", img])
 
     elif shutil.which("bgs"):
-        Popen(["bgs", img])
+        subprocess.Popen(["bgs", img])
 
     elif shutil.which("hsetroot"):
-        Popen(["hsetroot", "-fill", img])
+        subprocess.Popen(["hsetroot", "-fill", img])
 
     elif shutil.which("habak"):
-        Popen(["habak", "-mS", img])
+        subprocess.Popen(["habak", "-mS", img])
 
     elif OS == "Darwin":
-        Popen(["osascript", "-e", "'tell application \"Finder\" to set \
-              desktop picture to POSIX file\'" + img + "\'"])
+        subprocess.Popen(["osascript", "-e", "'tell application \"Finder\" to set \
+                           desktop picture to POSIX file\'" + img + "\'"])
 
     else:
-        Popen(["gsettings", "set", "org.gnome.desktop.background",
-               "picture-uri", img])
+        subprocess.Popen(["gsettings", "set", "org.gnome.desktop.background",
+                          "picture-uri", img])
 
     print("wallpaper: Set the new wallpaper")
     return 0
@@ -390,7 +384,7 @@ def export_xrdb(colors):
         file.write(x_colors)
 
     # Merge the colors into the X db so new terminals use them.
-    call(["xrdb", "-merge", XRDB_FILE])
+    subprocess.call(["xrdb", "-merge", XRDB_FILE])
 
     print("export: Exported xrdb colors.")
 
