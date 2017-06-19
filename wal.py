@@ -60,6 +60,28 @@ def get_args():
     return arg.parse_args()
 
 
+def process_args(args):
+    """Process args"""
+    # If no args were passed.
+    if not len(sys.argv) > 1:
+        print("error: wal needs to be given arguments to run.")
+        print("       Refer to 'wal -h' for more info.")
+        exit(1)
+
+    # -q
+    if args.q:
+        sys.stdout = open('/dev/null', 'w')
+        sys.stderr = open('/dev/null', 'w')
+
+    # -c
+    if args.c:
+        shutil.rmtree(SCHEME_DIR)
+
+    # -r
+    if args.r:
+        reload_colors(args.t)
+
+
 # }}}
 
 
@@ -372,25 +394,7 @@ def main():
     """Main script function."""
     # Get the args.
     args = get_args()
-
-    # If no args were passed.
-    if not len(sys.argv) > 1:
-        print("error: wal needs to be given arguments to run.")
-        print("       Refer to 'wal -h' for more info.")
-        exit(1)
-
-    # -q
-    if args.q:
-        sys.stdout = open('/dev/null', 'w')
-        sys.stderr = open('/dev/null', 'w')
-
-    # -c
-    if args.c:
-        shutil.rmtree(SCHEME_DIR)
-
-    # -r
-    if args.r:
-        reload_colors(args.t)
+    process_args(args)
 
     # Create colorscheme dir.
     pathlib.Path(SCHEME_DIR).mkdir(parents=True, exist_ok=True)
