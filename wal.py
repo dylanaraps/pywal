@@ -51,8 +51,8 @@ def get_args():
     # arg.add_argument('-n', action='store_true',
     #                  help='Skip setting the wallpaper.')
 
-    # arg.add_argument('-o', metavar='script_name',
-    #                  help='External script to run after "wal".')
+    arg.add_argument('-o', metavar='"script_name"',
+                     help='External script to run after "wal".')
 
     # arg.add_argument('-q', action='store_true',
     #                  help='Quiet mode, don\'t print anything.')
@@ -68,19 +68,6 @@ def get_args():
     #                  help='Use extended 16-color palette.')
 
     return arg.parse_args()
-
-
-def process_args(args):
-    """Process the arguments."""
-
-    # -c
-    if args.c:
-        shutil.rmtree(SCHEME_DIR)
-        quit()
-
-    # -r
-    if args.r:
-        reload_colors(args.t)
 
 
 # }}}
@@ -395,8 +382,17 @@ def main():
     pathlib.Path(SCHEME_DIR).mkdir(parents=True, exist_ok=True)
 
     args = get_args()
-    process_args(args)
 
+    # -c
+    if args.c:
+        shutil.rmtree(SCHEME_DIR)
+        quit()
+
+    # -r
+    if args.r:
+        reload_colors(args.t)
+
+    # -i
     if args.i:
         image = str(get_image(args.i))
 
@@ -410,6 +406,13 @@ def main():
         send_sequences(colors, args.t)
         export_plain(colors)
         export_xrdb(colors)
+
+    # -o
+    if args.o:
+        subprocess.Popen(["nohup", args.o],
+                         stdout=open('/dev/null', 'w'),
+                         stderr=open('/dev/null', 'w'),
+                         preexec_fn=os.setpgrp)
 
     return 0
 
