@@ -159,12 +159,11 @@ def gen_colors(img):
               "color palette, trying a larger palette size",
               COLOR_COUNT + index)
 
+    # Remove the first element, which isn't a color.
+    del magic_output[0]
+
     # Create a list of hex colors.
     colors = [re.search('#.{6}', str(col)).group(0) for col in magic_output]
-
-    # Remove the first element, which isn't a color.
-    del colors[0]
-
     return colors
 
 
@@ -182,8 +181,11 @@ def get_colors(img):
         with open(cache_file) as file:
             colors = file.readlines()
 
+        # Strip newlines from each list element.
         colors = [x.strip() for x in colors]
     else:
+        print("colors: Generating a colorscheme...")
+
         # Generate the colors.
         colors = gen_colors(img)
 
@@ -384,7 +386,7 @@ def export_xrdb(colors):
         file.write(x_colors)
 
     # Merge the colors into the X db so new terminals use them.
-    subprocess.call(["xrdb", "-merge", XRDB_FILE])
+    subprocess.Popen(["xrdb", "-merge", XRDB_FILE])
 
     print("export: Exported xrdb colors.")
 
