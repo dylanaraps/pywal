@@ -20,7 +20,7 @@ from pathlib import Path
 
 
 # Internal variables.
-CACHE_DIR = expanduser("~") + "/.cache/wal"
+CACHE_DIR = expanduser("~") + "/.cache/wal/"
 COLOR_COUNT = 16
 OS = os.uname
 
@@ -50,8 +50,8 @@ def get_args():
     arg.add_argument('-o', metavar='script_name',
                      help='External script to run after "wal".')
 
-    arg.add_argument('-q', action='store_true',
-                     help='Quiet mode, don\'t print anything.')
+    # arg.add_argument('-q', action='store_true',
+    #                  help='Quiet mode, don\'t print anything.')
 
     arg.add_argument('-r', action='store_true',
                      help='Reload current colorscheme.')
@@ -60,16 +60,32 @@ def get_args():
                      help='Fix artifacts in VTE Terminals. \
                            (Termite, xfce4-terminal)')
 
-    arg.add_argument('-x', action='store_true',
-                     help='Use extended 16-color palette.')
+    # arg.add_argument('-x', action='store_true',
+    #                  help='Use extended 16-color palette.')
 
     return arg.parse_args()
 
 
-def reload_colors():
+def process_args(args):
+    """Process the arguments."""
+
+    # -c
+    if args.c:
+        shutil.rmtree(CACHE_DIR + "schemes")
+
+    # -r
+    if args.r:
+        reload_colors(args.t)
+
+
+def reload_colors(vte):
     """Reload colors."""
-    with open(CACHE_DIR + "/sequences") as file:
+    with open(CACHE_DIR + "sequences") as file:
         sequences = file.read()
+
+    # If vte mode was used, remove the problem sequence.
+    if vte:
+        sequences = re.sub(r'\]708;\#.{6}', '', sequences)
 
     # Decode the string.
     sequences = bytes(sequences, "utf-8").decode("unicode_escape")
@@ -137,7 +153,7 @@ def gen_colors(img):
 def get_colors(img):
     """Generate a colorscheme using imagemagick."""
     # Cache file.
-    cache_file = Path(CACHE_DIR + "/schemes/" + img.replace('/', '_'))
+    cache_file = Path(CACHE_DIR + "schemes/" + img.replace('/', '_'))
 
     if cache_file.is_file():
         with open(cache_file) as file:
@@ -146,7 +162,7 @@ def get_colors(img):
         colors = [x.strip() for x in colors]
     else:
         # Cache the wallpaper name.
-        wal = open(CACHE_DIR + "/wal", 'w')
+        wal = open(CACHE_DIR + "wal", 'w')
         wal.write(img + "\n")
         wal.close()
 
@@ -237,7 +253,7 @@ def send_sequences(colors, vte):
         term_file.close()
 
     # Cache the sequences.
-    sequence_file = open(CACHE_DIR + "/sequences", 'w')
+    sequence_file = open(CACHE_DIR + "sequences", 'w')
     sequence_file.write(sequences)
     sequence_file.close()
 
@@ -275,7 +291,7 @@ def set_wallpaper(img):
 
 def export_plain(colors):
     """Export colors to a plain text file."""
-    plain_file = CACHE_DIR + "/" + "colors"
+    plain_file = CACHE_DIR + "colors"
 
     file = open(plain_file, 'w')
     for color in colors:
@@ -308,7 +324,7 @@ def export_xrdb(colors):
     x_colors += "*.color14: " + colors[14] + "\n"
     x_colors += "*.color15: " + colors[15] + "\n"
 
-    xrdb_file = CACHE_DIR + "/" + "xcolors"
+    xrdb_file = CACHE_DIR + "xcolors"
 
     file = open(xrdb_file, 'w')
     file.write(x_colors)
@@ -323,23 +339,22 @@ def export_xrdb(colors):
 def main():
     """Main script function."""
     args = get_args()
+    process_args(args)
 
-    if args.r:
-        reload_colors()
+    if args.i:
+        image = str(get_image(args.i))
 
-    image = str(get_image(args.i))
+        # Create colorscheme dir.
+        pathlib.Path(CACHE_DIR + "schemes").mkdir(parents=True, exist_ok=True)
 
-    # Create colorscheme dir.
-    pathlib.Path(CACHE_DIR + "/schemes").mkdir(parents=True, exist_ok=True)
+        # Get the colors.
+        colors = get_colors(image)
 
-    # Get the colors.
-    colors = get_colors(image)
-
-    # Set the colors.
-    send_sequences(colors, args.t)
-    set_wallpaper(image)
-    export_plain(colors)
-    export_xrdb(colors)
+        # Set the colors.
+        send_sequences(colors, args.t)
+        set_wallpaper(image)
+        export_plain(colors)
+        export_xrdb(colors)
 
     return 0
 
