@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 wal - Generate and change colorschemes on the fly.
 Created by Dylan Araps
@@ -215,24 +216,18 @@ def set_color(index, color):
 
 def get_grey(color, color2):
     """Set a grey color based on brightness of color0"""
-    brightness = int(color[1])
-
-    if 0 <= brightness <= 1:
-        return "#666666"
-
-    elif brightness == 2:
-        return "#757575"
-
-    elif 3 <= brightness <= 4:
-        return "#999999"
-
-    elif brightness == 5:
-        return "#8a8a8a"
-
-    elif 6 <= brightness <= 9:
-        return "#a1a1a1"
-
-    return color2
+    return {
+        0: "#666666",
+        1: "#666666",
+        2: "#757575",
+        3: "#999999",
+        4: "#999999",
+        5: "#8a8a8a",
+        6: "#a1a1a1",
+        7: "#a1a1a1",
+        8: "#a1a1a1",
+        9: "#a1a1a1",
+    }.get(int(color[1]), color2)
 
 
 def send_sequences(colors, vte):
