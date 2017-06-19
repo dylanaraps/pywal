@@ -9,8 +9,7 @@ import glob
 import shutil
 
 import subprocess
-from subprocess import call
-from subprocess import Popen
+from subprocess import call, Popen
 
 import os
 from os.path import expanduser
