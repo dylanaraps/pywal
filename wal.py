@@ -127,7 +127,7 @@ def get_image(img):
         exit(1)
 
     if image.is_file():
-        return image
+        wal_img = image
 
     elif image.is_dir():
         rand = random.choice(os.listdir(image))
@@ -135,7 +135,10 @@ def get_image(img):
         rand_img = Path(rand_img)
 
         if rand_img.is_file():
-            return rand_img
+            wal_img = rand_img
+
+    print("image: Using image", wal_img)
+    return wal_img
 
 
 def magic(color_count, img):
