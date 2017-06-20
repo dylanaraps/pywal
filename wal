@@ -216,7 +216,6 @@ def sort_colors(colors):
     sorted_colors.append(colors[13])
     sorted_colors.append(colors[14])
     sorted_colors.append(colors[15])
-
     return sorted_colors
 
 
@@ -348,7 +347,6 @@ def export_generic(colors, col_format):
     # Loop over the colors and format them.
     colors = [col_format % (num, color) for num, color in enumerate(colors)]
     colors = ''.join(colors)
-
     return colors
 
 
@@ -356,7 +354,6 @@ def export_plain(colors):
     """Export colors to a plain text file."""
     with open(CACHE_DIR / "colors", 'w') as file:
         file.write('\n'.join(colors))
-
     print("export: Exported plain colors")
 
 
@@ -365,7 +362,6 @@ def export_shell(colors, export_file):
     col_format = "color%s='%s'\n"
     colors = export_generic(colors, col_format)
     save_file(colors, export_file)
-
     print("export: Exported shell colors.")
 
 
@@ -397,7 +393,6 @@ def export_xrdb(colors, export_file):
 
     # Merge the colors into the X db so new terminals use them.
     subprocess.Popen(["xrdb", "-merge", export_file])
-
     print("export: Exported xrdb colors.")
 
 
@@ -406,7 +401,6 @@ def export_css(colors, export_file):
     col_format = "\t--color%s: %s;\n"
     colors = ":root {\n%s}\n" % str(export_generic(colors, col_format))
     save_file(colors, export_file)
-
     print("export: Exported css colors.")
 
 
@@ -415,8 +409,22 @@ def export_scss(colors, export_file):
     col_format = "$color%s: %s;\n"
     colors = export_generic(colors, col_format)
     save_file(colors, export_file)
-
     print("export: Exported scss colors.")
+
+
+def export_putty(colors, export_file):
+    """Export colors as putty theme."""
+    col_format = "\"Colour%s\"=\"%s\"\n"
+    rgb_colors = [hex_to_rgb(color.strip("#")) for color in colors]
+
+    colors = (
+        "Windows Registry Editor Version 5.00\n"
+        "[HKEY_CURRENT_USER\\Software\\SimonTatham\\PuTTY\\Sessions\\Wal]\n"
+        + export_generic(rgb_colors, col_format)
+    )
+
+    save_file(colors, export_file)
+    print("export: Exported putty colors.")
 
 
 def export_colors(colors):
@@ -433,6 +441,9 @@ def export_colors(colors):
     export_css(colors, CACHE_DIR / "colors.css")
     export_scss(colors, CACHE_DIR / "colors.scss")
 
+    # Text editor based colors.
+    export_putty(colors, CACHE_DIR / "colors-putty.reg")
+
 
 # }}}
 
@@ -447,7 +458,6 @@ def read_colors(color_file):
 
     # Strip newlines from each list element.
     colors = [x.strip() for x in colors]
-
     return colors
 
 
@@ -476,6 +486,12 @@ def save_file(colors, export_file):
 def create_cache_dir():
     """Alias to create the cache dir."""
     pathlib.Path(CACHE_DIR / "schemes").mkdir(parents=True, exist_ok=True)
+
+
+def hex_to_rgb(color):
+    """Convert a hex color to rgb."""
+    red, green, blue = list(bytes.fromhex(color))
+    return "%s,%s,%s" % (red, green, blue)
 
 
 # }}}
