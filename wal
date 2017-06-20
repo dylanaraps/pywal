@@ -335,10 +335,30 @@ def set_wallpaper(img):
 # EXPORT COLORS {{{
 
 
+def export_generic(colors, col_format):
+    """Export colors to var format."""
+    # Loop over the colors and format them.
+    colors = [col_format % (num, color) for num, color in enumerate(colors)]
+    colors = ''.join(colors)
+
+    return colors
+
+
 def export_plain(colors):
     """Export colors to a plain text file."""
     with open(CACHE_DIR / "colors", 'w') as file:
         file.write('\n'.join(colors))
+
+    print("export: Exported plain colors")
+
+
+def export_shell(colors, export_file):
+    """Export colors to shell format."""
+    col_format = "color%s='%s'\n"
+    colors = export_generic(colors, col_format)
+    save_file(colors, export_file)
+
+    print("export: Exported shell colors.")
 
 
 def export_rofi(colors):
@@ -362,28 +382,48 @@ def export_emacs(colors):
     ColorFormats.x_colors.append("emacs*foreground: %s\n" % (colors[15]))
 
 
-def export_xrdb(colors):
+def export_xrdb(colors, export_file):
     """Export colors to xrdb."""
-    x_colors = ''.join(colors)
-
-    # Write the colors to the file.
-    with open(CACHE_DIR / "xcolors", 'w') as file:
-        file.write(x_colors)
+    colors = ''.join(colors)
+    save_file(colors, export_file)
 
     # Merge the colors into the X db so new terminals use them.
-    subprocess.Popen(["xrdb", "-merge", CACHE_DIR / "xcolors"])
+    subprocess.Popen(["xrdb", "-merge", export_file])
 
     print("export: Exported xrdb colors.")
+
+
+def export_css(colors, export_file):
+    """Export colors as css variables."""
+    col_format = "\t--color%s: %s;\n"
+    colors = ":root {\n%s}\n" % str(export_generic(colors, col_format))
+    save_file(colors, export_file)
+
+    print("export: Exported css colors.")
+
+
+def export_scss(colors, export_file):
+    """Export colors as scss variables."""
+    col_format = "$color%s: %s;\n"
+    colors = export_generic(colors, col_format)
+    save_file(colors, export_file)
+
+    print("export: Exported scss colors.")
 
 
 def export_colors(colors):
     """Export colors in various formats."""
     export_plain(colors)
+    export_shell(colors, CACHE_DIR / "colors.sh")
 
     # X based colors.
     export_rofi(colors)
     export_emacs(colors)
-    export_xrdb(ColorFormats.x_colors)
+    export_xrdb(ColorFormats.x_colors, CACHE_DIR / "xcolors")
+
+    # Web based colors.
+    export_css(colors, CACHE_DIR / "colors.css")
+    export_scss(colors, CACHE_DIR / "colors.scss")
 
 
 # }}}
@@ -417,6 +457,12 @@ def reload_colors(vte):
 
     print(sequences, end='')
     quit()
+
+
+def save_file(colors, export_file):
+    """Write the colors to the file."""
+    with open(export_file, 'w') as file:
+        file.write(colors)
 
 
 # }}}
