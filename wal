@@ -305,32 +305,84 @@ def send_sequences(colors, vte):
 # WALLPAPER SETTING {{{
 
 
+def get_desktop_env():
+    """Identify the current running desktop environment."""
+    desktop = os.getenv("XDG_CURRENT_DESKTOP")
+    if desktop:
+        return desktop
+
+    desktop = os.getenv("DESKTOP_SESSION")
+    if desktop:
+        return desktop
+
+    desktop = os.getenv("GNOME_DESKTOP_SESSION_ID")
+    if desktop:
+        return "GNOME"
+
+    desktop = os.getenv("MATE_DESKTOP_SESSION_ID")
+    if desktop:
+        return "MATE"
+
+
+def set_desktop_wallpaper(desktop, img):
+    """Set the wallpaper for the desktop environment."""
+    if "xfce" in desktop or "xubuntu" in desktop:
+        subprocess.Popen(["xfconf-query", "--channel", "xfce4-desktop",
+                          "--property",
+                          "/backdrop/screen0/monitor0/image-path",
+                          "--set", img])
+
+        # XFCE requires two commands since they differ between versions.
+        subprocess.Popen(["xfconf-query", "--channel", "xfce4-desktop",
+                          "--property",
+                          "/backdrop/screen0/monitor0/workspace0/last-image",
+                          "--set", img])
+
+    elif "muffin" in desktop or "cinnamon" in desktop:
+        subprocess.Popen(["gsettings", "set",
+                          "org.cinnamon.desktop.background",
+                          "picture-uri", "file:///" + img])
+
+    elif "mate" in desktop:
+        subprocess.Popen(["gsettings", "set", "org.mate.background",
+                          "picture-filename", img])
+
+    elif "gnome" in desktop:
+        subprocess.Popen(["gsettings", "set",
+                          "org.gnome.desktop.background",
+                          "picture-uri", "file:///" + img])
+
+
 def set_wallpaper(img):
     """Set the wallpaper."""
-    uname = os.uname
+    desktop = str(get_desktop_env()).lower()
 
-    if shutil.which("feh"):
-        subprocess.Popen(["feh", "--bg-fill", img])
-
-    elif shutil.which("nitrogen"):
-        subprocess.Popen(["nitrogen", "--set-zoom-fill", img])
-
-    elif shutil.which("bgs"):
-        subprocess.Popen(["bgs", img])
-
-    elif shutil.which("hsetroot"):
-        subprocess.Popen(["hsetroot", "-fill", img])
-
-    elif shutil.which("habak"):
-        subprocess.Popen(["habak", "-mS", img])
-
-    elif uname == "Darwin":
-        subprocess.Popen(["osascript", "-e", "\"tell application \"Finder\" to set \
-                           desktop picture to POSIX file\"" + img + "\""])
+    if desktop:
+        set_desktop_wallpaper(desktop, img)
 
     else:
-        subprocess.Popen(["gsettings", "set", "org.gnome.desktop.background",
-                          "picture-uri", img])
+        if os.uname == "Darwin":
+            subprocess.Popen(["osascript", "-e", "\"tell application \"Finder\" to set \
+                               desktop picture to POSIX file\"" + img + "\""])
+
+        elif shutil.which("feh"):
+            subprocess.Popen(["feh", "--bg-fill", img])
+
+        elif shutil.which("nitrogen"):
+            subprocess.Popen(["nitrogen", "--set-zoom-fill", img])
+
+        elif shutil.which("bgs"):
+            subprocess.Popen(["bgs", img])
+
+        elif shutil.which("hsetroot"):
+            subprocess.Popen(["hsetroot", "-fill", img])
+
+        elif shutil.which("habak"):
+            subprocess.Popen(["habak", "-mS", img])
+
+        else:
+            print("error: No wallpaper setter found.")
+            return
 
     print("wallpaper: Set the new wallpaper")
     return 0
