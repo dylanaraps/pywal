@@ -153,7 +153,7 @@ def gen_colors(img):
     # If imagemagick finds less than 16 colors, use a larger source number
     # of colors.
     index = 0
-    while len(raw_colors) - 1 <= COLOR_COUNT:
+    while len(raw_colors) - 1 < COLOR_COUNT:
         index += 1
         raw_colors = imagemagick(COLOR_COUNT + index, img)
 
