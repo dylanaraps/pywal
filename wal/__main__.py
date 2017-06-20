@@ -25,6 +25,13 @@ WAL_FILE = "%s%s" % (CACHE_DIR, "wal")
 COLOR_COUNT = 16
 
 
+class ColorFormats(object):  # pylint: disable=too-few-public-methods
+    """Store colors in various formats."""
+    x_colors = []
+    sequences = []
+    plain = []
+
+
 # ARGS {{{
 
 
@@ -100,7 +107,7 @@ def process_colors(args):
         image = str(get_image(args.i))
 
         # Get the colors.
-        colors = get_colors(image)
+        colors = get_colors(image, args.x)
 
         # Set Grey.
         if not args.x:
@@ -224,7 +231,43 @@ def gen_colors(img):
     return colors
 
 
-def get_colors(img):
+def sort_colors(colors, extended_palette):
+    """Sort the generated colors."""
+    # If -x is used, use all 16 colors.
+    sorted_colors = []
+    if extended_palette:
+        sorted_colors.append(colors[0])
+        sorted_colors.append(colors[1])
+        sorted_colors.append(colors[2])
+        sorted_colors.append(colors[3])
+        sorted_colors.append(colors[4])
+        sorted_colors.append(colors[5])
+        sorted_colors.append(colors[6])
+        sorted_colors.append(colors[7])
+        sorted_colors.append(colors[8])
+    else:
+        sorted_colors.append(colors[0])
+        sorted_colors.append(colors[9])
+        sorted_colors.append(colors[10])
+        sorted_colors.append(colors[11])
+        sorted_colors.append(colors[12])
+        sorted_colors.append(colors[13])
+        sorted_colors.append(colors[14])
+        sorted_colors.append(colors[15])
+        sorted_colors.append(colors[8])
+
+    sorted_colors.append(colors[9])
+    sorted_colors.append(colors[10])
+    sorted_colors.append(colors[11])
+    sorted_colors.append(colors[12])
+    sorted_colors.append(colors[13])
+    sorted_colors.append(colors[14])
+    sorted_colors.append(colors[15])
+
+    return sorted_colors
+
+
+def get_colors(img, extended_palette):
     """Generate a colorscheme using imagemagick."""
     # Cache file.
     cache_file = "%s%s" % (SCHEME_DIR, img.replace('/', '_'))
@@ -242,6 +285,7 @@ def get_colors(img):
 
         # Generate the colors.
         colors = gen_colors(img)
+        colors = sort_colors(colors, extended_palette)
 
         # Cache the colorscheme.
         with open(cache_file, 'w') as file:
@@ -265,39 +309,13 @@ def send_sequences(colors, vte, extended_palette):
     set_special(13, colors[15])
     set_special(14, colors[0])
 
+    # Create the sequences.
+    for num, color in enumerate(colors):
+        set_color(num, color)
+
     # This escape sequence doesn't work in VTE terminals.
     if not vte:
         set_special(708, colors[0])
-
-    # If -x is used, use all 16 colors.
-    if extended_palette:
-        set_color(0, colors[0])
-        set_color(1, colors[1])
-        set_color(2, colors[2])
-        set_color(3, colors[3])
-        set_color(4, colors[4])
-        set_color(5, colors[5])
-        set_color(6, colors[6])
-        set_color(7, colors[7])
-        set_color(8, colors[8])
-    else:
-        set_color(0, colors[0])
-        set_color(1, colors[9])
-        set_color(2, colors[10])
-        set_color(3, colors[11])
-        set_color(4, colors[12])
-        set_color(5, colors[13])
-        set_color(6, colors[14])
-        set_color(7, colors[15])
-        set_color(8, colors[8])
-
-    set_color(9, colors[9])
-    set_color(10, colors[10])
-    set_color(11, colors[11])
-    set_color(12, colors[12])
-    set_color(13, colors[13])
-    set_color(14, colors[14])
-    set_color(15, colors[15])
 
     # Set a blank color that isn't affected by bold highlighting.
     set_color(66, colors[0])
@@ -361,13 +379,6 @@ def set_wallpaper(img):
 # EXPORT COLORS {{{
 
 
-class ColorFormats(object):  # pylint: disable=too-few-public-methods
-    """Store colors in various formats."""
-    x_colors = []
-    sequences = []
-    plain = []
-
-
 def set_special(index, color):
     """Build the escape sequence for special colors."""
     ColorFormats.sequences.append("\\033]%s;%s\\007" % (str(index), color))
@@ -388,6 +399,7 @@ def set_special(index, color):
 def set_color(index, color):
     """Build the escape sequence we need for each color."""
     ColorFormats.x_colors.append("*.color%s: %s\n" % (str(index), color))
+    ColorFormats.x_colors.append("*color%s: %s\n" % (str(index), color))
     ColorFormats.sequences.append("\\033]4;%s;%s\\007" % (str(index), color))
 
     if not index == 66:
