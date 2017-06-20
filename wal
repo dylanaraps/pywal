@@ -19,7 +19,7 @@ __version__ = "0.1"
 
 # Internal variables.
 COLOR_COUNT = 16
-CACHE_DIR = pathlib.Path("%s%s" % (os.path.expanduser("~"), "/.cache/wal/"))
+CACHE_DIR = pathlib.Path.home() / ".cache/wal/"
 
 
 class ColorFormats(object):  # pylint: disable=too-few-public-methods
@@ -78,6 +78,7 @@ def process_args(args):
     # -c
     if args.c:
         shutil.rmtree(CACHE_DIR / "schemes")
+        create_cache_dir()
 
     # -r
     if args.r:
@@ -86,8 +87,6 @@ def process_args(args):
     # -i
     if args.i:
         image = str(get_image(args.i))
-
-        # Get the colors.
         colors = get_colors(image)
 
         # Set the wallpaper.
@@ -465,13 +464,17 @@ def save_file(colors, export_file):
         file.write(colors)
 
 
+def create_cache_dir():
+    """Alias to create the cache dir."""
+    pathlib.Path(CACHE_DIR / "schemes").mkdir(parents=True, exist_ok=True)
+
+
 # }}}
 
 
 def main():
     """Main script function."""
-    # Create colorscheme dir.
-    pathlib.Path(CACHE_DIR / "schemes").mkdir(parents=True, exist_ok=True)
+    create_cache_dir()
 
     # Get the args.
     args = get_args()
