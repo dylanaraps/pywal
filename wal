@@ -4,7 +4,6 @@ wal - Generate and change colorschemes on the fly.
 Created by Dylan Araps
 """
 import argparse
-import glob
 import os
 import pathlib
 import random
@@ -117,13 +116,12 @@ def get_image(img):
 
     # Pick a random image from the directory.
     elif image.is_dir():
-        images = []
-        file_types = ("*.png", "*.jpg", "*.jpeg", "*.jpe", "*.gif")
-        for files in file_types:
-            images.extend(glob.glob(str(image) + "/" + files))
+        file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
+        images = [img for img in os.listdir(image)
+                  if img.endswith(file_types)]
 
         rand_img = random.choice(images)
-        rand_img = pathlib.Path(rand_img)
+        rand_img = pathlib.Path(image / rand_img)
 
         if rand_img.is_file():
             wal_img = rand_img
@@ -289,7 +287,8 @@ def send_sequences(colors, vte):
     sequences = bytes(sequences, "utf-8").decode("unicode_escape")
 
     # Send the sequences to all open terminals.
-    terminals = glob.glob("/dev/pts/[0-9]*")
+    terminals = ["%s%s" % ("/dev/pts/", term)
+                 for term in os.listdir("/dev/pts/") if len(term) < 4]
     terminals.append(CACHE_DIR / "sequences")
 
     for term in terminals:
