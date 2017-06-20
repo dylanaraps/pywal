@@ -37,27 +37,27 @@ def get_args():
     arg = argparse.ArgumentParser(description=description)
 
     # Add the args.
-    arg.add_argument('-c', action='store_true',
-                     help='Delete all cached colorschemes.')
+    arg.add_argument("-c", action="store_true",
+                     help="Delete all cached colorschemes.")
 
-    arg.add_argument('-i', metavar='"/path/to/img.jpg"',
-                     help='Which image or directory to use.')
+    arg.add_argument("-i", metavar="\"/path/to/img.jpg\"",
+                     help="Which image or directory to use.")
 
-    arg.add_argument('-n', action='store_true',
-                     help='Skip setting the wallpaper.')
+    arg.add_argument("-n", action="store_true",
+                     help="Skip setting the wallpaper.")
 
-    arg.add_argument('-o', metavar='"script_name"',
-                     help='External script to run after "wal".')
+    arg.add_argument("-o", metavar="\"script_name\"",
+                     help="External script to run after \"wal\".")
 
-    arg.add_argument('-q', action='store_true',
-                     help='Quiet mode, don\'t print anything.')
+    arg.add_argument("-q", action="store_true",
+                     help="Quiet mode, don\"t print anything.")
 
-    arg.add_argument('-r', action='store_true',
-                     help='Reload current colorscheme.')
+    arg.add_argument("-r", action="store_true",
+                     help="Reload current colorscheme.")
 
-    arg.add_argument('-t', action='store_true',
-                     help='Fix artifacts in VTE Terminals. \
-                           (Termite, xfce4-terminal)')
+    arg.add_argument("-t", action="store_true",
+                     help="Fix artifacts in VTE Terminals. \
+                           (Termite, xfce4-terminal)")
 
     return arg.parse_args()
 
@@ -67,13 +67,13 @@ def process_args(args):
     # If no args were passed.
     if not len(sys.argv) > 1:
         print("error: wal needs to be given arguments to run.")
-        print("       Refer to 'wal -h' for more info.")
+        print("       Refer to \"wal -h\" for more info.")
         exit(1)
 
     # -q
     if args.q:
-        sys.stdout = open('/dev/null', 'w')
-        sys.stderr = open('/dev/null', 'w')
+        sys.stdout = open("/dev/null", "w")
+        sys.stderr = open("/dev/null", "w")
 
     # -c
     if args.c:
@@ -118,7 +118,7 @@ def get_image(img):
     # Pick a random image from the directory.
     elif image.is_dir():
         images = []
-        file_types = ('*.png', '*.jpg', '*.jpeg', '*.jpe', '*.gif')
+        file_types = ("*.png", "*.jpg", "*.jpeg", "*.jpe", "*.gif")
         for files in file_types:
             images.extend(glob.glob(str(image) + "/" + files))
 
@@ -161,22 +161,22 @@ def gen_colors(img):
               "color palette, trying a larger palette size",
               COLOR_COUNT + index)
 
-    # Remove the first element, which isn't a color.
+    # Remove the first element, which isn"t a color.
     del raw_colors[0]
 
     # Create a list of hex colors.
-    colors = [re.search('#.{6}', str(col)).group(0) for col in raw_colors]
+    colors = [re.search("#.{6}", str(col)).group(0) for col in raw_colors]
     return colors
 
 
 def get_colors(img):
     """Generate a colorscheme using imagemagick."""
     # Cache file.
-    cache_file = CACHE_DIR / "schemes" / img.replace('/', '_')
+    cache_file = CACHE_DIR / "schemes" / img.replace("/", "_")
     cache_file = pathlib.Path(cache_file)
 
     # Cache the wallpaper name.
-    with open(CACHE_DIR / "wal", 'w') as file:
+    with open(CACHE_DIR / "wal", "w") as file:
         file.write("%s\n" % (img))
 
     if cache_file.is_file():
@@ -190,7 +190,7 @@ def get_colors(img):
         colors = sort_colors(colors)
 
         # Cache the colorscheme.
-        with open(cache_file, 'w') as file:
+        with open(cache_file, "w") as file:
             file.write("\n".join(colors))
 
     print("colors: Generated colorscheme")
@@ -273,7 +273,7 @@ def send_sequences(colors, vte):
     set_special(13, colors[15])
     set_special(14, colors[0])
 
-    # This escape sequence doesn't work in VTE terminals.
+    # This escape sequence doesn"t work in VTE terminals.
     if not vte:
         set_special(708, colors[0])
 
@@ -281,11 +281,11 @@ def send_sequences(colors, vte):
     for num, color in enumerate(colors):
         set_color(num, color)
 
-    # Set a blank color that isn't affected by bold highlighting.
+    # Set a blank color that isn"t affected by bold highlighting.
     set_color(66, colors[0])
 
     # Decode the string.
-    sequences = ''.join(ColorFormats.sequences)
+    sequences = "".join(ColorFormats.sequences)
     sequences = bytes(sequences, "utf-8").decode("unicode_escape")
 
     # Send the sequences to all open terminals.
@@ -293,7 +293,7 @@ def send_sequences(colors, vte):
     terminals.append(CACHE_DIR / "sequences")
 
     for term in terminals:
-        with open(term, 'w') as file:
+        with open(term, "w") as file:
             file.write(sequences)
 
     print("colors: Set terminal colors")
@@ -325,8 +325,8 @@ def set_wallpaper(img):
         subprocess.Popen(["habak", "-mS", img])
 
     elif uname == "Darwin":
-        subprocess.Popen(["osascript", "-e", "'tell application \"Finder\" to set \
-                           desktop picture to POSIX file\'" + img + "\'"])
+        subprocess.Popen(["osascript", "-e", "\"tell application \"Finder\" to set \
+                           desktop picture to POSIX file\"" + img + "\""])
 
     else:
         subprocess.Popen(["gsettings", "set", "org.gnome.desktop.background",
@@ -346,14 +346,14 @@ def export_generic(colors, col_format):
     """Export colors to var format."""
     # Loop over the colors and format them.
     colors = [col_format % (num, color) for num, color in enumerate(colors)]
-    colors = ''.join(colors)
+    colors = "".join(colors)
     return colors
 
 
 def export_plain(colors):
     """Export colors to a plain text file."""
-    with open(CACHE_DIR / "colors", 'w') as file:
-        file.write('\n'.join(colors))
+    with open(CACHE_DIR / "colors", "w") as file:
+        file.write("\n".join(colors))
     print("export: Exported plain colors")
 
 
@@ -388,7 +388,7 @@ def export_emacs(colors):
 
 def export_xrdb(colors, export_file):
     """Export colors to xrdb."""
-    colors = ''.join(colors)
+    colors = "".join(colors)
     save_file(colors, export_file)
 
     # Merge the colors into the X db so new terminals use them.
@@ -468,18 +468,18 @@ def reload_colors(vte):
 
     # If vte mode was used, remove the problem sequence.
     if vte:
-        sequences = re.sub(r'\]708;\#.{6}', '', sequences)
+        sequences = re.sub(r"\]708;\#.{6}", "", sequences)
 
     # Decode the string.
     sequences = bytes(sequences, "utf-8").decode("unicode_escape")
 
-    print(sequences, end='')
+    print(sequences, end="")
     quit()
 
 
 def save_file(colors, export_file):
     """Write the colors to the file."""
-    with open(export_file, 'w') as file:
+    with open(export_file, "w") as file:
         file.write(colors)
 
 
@@ -512,8 +512,8 @@ def main():
     # -o
     if args.o:
         subprocess.Popen(["nohup", args.o],
-                         stdout=open('/dev/null', 'w'),
-                         stderr=open('/dev/null', 'w'),
+                         stdout=open("/dev/null", "w"),
+                         stderr=open("/dev/null", "w"),
                          preexec_fn=os.setpgrp)
 
     return 0
