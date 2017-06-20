@@ -115,13 +115,22 @@ def get_image(img):
     if image.is_file():
         wal_img = image
 
+    # Pick a random image from the directory.
     elif image.is_dir():
-        rand = random.choice(os.listdir(image))
-        rand_img = "%s/%s" % (str(image), rand)
+        images = []
+        file_types = ('*.png', '*.jpg', '*.jpeg', '*.jpe', '*.gif')
+        for files in file_types:
+            images.extend(glob.glob(str(image) + "/" + files))
+
+        rand_img = random.choice(images)
         rand_img = pathlib.Path(rand_img)
 
         if rand_img.is_file():
             wal_img = rand_img
+
+    else:
+        print("error: No valid image file found.")
+        exit(1)
 
     print("image: Using image", wal_img)
     return wal_img
