@@ -102,6 +102,10 @@ def process_colors(args):
         # Get the colors.
         colors = get_colors(image)
 
+        # Set Grey.
+        if not args.x:
+            colors[8] = set_grey(colors)
+
         # Set the wallpaper.
         if not args.n:
             set_wallpaper(image)
@@ -119,10 +123,6 @@ def process_colors(args):
         else:
             print("error: Colorscheme file not found.")
             exit(1)
-
-    # Set Grey.
-    if not args.x:
-        colors[8] = set_grey(colors)
 
     return colors
 
