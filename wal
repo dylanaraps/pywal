@@ -22,10 +22,17 @@ CACHE_DIR = pathlib.Path.home() / ".cache/wal/"
 
 
 # pylint: disable=too-few-public-methods
-class ColorFormats(object):
+class ColorType(object):
     """Store colors in various formats."""
-    x_colors = []
+    xrdb = []
     sequences = []
+    shell = []
+    scss = []
+    css = [":root {\n"]
+    putty = [
+        "Windows Registry Editor Version 5.00\n",
+        "[HKEY_CURRENT_USER\\Software\\SimonTatham\\PuTTY\\Sessions\\Wal]\n",
+    ]
 
 
 # ARGS {{{
@@ -226,26 +233,32 @@ def sort_colors(colors):
 
 def set_special(index, color):
     """Build the escape sequence for special colors."""
-    ColorFormats.sequences.append("\\033]%s;%s\\007" % (str(index), color))
+    ColorType.sequences.append("\\033]%s;%s\\007" % (str(index), color))
 
     if index == 10:
-        ColorFormats.x_colors.append("URxvt*foreground: %s\n" % (color))
-        ColorFormats.x_colors.append("XTerm*foreground: %s\n" % (color))
+        ColorType.xrdb.append("URxvt*foreground: %s\n" % (color))
+        ColorType.xrdb.append("XTerm*foreground: %s\n" % (color))
 
     elif index == 11:
-        ColorFormats.x_colors.append("URxvt*background: %s\n" % (color))
-        ColorFormats.x_colors.append("XTerm*background: %s\n" % (color))
+        ColorType.xrdb.append("URxvt*background: %s\n" % (color))
+        ColorType.xrdb.append("XTerm*background: %s\n" % (color))
 
     elif index == 12:
-        ColorFormats.x_colors.append("URxvt*cursorColor: %s\n" % (color))
-        ColorFormats.x_colors.append("XTerm*cursorColor: %s\n" % (color))
+        ColorType.xrdb.append("URxvt*cursorColor: %s\n" % (color))
+        ColorType.xrdb.append("XTerm*cursorColor: %s\n" % (color))
 
 
 def set_color(index, color):
     """Build the escape sequence we need for each color."""
-    ColorFormats.x_colors.append("*.color%s: %s\n" % (str(index), color))
-    ColorFormats.x_colors.append("*color%s: %s\n" % (str(index), color))
-    ColorFormats.sequences.append("\\033]4;%s;%s\\007" % (str(index), color))
+    index = str(index)
+    ColorType.xrdb.append("*.color%s: %s\n" % (index, color))
+    ColorType.xrdb.append("*color%s: %s\n" % (index, color))
+    ColorType.sequences.append("\\033]4;%s;%s\\007" % (index, color))
+    ColorType.shell.append("color%s='%s'\n" % (index, color))
+    ColorType.css.append("\t--color%s: %s;\n" % (index, color))
+    ColorType.scss.append("$color%s: %s;\n" % (index, color))
+    ColorType.putty.append("\"Colour%s\"=\"%s\"\n"
+                           % (index, hex_to_rgb(color)))
 
 
 def set_grey(colors):
@@ -284,7 +297,7 @@ def send_sequences(colors, vte):
     set_color(66, colors[0])
 
     # Decode the string.
-    sequences = "".join(ColorFormats.sequences)
+    sequences = "".join(ColorType.sequences)
     sequences = bytes(sequences, "utf-8").decode("unicode_escape")
 
     # Get a list of terminals.
@@ -394,12 +407,11 @@ def set_wallpaper(img):
 # EXPORT COLORS {{{
 
 
-def export_generic(colors, col_format):
+def save_colors(colors, export_file, message):
     """Export colors to var format."""
-    # Loop over the colors and format them.
-    colors = [col_format % (num, color) for num, color in enumerate(colors)]
     colors = "".join(colors)
-    return colors
+    save_file(colors, export_file)
+    print("export: exported %s." % (message))
 
 
 def export_plain(colors):
@@ -409,92 +421,52 @@ def export_plain(colors):
     print("export: Exported plain colors")
 
 
-def export_shell(colors, export_file):
-    """Export colors to shell format."""
-    col_format = "color%s='%s'\n"
-    colors = export_generic(colors, col_format)
-    save_file(colors, export_file)
-    print("export: Exported shell colors.")
-
-
 def export_rofi(colors):
     """Append rofi colors to the x_colors list."""
-    ColorFormats.x_colors.append("rofi.color-window: %s, %s, %s\n"
-                                 % (colors[0], colors[0], colors[10]))
-    ColorFormats.x_colors.append("rofi.color-normal: %s, %s, %s, %s, %s\n"
-                                 % (colors[0], colors[15], colors[0],
-                                    colors[10], colors[0]))
-    ColorFormats.x_colors.append("rofi.color-active: %s, %s, %s, %s, %s\n"
-                                 % (colors[0], colors[15], colors[0],
-                                    colors[10], colors[0]))
-    ColorFormats.x_colors.append("rofi.color-urgent: %s, %s, %s, %s, %s\n"
-                                 % (colors[0], colors[9], colors[0],
-                                    colors[9], colors[15]))
+    ColorType.xrdb.append("rofi.color-window: %s, %s, %s\n"
+                          % (colors[0], colors[0], colors[10]))
+    ColorType.xrdb.append("rofi.color-normal: %s, %s, %s, %s, %s\n"
+                          % (colors[0], colors[15], colors[0],
+                             colors[10], colors[0]))
+    ColorType.xrdb.append("rofi.color-active: %s, %s, %s, %s, %s\n"
+                          % (colors[0], colors[15], colors[0],
+                             colors[10], colors[0]))
+    ColorType.xrdb.append("rofi.color-urgent: %s, %s, %s, %s, %s\n"
+                          % (colors[0], colors[9], colors[0],
+                             colors[9], colors[15]))
 
 
 def export_emacs(colors):
     """Set emacs colors."""
-    ColorFormats.x_colors.append("emacs*background: %s\n" % (colors[0]))
-    ColorFormats.x_colors.append("emacs*foreground: %s\n" % (colors[15]))
+    ColorType.xrdb.append("emacs*background: %s\n" % (colors[0]))
+    ColorType.xrdb.append("emacs*foreground: %s\n" % (colors[15]))
 
 
 def export_xrdb(colors, export_file):
     """Export colors to xrdb."""
-    colors = "".join(colors)
-    save_file(colors, export_file)
+    save_colors(colors, export_file, "xrdb colors")
 
     # Merge the colors into the X db so new terminals use them.
     subprocess.Popen(["xrdb", "-merge", export_file])
-    print("export: Exported xrdb colors.")
-
-
-def export_css(colors, export_file):
-    """Export colors as css variables."""
-    col_format = "\t--color%s: %s;\n"
-    colors = ":root {\n%s}\n" % str(export_generic(colors, col_format))
-    save_file(colors, export_file)
-    print("export: Exported css colors.")
-
-
-def export_scss(colors, export_file):
-    """Export colors as scss variables."""
-    col_format = "$color%s: %s;\n"
-    colors = export_generic(colors, col_format)
-    save_file(colors, export_file)
-    print("export: Exported scss colors.")
-
-
-def export_putty(colors, export_file):
-    """Export colors as putty theme."""
-    col_format = "\"Colour%s\"=\"%s\"\n"
-    rgb_colors = [hex_to_rgb(color.strip("#")) for color in colors]
-
-    colors = (
-        "Windows Registry Editor Version 5.00\n"
-        "[HKEY_CURRENT_USER\\Software\\SimonTatham\\PuTTY\\Sessions\\Wal]\n"
-        + export_generic(rgb_colors, col_format)
-    )
-
-    save_file(colors, export_file)
-    print("export: Exported putty colors.")
 
 
 def export_colors(colors):
     """Export colors in various formats."""
     export_plain(colors)
-    export_shell(colors, CACHE_DIR / "colors.sh")
+    save_colors(ColorType.shell, CACHE_DIR / "colors.sh", "shell variables")
 
     # X based colors.
     export_rofi(colors)
     export_emacs(colors)
-    export_xrdb(ColorFormats.x_colors, CACHE_DIR / "xcolors")
+    export_xrdb(ColorType.xrdb, CACHE_DIR / "xcolors")
 
     # Web based colors.
-    export_css(colors, CACHE_DIR / "colors.css")
-    export_scss(colors, CACHE_DIR / "colors.scss")
+    ColorType.css.append("}\n")
+    save_colors(ColorType.css, CACHE_DIR / "colors.css", "css variables")
+    save_colors(ColorType.scss, CACHE_DIR / "colors.scss", "scss variables")
 
     # Text editor based colors.
-    export_putty(colors, CACHE_DIR / "colors-putty.reg")
+    save_colors(ColorType.putty, CACHE_DIR / "colors-putty.reg", "putty theme")
 
 
 # }}}
@@ -542,7 +514,7 @@ def create_cache_dir():
 
 def hex_to_rgb(color):
     """Convert a hex color to rgb."""
-    red, green, blue = list(bytes.fromhex(color))
+    red, green, blue = list(bytes.fromhex(color.strip("#")))
     return "%s,%s,%s" % (red, green, blue)
 
 
