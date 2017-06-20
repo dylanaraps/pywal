@@ -568,7 +568,9 @@ def main():
                          stderr=open("/dev/null", "w"),
                          preexec_fn=os.setpgrp)
 
-    return 0
+    # This saves 10ms.
+    # pylint: disable=W0212
+    os._exit(0)
 
 
 main()
