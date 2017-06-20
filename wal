@@ -339,6 +339,8 @@ def get_desktop_env():
 
 def set_desktop_wallpaper(desktop, img):
     """Set the wallpaper for the desktop environment."""
+    desktop = str(desktop).lower()
+
     if "xfce" in desktop or "xubuntu" in desktop:
         subprocess.Popen(["xfconf-query", "--channel", "xfce4-desktop",
                           "--property",
@@ -368,7 +370,7 @@ def set_desktop_wallpaper(desktop, img):
 
 def set_wallpaper(img):
     """Set the wallpaper."""
-    desktop = str(get_desktop_env()).lower()
+    desktop = get_desktop_env()
 
     if desktop:
         set_desktop_wallpaper(desktop, img)
