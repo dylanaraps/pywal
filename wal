@@ -21,7 +21,8 @@ COLOR_COUNT = 16
 CACHE_DIR = pathlib.Path.home() / ".cache/wal/"
 
 
-class ColorFormats(object):  # pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
+class ColorFormats(object):
     """Store colors in various formats."""
     x_colors = []
     sequences = []
@@ -276,8 +277,8 @@ def send_sequences(colors, vte):
         set_special(708, colors[0])
 
     # Create the sequences.
-    for num, color in enumerate(colors):
-        set_color(num, color)
+    # pylint: disable=W0106
+    [set_color(num, color) for num, color in enumerate(colors)]
 
     # Set a blank color that isn"t affected by bold highlighting.
     set_color(66, colors[0])
@@ -286,14 +287,14 @@ def send_sequences(colors, vte):
     sequences = "".join(ColorFormats.sequences)
     sequences = bytes(sequences, "utf-8").decode("unicode_escape")
 
-    # Send the sequences to all open terminals.
+    # Get a list of terminals.
     terminals = ["%s%s" % ("/dev/pts/", term)
                  for term in os.listdir("/dev/pts/") if len(term) < 4]
     terminals.append(CACHE_DIR / "sequences")
 
-    for term in terminals:
-        with open(term, "w") as file:
-            file.write(sequences)
+    # Send the sequences to all open terminals.
+    # pylint: disable=W0106
+    [save_file(sequences, term) for term in terminals]
 
     print("colors: Set terminal colors")
 
