@@ -12,20 +12,24 @@ import re
 import shutil
 import subprocess
 import sys
+from wal import export
 
 
-__version__ = "0.1"
-
+# wal files.
+CACHE_DIR = "%s%s" % (os.path.expanduser("~"), "/.cache/wal/")
+SCHEME_DIR = "%s%s" % (CACHE_DIR, "schemes/")
+SEQUENCE_FILE = "%s%s" % (CACHE_DIR, "sequences")
+WAL_FILE = "%s%s" % (CACHE_DIR, "wal")
 
 # Internal variables.
 COLOR_COUNT = 16
-CACHE_DIR = pathlib.Path.home() / ".cache/wal/"
 
 
 class ColorFormats(object):  # pylint: disable=too-few-public-methods
     """Store colors in various formats."""
     x_colors = []
     sequences = []
+    plain = []
 
 
 # ARGS {{{
@@ -43,6 +47,9 @@ def get_args():
     arg.add_argument('-i', metavar='"/path/to/img.jpg"',
                      help='Which image or directory to use.')
 
+    arg.add_argument('-f', metavar='"/path/to/colors"',
+                     help='Load colors directly from a colorscheme file.')
+
     arg.add_argument('-n', action='store_true',
                      help='Skip setting the wallpaper.')
 
@@ -58,6 +65,9 @@ def get_args():
     arg.add_argument('-t', action='store_true',
                      help='Fix artifacts in VTE Terminals. \
                            (Termite, xfce4-terminal)')
+
+    arg.add_argument('-x', action='store_true',
+                     help='Use extended 16-color palette.')
 
     return arg.parse_args()
 
@@ -77,23 +87,84 @@ def process_args(args):
 
     # -c
     if args.c:
-        shutil.rmtree(CACHE_DIR / "schemes")
-        create_cache_dir()
+        shutil.rmtree(SCHEME_DIR)
 
     # -r
     if args.r:
         reload_colors(args.t)
 
+
+# }}}
+
+
+# PROCESS COLORS {{{
+
+
+def process_colors(args):
+    """Process colors."""
     # -i
     if args.i:
         image = str(get_image(args.i))
-        colors = get_colors(image)
+
+        # Get the colors.
+        colors = get_colors(image, args.x)
+
+        # Set Grey.
+        if not args.x:
+            colors[8] = set_grey(colors)
 
         # Set the wallpaper.
         if not args.n:
             set_wallpaper(image)
+    # -f
+    elif args.f:
+        cache_file = pathlib.Path(args.f)
 
-        return colors
+        # Import the colorscheme from file.
+        if cache_file.is_file():
+            colors = read_colors(cache_file)
+
+            if len(colors) < 16:
+                print("error: Invalid colorscheme file chosen.")
+                exit(1)
+        else:
+            print("error: Colorscheme file not found.")
+            exit(1)
+
+    return colors
+
+
+def read_colors(color_file):
+    """Read colors from a file"""
+    with open(color_file) as file:
+        colors = file.readlines()
+
+    # Strip newlines from each list element.
+    colors = [x.strip() for x in colors]
+
+    return colors
+
+
+# }}}
+
+
+# RELOAD COLORS {{{
+
+
+def reload_colors(vte):
+    """Reload colors."""
+    with open(SEQUENCE_FILE) as file:
+        sequences = file.read()
+
+    # If vte mode was used, remove the problem sequence.
+    if vte:
+        sequences = re.sub(r'\]708;\#.{6}', '', sequences)
+
+    # Decode the string.
+    sequences = bytes(sequences, "utf-8").decode("unicode_escape")
+
+    print(sequences, end='')
+    quit()
 
 
 # }}}
@@ -127,7 +198,7 @@ def get_image(img):
     return wal_img
 
 
-def imagemagick(color_count, img):
+def magic(color_count, img):
     """Call Imagemagick to generate a scheme."""
     colors = subprocess.Popen(["convert", img, "+dither", "-colors",
                                str(color_count), "-unique-colors", "txt:-"],
@@ -139,67 +210,52 @@ def imagemagick(color_count, img):
 def gen_colors(img):
     """Generate a color palette using imagemagick."""
     # Generate initial scheme.
-    raw_colors = imagemagick(COLOR_COUNT, img)
+    magic_output = magic(COLOR_COUNT, img)
 
     # If imagemagick finds less than 16 colors, use a larger source number
     # of colors.
     index = 0
-    while len(raw_colors) - 1 <= COLOR_COUNT:
+    while len(magic_output) - 1 <= 15:
         index += 1
-        raw_colors = imagemagick(COLOR_COUNT + index, img)
+        magic_output = magic(COLOR_COUNT + index, img)
 
         print("colors: Imagemagick couldn't generate a", COLOR_COUNT,
               "color palette, trying a larger palette size",
               COLOR_COUNT + index)
 
     # Remove the first element, which isn't a color.
-    del raw_colors[0]
+    del magic_output[0]
 
     # Create a list of hex colors.
-    colors = [re.search('#.{6}', str(col)).group(0) for col in raw_colors]
+    colors = [re.search('#.{6}', str(col)).group(0) for col in magic_output]
     return colors
 
 
-def get_colors(img):
-    """Generate a colorscheme using imagemagick."""
-    # Cache file.
-    cache_file = CACHE_DIR / "schemes" / img.replace('/', '_')
-    cache_file = pathlib.Path(cache_file)
-
-    # Cache the wallpaper name.
-    with open(CACHE_DIR / "wal", 'w') as file:
-        file.write("%s\n" % (img))
-
-    if cache_file.is_file():
-        colors = read_colors(cache_file)
-
-    else:
-        print("colors: Generating a colorscheme...")
-
-        # Generate the colors.
-        colors = gen_colors(img)
-        colors = sort_colors(colors)
-
-        # Cache the colorscheme.
-        with open(cache_file, 'w') as file:
-            file.write("\n".join(colors))
-
-    print("colors: Generated colorscheme")
-    return colors
-
-
-def sort_colors(colors):
+def sort_colors(colors, extended_palette):
     """Sort the generated colors."""
+    # If -x is used, use all 16 colors.
     sorted_colors = []
-    sorted_colors.append(colors[0])
-    sorted_colors.append(colors[9])
-    sorted_colors.append(colors[10])
-    sorted_colors.append(colors[11])
-    sorted_colors.append(colors[12])
-    sorted_colors.append(colors[13])
-    sorted_colors.append(colors[14])
-    sorted_colors.append(colors[15])
-    sorted_colors.append(set_grey(colors))
+    if extended_palette:
+        sorted_colors.append(colors[0])
+        sorted_colors.append(colors[1])
+        sorted_colors.append(colors[2])
+        sorted_colors.append(colors[3])
+        sorted_colors.append(colors[4])
+        sorted_colors.append(colors[5])
+        sorted_colors.append(colors[6])
+        sorted_colors.append(colors[7])
+        sorted_colors.append(colors[8])
+    else:
+        sorted_colors.append(colors[0])
+        sorted_colors.append(colors[9])
+        sorted_colors.append(colors[10])
+        sorted_colors.append(colors[11])
+        sorted_colors.append(colors[12])
+        sorted_colors.append(colors[13])
+        sorted_colors.append(colors[14])
+        sorted_colors.append(colors[15])
+        sorted_colors.append(colors[8])
+
     sorted_colors.append(colors[9])
     sorted_colors.append(colors[10])
     sorted_colors.append(colors[11])
@@ -211,53 +267,41 @@ def sort_colors(colors):
     return sorted_colors
 
 
+def get_colors(img, extended_palette):
+    """Generate a colorscheme using imagemagick."""
+    # Cache file.
+    cache_file = "%s%s" % (SCHEME_DIR, img.replace('/', '_'))
+    cache_file = pathlib.Path(cache_file)
+
+    # Cache the wallpaper name.
+    with open(WAL_FILE, 'w') as file:
+        file.write("%s\n" % (img))
+
+    if cache_file.is_file():
+        colors = read_colors(cache_file)
+
+    else:
+        print("colors: Generating a colorscheme...")
+
+        # Generate the colors.
+        colors = gen_colors(img)
+        colors = sort_colors(colors, extended_palette)
+
+        # Cache the colorscheme.
+        with open(cache_file, 'w') as file:
+            file.write("\n".join(colors))
+
+    print("colors: Generated colorscheme")
+    return colors
+
+
 # }}}
 
 
 # SEND SEQUENCES {{{
 
 
-def set_special(index, color):
-    """Build the escape sequence for special colors."""
-    ColorFormats.sequences.append("\\033]%s;%s\\007" % (str(index), color))
-
-    if index == 10:
-        ColorFormats.x_colors.append("URxvt*foreground: %s\n" % (color))
-        ColorFormats.x_colors.append("XTerm*foreground: %s\n" % (color))
-
-    elif index == 11:
-        ColorFormats.x_colors.append("URxvt*background: %s\n" % (color))
-        ColorFormats.x_colors.append("XTerm*background: %s\n" % (color))
-
-    elif index == 12:
-        ColorFormats.x_colors.append("URxvt*cursorColor: %s\n" % (color))
-        ColorFormats.x_colors.append("XTerm*cursorColor: %s\n" % (color))
-
-
-def set_color(index, color):
-    """Build the escape sequence we need for each color."""
-    ColorFormats.x_colors.append("*.color%s: %s\n" % (str(index), color))
-    ColorFormats.x_colors.append("*color%s: %s\n" % (str(index), color))
-    ColorFormats.sequences.append("\\033]4;%s;%s\\007" % (str(index), color))
-
-
-def set_grey(colors):
-    """Set a grey color based on brightness of color0"""
-    return {
-        0: "#666666",
-        1: "#666666",
-        2: "#757575",
-        3: "#999999",
-        4: "#999999",
-        5: "#8a8a8a",
-        6: "#a1a1a1",
-        7: "#a1a1a1",
-        8: "#a1a1a1",
-        9: "#a1a1a1",
-    }.get(int(colors[0][1]), colors[7])
-
-
-def send_sequences(colors, vte):
+def send_sequences(colors, vte, extended_palette):
     """Send colors to all open terminals."""
     set_special(10, colors[15])
     set_special(11, colors[0])
@@ -265,13 +309,13 @@ def send_sequences(colors, vte):
     set_special(13, colors[15])
     set_special(14, colors[0])
 
-    # This escape sequence doesn't work in VTE terminals.
-    if not vte:
-        set_special(708, colors[0])
-
     # Create the sequences.
     for num, color in enumerate(colors):
         set_color(num, color)
+
+    # This escape sequence doesn't work in VTE terminals.
+    if not vte:
+        set_special(708, colors[0])
 
     # Set a blank color that isn't affected by bold highlighting.
     set_color(66, colors[0])
@@ -281,12 +325,13 @@ def send_sequences(colors, vte):
     sequences = bytes(sequences, "utf-8").decode("unicode_escape")
 
     # Send the sequences to all open terminals.
-    terminals = glob.glob("/dev/pts/[0-9]*")
-    terminals.append(CACHE_DIR / "sequences")
-
-    for term in terminals:
+    for term in glob.glob("/dev/pts/[0-9]*"):
         with open(term, 'w') as file:
             file.write(sequences)
+
+    # Cache the sequences.
+    with open(SEQUENCE_FILE, 'w') as file:
+        file.write(sequences)
 
     print("colors: Set terminal colors")
 
@@ -334,33 +379,34 @@ def set_wallpaper(img):
 # EXPORT COLORS {{{
 
 
-def export_generic(colors, col_format):
-    """Export colors to var format."""
-    # Loop over the colors and format them.
-    colors = [col_format % (num, color) for num, color in enumerate(colors)]
-    colors = ''.join(colors)
+def set_special(index, color):
+    """Build the escape sequence for special colors."""
+    ColorFormats.sequences.append("\\033]%s;%s\\007" % (str(index), color))
 
-    return colors
+    if index == 10:
+        ColorFormats.x_colors.append("URxvt*foreground: %s\n" % (color))
+        ColorFormats.x_colors.append("XTerm*foreground: %s\n" % (color))
 
+    elif index == 11:
+        ColorFormats.x_colors.append("URxvt*background: %s\n" % (color))
+        ColorFormats.x_colors.append("XTerm*background: %s\n" % (color))
 
-def export_plain(colors):
-    """Export colors to a plain text file."""
-    with open(CACHE_DIR / "colors", 'w') as file:
-        file.write('\n'.join(colors))
-
-    print("export: Exported plain colors")
-
-
-def export_shell(colors, export_file):
-    """Export colors to shell format."""
-    col_format = "color%s='%s'\n"
-    colors = export_generic(colors, col_format)
-    save_file(colors, export_file)
-
-    print("export: Exported shell colors.")
+    elif index == 12:
+        ColorFormats.x_colors.append("URxvt*cursorColor: %s\n" % (color))
+        ColorFormats.x_colors.append("XTerm*cursorColor: %s\n" % (color))
 
 
-def export_rofi(colors):
+def set_color(index, color):
+    """Build the escape sequence we need for each color."""
+    ColorFormats.x_colors.append("*.color%s: %s\n" % (str(index), color))
+    ColorFormats.x_colors.append("*color%s: %s\n" % (str(index), color))
+    ColorFormats.sequences.append("\\033]4;%s;%s\\007" % (str(index), color))
+
+    if not index == 66:
+        ColorFormats.plain.append(color)
+
+
+def set_rofi(colors):
     """Append rofi colors to the x_colors list."""
     ColorFormats.x_colors.append("rofi.color-window: %s, %s, %s\n"
                                  % (colors[0], colors[0], colors[10]))
@@ -375,98 +421,37 @@ def export_rofi(colors):
                                     colors[9], colors[15]))
 
 
-def export_emacs(colors):
+def set_emacs(colors):
     """Set emacs colors."""
     ColorFormats.x_colors.append("emacs*background: %s\n" % (colors[0]))
     ColorFormats.x_colors.append("emacs*foreground: %s\n" % (colors[15]))
 
 
-def export_xrdb(colors, export_file):
-    """Export colors to xrdb."""
-    colors = ''.join(colors)
-    save_file(colors, export_file)
-
-    # Merge the colors into the X db so new terminals use them.
-    subprocess.Popen(["xrdb", "-merge", export_file])
-
-    print("export: Exported xrdb colors.")
-
-
-def export_css(colors, export_file):
-    """Export colors as css variables."""
-    col_format = "\t--color%s: %s;\n"
-    colors = ":root {\n%s}\n" % str(export_generic(colors, col_format))
-    save_file(colors, export_file)
-
-    print("export: Exported css colors.")
-
-
-def export_scss(colors, export_file):
-    """Export colors as scss variables."""
-    col_format = "$color%s: %s;\n"
-    colors = export_generic(colors, col_format)
-    save_file(colors, export_file)
-
-    print("export: Exported scss colors.")
+def set_grey(colors):
+    """Set a grey color based on brightness of color0."""
+    return {
+        0: "#666666",
+        1: "#666666",
+        2: "#757575",
+        3: "#999999",
+        4: "#999999",
+        5: "#8a8a8a",
+        6: "#a1a1a1",
+        7: "#a1a1a1",
+        8: "#a1a1a1",
+        9: "#a1a1a1",
+    }.get(int(colors[0][1]), colors[7])
 
 
 def export_colors(colors):
-    """Export colors in various formats."""
-    export_plain(colors)
-    export_shell(colors, CACHE_DIR / "colors.sh")
-
-    # X based colors.
-    export_rofi(colors)
-    export_emacs(colors)
-    export_xrdb(ColorFormats.x_colors, CACHE_DIR / "xcolors")
-
-    # Web based colors.
-    export_css(colors, CACHE_DIR / "colors.css")
-    export_scss(colors, CACHE_DIR / "colors.scss")
-
-
-# }}}
-
-
-# OTHER FUNCTIONS {{{
-
-
-def read_colors(color_file):
-    """Read colors from a file"""
-    with open(color_file) as file:
-        colors = file.readlines()
-
-    # Strip newlines from each list element.
-    colors = [x.strip() for x in colors]
-
-    return colors
-
-
-def reload_colors(vte):
-    """Reload colors."""
-    with open(CACHE_DIR / "sequences") as file:
-        sequences = file.read()
-
-    # If vte mode was used, remove the problem sequence.
-    if vte:
-        sequences = re.sub(r'\]708;\#.{6}', '', sequences)
-
-    # Decode the string.
-    sequences = bytes(sequences, "utf-8").decode("unicode_escape")
-
-    print(sequences, end='')
-    quit()
-
-
-def save_file(colors, export_file):
-    """Write the colors to the file."""
-    with open(export_file, 'w') as file:
-        file.write(colors)
-
-
-def create_cache_dir():
-    """Alias to create the cache dir."""
-    pathlib.Path(CACHE_DIR / "schemes").mkdir(parents=True, exist_ok=True)
+    """Call functions to export the colors."""
+    set_rofi(colors)
+    set_emacs(colors)
+    export.plain(ColorFormats.plain, "%s%s" % (CACHE_DIR, "colors"))
+    export.xrdb(ColorFormats.x_colors, "%s%s" % (CACHE_DIR, "xcolors"))
+    export.scss(ColorFormats.plain, "%s%s" % (CACHE_DIR, "colors.scss"))
+    export.shell(ColorFormats.plain, "%s%s" % (CACHE_DIR, "colors.sh"))
+    export.css(ColorFormats.plain, "%s%s" % (CACHE_DIR, "colors.css"))
 
 
 # }}}
@@ -474,14 +459,20 @@ def create_cache_dir():
 
 def main():
     """Main script function."""
-    create_cache_dir()
-
     # Get the args.
     args = get_args()
-    colors = process_args(args)
+    process_args(args)
+
+    # Create colorscheme dir.
+    pathlib.Path(SCHEME_DIR).mkdir(parents=True, exist_ok=True)
+
+    # Get the colors.
+    colors = process_colors(args)
 
     # Set the colors.
-    send_sequences(colors, args.t)
+    send_sequences(colors, args.t, args.x)
+
+    # Export the colors.
     export_colors(colors)
 
     # -o
@@ -494,4 +485,5 @@ def main():
     return 0
 
 
-main()
+if __name__ == "__main__":
+    main()
