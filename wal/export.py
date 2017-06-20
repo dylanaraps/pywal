@@ -53,17 +53,13 @@ def css(colors, export_file):
     print("export: Exported firefox colors.")
 
 
-def xrdb_col(key, color):
-    """Format xrdb keys."""
-    return "%s: %s\n" % (key, color)
-
-
 def xrdb(colors, export_file):
     """Export colors to xrdb."""
+    export_colors = ''.join(colors)
 
     # Write the colors to the file.
     with open(export_file, 'w') as file:
-        file.write(x_colors)
+        file.write(export_colors)
 
     # Merge the colors into the X db so new terminals use them.
     if shutil.which("xrdb"):

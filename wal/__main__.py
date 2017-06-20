@@ -120,6 +120,10 @@ def process_colors(args):
             print("error: Colorscheme file not found.")
             exit(1)
 
+    # Set Grey.
+    if not args.x:
+        colors[8] = set_grey(colors)
+
     return colors
 
 
@@ -253,85 +257,53 @@ def get_colors(img):
 # SEND SEQUENCES {{{
 
 
-def set_special(index, color):
-    """Build the escape sequence for special colors."""
-    return "\\033]%s;%s\\007" % (str(index), color)
-
-
-def set_color(index, color):
-    """Build the escape sequence we need for each color."""
-    global x_colors
-    x_colors.append("*.color%s: %s\n" % (str(index), color))
-
-    return "\\033]4;%s;%s\\007" % (str(index), color)
-
-
-def get_grey(colors):
-    """Set a grey color based on brightness of color0"""
-    return {
-        0: "#666666",
-        1: "#666666",
-        2: "#757575",
-        3: "#999999",
-        4: "#999999",
-        5: "#8a8a8a",
-        6: "#a1a1a1",
-        7: "#a1a1a1",
-        8: "#a1a1a1",
-        9: "#a1a1a1",
-    }.get(int(colors[0][1]), colors[7])
-
-
 def send_sequences(colors, vte, extended_palette):
     """Send colors to all open terminals."""
-    seq = []
-    seq.append(set_special(10, colors[15]))
-    seq.append(set_special(11, colors[0]))
-    seq.append(set_special(12, colors[15]))
-    seq.append(set_special(13, colors[15]))
-    seq.append(set_special(14, colors[0]))
+    set_special(10, colors[15])
+    set_special(11, colors[0])
+    set_special(12, colors[15])
+    set_special(13, colors[15])
+    set_special(14, colors[0])
 
     # This escape sequence doesn't work in VTE terminals.
     if not vte:
-        seq.append(set_special(708, colors[0]))
+        set_special(708, colors[0])
 
     # If -x is used, use all 16 colors.
     if extended_palette:
-        seq.append(set_color(0, colors[0]))
-        seq.append(set_color(1, colors[1]))
-        seq.append(set_color(2, colors[2]))
-        seq.append(set_color(3, colors[3]))
-        seq.append(set_color(4, colors[4]))
-        seq.append(set_color(5, colors[5]))
-        seq.append(set_color(6, colors[6]))
-        seq.append(set_color(7, colors[7]))
-        seq.append(set_color(8, colors[8]))
+        set_color(0, colors[0])
+        set_color(1, colors[1])
+        set_color(2, colors[2])
+        set_color(3, colors[3])
+        set_color(4, colors[4])
+        set_color(5, colors[5])
+        set_color(6, colors[6])
+        set_color(7, colors[7])
+        set_color(8, colors[8])
     else:
-        seq.append(set_color(0, colors[0]))
-        seq.append(set_color(8, colors[8]))
-        seq.append(set_color(1, colors[9]))
-        seq.append(set_color(2, colors[10]))
-        seq.append(set_color(3, colors[11]))
-        seq.append(set_color(4, colors[12]))
-        seq.append(set_color(5, colors[13]))
-        seq.append(set_color(6, colors[14]))
-        seq.append(set_color(7, colors[15]))
+        set_color(0, colors[0])
+        set_color(1, colors[9])
+        set_color(2, colors[10])
+        set_color(3, colors[11])
+        set_color(4, colors[12])
+        set_color(5, colors[13])
+        set_color(6, colors[14])
+        set_color(7, colors[15])
+        set_color(8, colors[8])
 
-    seq.append(set_color(9, colors[9]))
-    seq.append(set_color(10, colors[10]))
-    seq.append(set_color(11, colors[11]))
-    seq.append(set_color(12, colors[12]))
-    seq.append(set_color(13, colors[13]))
-    seq.append(set_color(14, colors[14]))
-    seq.append(set_color(15, colors[15]))
+    set_color(9, colors[9])
+    set_color(10, colors[10])
+    set_color(11, colors[11])
+    set_color(12, colors[12])
+    set_color(13, colors[13])
+    set_color(14, colors[14])
+    set_color(15, colors[15])
 
     # Set a blank color that isn't affected by bold highlighting.
-    seq.append(set_color(66, colors[0]))
-
-    # Create the string.
-    sequences = ''.join(seq)
+    set_color(66, colors[0])
 
     # Decode the string.
+    sequences = ''.join(ColorFormats.sequences)
     sequences = bytes(sequences, "utf-8").decode("unicode_escape")
 
     # Send the sequences to all open terminals.
@@ -386,6 +358,93 @@ def set_wallpaper(img):
 # }}}
 
 
+# EXPORT COLORS {{{
+
+
+class ColorFormats(object):  # pylint: disable=too-few-public-methods
+    """Store colors in various formats."""
+    x_colors = []
+    sequences = []
+    plain = []
+
+
+def set_special(index, color):
+    """Build the escape sequence for special colors."""
+    ColorFormats.sequences.append("\\033]%s;%s\\007" % (str(index), color))
+
+    if index == 10:
+        ColorFormats.x_colors.append("URxvt*foreground: %s\n" % (color))
+        ColorFormats.x_colors.append("XTerm*foreground: %s\n" % (color))
+
+    elif index == 11:
+        ColorFormats.x_colors.append("URxvt*background: %s\n" % (color))
+        ColorFormats.x_colors.append("XTerm*background: %s\n" % (color))
+
+    elif index == 12:
+        ColorFormats.x_colors.append("URxvt*cursorColor: %s\n" % (color))
+        ColorFormats.x_colors.append("XTerm*cursorColor: %s\n" % (color))
+
+
+def set_color(index, color):
+    """Build the escape sequence we need for each color."""
+    ColorFormats.x_colors.append("*.color%s: %s\n" % (str(index), color))
+    ColorFormats.sequences.append("\\033]4;%s;%s\\007" % (str(index), color))
+
+    if not index == 66:
+        ColorFormats.plain.append(color)
+
+
+def set_rofi(colors):
+    """Append rofi colors to the x_colors list."""
+    ColorFormats.x_colors.append("rofi.color-window: %s, %s, %s\n"
+                                 % (colors[0], colors[0], colors[10]))
+    ColorFormats.x_colors.append("rofi.color-normal: %s, %s, %s, %s, %s\n"
+                                 % (colors[0], colors[15], colors[0],
+                                    colors[10], colors[0]))
+    ColorFormats.x_colors.append("rofi.color-active: %s, %s, %s, %s, %s\n"
+                                 % (colors[0], colors[15], colors[0],
+                                    colors[10], colors[0]))
+    ColorFormats.x_colors.append("rofi.color-urgent: %s, %s, %s, %s, %s\n"
+                                 % (colors[0], colors[9], colors[0],
+                                    colors[9], colors[15]))
+
+
+def set_emacs(colors):
+    """Set emacs colors."""
+    ColorFormats.x_colors.append("emacs*background: %s\n" % (colors[0]))
+    ColorFormats.x_colors.append("emacs*foreground: %s\n" % (colors[15]))
+
+
+def set_grey(colors):
+    """Set a grey color based on brightness of color0."""
+    return {
+        0: "#666666",
+        1: "#666666",
+        2: "#757575",
+        3: "#999999",
+        4: "#999999",
+        5: "#8a8a8a",
+        6: "#a1a1a1",
+        7: "#a1a1a1",
+        8: "#a1a1a1",
+        9: "#a1a1a1",
+    }.get(int(colors[0][1]), colors[7])
+
+
+def export_colors(colors):
+    """Call functions to export the colors."""
+    set_rofi(colors)
+    set_emacs(colors)
+    export.plain(ColorFormats.plain, "%s%s" % (CACHE_DIR, "colors"))
+    export.xrdb(ColorFormats.x_colors, "%s%s" % (CACHE_DIR, "xcolors"))
+    export.scss(ColorFormats.plain, "%s%s" % (CACHE_DIR, "colors.scss"))
+    export.shell(ColorFormats.plain, "%s%s" % (CACHE_DIR, "colors.sh"))
+    export.css(ColorFormats.plain, "%s%s" % (CACHE_DIR, "colors.css"))
+
+
+# }}}
+
+
 def main():
     """Main script function."""
     # Get the args.
@@ -398,22 +457,11 @@ def main():
     # Get the colors.
     colors = process_colors(args)
 
-    # Set Grey.
-    if not args.x:
-        colors[8] = get_grey(colors)
-
     # Set the colors.
-    x_colors = []
     send_sequences(colors, args.t, args.x)
 
-    print(x_colors)
-
     # Export the colors.
-    export.plain(colors, "%s%s" % (CACHE_DIR, "colors"))
-    # export.xrdb(x_colors, "%s%s" % (CACHE_DIR, "xcolors"))
-    export.scss(colors, "%s%s" % (CACHE_DIR, "colors.scss"))
-    export.shell(colors, "%s%s" % (CACHE_DIR, "colors.sh"))
-    export.css(colors, "%s%s" % (CACHE_DIR, "colors.css"))
+    export_colors(colors)
 
     # -o
     if args.o:
