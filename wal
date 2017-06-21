@@ -95,10 +95,11 @@ def process_args(args):
     if args.i:
         image = str(get_image(args.i))
 
+        colors = get_colors(image)
+
         if not args.n:
             set_wallpaper(image)
 
-        colors = get_colors(image)
         return colors
 
 
