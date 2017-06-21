@@ -498,17 +498,20 @@ def read_file(input_file):
 
 def reload_colors(vte):
     """Reload colors."""
-    with open(CACHE_DIR / "sequences") as file:
-        sequences = file.read()
+    sequence_file = pathlib.Path(CACHE_DIR / "sequences")
 
-    # If vte mode was used, remove the problem sequence.
-    if vte:
-        sequences = re.sub(r"\]708;\#.{6}", "", sequences)
+    if sequence_file.is_file():
+        with open(sequence_file, "r") as file:
+            sequences = file.read()
 
-    # Decode the string.
-    sequences = bytes(sequences, "utf-8").decode("unicode_escape")
+        # If vte mode was used, remove the problem sequence.
+        if vte:
+            sequences = re.sub(r"\]708;\#.{6}", "", sequences)
 
-    print(sequences, end="")
+        # Decode the string.
+        sequences = bytes(sequences, "utf-8").decode("unicode_escape")
+        print(sequences, end="")
+
     quit()
 
 
