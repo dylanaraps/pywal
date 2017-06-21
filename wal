@@ -100,7 +100,16 @@ def process_args(args):
         if not args.n:
             set_wallpaper(image)
 
-        return colors
+        # Set the colors.
+        send_sequences(colors, args.t)
+        export_colors(colors)
+
+    # -o
+    if args.o:
+        subprocess.Popen(["nohup", args.o],
+                         stdout=open("/dev/null", "w"),
+                         stderr=open("/dev/null", "w"),
+                         preexec_fn=os.setpgrp)
 
 
 # }}}
@@ -539,21 +548,8 @@ def hex_to_rgb(color):
 def main():
     """Main script function."""
     create_cache_dir()
-
-    # Get the args.
     args = get_args()
-    colors = process_args(args)
-
-    # Set the colors.
-    send_sequences(colors, args.t)
-    export_colors(colors)
-
-    # -o
-    if args.o:
-        subprocess.Popen(["nohup", args.o],
-                         stdout=open("/dev/null", "w"),
-                         stderr=open("/dev/null", "w"),
-                         preexec_fn=os.setpgrp)
+    process_args(args)
 
     # This saves 10ms.
     # pylint: disable=W0212
