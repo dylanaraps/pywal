@@ -548,7 +548,7 @@ def main():
 
     # This saves 10ms.
     # pylint: disable=W0212
-    os._exit(0)
+    # os._exit(0)
 
 
 main()
