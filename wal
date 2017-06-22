@@ -24,6 +24,7 @@ CACHE_DIR = pathlib.Path.home() / ".cache/wal/"
 # pylint: disable=too-few-public-methods
 class ColorType(object):
     """Store colors in various formats."""
+    plain = []
     xrdb = []
     sequences = []
     shell = []
@@ -270,6 +271,7 @@ def set_special(index, color):
 def set_color(index, color):
     """Build the escape sequence we need for each color."""
     index = str(index)
+    ColorType.plain.append("%s\n" % (color))
     ColorType.xrdb.append("*.color%s: %s\n" % (index, color))
     ColorType.xrdb.append("*color%s: %s\n" % (index, color))
     ColorType.sequences.append("\\033]4;%s;%s\\007" % (index, color))
@@ -435,13 +437,6 @@ def save_colors(colors, export_file, message):
     print("export: exported %s." % (message))
 
 
-def export_plain(colors):
-    """Export colors to a plain text file."""
-    with open(CACHE_DIR / "colors", "w") as file:
-        file.write("\n".join(colors))
-    print("export: Exported plain colors")
-
-
 def export_rofi(colors):
     """Append rofi colors to the x_colors list."""
     ColorType.xrdb.append("rofi.color-window: %s, %s, %s\n"
@@ -473,7 +468,7 @@ def export_xrdb(colors, export_file):
 
 def export_colors(colors):
     """Export colors in various formats."""
-    export_plain(colors)
+    save_colors(ColorType.plain, CACHE_DIR / "colors", "plain hex colors")
     save_colors(ColorType.shell, CACHE_DIR / "colors.sh", "shell variables")
 
     # Web based colors.
