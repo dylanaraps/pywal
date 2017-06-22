@@ -67,6 +67,9 @@ def get_args():
                      help="Fix artifacts in VTE Terminals. \
                            (Termite, xfce4-terminal)")
 
+    arg.add_argument("-v", action="store_true",
+                     help="Print \"wal\" version.")
+
     return arg.parse_args()
 
 
@@ -91,6 +94,11 @@ def process_args(args):
     # -r
     if args.r:
         reload_colors(args.t)
+
+    # -v
+    if args.v:
+        print("wal %s" % (__version__))
+        exit(0)
 
     # -i
     if args.i:
@@ -517,7 +525,7 @@ def reload_colors(vte):
         sequences = bytes(sequences, "utf-8").decode("unicode_escape")
         print(sequences, end="")
 
-    quit()
+    exit(0)
 
 
 def save_file(colors, export_file):
