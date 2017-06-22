@@ -114,6 +114,7 @@ def process_args(args):
     # -o
     if args.o:
         subprocess.Popen(["nohup", args.o],
+                         stdout=open("/dev/null", "w"),
                          stderr=open("/dev/null", "w"),
                          preexec_fn=os.setpgrp)
 
