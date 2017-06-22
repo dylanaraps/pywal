@@ -29,10 +29,10 @@ class ColorType(object):
     sequences = []
     shell = []
     scss = []
-    css = [":root {\n"]
+    css = [":root {"]
     putty = [
-        "Windows Registry Editor Version 5.00\n",
-        "[HKEY_CURRENT_USER\\Software\\SimonTatham\\PuTTY\\Sessions\\Wal]\n",
+        "Windows Registry Editor Version 5.00",
+        "[HKEY_CURRENT_USER\\Software\\SimonTatham\\PuTTY\\Sessions\\Wal]",
     ]
 
 
@@ -83,8 +83,7 @@ def process_args(args):
 
     # -q
     if args.q:
-        sys.stdout = open("/dev/null", "w")
-        sys.stderr = open("/dev/null", "w")
+        sys.stdout = sys.stderr = open("/dev/null", "w")
 
     # -c
     if args.c:
@@ -97,26 +96,24 @@ def process_args(args):
 
     # -v
     if args.v:
-        print("wal %s" % (__version__))
+        print(f"wal {__version__}")
         exit(0)
 
     # -i
     if args.i:
         image = str(get_image(args.i))
-
-        colors = get_colors(image)
+        ColorType.plain = get_colors(image)
 
         if not args.n:
             set_wallpaper(image)
 
         # Set the colors.
-        send_sequences(colors, args.t)
-        export_colors(colors)
+        send_sequences(ColorType.plain, args.t)
+        export_colors(ColorType.plain)
 
     # -o
     if args.o:
         subprocess.Popen(["nohup", args.o],
-                         stdout=open("/dev/null", "w"),
                          stderr=open("/dev/null", "w"),
                          preexec_fn=os.setpgrp)
 
@@ -205,13 +202,12 @@ def gen_colors(img):
 
 def get_colors(img):
     """Generate a colorscheme using imagemagick."""
-    # Cache file.
+    # Cache the wallpaper name.
+    save_file(img, CACHE_DIR / "wal")
+
+    # Cache the sequences file.
     cache_file = CACHE_DIR / "schemes" / img.replace("/", "_")
     cache_file = pathlib.Path(cache_file)
-
-    # Cache the wallpaper name.
-    with open(CACHE_DIR / "wal", "w") as file:
-        file.write("%s\n" % (img))
 
     if cache_file.is_file():
         colors = read_file(cache_file)
@@ -224,8 +220,7 @@ def get_colors(img):
         colors = sort_colors(colors)
 
         # Cache the colorscheme.
-        with open(cache_file, "w") as file:
-            file.write("\n".join(colors))
+        save_file("\n".join(colors), cache_file)
 
     print("colors: Generated colorscheme")
     return colors
@@ -261,33 +256,32 @@ def sort_colors(colors):
 
 def set_special(index, color):
     """Build the escape sequence for special colors."""
-    ColorType.sequences.append("\\033]%s;%s\\007" % (str(index), color))
+    ColorType.sequences.append(f"\\033]{index};{color}\\007")
 
     if index == 10:
-        ColorType.xrdb.append("URxvt*foreground: %s\n" % (color))
-        ColorType.xrdb.append("XTerm*foreground: %s\n" % (color))
+        ColorType.xrdb.append(f"URxvt*foreground: {color}")
+        ColorType.xrdb.append(f"XTerm*foreground: {color}")
 
     elif index == 11:
-        ColorType.xrdb.append("URxvt*background: %s\n" % (color))
-        ColorType.xrdb.append("XTerm*background: %s\n" % (color))
+        ColorType.xrdb.append(f"URxvt*background: {color}")
+        ColorType.xrdb.append(f"XTerm*background: {color}")
 
     elif index == 12:
-        ColorType.xrdb.append("URxvt*cursorColor: %s\n" % (color))
-        ColorType.xrdb.append("XTerm*cursorColor: %s\n" % (color))
+        ColorType.xrdb.append(f"URxvt*cursorColor: {color}")
+        ColorType.xrdb.append(f"XTerm*cursorColor: {color}")
 
 
 def set_color(index, color):
     """Build the escape sequence we need for each color."""
-    index = str(index)
-    ColorType.plain.append("%s\n" % (color))
-    ColorType.xrdb.append("*.color%s: %s\n" % (index, color))
-    ColorType.xrdb.append("*color%s: %s\n" % (index, color))
-    ColorType.sequences.append("\\033]4;%s;%s\\007" % (index, color))
-    ColorType.shell.append("color%s='%s'\n" % (index, color))
-    ColorType.css.append("\t--color%s: %s;\n" % (index, color))
-    ColorType.scss.append("$color%s: %s;\n" % (index, color))
-    ColorType.putty.append("\"Colour%s\"=\"%s\"\n"
-                           % (index, hex_to_rgb(color)))
+    ColorType.xrdb.append(f"*.color{index}: {color}")
+    ColorType.xrdb.append(f"*color{index}: {color}")
+    ColorType.sequences.append(f"\\033]4;{index};{color}\\007")
+    ColorType.shell.append(f"color{index}='{color}'")
+    ColorType.css.append(f"\t--color{index}: {color};")
+    ColorType.scss.append(f"$color{index}: {color};")
+
+    rgb = hex_to_rgb(color)
+    ColorType.putty.append(f"\"Colour{index}\"=\"{rgb}\"")
 
 
 def set_grey(colors):
@@ -325,9 +319,9 @@ def send_sequences(colors, vte):
     # Set a blank color that isn"t affected by bold highlighting.
     set_color(66, colors[0])
 
-    # Decode the string.
+    # Make the terminal interpret escape sequences.
     sequences = "".join(ColorType.sequences)
-    sequences = bytes(sequences, "utf-8").decode("unicode_escape")
+    sequences = fix_escape(sequences)
 
     # Get a list of terminals.
     terminals = ["%s%s" % ("/dev/pts/", term)
@@ -440,30 +434,30 @@ def set_wallpaper(img):
 
 def save_colors(colors, export_file, message):
     """Export colors to var format."""
-    colors = "".join(colors)
+    colors = "%s\n" % ("\n".join(colors))
     save_file(colors, export_file)
     print("export: exported %s." % (message))
 
 
 def export_rofi(colors):
     """Append rofi colors to the x_colors list."""
-    ColorType.xrdb.append("rofi.color-window: %s, %s, %s\n"
+    ColorType.xrdb.append("rofi.color-window: %s, %s, %s"
                           % (colors[0], colors[0], colors[10]))
-    ColorType.xrdb.append("rofi.color-normal: %s, %s, %s, %s, %s\n"
+    ColorType.xrdb.append("rofi.color-normal: %s, %s, %s, %s, %s"
                           % (colors[0], colors[15], colors[0],
                              colors[10], colors[0]))
-    ColorType.xrdb.append("rofi.color-active: %s, %s, %s, %s, %s\n"
+    ColorType.xrdb.append("rofi.color-active: %s, %s, %s, %s, %s"
                           % (colors[0], colors[15], colors[0],
                              colors[10], colors[0]))
-    ColorType.xrdb.append("rofi.color-urgent: %s, %s, %s, %s, %s\n"
+    ColorType.xrdb.append("rofi.color-urgent: %s, %s, %s, %s, %s"
                           % (colors[0], colors[9], colors[0],
                              colors[9], colors[15]))
 
 
 def export_emacs(colors):
     """Set emacs colors."""
-    ColorType.xrdb.append("emacs*background: %s\n" % (colors[0]))
-    ColorType.xrdb.append("emacs*foreground: %s\n" % (colors[15]))
+    ColorType.xrdb.append("emacs*background: %s" % (colors[0]))
+    ColorType.xrdb.append("emacs*foreground: %s" % (colors[15]))
 
 
 def export_xrdb(colors, export_file):
@@ -480,7 +474,7 @@ def export_colors(colors):
     save_colors(ColorType.shell, CACHE_DIR / "colors.sh", "shell variables")
 
     # Web based colors.
-    ColorType.css.append("}\n")
+    ColorType.css.append("}")
     save_colors(ColorType.css, CACHE_DIR / "colors.css", "css variables")
     save_colors(ColorType.scss, CACHE_DIR / "colors.scss", "scss variables")
 
@@ -499,16 +493,6 @@ def export_colors(colors):
 # OTHER FUNCTIONS {{{
 
 
-def read_file(input_file):
-    """Read colors from a file"""
-    with open(input_file) as file:
-        contents = file.readlines()
-
-    # Strip newlines from each list element.
-    contents = [x.strip() for x in contents]
-    return contents
-
-
 def reload_colors(vte):
     """Reload colors."""
     sequence_file = pathlib.Path(CACHE_DIR / "sequences")
@@ -521,11 +505,21 @@ def reload_colors(vte):
         if vte:
             sequences = re.sub(r"\]708;\#.{6}", "", sequences)
 
-        # Decode the string.
-        sequences = bytes(sequences, "utf-8").decode("unicode_escape")
+        # Make the terminal interpret escape sequences.
+        sequences = fix_escape(sequences)
         print(sequences, end="")
 
     exit(0)
+
+
+def read_file(input_file):
+    """Read colors from a file"""
+    with open(input_file) as file:
+        contents = file.readlines()
+
+    # Strip newlines from each list element.
+    contents = [x.strip() for x in contents]
+    return contents
 
 
 def save_file(colors, export_file):
@@ -543,6 +537,11 @@ def hex_to_rgb(color):
     """Convert a hex color to rgb."""
     red, green, blue = list(bytes.fromhex(color.strip("#")))
     return "%s,%s,%s" % (red, green, blue)
+
+
+def fix_escape(string):
+    """Decode a string."""
+    return bytes(string, "utf-8").decode("unicode_escape")
 
 
 # }}}
