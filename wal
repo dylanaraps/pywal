@@ -83,7 +83,7 @@ def process_args(args):
 
     # -q
     if args.q:
-        sys.stdout = sys.stderr = open("/dev/null", "w")
+        sys.stdout = sys.stderr = open(os.devnull, "w")
 
     # -c
     if args.c:
@@ -114,8 +114,8 @@ def process_args(args):
     # -o
     if args.o:
         subprocess.Popen(["nohup", args.o],
-                         stdout=open("/dev/null", "w"),
-                         stderr=open("/dev/null", "w"),
+                         stdout=subprocess.DEVNULL,
+                         stderr=subprocess.DEVNULL,
                          preexec_fn=os.setpgrp)
 
 
