@@ -442,17 +442,17 @@ def save_colors(colors, export_file, message):
 
 def export_rofi(colors):
     """Append rofi colors to the x_colors list."""
-    ColorType.xrdb.append(f"rofi.color-window: {colors[0]}, \
-                            {colors[0]}, {colors[10]}")
-    ColorType.xrdb.append(f"rofi.color-normal: {colors[0]}, \
-                            {colors[15]}, {colors[0]}, \
-                            {colors[10]}, {colors[0]}")
-    ColorType.xrdb.append(f"rofi.color-active: {colors[0]}, \
-                            {colors[15]}, {colors[0]}, \
-                            {colors[10]}, {colors[0]}")
-    ColorType.xrdb.append(f"rofi.color-urgent: {colors[0]}, \
-                            {colors[9]}, {colors[0]}, \
-                            {colors[9]}, {colors[15]}")
+    ColorType.xrdb.append(f"rofi.color-window: {colors[0]}, "
+                          f"{colors[0]}, {colors[10]}")
+    ColorType.xrdb.append(f"rofi.color-normal: {colors[0]}, "
+                          f"{colors[15]}, {colors[0]}, "
+                          f"{colors[10]}, {colors[0]}")
+    ColorType.xrdb.append(f"rofi.color-active: {colors[0]}, "
+                          f"{colors[15]}, {colors[0]}, "
+                          f"{colors[10]}, {colors[0]}")
+    ColorType.xrdb.append(f"rofi.color-urgent: {colors[0]}, "
+                          f"{colors[9]}, {colors[0]}, "
+                          f"{colors[9]}, {colors[15]}")
 
 
 def export_emacs(colors):
