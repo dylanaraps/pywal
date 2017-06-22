@@ -20,5 +20,11 @@ setup(
     license="MIT",
     url="https://github.com/dylanaraps/wal.py",
     download_url="https://github.com/dylanaraps/wal.py/archive/0.1.3.tar.gz",
-    scripts=["wal"]
+    scripts=["wal"],
+    classifiers=[
+        "Environment :: X11 Applications",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3.6",
+    ]
 )
