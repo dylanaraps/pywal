@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(
-    name="wal",
+    name="pywal",
     version="0.1",
     author="Dylan Araps",
     author_email="dylan.araps@gmail.com",
