@@ -26,8 +26,7 @@
     * [Applying the theme to new terminals.](#applying-the-theme-to-new-terminals)
     * [Making the colorscheme persist on reboot.](#making-the-colorscheme-persist-on-reboot)
 * [Usage](#usage)
-    * [Customization](#customization)
-        * [**https://github.com/dylanaraps/wal.py/wiki**](#httpsgithubcomdylanarapswalpywiki)
+* [Customization](#customization)
 
 <!-- vim-markdown-toc -->
 
@@ -132,8 +131,8 @@ optional arguments:
 
 ```
 
-### Customization
+## Customization
 
 See the `wal` wiki!
 
-#### **https://github.com/dylanaraps/wal.py/wiki**
+**https://github.com/dylanaraps/wal.py/wiki**
