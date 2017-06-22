@@ -3,7 +3,7 @@ from setuptools import setup
 
 
 DESC = (
-    "View the README at: https://github.com/dylanaraps/wal.py\n"
+    "View the README at: https://github.com/dylanaraps/wal.py\n\n"
     "Pypi doesn't like markdown OR rst with anchor links so "
     "you'll have to view the documentation elsewhere.\n"
 )
