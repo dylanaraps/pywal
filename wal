@@ -324,8 +324,8 @@ def send_sequences(colors, vte):
     sequences = fix_escape(sequences)
 
     # Get a list of terminals.
-    terminals = ["%s%s" % ("/dev/pts/", term)
-                 for term in os.listdir("/dev/pts/") if len(term) < 4]
+    terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")
+                 if len(term) < 4]
     terminals.append(CACHE_DIR / "sequences")
 
     # Send the sequences to all open terminals.
@@ -434,30 +434,30 @@ def set_wallpaper(img):
 
 def save_colors(colors, export_file, message):
     """Export colors to var format."""
-    colors = "%s\n" % ("\n".join(colors))
-    save_file(colors, export_file)
-    print("export: exported %s." % (message))
+    colors = "\n".join(colors)
+    save_file(f"{colors}\n", export_file)
+    print(f"export: exported {message}.")
 
 
 def export_rofi(colors):
     """Append rofi colors to the x_colors list."""
-    ColorType.xrdb.append("rofi.color-window: %s, %s, %s"
-                          % (colors[0], colors[0], colors[10]))
-    ColorType.xrdb.append("rofi.color-normal: %s, %s, %s, %s, %s"
-                          % (colors[0], colors[15], colors[0],
-                             colors[10], colors[0]))
-    ColorType.xrdb.append("rofi.color-active: %s, %s, %s, %s, %s"
-                          % (colors[0], colors[15], colors[0],
-                             colors[10], colors[0]))
-    ColorType.xrdb.append("rofi.color-urgent: %s, %s, %s, %s, %s"
-                          % (colors[0], colors[9], colors[0],
-                             colors[9], colors[15]))
+    ColorType.xrdb.append(f"rofi.color-window: {colors[0]}, \
+                            {colors[0]}, {colors[10]}")
+    ColorType.xrdb.append(f"rofi.color-normal: {colors[0]}, \
+                            {colors[15]}, {colors[0]}, \
+                            {colors[10]}, {colors[0]}")
+    ColorType.xrdb.append(f"rofi.color-active: {colors[0]}, \
+                            {colors[15]}, {colors[0]}, \
+                            {colors[10]}, {colors[0]}")
+    ColorType.xrdb.append(f"rofi.color-urgent: {colors[0]}, \
+                            {colors[9]}, {colors[0]}, \
+                            {colors[9]}, {colors[15]}")
 
 
 def export_emacs(colors):
     """Set emacs colors."""
-    ColorType.xrdb.append("emacs*background: %s" % (colors[0]))
-    ColorType.xrdb.append("emacs*foreground: %s" % (colors[15]))
+    ColorType.xrdb.append(f"emacs*background: {colors[0]}")
+    ColorType.xrdb.append(f"emacs*foreground: {colors[15]}")
 
 
 def export_xrdb(colors, export_file):
@@ -536,7 +536,7 @@ def create_cache_dir():
 def hex_to_rgb(color):
     """Convert a hex color to rgb."""
     red, green, blue = list(bytes.fromhex(color.strip("#")))
-    return "%s,%s,%s" % (red, green, blue)
+    return f"{red},{green},{blue}"
 
 
 def fix_escape(string):
