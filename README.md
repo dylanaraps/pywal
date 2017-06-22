@@ -225,13 +225,13 @@ bindsym $mod+d exec dmenu_run -nb "$fg" -nf "$bg" -sb "$bg" -sf "$fg"
 
 ### vim
 
-Inside this repo there's a colorscheme I created for vim that uses your terminal colors. It was made to work with the colors `wal` generates and you can install it using any vim package manager.
+I've created a vim colorscheme for use with with the colors `wal` generates and you can install it using any vim package manager. The colorscheme uses your terminal colors so it'll adapt to the colorscheme changes automatically.
 
 Example:
 
 ```vim
 ! Using plug
-Plug 'dylanaraps/wal'
+Plug 'dylanaraps/wal.vim'
 
 colorscheme wal
 ```
