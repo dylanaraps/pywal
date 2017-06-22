@@ -127,13 +127,13 @@ def process_args(args):
 
 def get_image(img):
     """Validate image input."""
-    image = pathlib.Path(img)
-
     # Check if the user has Imagemagick installed.
     if not shutil.which("convert"):
         print("error: imagemagick not found, exiting...")
         print("error: wal requires imagemagick to function.")
         exit(1)
+
+    image = pathlib.Path(img)
 
     if image.is_file():
         wal_img = image
