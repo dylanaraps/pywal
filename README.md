@@ -1,4 +1,4 @@
-# wal (Python 3 version)
+# pywal (A `wal` rewrite in Python 3)
 
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) [![Build Status](https://travis-ci.org/dylanaraps/wal.py.svg?branch=master)](https://travis-ci.org/dylanaraps/wal.py)
 
