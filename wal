@@ -119,10 +119,7 @@ def process_args(args):
 
     # -o
     if args.o:
-        subprocess.Popen(["nohup", args.o],
-                         stdout=subprocess.DEVNULL,
-                         stderr=subprocess.DEVNULL,
-                         preexec_fn=os.setpgrp)
+        disown(args.o)
 
 
 # }}}
@@ -475,10 +472,7 @@ def reload_xrdb(export_file):
 def reload_i3():
     """Reload i3 colors."""
     if shutil.which("i3-msg"):
-        subprocess.Popen(["i3-msg", "reload"],
-                         stdout=subprocess.DEVNULL,
-                         stderr=subprocess.DEVNULL,
-                         preexec_fn=os.setpgrp)
+        disown("i3-msg", "reload")
 
 
 def export_colors(colors):
@@ -568,6 +562,15 @@ def notify(msg):
                          stdout=subprocess.DEVNULL,
                          stderr=subprocess.DEVNULL,
                          preexec_fn=os.setpgrp)
+
+
+def disown(*cmd):
+    """Call a system command in the background,
+       disown it and hide it's output."""
+    subprocess.Popen(["nohup"] + list(cmd),
+                     stdout=subprocess.DEVNULL,
+                     stderr=subprocess.DEVNULL,
+                     preexec_fn=os.setpgrp)
 
 
 # }}}
