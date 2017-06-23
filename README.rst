@@ -7,7 +7,7 @@ pywal (A ``wal`` rewrite in Python 3)
 .. image:: https://travis-ci.org/dylanaraps/pywal.svg?branch=master
     :target: https://travis-ci.org/dylanaraps/pywal
 
-
+|
 ``wal`` is a script that takes an image (or a directory of images),
 generates a colorscheme (using ``imagemagick``) and then changes all of
 your open terminal's colorschemes to the new colors on the fly. ``wal``
