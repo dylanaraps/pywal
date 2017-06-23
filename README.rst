@@ -7,6 +7,7 @@ pywal (A ``wal`` rewrite in Python 3)
 .. image:: https://travis-ci.org/dylanaraps/wal.py.svg?branch=master
     :target: https://travis-ci.org/dylanaraps/wal.py
 
+
 ``wal`` is a script that takes an image (or a directory of images),
 generates a colorscheme (using ``imagemagick``) and then changes all of
 your open terminal's colorschemes to the new colors on the fly. ``wal``
@@ -45,6 +46,7 @@ Dependencies
 
    -  Universal wallpaper setting.
 
+
 Terminal Emulator
 ~~~~~~~~~~~~~~~~~
 
@@ -62,6 +64,7 @@ red?
 If your terminal's background color is now red, your terminal will work
 with ``wal``.
 
+
 Installation
 ------------
 
@@ -72,16 +75,19 @@ Pip install
 
     pip install pywal
 
+
 Manual install
 ~~~~~~~~~~~~~~
 
 Just grab the script (``wal``) and add it to your path.
+
 
 Setup
 -----
 
 **NOTE:** If you get junk in your terminal, add ``-t`` to all of the
 ``wal`` commands.
+
 
 Applying the theme to new terminals.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,6 +113,7 @@ Here's how the extra syntax above works:
     &   # Run the process in the background.
     ( ) # Hide shell job control messages.
 
+
 Making the colorscheme persist on reboot.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -121,6 +128,7 @@ Without this you'll be themeless until you run ``wal`` again on boot.
 
     # Add this to your .xinitrc or whatever file starts programs on startup.
     wal -i "$(< "${HOME}/.cache/wal/wal")"
+
 
 Usage
 -----
@@ -150,14 +158,10 @@ your terminal colors.
                             xfce4-terminal)
       -v                    Print "wal" version.
 
+
 Customization
 -------------
 
 See the ``wal`` wiki!
 
-**https://github.com/dylanaraps/wal.py/wiki**
-
-.. |MIT licensed| image:: https://img.shields.io/badge/license-MIT-blue.svg
-   :target: ./LICENSE.md
-.. |Build Status| image:: https://travis-ci.org/dylanaraps/wal.py.svg?branch=master
-   :target: https://travis-ci.org/dylanaraps/wal.py
+**https://github.com/dylanaraps/pywal/wiki**
