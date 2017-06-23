@@ -524,13 +524,8 @@ def reload_colors(vte):
 
 
 def read_file(input_file):
-    """Read colors from a file"""
-    with open(input_file) as file:
-        contents = file.readlines()
-
-    # Strip newlines from each list element.
-    contents = [x.strip() for x in contents]
-    return contents
+    """Read colors from a file."""
+    return open(input_file).read().splitlines()
 
 
 def save_file(colors, export_file):
