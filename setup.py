@@ -3,7 +3,7 @@ from setuptools import setup
 
 
 DESC = (
-    "View the DOCS at: https://github.com/dylanaraps/wal.py\n\n"
+    "View the DOCS at: https://github.com/dylanaraps/pywal\n\n"
     "Pypi doesn't like markdown OR rst with anchor links so "
     "you'll have to view the documentation elsewhere.\n"
 )
@@ -18,8 +18,8 @@ setup(
     description="🎨 Generate and change colorschemes on the fly",
     long_description=DESC,
     license="MIT",
-    url="https://github.com/dylanaraps/wal.py",
-    download_url="https://github.com/dylanaraps/wal.py/archive/0.1.5.tar.gz",
+    url="https://github.com/dylanaraps/pywal",
+    download_url="https://github.com/dylanaraps/pywal/archive/0.1.5.tar.gz",
     scripts=["wal"],
     classifiers=[
         "Environment :: X11 Applications",
