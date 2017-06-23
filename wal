@@ -371,35 +371,34 @@ def get_desktop_env():
         return "MATE"
 
 
+def xfconf(path, img):
+    """Call xfconf to set the wallpaper on XFCE."""
+    subprocess.Popen(["xfconf-query", "--channel", "xfce4-desktop",
+                      "--property", path, "--set", img])
+
+
 def set_desktop_wallpaper(desktop, img):
     """Set the wallpaper for the desktop environment."""
     desktop = str(desktop).lower()
 
     if "xfce" in desktop or "xubuntu" in desktop:
-        subprocess.Popen(["xfconf-query", "--channel", "xfce4-desktop",
-                          "--property",
-                          "/backdrop/screen0/monitor0/image-path",
-                          "--set", img])
-
         # XFCE requires two commands since they differ between versions.
-        subprocess.Popen(["xfconf-query", "--channel", "xfce4-desktop",
-                          "--property",
-                          "/backdrop/screen0/monitor0/workspace0/last-image",
-                          "--set", img])
+        xfconf("/backdrop/screen0/monitor0/image-path", img)
+        xfconf("/backdrop/screen0/monitor0/workspace0/last-image", img)
 
     elif "muffin" in desktop or "cinnamon" in desktop:
         subprocess.Popen(["gsettings", "set",
                           "org.cinnamon.desktop.background",
                           "picture-uri", "file:///" + img])
 
-    elif "mate" in desktop:
-        subprocess.Popen(["gsettings", "set", "org.mate.background",
-                          "picture-filename", img])
-
     elif "gnome" in desktop:
         subprocess.Popen(["gsettings", "set",
                           "org.gnome.desktop.background",
                           "picture-uri", "file:///" + img])
+
+    elif "mate" in desktop:
+        subprocess.Popen(["gsettings", "set", "org.mate.background",
+                          "picture-filename", img])
 
 
 def set_wallpaper(img):
