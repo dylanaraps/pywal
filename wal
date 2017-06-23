@@ -82,8 +82,8 @@ def process_args(args):
     """Process args"""
     # If no args were passed.
     if not len(sys.argv) > 1:
-        print("error: wal needs to be given arguments to run.")
-        print("       Refer to \"wal -h\" for more info.")
+        print("error: wal needs to be given arguments to run.\n"
+              "       Refer to \"wal -h\" for more info.")
         exit(1)
 
     # -q
@@ -135,8 +135,8 @@ def get_image(img):
     """Validate image input."""
     # Check if the user has Imagemagick installed.
     if not shutil.which("convert"):
-        print("error: imagemagick not found, exiting...")
-        print("error: wal requires imagemagick to function.")
+        print("error: imagemagick not found, exiting...\n"
+              "error: wal requires imagemagick to function.")
         exit(1)
 
     image = pathlib.Path(img)
