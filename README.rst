@@ -4,8 +4,8 @@ pywal (A ``wal`` rewrite in Python 3)
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
     :target: ./LICENSE.md
 
-.. image:: https://travis-ci.org/dylanaraps/wal.py.svg?branch=master
-    :target: https://travis-ci.org/dylanaraps/wal.py
+.. image:: https://travis-ci.org/dylanaraps/pywal.svg?branch=master
+    :target: https://travis-ci.org/dylanaraps/pywal
 
 
 ``wal`` is a script that takes an image (or a directory of images),
@@ -17,7 +17,7 @@ merges the new colorscheme into the Xresources db so that any new
 terminal emulators you open use the new colorscheme.
 
 ``wal`` can also change the colors in some other programs, check out the
-`WIKI <https://github.com/dylanaraps/wal.py/wiki>`__.
+`WIKI <https://github.com/dylanaraps/pywal/wiki>`__.
 
 **NOTE:** ``wal`` is not perfect and won't work with some images.
 
