@@ -442,7 +442,7 @@ def set_wallpaper(img):
 def save_colors(colors, export_file, message):
     """Export colors to var format."""
     colors = "\n".join(colors)
-    save_file(f"{colors}\n", export_file)
+    save_file(f"{colors}\n", CACHE_DIR / export_file)
     print(f"export: exported {message}.")
 
 
@@ -467,12 +467,10 @@ def export_emacs(colors):
     ColorType.xrdb.append(f"emacs*foreground: {colors[15]}")
 
 
-def export_xrdb(colors, export_file):
-    """Export colors to xrdb."""
-    save_colors(colors, export_file, "xrdb colors")
-
-    # Merge the colors into the X db so new terminals use them.
-    subprocess.call(["xrdb", "-merge", export_file])
+def reload_xrdb(export_file):
+    """Merge the colors into the X db so new terminals use them."""
+    if shutil.which("xrdb"):
+        subprocess.call(["xrdb", "-merge", CACHE_DIR / export_file])
 
 
 def reload_i3():
@@ -486,23 +484,24 @@ def reload_i3():
 
 def export_colors(colors):
     """Export colors in various formats."""
-    save_colors(ColorType.plain, CACHE_DIR / "colors", "plain hex colors")
-    save_colors(ColorType.shell, CACHE_DIR / "colors.sh", "shell variables")
+    save_colors(ColorType.plain, "colors", "plain hex colors")
+    save_colors(ColorType.shell, "colors.sh", "shell variables")
 
     # Web based colors.
     ColorType.css.append("}")
-    save_colors(ColorType.css, CACHE_DIR / "colors.css", "css variables")
-    save_colors(ColorType.scss, CACHE_DIR / "colors.scss", "scss variables")
+    save_colors(ColorType.css, "colors.css", "css variables")
+    save_colors(ColorType.scss, "colors.scss", "scss variables")
 
     # Text editor based colors.
-    save_colors(ColorType.putty, CACHE_DIR / "colors-putty.reg", "putty theme")
+    save_colors(ColorType.putty, "colors-putty.reg", "putty theme")
 
     # X based colors.
     export_rofi(colors)
     export_emacs(colors)
-    export_xrdb(ColorType.xrdb, CACHE_DIR / "xcolors")
+    save_colors(ColorType.xrdb, "xcolors", "xrdb colors")
 
     # i3 colors.
+    reload_xrdb("xcolors")
     reload_i3()
 
 
