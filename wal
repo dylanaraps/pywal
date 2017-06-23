@@ -107,7 +107,7 @@ def process_args(args):
 
     # -i
     if args.i:
-        image = str(get_image(args.i))
+        image = get_image(args.i)
         ColorType.plain = get_colors(image)
 
         if not args.n:
@@ -157,18 +157,15 @@ def get_image(img):
                   if img.endswith(file_types) and
                   img != current_img]
 
-        rand_img = random.choice(images)
-        rand_img = pathlib.Path(image / rand_img)
-
-        if rand_img.is_file():
-            wal_img = rand_img
+        wal_img = random.choice(images)
+        wal_img = pathlib.Path(image / wal_img)
 
     else:
         print("error: No valid image file found.")
         exit(1)
 
     print("image: Using image", wal_img)
-    return wal_img
+    return str(wal_img)
 
 
 def imagemagick(color_count, img):
@@ -200,8 +197,7 @@ def gen_colors(img):
     del raw_colors[0]
 
     # Create a list of hex colors.
-    colors = [re.search("#.{6}", str(col)).group(0) for col in raw_colors]
-    return colors
+    return [re.search("#.{6}", str(col)).group(0) for col in raw_colors]
 
 
 def get_colors(img):
@@ -210,8 +206,7 @@ def get_colors(img):
     save_file(img, CACHE_DIR / "wal")
 
     # Cache the sequences file.
-    cache_file = CACHE_DIR / "schemes" / img.replace("/", "_")
-    cache_file = pathlib.Path(cache_file)
+    cache_file = pathlib.Path(CACHE_DIR / "schemes" / img.replace("/", "_"))
 
     if cache_file.is_file():
         colors = read_file(cache_file)
@@ -328,8 +323,7 @@ def send_sequences(colors, vte):
     set_color(66, colors[0])
 
     # Make the terminal interpret escape sequences.
-    sequences = "".join(ColorType.sequences)
-    sequences = fix_escape(sequences)
+    sequences = fix_escape("".join(ColorType.sequences))
 
     # Get a list of terminals.
     terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")
@@ -509,16 +503,14 @@ def reload_colors(vte):
     sequence_file = pathlib.Path(CACHE_DIR / "sequences")
 
     if sequence_file.is_file():
-        with open(sequence_file, "r") as file:
-            sequences = file.read()
+        sequences = "".join(read_file(sequence_file))
 
         # If vte mode was used, remove the problem sequence.
         if vte:
             sequences = re.sub(r"\]708;\#.{6}", "", sequences)
 
         # Make the terminal interpret escape sequences.
-        sequences = fix_escape(sequences)
-        print(sequences, end="")
+        print(fix_escape(sequences), end="")
 
     exit(0)
 
