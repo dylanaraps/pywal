@@ -36,6 +36,7 @@
 
 ### Dependencies
 
+- `linux`
 - `python 3.6`
 - `imagemagick`
     - Colorscheme generation.
