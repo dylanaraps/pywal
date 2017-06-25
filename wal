@@ -273,6 +273,10 @@ def set_special(index, color):
         ColorType.xrdb.append(f"URxvt*cursorColor: {color}")
         ColorType.xrdb.append(f"XTerm*cursorColor: {color}")
 
+    elif index == 66:
+        ColorType.xrdb.append(f"*color{index}: {color}")
+        ColorType.sequences.append(f"\\033]4;{index};{color}\\007")
+
 
 def set_color(index, color):
     """Build the escape sequence we need for each color."""
@@ -320,7 +324,7 @@ def send_sequences(colors, vte):
     [set_color(num, color) for num, color in enumerate(colors)]
 
     # Set a blank color that isn"t affected by bold highlighting.
-    set_color(66, colors[0])
+    set_special(66, colors[0])
 
     # Make the terminal interpret escape sequences.
     sequences = fix_escape("".join(ColorType.sequences))
