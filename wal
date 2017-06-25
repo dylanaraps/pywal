@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 wal - Generate and change colorschemes on the fly.
 Created by Dylan Araps.
