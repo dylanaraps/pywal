@@ -364,8 +364,8 @@ def get_desktop_env():
 
 def xfconf(path, img):
     """Call xfconf to set the wallpaper on XFCE."""
-    subprocess.Popen(["xfconf-query", "--channel", "xfce4-desktop",
-                      "--property", path, "--set", img])
+    disown("xfconf-query", "--channel", "xfce4-desktop",
+           "--property", path, "--set", img)
 
 
 def set_desktop_wallpaper(desktop, img):
