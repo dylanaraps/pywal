@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 wal - Generate and change colorschemes on the fly.
 Created by Dylan Araps.
@@ -12,9 +11,9 @@ import shutil
 import subprocess
 import sys
 
+__version__ = "0.1.6"
 
 # Internal variables.
-VERSION = "0.1"
 COLOR_COUNT = 16
 CACHE_DIR = pathlib.Path.home() / ".cache/wal/"
 
@@ -102,7 +101,7 @@ def process_args(args):
 
     # -v
     if args.v:
-        print(f"wal {VERSION}")
+        print(f"wal {__version__}")
         exit(0)
 
     # -i
@@ -572,6 +571,3 @@ def main():
     # This saves 10ms.
     # pylint: disable=W0212
     # os._exit(0)
-
-
-main()
