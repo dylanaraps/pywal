@@ -6,5 +6,5 @@ install:
     - pip install flake8 pylint
 
 script:
-    - flake8 wal
-    - pylint wal
+    - flake8 pywal
+    - pylint pywal
