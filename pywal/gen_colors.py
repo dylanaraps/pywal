@@ -103,7 +103,8 @@ def get_colors(img):
 
     else:
         print("colors: Generating a colorscheme...")
-        util.notify("wal: Generating a colorscheme...")
+        if s.Args.notify:
+            util.disown("notify-send", "wal: Generating a colorscheme...")
 
         # Generate the colors.
         colors = gen_colors(img)
@@ -113,7 +114,8 @@ def get_colors(img):
         util.save_file("\n".join(colors), cache_file)
 
         print("colors: Generated colorscheme")
-        util.notify("wal: Generation complete.")
+        if s.Args.notify:
+            util.disown("notify-send", "wal: Generation complete.")
 
     return colors
 
@@ -138,20 +140,3 @@ def sort_colors(colors):
     sorted_colors.append(colors[14])
     sorted_colors.append(colors[15])
     return sorted_colors
-
-
-def reload_colors(vte):
-    """Reload colors."""
-    sequence_file = pathlib.Path(CACHE_DIR / "sequences")
-
-    if sequence_file.is_file():
-        sequences = "".join(util.read_file(sequence_file))
-
-        # If vte mode was used, remove the problem sequence.
-        if vte:
-            sequences = re.sub(r"\]708;\#.{6}", "", sequences)
-
-        # Make the terminal interpret escape sequences.
-        print(util.fix_escape(sequences), end="")
-
-    exit(0)

@@ -4,9 +4,6 @@ Misc helper functions.
 import os
 import pathlib
 import subprocess
-import shutil
-
-from pywal import settings as s
 
 
 def read_file(input_file):
@@ -20,9 +17,9 @@ def save_file(colors, export_file):
         file.write(colors)
 
 
-def create_cache_dir():
+def create_dir(directory):
     """Alias to create the cache dir."""
-    pathlib.Path(s.CACHE_DIR / "schemes").mkdir(parents=True, exist_ok=True)
+    pathlib.Path(directory).mkdir(parents=True, exist_ok=True)
 
 
 def hex_to_rgb(color):
@@ -34,15 +31,6 @@ def hex_to_rgb(color):
 def fix_escape(string):
     """Decode a string."""
     return bytes(string, "utf-8").decode("unicode_escape")
-
-
-def notify(msg):
-    """Send arguements to notify-send."""
-    if shutil.which("notify-send") and s.Args.notify:
-        subprocess.Popen(["notify-send", msg],
-                         stdout=subprocess.DEVNULL,
-                         stderr=subprocess.DEVNULL,
-                         preexec_fn=os.setpgrp)
 
 
 def disown(*cmd):

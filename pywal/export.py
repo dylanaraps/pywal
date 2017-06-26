@@ -1,6 +1,8 @@
 """
 Export colors in various formats.
 """
+import pathlib
+import re
 import shutil
 import subprocess
 
@@ -13,6 +15,35 @@ def save_colors(colors, export_file, message):
     colors = "\n".join(colors)
     util.save_file(f"{colors}\n", s.CACHE_DIR / export_file)
     print(f"export: exported {message}.")
+
+
+def reload_colors(vte):
+    """Reload colors."""
+    sequence_file = pathlib.Path(s.CACHE_DIR / "sequences")
+
+    if sequence_file.is_file():
+        sequences = "".join(util.read_file(sequence_file))
+
+        # If vte mode was used, remove the problem sequence.
+        if vte:
+            sequences = re.sub(r"\]708;\#.{6}", "", sequences)
+
+        # Make the terminal interpret escape sequences.
+        print(util.fix_escape(sequences), end="")
+
+    exit(0)
+
+
+def reload_xrdb(export_file):
+    """Merge the colors into the X db so new terminals use them."""
+    if shutil.which("xrdb"):
+        subprocess.call(["xrdb", "-merge", s.CACHE_DIR / export_file])
+
+
+def reload_i3():
+    """Reload i3 colors."""
+    if shutil.which("i3-msg"):
+        util.disown("i3-msg", "reload")
 
 
 def export_rofi(colors):
@@ -34,18 +65,6 @@ def export_emacs(colors):
     """Set emacs colors."""
     s.ColorType.xrdb.append(f"emacs*background: {colors[0]}")
     s.ColorType.xrdb.append(f"emacs*foreground: {colors[15]}")
-
-
-def reload_xrdb(export_file):
-    """Merge the colors into the X db so new terminals use them."""
-    if shutil.which("xrdb"):
-        subprocess.call(["xrdb", "-merge", s.CACHE_DIR / export_file])
-
-
-def reload_i3():
-    """Reload i3 colors."""
-    if shutil.which("i3-msg"):
-        util.disown("i3-msg", "reload")
 
 
 def export_colors(colors):

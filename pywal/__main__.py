@@ -69,11 +69,11 @@ def process_args(args):
     # -c
     if args.c:
         shutil.rmtree(s.CACHE_DIR / "schemes")
-        util.create_cache_dir()
+        util.create_dir(s.CACHE_DIR / "schemes")
 
     # -r
     if args.r:
-        gen_colors.reload_colors(args.t)
+        export.reload_colors(args.t)
 
     # -v
     if args.v:
@@ -99,7 +99,7 @@ def process_args(args):
 
 def main():
     """Main script function."""
-    util.create_cache_dir()
+    util.create_dir(s.CACHE_DIR / "schemes")
     args = get_args()
     process_args(args)
 
