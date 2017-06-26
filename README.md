@@ -21,7 +21,7 @@
     * [Terminal Emulator](#terminal-emulator)
 * [Installation](#installation)
     * [Pip install](#pip-install)
-    * [Manual install](#manual-install)
+    * [Manual/Git install](#manualgit-install)
 * [Setup](#setup)
     * [Applying the theme to new terminals.](#applying-the-theme-to-new-terminals)
     * [Making the colorscheme persist on reboot.](#making-the-colorscheme-persist-on-reboot)
@@ -68,9 +68,13 @@ If your terminal's background color is now red, your terminal will work with `wa
 pip install pywal
 ```
 
-### Manual install
+### Manual/Git install
 
-Just grab the script (`wal`) and add it to your path.
+```sh
+git clone https://github.com/dylanaraps/pywal
+cd puwal
+pip install .
+```
 
 
 ## Setup
