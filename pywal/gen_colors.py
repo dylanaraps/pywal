@@ -12,10 +12,6 @@ from pywal import settings as s
 from pywal import util
 
 
-CACHE_DIR = s.CACHE_DIR
-COLOR_COUNT = s.COLOR_COUNT
-
-
 def get_image(img):
     """Validate image input."""
     # Check if the user has Imagemagick installed.
@@ -34,7 +30,7 @@ def get_image(img):
         file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
 
         # Get the filename of the current wallpaper.
-        current_img = pathlib.Path(CACHE_DIR / "wal")
+        current_img = pathlib.Path(s.CACHE_DIR / "wal")
 
         if current_img.is_file():
             current_img = util.read_file(current_img)
@@ -68,18 +64,18 @@ def imagemagick(color_count, img):
 def gen_colors(img):
     """Generate a color palette using imagemagick."""
     # Generate initial scheme.
-    raw_colors = imagemagick(COLOR_COUNT, img)
+    raw_colors = imagemagick(s.COLOR_COUNT, img)
 
     # If imagemagick finds less than 16 colors, use a larger source number
     # of colors.
     index = 0
-    while len(raw_colors) - 1 < COLOR_COUNT:
+    while len(raw_colors) - 1 < s.COLOR_COUNT:
         index += 1
-        raw_colors = imagemagick(COLOR_COUNT + index, img)
+        raw_colors = imagemagick(s.COLOR_COUNT + index, img)
 
-        print("colors: Imagemagick couldn't generate a", COLOR_COUNT,
+        print("colors: Imagemagick couldn't generate a", s.COLOR_COUNT,
               "color palette, trying a larger palette size",
-              COLOR_COUNT + index)
+              s.COLOR_COUNT + index)
 
     # Remove the first element, which isn't a color.
     del raw_colors[0]
@@ -91,10 +87,10 @@ def gen_colors(img):
 def get_colors(img):
     """Generate a colorscheme using imagemagick."""
     # Cache the wallpaper name.
-    util.save_file(img, CACHE_DIR / "wal")
+    util.save_file(img, s.CACHE_DIR / "wal")
 
     # Cache the sequences file.
-    cache_file = pathlib.Path(CACHE_DIR / "schemes" / img.replace("/", "_"))
+    cache_file = pathlib.Path(s.CACHE_DIR / "schemes" / img.replace("/", "_"))
 
     if cache_file.is_file():
         colors = util.read_file(cache_file)
