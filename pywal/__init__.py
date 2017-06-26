@@ -11,7 +11,9 @@ import shutil
 import subprocess
 import sys
 
+
 __version__ = "0.1.6"
+
 
 # Internal variables.
 COLOR_COUNT = 16
