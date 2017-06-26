@@ -8,19 +8,19 @@ from pywal import util
 
 def get_desktop_env():
     """Identify the current running desktop environment."""
-    desktop = os.getenv("XDG_CURRENT_DESKTOP")
+    desktop = os.environ.get("XDG_CURRENT_DESKTOP")
     if desktop:
         return desktop
 
-    desktop = os.getenv("DESKTOP_SESSION")
+    desktop = os.environ.get("DESKTOP_SESSION")
     if desktop:
         return desktop
 
-    desktop = os.getenv("GNOME_DESKTOP_SESSION_ID")
+    desktop = os.environ.get("GNOME_DESKTOP_SESSION_ID")
     if desktop:
         return "GNOME"
 
-    desktop = os.getenv("MATE_DESKTOP_SESSION_ID")
+    desktop = os.environ.get("MATE_DESKTOP_SESSION_ID")
     if desktop:
         return "MATE"
 
