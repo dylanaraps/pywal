@@ -2,6 +2,8 @@
 Send sequences to all open terminals.
 """
 import os
+import pathlib
+import re
 
 from pywal import settings as s
 from pywal import util
@@ -90,3 +92,20 @@ def send_sequences(colors, vte):
     [util.save_file(sequences, term) for term in terminals]
 
     print("colors: Set terminal colors")
+
+
+def reload_colors(vte):
+    """Reload colors."""
+    sequence_file = pathlib.Path(s.CACHE_DIR / "sequences")
+
+    if sequence_file.is_file():
+        sequences = "".join(util.read_file(sequence_file))
+
+        # If vte mode was used, remove the problem sequence.
+        if vte:
+            sequences = re.sub(r"\]708;\#.{6}", "", sequences)
+
+        # Make the terminal interpret escape sequences.
+        print(util.fix_escape(sequences), end="")
+
+    exit(0)

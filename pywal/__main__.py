@@ -15,9 +15,6 @@ from pywal import wallpaper
 from pywal import util
 
 
-__version__ = "0.1.6"
-
-
 def get_args():
     """Get the script arguments."""
     description = "wal - Generate colorschemes on the fly"
@@ -73,11 +70,11 @@ def process_args(args):
 
     # -r
     if args.r:
-        export.reload_colors(args.t)
+        set_colors.reload_colors(args.t)
 
     # -v
     if args.v:
-        print(f"wal {__version__}")
+        print(f"wal {s.__version__}")
         exit(0)
 
     # -i
