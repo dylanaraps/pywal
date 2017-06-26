@@ -9,7 +9,6 @@ import shutil
 import subprocess
 
 from pywal import settings as s
-from pywal import set_colors
 from pywal import util
 
 
@@ -131,7 +130,7 @@ def sort_colors(colors):
     sorted_colors.append(colors[13])
     sorted_colors.append(colors[14])
     sorted_colors.append(colors[15])
-    sorted_colors.append(set_colors.set_grey(colors))
+    sorted_colors.append(colors[8])
     sorted_colors.append(colors[9])
     sorted_colors.append(colors[10])
     sorted_colors.append(colors[11])

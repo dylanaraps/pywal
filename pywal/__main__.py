@@ -84,6 +84,7 @@ def process_args(args):
     if args.i:
         image = gen_colors.get_image(args.i)
         s.ColorType.plain = gen_colors.get_colors(image)
+        s.ColorType.plain[8] = set_colors.set_grey(s.ColorType.plain)
 
         if not args.n:
             wallpaper.set_wallpaper(image)
