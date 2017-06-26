@@ -3,6 +3,8 @@ import os
 import shutil
 import subprocess
 
+from pywal import util
+
 
 def get_desktop_env():
     """Identify the current running desktop environment."""
@@ -25,8 +27,8 @@ def get_desktop_env():
 
 def xfconf(path, img):
     """Call xfconf to set the wallpaper on XFCE."""
-    disown("xfconf-query", "--channel", "xfce4-desktop",
-           "--property", path, "--set", img)
+    util.disown("xfconf-query", "--channel", "xfce4-desktop",
+                "--property", path, "--set", img)
 
 
 def set_desktop_wallpaper(desktop, img):
