@@ -39,6 +39,7 @@ git commit -m "export: Added export format for emacs. Closes #11"
 You can run `pywal` without properly installing it by using the following command:
 
 ```sh
-./pywal/__init__.py
+# From the repo directory.
+python -m pywal
 ```
 
