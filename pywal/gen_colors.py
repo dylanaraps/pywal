@@ -117,21 +117,4 @@ def get_colors(img, quiet):
 
 def sort_colors(colors):
     """Sort the generated colors."""
-    sorted_colors = []
-    sorted_colors.append(colors[0])
-    sorted_colors.append(colors[9])
-    sorted_colors.append(colors[10])
-    sorted_colors.append(colors[11])
-    sorted_colors.append(colors[12])
-    sorted_colors.append(colors[13])
-    sorted_colors.append(colors[14])
-    sorted_colors.append(colors[15])
-    sorted_colors.append(colors[8])
-    sorted_colors.append(colors[9])
-    sorted_colors.append(colors[10])
-    sorted_colors.append(colors[11])
-    sorted_colors.append(colors[12])
-    sorted_colors.append(colors[13])
-    sorted_colors.append(colors[14])
-    sorted_colors.append(colors[15])
-    return sorted_colors
+    return colors[:1] + colors[9:] + colors[8:]
