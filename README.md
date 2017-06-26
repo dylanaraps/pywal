@@ -72,7 +72,7 @@ pip install pywal
 
 ```sh
 git clone https://github.com/dylanaraps/pywal
-cd puwal
+cd pywal
 pip install .
 ```
 
