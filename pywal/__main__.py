@@ -7,7 +7,7 @@ import os
 import shutil
 import sys
 
-from pywal import settings as s
+from pywal import globals as g
 from pywal import export
 from pywal import gen_colors
 from pywal import set_colors
@@ -61,12 +61,12 @@ def process_args(args):
     # -q
     if args.q:
         sys.stdout = sys.stderr = open(os.devnull, "w")
-        s.Args.notify = False
+        g.Args.notify = False
 
     # -c
     if args.c:
-        shutil.rmtree(s.CACHE_DIR / "schemes")
-        util.create_dir(s.CACHE_DIR / "schemes")
+        shutil.rmtree(g.CACHE_DIR / "schemes")
+        util.create_dir(g.CACHE_DIR / "schemes")
 
     # -r
     if args.r:
@@ -74,21 +74,21 @@ def process_args(args):
 
     # -v
     if args.v:
-        print(f"wal {s.__version__}")
+        print(f"wal {g.__version__}")
         exit(0)
 
     # -i
     if args.i:
         image = gen_colors.get_image(args.i)
-        s.ColorType.plain = gen_colors.get_colors(image)
-        s.ColorType.plain[8] = set_colors.set_grey(s.ColorType.plain)
+        g.ColorType.plain = gen_colors.get_colors(image)
+        g.ColorType.plain[8] = set_colors.set_grey(g.ColorType.plain)
 
         if not args.n:
             wallpaper.set_wallpaper(image)
 
         # Set the colors.
-        set_colors.send_sequences(s.ColorType.plain, args.t)
-        export.export_colors(s.ColorType.plain)
+        set_colors.send_sequences(g.ColorType.plain, args.t)
+        export.export_colors(g.ColorType.plain)
 
     # -o
     if args.o:
@@ -97,7 +97,7 @@ def process_args(args):
 
 def main():
     """Main script function."""
-    util.create_dir(s.CACHE_DIR / "schemes")
+    util.create_dir(g.CACHE_DIR / "schemes")
     args = get_args()
     process_args(args)
 

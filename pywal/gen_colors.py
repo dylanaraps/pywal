@@ -8,13 +8,13 @@ import re
 import shutil
 import subprocess
 
-from pywal import settings as s
+from pywal import globals as g
 from pywal import util
 
 
 def random_img(img_dir):
     """Pick a random image file from a directory."""
-    current_wall = pathlib.Path(s.CACHE_DIR / "wal")
+    current_wall = pathlib.Path(g.CACHE_DIR / "wal")
 
     if current_wall.is_file():
         current_wall = util.read_file(current_wall)
@@ -64,18 +64,18 @@ def gen_colors(img):
         exit(1)
 
     # Generate initial scheme.
-    raw_colors = imagemagick(s.COLOR_COUNT, img)
+    raw_colors = imagemagick(g.COLOR_COUNT, img)
 
     # If imagemagick finds less than 16 colors, use a larger source number
     # of colors.
     index = 0
-    while len(raw_colors) - 1 < s.COLOR_COUNT:
+    while len(raw_colors) - 1 < g.COLOR_COUNT:
         index += 1
-        raw_colors = imagemagick(s.COLOR_COUNT + index, img)
+        raw_colors = imagemagick(g.COLOR_COUNT + index, img)
 
-        print("colors: Imagemagick couldn't generate a", s.COLOR_COUNT,
+        print("colors: Imagemagick couldn't generate a", g.COLOR_COUNT,
               "color palette, trying a larger palette size",
-              s.COLOR_COUNT + index)
+              g.COLOR_COUNT + index)
 
     # Remove the first element, which isn't a color.
     del raw_colors[0]
@@ -87,10 +87,10 @@ def gen_colors(img):
 def get_colors(img):
     """Generate a colorscheme using imagemagick."""
     # Cache the wallpaper name.
-    util.save_file(img, s.CACHE_DIR / "wal")
+    util.save_file(img, g.CACHE_DIR / "wal")
 
     # Cache the sequences file.
-    cache_file = pathlib.Path(s.CACHE_DIR / "schemes" / img.replace("/", "_"))
+    cache_file = pathlib.Path(g.CACHE_DIR / "schemes" / img.replace("/", "_"))
 
     if cache_file.is_file():
         colors = util.read_file(cache_file)
@@ -98,7 +98,7 @@ def get_colors(img):
 
     else:
         print("colors: Generating a colorscheme...")
-        if s.Args.notify:
+        if g.Args.notify:
             util.disown("notify-send", "wal: Generating a colorscheme...")
 
         # Generate the colors.
@@ -109,7 +109,7 @@ def get_colors(img):
         util.save_file("\n".join(colors), cache_file)
 
         print("colors: Generated colorscheme")
-        if s.Args.notify:
+        if g.Args.notify:
             util.disown("notify-send", "wal: Generation complete.")
 
     return colors

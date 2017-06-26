@@ -5,43 +5,43 @@ import os
 import pathlib
 import re
 
-from pywal import settings as s
+from pywal import globals as g
 from pywal import util
 
 
 def set_special(index, color):
     """Build the escape sequence for special colors."""
-    s.ColorType.sequences.append(f"\\033]{index};{color}\\007")
+    g.ColorType.sequences.append(f"\\033]{index};{color}\\007")
 
     if index == 10:
-        s.ColorType.xrdb.append(f"URxvt*foreground: {color}")
-        s.ColorType.xrdb.append(f"XTerm*foreground: {color}")
+        g.ColorType.xrdb.append(f"URxvt*foreground: {color}")
+        g.ColorType.xrdb.append(f"XTerm*foreground: {color}")
 
     elif index == 11:
-        s.ColorType.xrdb.append(f"URxvt*background: {color}")
-        s.ColorType.xrdb.append(f"XTerm*background: {color}")
+        g.ColorType.xrdb.append(f"URxvt*background: {color}")
+        g.ColorType.xrdb.append(f"XTerm*background: {color}")
 
     elif index == 12:
-        s.ColorType.xrdb.append(f"URxvt*cursorColor: {color}")
-        s.ColorType.xrdb.append(f"XTerm*cursorColor: {color}")
+        g.ColorType.xrdb.append(f"URxvt*cursorColor: {color}")
+        g.ColorType.xrdb.append(f"XTerm*cursorColor: {color}")
 
     elif index == 66:
-        s.ColorType.xrdb.append(f"*.color{index}: {color}")
-        s.ColorType.xrdb.append(f"*color{index}: {color}")
-        s.ColorType.sequences.append(f"\\033]4;{index};{color}\\007")
+        g.ColorType.xrdb.append(f"*.color{index}: {color}")
+        g.ColorType.xrdb.append(f"*color{index}: {color}")
+        g.ColorType.sequences.append(f"\\033]4;{index};{color}\\007")
 
 
 def set_color(index, color):
     """Build the escape sequence we need for each color."""
-    s.ColorType.xrdb.append(f"*.color{index}: {color}")
-    s.ColorType.xrdb.append(f"*color{index}: {color}")
-    s.ColorType.sequences.append(f"\\033]4;{index};{color}\\007")
-    s.ColorType.shell.append(f"color{index}='{color}'")
-    s.ColorType.css.append(f"\t--color{index}: {color};")
-    s.ColorType.scss.append(f"$color{index}: {color};")
+    g.ColorType.xrdb.append(f"*.color{index}: {color}")
+    g.ColorType.xrdb.append(f"*color{index}: {color}")
+    g.ColorType.sequences.append(f"\\033]4;{index};{color}\\007")
+    g.ColorType.shell.append(f"color{index}='{color}'")
+    g.ColorType.css.append(f"\t--color{index}: {color};")
+    g.ColorType.scss.append(f"$color{index}: {color};")
 
     rgb = util.hex_to_rgb(color)
-    s.ColorType.putty.append(f"\"Colour{index}\"=\"{rgb}\"")
+    g.ColorType.putty.append(f"\"Colour{index}\"=\"{rgb}\"")
 
 
 def set_grey(colors):
@@ -80,12 +80,12 @@ def send_sequences(colors, vte):
     set_special(66, colors[0])
 
     # Make the terminal interpret escape sequences.
-    sequences = util.fix_escape("".join(s.ColorType.sequences))
+    sequences = util.fix_escape("".join(g.ColorType.sequences))
 
     # Get a list of terminals.
     terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")
                  if len(term) < 4]
-    terminals.append(s.CACHE_DIR / "sequences")
+    terminals.append(g.CACHE_DIR / "sequences")
 
     # Send the sequences to all open terminals.
     # pylint: disable=W0106
@@ -96,7 +96,7 @@ def send_sequences(colors, vte):
 
 def reload_colors(vte):
     """Reload colors."""
-    sequence_file = pathlib.Path(s.CACHE_DIR / "sequences")
+    sequence_file = pathlib.Path(g.CACHE_DIR / "sequences")
 
     if sequence_file.is_file():
         sequences = "".join(util.read_file(sequence_file))

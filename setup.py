@@ -1,6 +1,6 @@
 """wal - setup.py"""
 from setuptools import setup
-import pywal.settings as pywal
+import pywal.globals as pywal
 
 
 DESC = (
