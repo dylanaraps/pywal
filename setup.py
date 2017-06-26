@@ -1,6 +1,6 @@
 """wal - setup.py"""
 from setuptools import setup
-import pywal
+import pywal.__main__ as pywal
 
 
 DESC = (
@@ -11,7 +11,7 @@ DESC = (
 DESC = "".join(DESC)
 
 
-VERSION = pywal.wal.__version__
+VERSION = pywal.__version__
 DOWNLOAD_URL = f"https://github.com/dylanaraps/pywal/archive/{VERSION}.tar.gz"
 
 
