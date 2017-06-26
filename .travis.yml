@@ -7,4 +7,4 @@ install:
 
 script:
     - flake8 pywal setup.py
-    - pylint -ignore-imports=yes pywal setup.py
+    - pylint --ignore-imports=yes pywal setup.py
