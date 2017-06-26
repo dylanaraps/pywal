@@ -4,7 +4,7 @@ Export colors in various formats.
 import shutil
 import subprocess
 
-from pywal import globals as g
+from pywal.settings import CACHE_DIR
 from pywal import util
 from pywal import format_color
 
@@ -12,14 +12,14 @@ from pywal import format_color
 def save_colors(colors, export_file, message):
     """Export colors to var format."""
     colors = "".join(colors)
-    util.save_file(colors, g.CACHE_DIR / export_file)
+    util.save_file(colors, CACHE_DIR / export_file)
     print(f"export: exported {message}.")
 
 
 def reload_xrdb(export_file):
     """Merge the colors into the X db so new terminals use them."""
     if shutil.which("xrdb"):
-        subprocess.call(["xrdb", "-merge", g.CACHE_DIR / export_file])
+        subprocess.call(["xrdb", "-merge", CACHE_DIR / export_file])
 
 
 def reload_i3():

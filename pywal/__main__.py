@@ -7,7 +7,7 @@ import os
 import shutil
 import sys
 
-from pywal import globals as g
+from pywal.settings import CACHE_DIR, __version__
 from pywal import export_colors
 from pywal import gen_colors
 from pywal import set_colors
@@ -64,8 +64,8 @@ def process_args(args):
 
     # -c
     if args.c:
-        shutil.rmtree(g.CACHE_DIR / "schemes")
-        util.create_dir(g.CACHE_DIR / "schemes")
+        shutil.rmtree(CACHE_DIR / "schemes")
+        util.create_dir(CACHE_DIR / "schemes")
 
     # -r
     if args.r:
@@ -73,7 +73,7 @@ def process_args(args):
 
     # -v
     if args.v:
-        print(f"wal {g.__version__}")
+        print(f"wal {__version__}")
         exit(0)
 
     # -i
@@ -98,7 +98,7 @@ def process_args(args):
 
 def main():
     """Main script function."""
-    util.create_dir(g.CACHE_DIR / "schemes")
+    util.create_dir(CACHE_DIR / "schemes")
     args = get_args()
     process_args(args)
 

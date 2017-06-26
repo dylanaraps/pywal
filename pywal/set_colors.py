@@ -5,7 +5,7 @@ import os
 import pathlib
 import re
 
-from pywal import globals as g
+from pywal.settings import CACHE_DIR
 from pywal import util
 
 
@@ -54,7 +54,7 @@ def send_sequences(colors, vte):
     # Get a list of terminals.
     terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")
                  if len(term) < 4]
-    terminals.append(g.CACHE_DIR / "sequences")
+    terminals.append(CACHE_DIR / "sequences")
 
     # Send the sequences to all open terminals.
     # pylint: disable=W0106
@@ -65,7 +65,7 @@ def send_sequences(colors, vte):
 
 def reload_colors(vte):
     """Reload colors."""
-    sequence_file = pathlib.Path(g.CACHE_DIR / "sequences")
+    sequence_file = pathlib.Path(CACHE_DIR / "sequences")
 
     if sequence_file.is_file():
         sequences = "".join(util.read_file(sequence_file))
