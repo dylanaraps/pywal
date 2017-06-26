@@ -28,11 +28,6 @@ def hex_to_rgb(color):
     return f"{red},{green},{blue}"
 
 
-def fix_escape(string):
-    """Decode a string."""
-    return bytes(string, "utf-8").decode("unicode_escape")
-
-
 def disown(*cmd):
     """Call a system command in the background,
        disown it and hide it's output."""

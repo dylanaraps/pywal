@@ -45,7 +45,7 @@ def send_sequences(colors, vte):
     sequences.append(set_special(14, colors[0]))
 
     # Set a blank color that isn"t affected by bold highlighting.
-    sequences.append(set_special(66, colors[0]))
+    sequences.append(set_color(66, colors[0]))
 
     # This escape sequence doesn"t work in VTE terminals.
     if not vte:
@@ -75,6 +75,6 @@ def reload_colors(vte):
             sequences = re.sub(r"\]708;\#.{6}", "", sequences)
 
         # Make the terminal interpret escape sequences.
-        print(util.fix_escape(sequences), end="")
+        print(sequences, end="")
 
     exit(0)
