@@ -12,37 +12,31 @@ from pywal import settings as s
 from pywal import util
 
 
+def random_img(img_dir):
+    """Pick a random image file from a directory."""
+    current_wall = pathlib.Path(s.CACHE_DIR / "wal")
+
+    if current_wall.is_file():
+        current_wall = util.read_file(current_wall)
+        current_wall = os.path.basename(current_wall[0])
+
+    # Add all images to a list excluding the current wallpaper.
+    file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
+    images = [img for img in os.listdir(img_dir)
+              if img.endswith(file_types) and img != current_wall]
+
+    return pathlib.Path(img_dir / random.choice(images))
+
+
 def get_image(img):
     """Validate image input."""
-    # Check if the user has Imagemagick installed.
-    if not shutil.which("convert"):
-        print("error: imagemagick not found, exiting...\n"
-              "error: wal requires imagemagick to function.")
-        exit(1)
-
     image = pathlib.Path(img)
 
     if image.is_file():
         wal_img = image
 
-    # Pick a random image from the directory.
     elif image.is_dir():
-        file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
-
-        # Get the filename of the current wallpaper.
-        current_img = pathlib.Path(s.CACHE_DIR / "wal")
-
-        if current_img.is_file():
-            current_img = util.read_file(current_img)
-            current_img = os.path.basename(current_img[0])
-
-        # Get a list of images.
-        images = [img for img in os.listdir(image)
-                  if img.endswith(file_types) and
-                  img != current_img]
-
-        wal_img = random.choice(images)
-        wal_img = pathlib.Path(image / wal_img)
+        wal_img = random_img(image)
 
     else:
         print("error: No valid image file found.")
@@ -63,6 +57,12 @@ def imagemagick(color_count, img):
 
 def gen_colors(img):
     """Generate a color palette using imagemagick."""
+    # Check if the user has Imagemagick installed.
+    if not shutil.which("convert"):
+        print("error: imagemagick not found, exiting...\n"
+              "error: wal requires imagemagick to function.")
+        exit(1)
+
     # Generate initial scheme.
     raw_colors = imagemagick(s.COLOR_COUNT, img)
 
