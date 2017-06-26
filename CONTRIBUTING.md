@@ -32,3 +32,13 @@ I'm not fussed if you don't follow this one too closely as I'm guilty of forgett
 # Example:
 git commit -m "export: Added export format for emacs. Closes #11"
 ```
+
+
+### Running `pywal`
+
+You can run `pywal` without properly installing it by using the following command:
+
+```sh
+./pywal/__init__.py
+```
+
