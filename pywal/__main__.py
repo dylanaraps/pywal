@@ -8,7 +8,7 @@ import shutil
 import sys
 
 from pywal import globals as g
-from pywal import exp_colors
+from pywal import export_colors
 from pywal import gen_colors
 from pywal import set_colors
 from pywal import wallpaper
@@ -90,7 +90,7 @@ def process_args(args):
 
         # Set the colors.
         set_colors.send_sequences(colors_plain, args.t)
-        exp_colors.export_colors(colors_plain)
+        export_colors.export_colors(colors_plain)
 
     # -o
     if args.o:
