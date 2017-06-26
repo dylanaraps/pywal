@@ -11,37 +11,12 @@ from pywal import util
 
 def set_special(index, color):
     """Build the escape sequence for special colors."""
-    g.ColorType.sequences.append(f"\\033]{index};{color}\\007")
-
-    if index == 10:
-        g.ColorType.xrdb.append(f"URxvt*foreground: {color}")
-        g.ColorType.xrdb.append(f"XTerm*foreground: {color}")
-
-    elif index == 11:
-        g.ColorType.xrdb.append(f"URxvt*background: {color}")
-        g.ColorType.xrdb.append(f"XTerm*background: {color}")
-
-    elif index == 12:
-        g.ColorType.xrdb.append(f"URxvt*cursorColor: {color}")
-        g.ColorType.xrdb.append(f"XTerm*cursorColor: {color}")
-
-    elif index == 66:
-        g.ColorType.xrdb.append(f"*.color{index}: {color}")
-        g.ColorType.xrdb.append(f"*color{index}: {color}")
-        g.ColorType.sequences.append(f"\\033]4;{index};{color}\\007")
+    return f"\033]{index};{color}\007"
 
 
 def set_color(index, color):
     """Build the escape sequence we need for each color."""
-    g.ColorType.xrdb.append(f"*.color{index}: {color}")
-    g.ColorType.xrdb.append(f"*color{index}: {color}")
-    g.ColorType.sequences.append(f"\\033]4;{index};{color}\\007")
-    g.ColorType.shell.append(f"color{index}='{color}'")
-    g.ColorType.css.append(f"\t--color{index}: {color};")
-    g.ColorType.scss.append(f"$color{index}: {color};")
-
-    rgb = util.hex_to_rgb(color)
-    g.ColorType.putty.append(f"\"Colour{index}\"=\"{rgb}\"")
+    return f"\033]4;{index};{color}\007"
 
 
 def set_grey(colors):
@@ -62,25 +37,19 @@ def set_grey(colors):
 
 def send_sequences(colors, vte):
     """Send colors to all open terminals."""
-    set_special(10, colors[15])
-    set_special(11, colors[0])
-    set_special(12, colors[15])
-    set_special(13, colors[15])
-    set_special(14, colors[0])
+    sequences = [set_color(num, color) for num, color in enumerate(colors)]
+    sequences.append(set_special(10, colors[15]))
+    sequences.append(set_special(11, colors[0]))
+    sequences.append(set_special(12, colors[15]))
+    sequences.append(set_special(13, colors[15]))
+    sequences.append(set_special(14, colors[0]))
+
+    # Set a blank color that isn"t affected by bold highlighting.
+    sequences.append(set_special(66, colors[0]))
 
     # This escape sequence doesn"t work in VTE terminals.
     if not vte:
-        set_special(708, colors[0])
-
-    # Create the sequences.
-    # pylint: disable=W0106
-    [set_color(num, color) for num, color in enumerate(colors)]
-
-    # Set a blank color that isn"t affected by bold highlighting.
-    set_special(66, colors[0])
-
-    # Make the terminal interpret escape sequences.
-    sequences = util.fix_escape("".join(g.ColorType.sequences))
+        sequences.append(set_special(708, colors[0]))
 
     # Get a list of terminals.
     terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")
@@ -89,7 +58,7 @@ def send_sequences(colors, vte):
 
     # Send the sequences to all open terminals.
     # pylint: disable=W0106
-    [util.save_file(sequences, term) for term in terminals]
+    [util.save_file("".join(sequences), term) for term in terminals]
 
     print("colors: Set terminal colors")
 

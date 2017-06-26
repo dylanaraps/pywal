@@ -8,7 +8,7 @@ import shutil
 import sys
 
 from pywal import globals as g
-from pywal import export
+from pywal import exp_colors
 from pywal import gen_colors
 from pywal import set_colors
 from pywal import wallpaper
@@ -80,15 +80,17 @@ def process_args(args):
     # -i
     if args.i:
         image = gen_colors.get_image(args.i)
-        g.ColorType.plain = gen_colors.get_colors(image)
-        g.ColorType.plain[8] = set_colors.set_grey(g.ColorType.plain)
+
+        # Create a list of hex colors.
+        colors_plain = gen_colors.get_colors(image)
+        colors_plain[8] = set_colors.set_grey(colors_plain)
 
         if not args.n:
             wallpaper.set_wallpaper(image)
 
         # Set the colors.
-        set_colors.send_sequences(g.ColorType.plain, args.t)
-        export.export_colors(g.ColorType.plain)
+        set_colors.send_sequences(colors_plain, args.t)
+        exp_colors.export_colors(colors_plain)
 
     # -o
     if args.o:
