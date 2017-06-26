@@ -1,7 +1,7 @@
 """wal - setup.py"""
 from setuptools import setup
-
 import pywal
+
 
 DESC = (
     "View the DOCS at: https://github.com/dylanaraps/pywal\n\n"
@@ -10,19 +10,21 @@ DESC = (
 )
 DESC = "".join(DESC)
 
-version = pywal.__version__
-download_url = f"https://github.com/dylanaraps/pywal/archive/{version}.tar.gz"
+
+VERSION = pywal.__version__
+DOWNLOAD_URL = f"https://github.com/dylanaraps/pywal/archive/{VERSION}.tar.gz"
+
 
 setup(
     name="pywal",
-    version=version,
+    version=VERSION,
     author="Dylan Araps",
     author_email="dylan.araps@gmail.com",
     description="🎨 Generate and change colorschemes on the fly",
     long_description=DESC,
     license="MIT",
     url="https://github.com/dylanaraps/pywal",
-    download_url=download_url,
+    download_url=DOWNLOAD_URL,
     classifiers=[
         "Environment :: X11 Applications",
         "License :: OSI Approved :: MIT License",

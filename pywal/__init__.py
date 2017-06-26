@@ -576,3 +576,7 @@ def main():
     # This saves 10ms.
     # pylint: disable=W0212
     # os._exit(0)
+
+
+if __name__ == "__main__":
+    main()
