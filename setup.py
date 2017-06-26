@@ -11,7 +11,7 @@ DESC = (
 DESC = "".join(DESC)
 
 
-VERSION = pywal.__version__
+VERSION = pywal.wal.__version__
 DOWNLOAD_URL = f"https://github.com/dylanaraps/pywal/archive/{VERSION}.tar.gz"
 
 

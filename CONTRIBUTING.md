@@ -34,6 +34,11 @@ git commit -m "export: Added export format for emacs. Closes #11"
 ```
 
 
+### Comment Style
+
+All comments must start with a capital letter and end with a full stop `.`.
+
+
 ### Running `pywal`
 
 You can run `pywal` without properly installing it by using the following command:
