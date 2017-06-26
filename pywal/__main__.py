@@ -61,7 +61,6 @@ def process_args(args):
     # -q
     if args.q:
         sys.stdout = sys.stderr = open(os.devnull, "w")
-        g.Args.notify = False
 
     # -c
     if args.c:
@@ -82,7 +81,7 @@ def process_args(args):
         image = gen_colors.get_image(args.i)
 
         # Create a list of hex colors.
-        colors_plain = gen_colors.get_colors(image)
+        colors_plain = gen_colors.get_colors(image, args.q)
         colors_plain[8] = set_colors.set_grey(colors_plain)
 
         if not args.n:

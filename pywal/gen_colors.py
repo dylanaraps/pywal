@@ -84,7 +84,7 @@ def gen_colors(img):
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors]
 
 
-def get_colors(img):
+def get_colors(img, quiet):
     """Generate a colorscheme using imagemagick."""
     # Cache the wallpaper name.
     util.save_file(img, g.CACHE_DIR / "wal")
@@ -98,7 +98,7 @@ def get_colors(img):
 
     else:
         print("colors: Generating a colorscheme...")
-        if g.Args.notify:
+        if not quiet:
             util.disown("notify-send", "wal: Generating a colorscheme...")
 
         # Generate the colors.
@@ -109,7 +109,7 @@ def get_colors(img):
         util.save_file("\n".join(colors), cache_file)
 
         print("colors: Generated colorscheme")
-        if g.Args.notify:
+        if not quiet:
             util.disown("notify-send", "wal: Generation complete.")
 
     return colors
