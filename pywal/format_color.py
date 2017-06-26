@@ -53,7 +53,7 @@ def xrdb(colors):
     x_colors.append(f"URxvt*cursorColor: {colors[15]}\n")
     x_colors.append(f"XTerm*cursorColor: {colors[15]}\n")
 
-    # Colors 0-15
+    # Colors 0-15.
     x_colors.extend([f"*.color{index}: {color}\n*color{index}: {color}\n"
                      for index, color in enumerate(colors)])
 

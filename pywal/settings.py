@@ -1,5 +1,5 @@
 """
-Global variables and classes.
+Global Constants.
 """
 import pathlib
 
