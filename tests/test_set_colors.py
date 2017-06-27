@@ -10,7 +10,7 @@ COLORS = util.read_file("tests/test_file")
 
 
 class TestSetColors(unittest.TestCase):
-    """Test the format_colors functions."""
+    """Test the set_colors functions."""
 
     def test_set_special(self):
         """> Create special escape sequence."""
