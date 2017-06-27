@@ -6,7 +6,7 @@ import subprocess
 
 from pywal.settings import CACHE_DIR
 from pywal import util
-from pywal import format_color
+from pywal import format_colors
 
 
 def save_colors(colors, export_file, message):
@@ -30,25 +30,25 @@ def reload_i3():
 
 def export_colors(colors):
     """Export colors in various formats."""
-    plain_colors = format_color.plain(colors)
+    plain_colors = format_colors.plain(colors)
     save_colors(plain_colors, "colors", "plain hex colors")
 
     # Shell based colors.
-    shell_colors = format_color.shell(colors)
+    shell_colors = format_colors.shell(colors)
     save_colors(shell_colors, "colors.sh", "shell variables")
 
     # Web based colors.
-    css_colors = format_color.css(colors)
+    css_colors = format_colors.css(colors)
     save_colors(css_colors, "colors.css", "css variables")
-    scss_colors = format_color.scss(colors)
+    scss_colors = format_colors.scss(colors)
     save_colors(scss_colors, "colors.scss", "scss variables")
 
     # Text editor based colors.
-    putty_colors = format_color.putty(colors)
+    putty_colors = format_colors.putty(colors)
     save_colors(putty_colors, "colors-putty.reg", "putty theme")
 
     # X based colors.
-    xrdb_colors = format_color.xrdb(colors)
+    xrdb_colors = format_colors.xrdb(colors)
     save_colors(xrdb_colors, "xcolors", "xrdb colors")
 
     # i3 colors.
