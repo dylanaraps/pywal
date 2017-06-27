@@ -1,4 +1,4 @@
-"""Test util functions."""
+"""Test export functions."""
 import unittest
 import pathlib
 
