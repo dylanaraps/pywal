@@ -3,3 +3,4 @@ pywal.egg-info/*
 *.pyc
 subprocess
 re
+build/*

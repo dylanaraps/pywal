@@ -1,5 +1,5 @@
 """wal - setup.py"""
-from setuptools import setup, find_packages
+from setuptools import setup
 import pywal
 
 
@@ -31,7 +31,7 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3.6",
     ],
-    packages=find_packages(),
+    packages=["pywal"],
     entry_points={
         "console_scripts": ["wal=pywal.__main__:main"]
     },
