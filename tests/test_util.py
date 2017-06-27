@@ -1,6 +1,7 @@
 """Test util functions."""
 import unittest
 import pathlib
+
 from pywal import util
 
 

@@ -1,5 +1,6 @@
 """Test format functions."""
 import unittest
+
 from pywal import format_color
 from pywal import util
 
@@ -8,7 +9,7 @@ from pywal import util
 COLORS = util.read_file("tests/test_file")
 
 
-class TestExportColors(unittest.TestCase):
+class TestFormatColors(unittest.TestCase):
     """Test the format_colors functions."""
 
     def test_plain(self):

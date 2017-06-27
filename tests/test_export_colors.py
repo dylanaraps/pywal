@@ -1,8 +1,13 @@
 """Test util functions."""
 import unittest
 import pathlib
+
 from pywal import export_colors
 from pywal import util
+
+
+# Import colors.
+COLORS = util.read_file("tests/test_file")
 
 
 class TestExportColors(unittest.TestCase):
