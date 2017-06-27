@@ -8,7 +8,9 @@ import subprocess
 
 def read_file(input_file):
     """Read colors from a file."""
-    return open(input_file).read().splitlines()
+    with open(input_file) as file:
+        colors = file.read().splitlines()
+    return colors
 
 
 def save_file(colors, export_file):
