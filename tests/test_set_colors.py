@@ -6,7 +6,7 @@ from pywal import util
 
 
 # Import colors.
-COLORS = util.read_file("tests/test_file")
+COLORS = util.read_file("tests/test_files/test_file")
 
 
 class TestSetColors(unittest.TestCase):

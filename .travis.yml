@@ -6,6 +6,6 @@ install:
     - pip install flake8 pylint
 
 script:
-    - flake8 pywal setup.py
-    - pylint --ignore-imports=yes pywal setup.py
+    - flake8 pywal tests setup.py
+    - pylint --ignore-imports=yes pywal tests setup.py
     - python setup.py test

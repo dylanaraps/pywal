@@ -10,12 +10,12 @@ class TestUtil(unittest.TestCase):
 
     def test_read_file_start(self):
         """> Read colors from a file."""
-        result = util.read_file("tests/test_file")
+        result = util.read_file("tests/test_files/test_file")
         self.assertEqual(result[0], "#363442")
 
     def test_read_file_end(self):
         """> Read colors from a file."""
-        result = util.read_file("tests/test_file")
+        result = util.read_file("tests/test_files/test_file")
         self.assertEqual(result[15], "#C9CFD0")
 
     def test_save_file(self):
