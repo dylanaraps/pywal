@@ -35,5 +35,6 @@ setup(
     entry_points={
         "console_scripts": ["wal=pywal.__main__:main"]
     },
-    python_requires=">=3.6"
+    python_requires=">=3.6",
+    test_suite="tests",
 )
