@@ -20,7 +20,7 @@ pip install flake8 pylint
 
 ### Tests
 
-Tests haven't been written yet.
+`wal` can be tested by running `python setup.py test` in the root directory of the repo.
 
 
 ### Commit Message Style
