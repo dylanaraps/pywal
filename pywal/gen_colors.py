@@ -25,7 +25,7 @@ def random_img(img_dir):
     images = [img for img in os.scandir(img_dir)
               if img.name.endswith(file_types) and img.name != current_wall]
 
-    return pathlib.Path(img_dir / random.choice(images))
+    return pathlib.Path(img_dir / random.choice(images).name)
 
 
 def get_image(img):
