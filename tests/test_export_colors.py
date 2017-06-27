@@ -16,8 +16,7 @@ class TestExportColors(unittest.TestCase):
     def test_save_colors(self):
         """> Export colors to a file."""
         tmp_file = pathlib.Path("/tmp/test_file")
-        colors = util.read_file("tests/test_files/test_file")
-        export_colors.save_colors(colors, tmp_file, "plain colors")
+        export_colors.save_colors(COLORS, tmp_file, "plain colors")
         result = tmp_file.is_file()
         self.assertTrue(result)
 
