@@ -34,7 +34,7 @@ setup(
     packages=['pywal'],
     entry_points={
         "console_scripts": [
-            "wal=pywal:main"
+            "wal=pywal.__main__:main"
         ]
     },
     python_requires=">=3.6"
