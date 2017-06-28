@@ -23,11 +23,11 @@ def random_img(img_dir):
     # Add all images to a list excluding the current wallpaper.
     file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
     images = [img for img in os.scandir(img_dir)
-              if img.name.endswith(file_types) and img.name != wallpaper]
+              if img.name.endswith(file_types) and img.name != current_wall]
 
     # If no images are found, use the current wallpaper.
     if not images:
-        return pathlib.Path(wallpaper)
+        return pathlib.Path(wallpaper[0])
 
     return pathlib.Path(img_dir / random.choice(images).name)
 
