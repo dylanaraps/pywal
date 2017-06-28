@@ -17,13 +17,17 @@ def random_img(img_dir):
     current_wall = pathlib.Path(CACHE_DIR / "wal")
 
     if current_wall.is_file():
-        current_wall = util.read_file(current_wall)
-        current_wall = os.path.basename(current_wall[0])
+        wallpaper = util.read_file(current_wall)
+        current_wall = os.path.basename(wallpaper[0])
 
     # Add all images to a list excluding the current wallpaper.
     file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
     images = [img for img in os.scandir(img_dir)
-              if img.name.endswith(file_types) and img.name != current_wall]
+              if img.name.endswith(file_types) and img.name != wallpaper]
+
+    # If no images are found, use the current wallpaper.
+    if not images:
+        return pathlib.Path(wallpaper)
 
     return pathlib.Path(img_dir / random.choice(images).name)
 
