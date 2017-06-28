@@ -27,6 +27,9 @@ def get_args():
     arg.add_argument("-i", metavar="\"/path/to/img.jpg\"",
                      help="Which image or directory to use.")
 
+    arg.add_argument("-f", metavar="\"/path/to/colorscheme/file\"",
+                     help="Which colorscheme file to use.")
+
     arg.add_argument("-n", action="store_true",
                      help="Skip setting the wallpaper.")
 
@@ -55,6 +58,11 @@ def process_args(args):
     # If no args were passed.
     if not len(sys.argv) > 1:
         print("error: wal needs to be given arguments to run.\n"
+              "       Refer to \"wal -h\" for more info.")
+        exit(1)
+
+    if args.i and args.f:
+        print("error: conflicting arguments -i and -f.\n"
               "       Refer to \"wal -h\" for more info.")
         exit(1)
 
@@ -88,6 +96,12 @@ def process_args(args):
             wallpaper.set_wallpaper(image)
 
         # Set the colors.
+        set_colors.send_sequences(colors_plain, args.t)
+        export_colors.export_colors(colors_plain)
+
+    # -f
+    elif args.f:
+        colors_plain = util.read_file(args.f)
         set_colors.send_sequences(colors_plain, args.t)
         export_colors.export_colors(colors_plain)
 
