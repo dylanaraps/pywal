@@ -116,8 +116,9 @@ wal -i "$(< "${HOME}/.cache/wal/wal")"
 Run `wal` and point it to either a directory (`wal -i "path/to/dir"`) or an image (`wal -i "/path/to/img.jpg"`) and that's all. `wal` will change your wallpaper for you and also set your terminal colors.
 
 ```sh
-usage: wal [-h] [-c] [-i "/path/to/img.jpg"] [-n] [-o "script_name"] [-q] [-r]
-           [-t] [-v]
+usage: wal [-h] [-c] [-i "/path/to/img.jpg"]
+                   [-f "/path/to/colorscheme/file"] [-n] [-o "script_name"]
+                   [-q] [-r] [-t] [-v]
 
 wal - Generate colorschemes on the fly
 
@@ -126,14 +127,16 @@ optional arguments:
   -c                    Delete all cached colorschemes.
   -i "/path/to/img.jpg"
                         Which image or directory to use.
+  -f "/path/to/colorscheme/file"
+                        Which colorscheme file to use.
   -n                    Skip setting the wallpaper.
   -o "script_name"      External script to run after "wal".
-  -q                    Quiet mode, don"t print anything.
+  -q                    Quiet mode, don"t print anything and don't display
+                        notifications.
   -r                    Reload current colorscheme.
   -t                    Fix artifacts in VTE Terminals. (Termite,
                         xfce4-terminal)
   -v                    Print "wal" version.
-
 ```
 
 ## Customization
