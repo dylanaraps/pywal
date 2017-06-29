@@ -25,6 +25,8 @@ def template(colors, input_file):
     with open(export_file, "w") as file:
         file.write(template_data)
 
+    print(f"export: Exported {input_file}.")
+
 
 def export_all_templates(colors):
     """Export all template files."""
