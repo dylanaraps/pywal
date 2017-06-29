@@ -96,13 +96,13 @@ def process_args(args):
 
         # Set the colors.
         set_colors.send_sequences(colors_plain, args.t)
-        export_colors.export_colors(colors_plain)
+        export_colors.export_all_templates(colors_plain)
 
     # -f
     elif args.f:
         colors_plain = util.read_file_json(args.f)
         set_colors.send_sequences(colors_plain, args.t)
-        export_colors.export_colors(colors_plain)
+        export_colors.export_all_templates(colors_plain)
 
     # -o
     if args.o:

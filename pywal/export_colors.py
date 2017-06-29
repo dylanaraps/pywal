@@ -1,56 +1,34 @@
 """
 Export colors in various formats.
 """
-import shutil
-import subprocess
+import os
+import pathlib
 
-from pywal.settings import CACHE_DIR
-from pywal import util
-from pywal import format_colors
+from pywal.settings import CACHE_DIR, TEMPLATE_DIR
 
 
-def save_colors(colors, export_file, message):
-    """Export colors to var format."""
-    colors = "".join(colors)
-    util.save_file(colors, CACHE_DIR / export_file)
-    print(f"export: exported {message}.")
+def template(colors, input_file):
+    """Read template file, substitute markers and
+        save the file elsewhere."""
+    template_file = pathlib.Path(TEMPLATE_DIR).joinpath(input_file)
+    export_file = pathlib.Path(CACHE_DIR).joinpath(input_file)
+
+    # Import the template.
+    with open(template_file) as file:
+        template_data = file.readlines()
+
+    # Merge both dicts.
+    colors["colors"].update(colors["special"])
+
+    # Format the markers.
+    template_data = "".join(template_data).format(**colors["colors"])
+
+    # Export the template.
+    with open(export_file, "w") as file:
+        file.write(template_data)
 
 
-def reload_xrdb(export_file):
-    """Merge the colors into the X db so new terminals use them."""
-    if shutil.which("xrdb"):
-        subprocess.call(["xrdb", "-merge", CACHE_DIR / export_file])
-
-
-def reload_i3():
-    """Reload i3 colors."""
-    if shutil.which("i3-msg"):
-        util.disown("i3-msg", "reload")
-
-
-def export_colors(colors):
-    """Export colors in various formats."""
-    plain_colors = format_colors.plain(colors)
-    save_colors(plain_colors, "colors", "plain hex colors")
-
-    # Shell based colors.
-    shell_colors = format_colors.shell(colors)
-    save_colors(shell_colors, "colors.sh", "shell variables")
-
-    # Web based colors.
-    css_colors = format_colors.css(colors)
-    save_colors(css_colors, "colors.css", "css variables")
-    scss_colors = format_colors.scss(colors)
-    save_colors(scss_colors, "colors.scss", "scss variables")
-
-    # Text editor based colors.
-    putty_colors = format_colors.putty(colors)
-    save_colors(putty_colors, "colors-putty.reg", "putty theme")
-
-    # X based colors.
-    xrdb_colors = format_colors.xrdb(colors)
-    save_colors(xrdb_colors, "xcolors", "xrdb colors")
-
-    # i3 colors.
-    reload_xrdb("xcolors")
-    reload_i3()
+def export_all_templates(colors):
+    """Export all template files."""
+    # pylint: disable=W0106
+    [template(colors, file.name) for file in os.scandir(TEMPLATE_DIR)]
