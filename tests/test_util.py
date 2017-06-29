@@ -5,23 +5,39 @@ import pathlib
 from pywal import util
 
 
+# Import colors.
+COLORS = util.read_file_json("tests/test_files/test_file.json")
+
+
 class TestUtil(unittest.TestCase):
     """Test the util functions."""
 
-    def test_read_file_start(self):
+    def test_read_file(self):
         """> Read colors from a file."""
         result = util.read_file("tests/test_files/test_file")
-        self.assertEqual(result[0], "#363442")
+        self.assertEqual(result[0], "/home/dylan/Pictures/Wallpapers/1.jpg")
+
+    def test_read_file_start(self):
+        """> Read colors from a file."""
+        result = util.read_file_json("tests/test_files/test_file.json")
+        self.assertEqual(result["colors"]["color0"], "#3A5130")
 
     def test_read_file_end(self):
         """> Read colors from a file."""
-        result = util.read_file("tests/test_files/test_file")
-        self.assertEqual(result[15], "#C9CFD0")
+        result = util.read_file_json("tests/test_files/test_file.json")
+        self.assertEqual(result["colors"]["color15"], "#FAF9F5")
 
     def test_save_file(self):
         """> Save colors to a file."""
         tmp_file = pathlib.Path("/tmp/test_file")
         util.save_file("Hello, world", tmp_file)
+        result = tmp_file.is_file()
+        self.assertTrue(result)
+
+    def test_save_file_json(self):
+        """> Save colors to a file."""
+        tmp_file = pathlib.Path("/tmp/test_file.json")
+        util.save_file_json(COLORS, tmp_file)
         result = tmp_file.is_file()
         self.assertTrue(result)
 
