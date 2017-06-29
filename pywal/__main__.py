@@ -103,7 +103,6 @@ def process_args(args):
     elif args.f:
         colors_plain = util.read_file_json(args.f)
         set_colors.send_sequences(colors_plain, args.t)
-        quit()
         export_colors.export_colors(colors_plain)
 
     # -o
