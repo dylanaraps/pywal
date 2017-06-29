@@ -37,19 +37,26 @@ def set_grey(colors):
 
 def send_sequences(colors, vte):
     """Send colors to all open terminals."""
-    sequences = [set_color(num, color) for num, color in enumerate(colors)]
-    sequences.append(set_special(10, colors[15]))
-    sequences.append(set_special(11, colors[0]))
-    sequences.append(set_special(12, colors[15]))
-    sequences.append(set_special(13, colors[15]))
-    sequences.append(set_special(14, colors[0]))
+
+    # Colors 0-15.
+    sequences = [set_color(num, color)
+                 for num, color in enumerate(colors["colors"].values())]
+
+    # Special colors.
+    sequences.append(set_special(10, colors["special"]["foreground"]))
+    sequences.append(set_special(11, colors["special"]["background"]))
+    sequences.append(set_special(12, colors["special"]["cursor"]))
+
+    # TODO: Figure out what these change.
+    # sequences.append(set_special(13, colors["foreground"]))
+    # sequences.append(set_special(14, colors["background"]))
 
     # Set a blank color that isn"t affected by bold highlighting.
-    sequences.append(set_color(66, colors[0]))
+    sequences.append(set_color(66, colors["special"]["background"]))
 
     # This escape sequence doesn"t work in VTE terminals.
     if not vte:
-        sequences.append(set_special(708, colors[0]))
+        sequences.append(set_special(708, colors["special"]["background"]))
 
     # Get a list of terminals.
     terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")

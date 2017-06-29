@@ -1,6 +1,7 @@
 """
 Misc helper functions.
 """
+import json
 import os
 import pathlib
 import subprocess
@@ -10,6 +11,13 @@ def read_file(input_file):
     """Read colors from a file."""
     with open(input_file) as file:
         colors = file.read().splitlines()
+    return colors
+
+
+def read_file_json(input_file):
+    """Read colors from a json file."""
+    with open(input_file) as json_file:
+        colors = json.load(json_file)
     return colors
 
 
