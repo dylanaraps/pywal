@@ -31,13 +31,14 @@ def export_all_templates(colors, template_dir=None, output_dir=CACHE_DIR):
     """Export all template files."""
 
     # Add the template dir to module path.
-    template_dir = template_dir or os.path.join(os.path.dirname(__file__), "templates")
+    template_dir = template_dir or \
+        os.path.join(os.path.dirname(__file__), "templates")
 
     # Merge all colors (specials and normals) into one dict so we can access
     # their values simpler.
-    all_colors = dict()
-    for v in colors.values():
-        all_colors.update(v)
+    all_colors = {}
+    # pylint: disable=W0106
+    [all_colors.update(value) for value in colors.values()]
 
     # Turn all those colors into util.Color instances for accessing the
     # .hex and .rgb formats

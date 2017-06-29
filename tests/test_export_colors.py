@@ -20,13 +20,16 @@ class TestExportColors(unittest.TestCase):
         COLORS["colors"].update(COLORS["special"])
 
         output_dir = pathlib.Path("/tmp")
-        export_colors.export_all_templates(COLORS, pathlib.Path("tests/test_files/templates"), output_dir)
+        template_dir = pathlib.Path("tests/test_files/templates")
+        export_colors.export_all_templates(COLORS, template_dir, output_dir)
 
         result = pathlib.Path("/tmp/test_template").is_file()
         self.assertTrue(result)
 
         content = pathlib.Path("/tmp/test_template").read_text()
-        self.assertEqual(content, '\n'.join(["test1 #3A5130", "test2 #3A5130", "test3 58,81,48", ""]))
+        self.assertEqual(content, '\n'.join(["test1 #3A5130",
+                                             "test2 #3A5130",
+                                             "test3 58,81,48", ""]))
 
 
 if __name__ == "__main__":
