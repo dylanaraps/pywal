@@ -51,3 +51,14 @@ def disown(*cmd):
                      stdout=subprocess.DEVNULL,
                      stderr=subprocess.DEVNULL,
                      preexec_fn=os.setpgrp)
+
+class Color(object):
+    def __init__(self, hex):
+        self.hex = hex
+
+    def __str__(self):
+        return self.hex
+
+    @property
+    def rgb(self):
+        return hex_to_rgb(self.hex)
