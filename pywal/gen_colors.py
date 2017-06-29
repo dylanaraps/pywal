@@ -9,6 +9,7 @@ import shutil
 import subprocess
 
 from pywal.settings import CACHE_DIR, COLOR_COUNT
+from pywal import set_colors
 from pywal import util
 
 
@@ -96,9 +97,10 @@ def get_colors(img, quiet):
 
     # Cache the sequences file.
     cache_file = pathlib.Path(CACHE_DIR / "schemes" / img.replace("/", "_"))
+    cache_file = pathlib.Path(cache_file.with_suffix(".json"))
 
     if cache_file.is_file():
-        colors = util.read_file(cache_file)
+        colors = util.read_file_json(cache_file)
         print("colors: Found cached colorscheme.")
 
     else:
@@ -111,7 +113,7 @@ def get_colors(img, quiet):
         colors = sort_colors(colors)
 
         # Cache the colorscheme.
-        util.save_file("\n".join(colors), cache_file)
+        util.save_file_json(colors, cache_file)
 
         print("colors: Generated colorscheme")
         if not quiet:
@@ -134,6 +136,9 @@ def sort_colors(colors):
     colors_hex = {}
     [colors_hex.update({f"color{index}": color})  # pylint: disable=W0106
      for index, color in enumerate(raw_colors)]
+
+    # Color 8
+    colors_hex["color8"] = set_colors.set_grey(raw_colors)
 
     # Add the colors to a dict.
     colors = {}

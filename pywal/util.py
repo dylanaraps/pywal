@@ -27,6 +27,12 @@ def save_file(colors, export_file):
         file.write(colors)
 
 
+def save_file_json(colors, export_file):
+    """Write the colors to a json file."""
+    with open(export_file, "w") as file:
+        json.dump(colors, file, indent=4)
+
+
 def create_dir(directory):
     """Alias to create the cache dir."""
     pathlib.Path(directory).mkdir(parents=True, exist_ok=True)

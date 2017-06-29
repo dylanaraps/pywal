@@ -90,7 +90,6 @@ def process_args(args):
 
         # Create a list of hex colors.
         colors_plain = gen_colors.get_colors(image, args.q)
-        # colors_plain[8] = set_colors.set_grey(colors_plain)
 
         if not args.n:
             wallpaper.set_wallpaper(image)
