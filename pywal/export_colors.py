@@ -36,14 +36,12 @@ def export_all_templates(colors, template_dir=None, output_dir=CACHE_DIR):
 
     # Merge all colors (specials and normals) into one dict so we can access
     # their values simpler.
-    all_colors = {}
-    # pylint: disable=W0106
-    [all_colors.update(value) for value in colors.values()]
+    all_colors = {**colors["special"], **colors["colors"]}
 
     # Turn all those colors into util.Color instances for accessing the
     # .hex and .rgb formats
     all_colors = {k: util.Color(v) for k, v in all_colors.items()}
 
     # pylint: disable=W0106
-    for file in os.scandir(template_dir):
-        template(all_colors, file.path, output_dir)
+    [template(all_colors, file.path, output_dir)
+     for file in os.scandir(template_dir)]
