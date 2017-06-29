@@ -43,13 +43,13 @@ def send_sequences(colors, vte):
                  for num, color in enumerate(colors["colors"].values())]
 
     # Special colors.
+    # http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.7.pod#XTerm_Operating_System_Commands
+    # 10 = foreground, 11 = background, 12 = cursor foregound
+    # 13 = mouse foreground
     sequences.append(set_special(10, colors["special"]["foreground"]))
     sequences.append(set_special(11, colors["special"]["background"]))
     sequences.append(set_special(12, colors["special"]["cursor"]))
-
-    # Figure out what these change.
-    # sequences.append(set_special(13, colors["foreground"]))
-    # sequences.append(set_special(14, colors["background"]))
+    sequences.append(set_special(13, colors["special"]["cursor"]))
 
     # Set a blank color that isn"t affected by bold highlighting.
     sequences.append(set_color(66, colors["special"]["background"]))
