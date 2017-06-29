@@ -28,9 +28,21 @@ def template(colors, input_file):
 
 def export_all_templates(colors):
     """Export all template files."""
+    # Exclude these templates from the loop.
+    # The excluded templates need color
+    # conversion or other intervention.
+    exclude = ["colors-putty.reg"]
+
     # Merge both dicts.
     colors["colors"].update(colors["special"])
 
+    # Convert colors to other format.
+    colors_rgb = {k: util.hex_to_rgb(v) for k, v in colors["colors"].items()}
+
     # pylint: disable=W0106
     [template(colors["colors"], file.name)
-     for file in os.scandir(TEMPLATE_DIR)]
+     for file in os.scandir(TEMPLATE_DIR)
+     if file not in exclude]
+
+    # Call 'putty' manually since it needs RGB colors.
+    template(colors_rgb, "colors-putty.reg")
