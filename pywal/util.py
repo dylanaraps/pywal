@@ -1,6 +1,7 @@
 """
 Misc helper functions.
 """
+import json
 import os
 import pathlib
 import subprocess
@@ -13,10 +14,23 @@ def read_file(input_file):
     return colors
 
 
+def read_file_json(input_file):
+    """Read colors from a json file."""
+    with open(input_file) as json_file:
+        colors = json.load(json_file)
+    return colors
+
+
 def save_file(colors, export_file):
     """Write the colors to the file."""
     with open(export_file, "w") as file:
         file.write(colors)
+
+
+def save_file_json(colors, export_file):
+    """Write the colors to a json file."""
+    with open(export_file, "w") as file:
+        json.dump(colors, file, indent=4)
 
 
 def create_dir(directory):

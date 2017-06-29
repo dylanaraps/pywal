@@ -90,7 +90,6 @@ def process_args(args):
 
         # Create a list of hex colors.
         colors_plain = gen_colors.get_colors(image, args.q)
-        colors_plain[8] = set_colors.set_grey(colors_plain)
 
         if not args.n:
             wallpaper.set_wallpaper(image)
@@ -101,7 +100,7 @@ def process_args(args):
 
     # -f
     elif args.f:
-        colors_plain = util.read_file(args.f)
+        colors_plain = util.read_file_json(args.f)
         set_colors.send_sequences(colors_plain, args.t)
         export_colors.export_colors(colors_plain)
 
