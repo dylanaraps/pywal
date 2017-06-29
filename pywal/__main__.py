@@ -8,7 +8,7 @@ import shutil
 import sys
 
 from pywal.settings import CACHE_DIR, __version__
-from pywal import export_colors
+from pywal import export
 from pywal import gen_colors
 from pywal import set_colors
 from pywal import reload
@@ -102,7 +102,7 @@ def process_args(args):
     # -i or -f
     if args.i or args.f:
         set_colors.send_sequences(colors_plain, args.t)
-        export_colors.export_all_templates(colors_plain)
+        export.export_all_templates(colors_plain)
         reload.reload_env()
 
     # -o

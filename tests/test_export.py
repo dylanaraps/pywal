@@ -2,7 +2,7 @@
 import unittest
 import pathlib
 
-from pywal import export_colors
+from pywal import export
 from pywal import util
 
 
@@ -11,7 +11,7 @@ COLORS = util.read_file_json("tests/test_files/test_file.json")
 
 
 class TestExportColors(unittest.TestCase):
-    """Test the export_colors functions."""
+    """Test the export functions."""
 
     def test_template(self):
         """> Test substitutions in template file."""
@@ -21,7 +21,7 @@ class TestExportColors(unittest.TestCase):
 
         output_dir = pathlib.Path("/tmp")
         template_dir = pathlib.Path("tests/test_files/templates")
-        export_colors.export_all_templates(COLORS, template_dir, output_dir)
+        export.export_all_templates(COLORS, template_dir, output_dir)
 
         result = pathlib.Path("/tmp/test_template").is_file()
         self.assertTrue(result)
