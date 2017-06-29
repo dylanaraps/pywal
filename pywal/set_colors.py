@@ -47,7 +47,7 @@ def send_sequences(colors, vte):
     sequences.append(set_special(11, colors["special"]["background"]))
     sequences.append(set_special(12, colors["special"]["cursor"]))
 
-    # TODO: Figure out what these change.
+    # Figure out what these change.
     # sequences.append(set_special(13, colors["foreground"]))
     # sequences.append(set_special(14, colors["background"]))
 
