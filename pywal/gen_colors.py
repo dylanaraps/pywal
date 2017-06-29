@@ -123,7 +123,8 @@ def get_colors(img, quiet):
 
 
 def sort_colors(colors):
-    """Sort the generated colors."""
+    """Sort the generated colors and store them in a dict that
+       we will later save in json format."""
     raw_colors = colors[:1] + colors[9:] + colors[8:]
 
     # Special colors.
