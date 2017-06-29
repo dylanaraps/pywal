@@ -5,6 +5,7 @@ import os
 import pathlib
 
 from pywal.settings import CACHE_DIR, TEMPLATE_DIR
+from pywal import util
 
 
 def template(colors, input_file):
@@ -17,11 +18,8 @@ def template(colors, input_file):
     with open(template_file) as file:
         template_data = file.readlines()
 
-    # Merge both dicts.
-    colors["colors"].update(colors["special"])
-
     # Format the markers.
-    template_data = "".join(template_data).format(**colors["colors"])
+    template_data = "".join(template_data).format(**colors)
 
     # Export the template.
     with open(export_file, "w") as file:
@@ -30,5 +28,9 @@ def template(colors, input_file):
 
 def export_all_templates(colors):
     """Export all template files."""
+    # Merge both dicts.
+    colors["colors"].update(colors["special"])
+
     # pylint: disable=W0106
-    [template(colors, file.name) for file in os.scandir(TEMPLATE_DIR)]
+    [template(colors["colors"], file.name)
+     for file in os.scandir(TEMPLATE_DIR)]
