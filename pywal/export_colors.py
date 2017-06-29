@@ -35,7 +35,8 @@ def export_all_templates(colors):
     # conversion or other intervention.
     exclude = ["colors-putty.reg"]
 
-    # Merge both dicts.
+    # Merge both dicts so we can access their
+    # values simpler.
     colors["colors"].update(colors["special"])
 
     # Convert colors to other format.
@@ -46,5 +47,6 @@ def export_all_templates(colors):
      for file in os.scandir(TEMPLATE_DIR)
      if file not in exclude]
 
-    # Call 'putty' manually since it needs RGB colors.
+    # Call 'putty' manually since it needs RGB
+    # colors.
     template(colors_rgb, "colors-putty.reg")
