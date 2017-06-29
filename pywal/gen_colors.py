@@ -122,4 +122,22 @@ def get_colors(img, quiet):
 
 def sort_colors(colors):
     """Sort the generated colors."""
-    return colors[:1] + colors[9:] + colors[8:]
+    raw_colors = colors[:1] + colors[9:] + colors[8:]
+
+    # Special colors.
+    colors_special = {}
+    colors_special.update({"background": raw_colors[0]})
+    colors_special.update({"foreground": raw_colors[15]})
+    colors_special.update({"cursor": raw_colors[15]})
+
+    # Colors 0-15
+    colors_hex = {}
+    [colors_hex.update({f"color{index}": color})  # pylint: disable=W0106
+     for index, color in enumerate(raw_colors)]
+
+    # Add the colors to a dict.
+    colors = {}
+    colors["special"] = colors_special
+    colors["colors"] = colors_hex
+
+    return colors
