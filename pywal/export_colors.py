@@ -2,7 +2,6 @@
 Export colors in various formats.
 """
 import os
-import pathlib
 
 from pywal.settings import CACHE_DIR
 from pywal import util
@@ -28,29 +27,22 @@ def template(colors, input_file, output_dir):
     print(f"export: Exported {template_file}.")
 
 
-def export_all_templates(colors):
+def export_all_templates(colors, template_dir=None, output_dir=CACHE_DIR):
     """Export all template files."""
+
     # Add the template dir to module path.
-    template_dir = os.path.join(os.path.dirname(__file__), "templates")
+    template_dir = template_dir or os.path.join(os.path.dirname(__file__), "templates")
 
-    # Exclude these templates from the loop.
-    # The excluded templates need color
-    # conversion or other intervention.
-    exclude = ["colors-putty.reg"]
+    # Merge all colors (specials and normals) into one dict so we can access
+    # their values simpler.
+    all_colors = dict()
+    for v in colors.values():
+        all_colors.update(v)
 
-    # Merge both dicts so we can access their
-    # values simpler.
-    colors["colors"].update(colors["special"])
-
-    # Convert colors to other format.
-    colors_rgb = {k: util.hex_to_rgb(v) for k, v in colors["colors"].items()}
+    # Turn all those colors into util.Color instances for accessing the
+    # .hex and .rgb formats
+    all_colors = {k: util.Color(v) for k, v in all_colors.items()}
 
     # pylint: disable=W0106
-    [template(colors["colors"], file.path, CACHE_DIR)
-     for file in os.scandir(template_dir)
-     if file.name not in exclude]
-
-    # Call 'putty' manually since it needs RGB
-    # colors.
-    putty_file = template_dir / pathlib.Path("colors-putty.reg")
-    template(colors_rgb, putty_file, CACHE_DIR)
+    for file in os.scandir(template_dir):
+        template(all_colors, file.path, output_dir)
