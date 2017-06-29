@@ -4,13 +4,13 @@ Export colors in various formats.
 import os
 import pathlib
 
-from pywal.settings import CACHE_DIR, TEMPLATE_DIR
+from pywal.settings import CACHE_DIR
 from pywal import util
 
 
 def template(colors, input_file, output_dir):
     """Read template file, substitute markers and
-        save the file elsewhere."""
+       save the file elsewhere."""
     # Get the template name.
     template_file = os.path.basename(input_file)
 
@@ -30,6 +30,9 @@ def template(colors, input_file, output_dir):
 
 def export_all_templates(colors):
     """Export all template files."""
+    # Add the template dir to module path.
+    template_dir = os.path.join(os.path.dirname(__file__), "templates")
+
     # Exclude these templates from the loop.
     # The excluded templates need color
     # conversion or other intervention.
@@ -44,10 +47,10 @@ def export_all_templates(colors):
 
     # pylint: disable=W0106
     [template(colors["colors"], file.path, CACHE_DIR)
-     for file in os.scandir(TEMPLATE_DIR)
+     for file in os.scandir(template_dir)
      if file.name not in exclude]
 
     # Call 'putty' manually since it needs RGB
     # colors.
-    putty_file = TEMPLATE_DIR / pathlib.Path("colors-putty.reg")
+    putty_file = template_dir / pathlib.Path("colors-putty.reg")
     template(colors_rgb, putty_file, CACHE_DIR)
