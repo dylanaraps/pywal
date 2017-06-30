@@ -20,7 +20,6 @@ def set_color(index, color):
 
 def send_sequences(colors, vte):
     """Send colors to all open terminals."""
-
     # Colors 0-15.
     sequences = [set_color(num, color)
                  for num, color in enumerate(colors["colors"].values())]

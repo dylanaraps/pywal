@@ -29,7 +29,6 @@ def template(colors, input_file, output_dir):
 
 def export_all_templates(colors, template_dir=None, output_dir=CACHE_DIR):
     """Export all template files."""
-
     # Add the template dir to module path.
     template_dir = template_dir or \
         os.path.join(os.path.dirname(__file__), "templates")

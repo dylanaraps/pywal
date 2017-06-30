@@ -64,7 +64,7 @@ def process_args(args):
         exit(1)
 
     if args.i and args.f:
-        print("error: conflicting arguments -i and -f.\n"
+        print("error: Conflicting arguments -i and -f.\n"
               "       Refer to \"wal -h\" for more info.")
         exit(1)
 
