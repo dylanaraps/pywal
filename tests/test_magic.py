@@ -1,7 +1,7 @@
-"""Test gen functions."""
+"""Test imagemagick functions."""
 import unittest
 
-from pywal import gen_colors
+from pywal import magic
 
 
 class TestGenColors(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestGenColors(unittest.TestCase):
 
     def test_gen_colors(self):
         """> Generate a colorscheme."""
-        result = gen_colors.gen_colors("tests/test_files/test.jpg")
+        result = magic.gen_colors("tests/test_files/test.jpg")
         self.assertEqual(result[0], "#0F191A")
 
 

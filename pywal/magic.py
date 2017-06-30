@@ -1,5 +1,5 @@
 """
-Generate a colorscheme.
+Generate a colorscheme using imagemagick.
 """
 import re
 import shutil

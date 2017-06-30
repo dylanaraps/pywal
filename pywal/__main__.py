@@ -10,11 +10,11 @@ import sys
 from pywal.settings import CACHE_DIR, __version__
 from pywal import export
 from pywal import image
-from pywal import gen_colors
-from pywal import sequences
+from pywal import magic
 from pywal import reload
-from pywal import wallpaper
+from pywal import sequences
 from pywal import util
+from pywal import wallpaper
 
 
 def get_args():
@@ -91,7 +91,7 @@ def process_args(args):
         image_file = image.get_image(args.i)
 
         # Create a list of hex colors.
-        colors_plain = gen_colors.get_colors(image_file, args.q)
+        colors_plain = magic.get_colors(image_file, args.q)
 
         if not args.n:
             wallpaper.set_wallpaper(image_file)
