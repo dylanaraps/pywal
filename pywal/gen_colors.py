@@ -1,9 +1,6 @@
 """
 Generate a colorscheme.
 """
-import os
-import pathlib
-import random
 import re
 import shutil
 import subprocess
@@ -11,45 +8,6 @@ import subprocess
 from pywal.settings import CACHE_DIR, COLOR_COUNT
 from pywal import set_colors
 from pywal import util
-
-
-def random_img(img_dir):
-    """Pick a random image file from a directory."""
-    current_wall = pathlib.Path(CACHE_DIR / "wal")
-
-    if current_wall.is_file():
-        current_wall = util.read_file(current_wall)
-        current_wall = os.path.basename(current_wall[0])
-
-    # Add all images to a list excluding the current wallpaper.
-    file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
-    images = [img for img in os.scandir(img_dir)
-              if img.name.endswith(file_types) and img.name != current_wall]
-
-    # If no images are found, use the current wallpaper.
-    if not images:
-        print("image: No new images found (nothing to do), exiting...")
-        quit(1)
-
-    return pathlib.Path(img_dir / random.choice(images).name)
-
-
-def get_image(img):
-    """Validate image input."""
-    image = pathlib.Path(img)
-
-    if image.is_file():
-        wal_img = image
-
-    elif image.is_dir():
-        wal_img = random_img(image)
-
-    else:
-        print("error: No valid image file found.")
-        exit(1)
-
-    print("image: Using image", wal_img)
-    return str(wal_img)
 
 
 def imagemagick(color_count, img):
@@ -96,8 +54,8 @@ def get_colors(img, quiet):
     util.save_file(img, CACHE_DIR / "wal")
 
     # Cache the sequences file.
-    cache_file = pathlib.Path(CACHE_DIR / "schemes" / img.replace("/", "_"))
-    cache_file = pathlib.Path(cache_file.with_suffix(".json"))
+    cache_file = CACHE_DIR / "schemes" / img.replace("/", "_")
+    cache_file = cache_file.with_suffix(".json")
 
     if cache_file.is_file():
         colors = util.read_file_json(cache_file)

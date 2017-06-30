@@ -9,6 +9,7 @@ import sys
 
 from pywal.settings import CACHE_DIR, __version__
 from pywal import export
+from pywal import image
 from pywal import gen_colors
 from pywal import set_colors
 from pywal import reload
@@ -87,13 +88,13 @@ def process_args(args):
 
     # -i
     if args.i:
-        image = gen_colors.get_image(args.i)
+        image_file = image.get_image(args.i)
 
         # Create a list of hex colors.
-        colors_plain = gen_colors.get_colors(image, args.q)
+        colors_plain = gen_colors.get_colors(image_file, args.q)
 
         if not args.n:
-            wallpaper.set_wallpaper(image)
+            wallpaper.set_wallpaper(image_file)
 
     # -f
     elif args.f:

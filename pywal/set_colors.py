@@ -2,7 +2,6 @@
 Send sequences to all open terminals.
 """
 import os
-import pathlib
 import re
 
 from pywal.settings import CACHE_DIR
@@ -72,7 +71,7 @@ def send_sequences(colors, vte):
 
 def reload_colors(vte):
     """Reload colors."""
-    sequence_file = pathlib.Path(CACHE_DIR / "sequences")
+    sequence_file = CACHE_DIR / "sequences"
 
     if sequence_file.is_file():
         sequences = "".join(util.read_file(sequence_file))
