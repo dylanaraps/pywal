@@ -90,6 +90,10 @@ Add this line to your shell startup file. (`.bashrc`, `.zshrc` or etc.)
 ```sh
 # Import colorscheme from 'wal'
 (wal -r &)
+
+# If the command above doesn't work,
+# try this alternative.
+setsid wal -r
 ```
 
 Here's how the extra syntax above works:
