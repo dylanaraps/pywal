@@ -11,7 +11,7 @@ from pywal.settings import CACHE_DIR, __version__
 from pywal import export
 from pywal import image
 from pywal import gen_colors
-from pywal import set_colors
+from pywal import sequences
 from pywal import reload
 from pywal import wallpaper
 from pywal import util
@@ -79,7 +79,7 @@ def process_args(args):
 
     # -r
     if args.r:
-        set_colors.reload_colors(args.t)
+        sequences.reload_colors(args.t)
 
     # -v
     if args.v:
@@ -102,7 +102,7 @@ def process_args(args):
 
     # -i or -f
     if args.i or args.f:
-        set_colors.send_sequences(colors_plain, args.t)
+        sequences.send_sequences(colors_plain, args.t)
         export.export_all_templates(colors_plain)
         reload.reload_env()
 

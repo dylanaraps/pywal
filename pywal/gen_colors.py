@@ -6,7 +6,6 @@ import shutil
 import subprocess
 
 from pywal.settings import CACHE_DIR, COLOR_COUNT
-from pywal import set_colors
 from pywal import util
 
 
@@ -97,7 +96,7 @@ def sort_colors(colors):
      for index, color in enumerate(raw_colors)]
 
     # Color 8
-    colors_hex["color8"] = set_colors.set_grey(raw_colors)
+    colors_hex["color8"] = util.set_grey(raw_colors)
 
     # Add the colors to a dict.
     colors = {}
