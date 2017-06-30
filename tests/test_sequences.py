@@ -22,5 +22,6 @@ class Testsequences(unittest.TestCase):
         result = sequences.set_color(11, COLORS["colors"]["color0"])
         self.assertEqual(result, "\033]4;11;#3A5130\007")
 
+
 if __name__ == "__main__":
     unittest.main()
