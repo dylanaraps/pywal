@@ -56,7 +56,12 @@ Run the command below, does the background color of your terminal become red?
 printf "%b" "\033]11;#ff0000\007"
 ```
 
-If your terminal's background color is now red, your terminal will work with `wal`.
+If your terminal's background color is now red, your terminal should work with `wal`.
+
+
+**Terminals that DON'T work with `wal`.**
+
+- Konsole. [#24](https://github.com/dylanaraps/pywal/issues/24)
 
 
 ## Installation
