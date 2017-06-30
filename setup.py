@@ -8,8 +8,6 @@ DESC = (
     "Pypi doesn't like markdown OR rst with anchor links so "
     "you'll have to view the documentation elsewhere.\n"
 )
-DESC = "".join(DESC)
-
 
 VERSION = pywal.__version__
 DOWNLOAD_URL = f"https://github.com/dylanaraps/pywal/archive/{VERSION}.tar.gz"
