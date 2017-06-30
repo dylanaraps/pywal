@@ -31,6 +31,28 @@ def xfconf(path, img):
                 "--property", path, "--set", img)
 
 
+def set_wm_wallpaper(img):
+    """Set the wallpaper for window manager environments."""
+    if shutil.which("feh"):
+        subprocess.Popen(["feh", "--bg-fill", img])
+
+    elif shutil.which("nitrogen"):
+        subprocess.Popen(["nitrogen", "--set-zoom-fill", img])
+
+    elif shutil.which("bgs"):
+        subprocess.Popen(["bgs", img])
+
+    elif shutil.which("hsetroot"):
+        subprocess.Popen(["hsetroot", "-fill", img])
+
+    elif shutil.which("habak"):
+        subprocess.Popen(["habak", "-mS", img])
+
+    else:
+        print("error: No wallpaper setter found.")
+        return
+
+
 def set_desktop_wallpaper(desktop, img):
     """Set the wallpaper for the desktop environment."""
     desktop = str(desktop).lower()
@@ -56,28 +78,6 @@ def set_desktop_wallpaper(desktop, img):
 
     else:
         set_wm_wallpaper(img)
-
-
-def set_wm_wallpaper(img):
-    """Set the wallpaper for window manager environments."""
-    if shutil.which("feh"):
-        subprocess.Popen(["feh", "--bg-fill", img])
-
-    elif shutil.which("nitrogen"):
-        subprocess.Popen(["nitrogen", "--set-zoom-fill", img])
-
-    elif shutil.which("bgs"):
-        subprocess.Popen(["bgs", img])
-
-    elif shutil.which("hsetroot"):
-        subprocess.Popen(["hsetroot", "-fill", img])
-
-    elif shutil.which("habak"):
-        subprocess.Popen(["habak", "-mS", img])
-
-    else:
-        print("error: No wallpaper setter found.")
-        return
 
 
 def set_wallpaper(img):
