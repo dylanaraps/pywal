@@ -20,7 +20,7 @@ setup(
     version=VERSION,
     author="Dylan Araps",
     author_email="dylan.araps@gmail.com",
-    description="🎨 Generate and change colorschemes on the fly",
+    description="Generate and change colorschemes on the fly",
     long_description=DESC,
     license="MIT",
     url="https://github.com/dylanaraps/pywal",
