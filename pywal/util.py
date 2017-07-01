@@ -25,17 +25,17 @@ class Color(object):
 def set_grey(colors):
     """Set a grey color based on brightness of color0."""
     return {
-        0: "#666666",
-        1: "#666666",
-        2: "#757575",
-        3: "#999999",
-        4: "#999999",
-        5: "#8a8a8a",
-        6: "#a1a1a1",
-        7: "#a1a1a1",
-        8: "#a1a1a1",
-        9: "#a1a1a1",
-    }.get(int(colors[0][1]), colors[7])
+        "0": "#666666",
+        "1": "#666666",
+        "2": "#757575",
+        "3": "#999999",
+        "4": "#999999",
+        "5": "#8a8a8a",
+        "6": "#a1a1a1",
+        "7": "#a1a1a1",
+        "8": "#a1a1a1",
+        "9": "#a1a1a1",
+    }.get(colors[0][1], colors[7])
 
 
 def read_file(input_file):

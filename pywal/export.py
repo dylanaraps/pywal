@@ -10,15 +10,15 @@ from pywal import util
 def template(colors, input_file, output_dir):
     """Read template file, substitute markers and
        save the file elsewhere."""
-    # Get the template name.
-    template_file = os.path.basename(input_file)
-
     # Import the template.
     with open(input_file) as file:
         template_data = file.readlines()
 
     # Format the markers.
     template_data = "".join(template_data).format(**colors)
+
+    # Get the template name.
+    template_file = os.path.basename(input_file)
 
     # Export the template.
     output_file = output_dir / template_file
