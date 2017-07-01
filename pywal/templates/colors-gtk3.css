@@ -1,0 +1,31 @@
+/* default color scheme */
+@define-color bg_color {color0};
+@define-color fg_color {color15};
+@define-color base_color {color15};
+@define-color text_color {color0};
+@define-color selected_bg_color {color1};
+@define-color selected_fg_color {color0};
+@define-color tooltip_bg_color {color2};
+@define-color tooltip_fg_color {color0};
+
+/* dark color scheme */
+@define-color dark_bg_color {color0};
+@define-color dark_fg_color {color15};
+
+/* shadow effects */
+@define-color light_shadow {color0};
+@define-color dark_shadow {color0};
+
+/* misc colors used by gtk+ */
+@define-color info_fg_color {color15};
+@define-color info_bg_color {color0};
+@define-color warning_fg_color {color1};
+@define-color warning_bg_color {color0};
+@define-color question_fg_color {color2};
+@define-color question_bg_color {color0};
+@define-color error_fg_color {color1};
+@define-color error_bg_color {color0};
+@define-color link_color {color4};
+@define-color success_color {color2};
+@define-color warning_color {color1};
+@define-color error_color {color1};
