@@ -10,7 +10,7 @@ XTerm*cursorColor: {cursor}
 ! Generic special colors.
 *foreground:  {foreground}
 *background:  {background}
-*cursorColor:  {cursor}
+*cursorColor: {cursor}
 
 *.color0: {color0}
 *color0:  {color0}
