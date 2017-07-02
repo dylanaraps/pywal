@@ -21,7 +21,7 @@ def reload_i3():
 
 
 def reload_env():
-    """Reload environment programs."""
+    """Reload environment."""
     reload_xrdb()
     reload_i3()
     print("reload: Reloaded environment.")
