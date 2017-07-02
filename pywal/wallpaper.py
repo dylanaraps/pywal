@@ -32,7 +32,7 @@ def xfconf(path, img):
 
 
 def set_wm_wallpaper(img):
-    """Set the wallpaper for window manager environments."""
+    """Set the wallpaper for non desktop environments."""
     if shutil.which("feh"):
         subprocess.Popen(["feh", "--bg-fill", img])
 
