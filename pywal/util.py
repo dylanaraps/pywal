@@ -23,7 +23,7 @@ class Color:
 
 
 def set_grey(colors):
-    """Set a grey color based on the brightness 
+    """Set a grey color based on the brightness
        of another color."""
     return {
         "0": "#666666",
