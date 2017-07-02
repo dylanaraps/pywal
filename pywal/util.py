@@ -8,7 +8,7 @@ import subprocess
 
 
 # pylint: disable=too-few-public-methods
-class Color(object):
+class Color:
     """Color formats."""
     def __init__(self, hex_color):
         self.hex_color = hex_color
@@ -23,7 +23,8 @@ class Color(object):
 
 
 def set_grey(colors):
-    """Set a grey color based on brightness of color0."""
+    """Set a grey color based on the brightness 
+       of another color."""
     return {
         "0": "#666666",
         "1": "#666666",
