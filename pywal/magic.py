@@ -19,7 +19,8 @@ def imagemagick(color_count, img):
 
 
 def gen_colors(img):
-    """Generate a color palette using imagemagick."""
+    """Format the output from imagemagick into a list
+       of hex colors."""
     # Check if the user has Imagemagick installed.
     if not shutil.which("convert"):
         print("error: imagemagick not found, exiting...\n"
@@ -48,7 +49,7 @@ def gen_colors(img):
 
 
 def get_colors(img, quiet):
-    """Generate a colorscheme using imagemagick."""
+    """Get the colorscheme."""
     # Cache the wallpaper name.
     util.save_file(img, CACHE_DIR / "wal")
 
