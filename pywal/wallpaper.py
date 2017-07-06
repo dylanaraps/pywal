@@ -91,4 +91,3 @@ def set_wallpaper(img):
         set_wm_wallpaper(img)
 
     print("wallpaper: Set the new wallpaper")
-    return 0

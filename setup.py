@@ -1,5 +1,5 @@
 """wal - setup.py"""
-from setuptools import setup
+import setuptools
 import pywal
 
 
@@ -13,7 +13,7 @@ VERSION = pywal.__version__
 DOWNLOAD_URL = f"https://github.com/dylanaraps/pywal/archive/{VERSION}.tar.gz"
 
 
-setup(
+setuptools.setup(
     name="pywal",
     version=VERSION,
     author="Dylan Araps",
