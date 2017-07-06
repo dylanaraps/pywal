@@ -1,7 +1,15 @@
 """wal - setup.py"""
+import sys
 import setuptools
-import pywal
 
+try:
+    import pywal
+except (ImportError, SyntaxError):
+    if sys.version_info >= (3, 6):
+        raise
+
+if sys.version_info < (3, 6):
+    sys.exit("pywal requires Python 3.6 or greater.")
 
 DESC = (
     "View the DOCS at: https://github.com/dylanaraps/pywal\n\n"
@@ -10,7 +18,8 @@ DESC = (
 )
 
 VERSION = pywal.__version__
-DOWNLOAD_URL = f"https://github.com/dylanaraps/pywal/archive/{VERSION}.tar.gz"
+DOWNLOAD_URL = "https://github.com/dylanaraps/pywal/archive/{}.tar.gz".format(
+    VERSION)
 
 
 setuptools.setup(
