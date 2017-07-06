@@ -65,12 +65,12 @@ def set_desktop_wallpaper(desktop, img):
     elif "muffin" in desktop or "cinnamon" in desktop:
         subprocess.Popen(["gsettings", "set",
                           "org.cinnamon.desktop.background",
-                          "picture-uri", "file:///" + img])
+                          "picture-uri", "file://" + img])
 
     elif "gnome" in desktop:
         subprocess.Popen(["gsettings", "set",
                           "org.gnome.desktop.background",
-                          "picture-uri", "file:///" + img])
+                          "picture-uri", "file://" + img])
 
     elif "mate" in desktop:
         subprocess.Popen(["gsettings", "set", "org.mate.background",
