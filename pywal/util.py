@@ -40,29 +40,29 @@ def set_grey(colors):
 
 
 def read_file(input_file):
-    """Read colors from a file."""
+    """Read data from a file."""
     with open(input_file) as file:
-        colors = file.read().splitlines()
-    return colors
+        data = file.read().splitlines()
+    return data
 
 
 def read_file_json(input_file):
-    """Read colors from a json file."""
+    """Read data from a json file."""
     with open(input_file) as json_file:
-        colors = json.load(json_file)
-    return colors
+        data = json.load(json_file)
+    return data
 
 
-def save_file(colors, export_file):
-    """Write the colors to the file."""
+def save_file(data, export_file):
+    """Write data to a file."""
     with open(export_file, "w") as file:
-        file.write(colors)
+        file.write(data)
 
 
-def save_file_json(colors, export_file):
-    """Write the colors to a json file."""
+def save_file_json(data, export_file):
+    """Write data to a json file."""
     with open(export_file, "w") as file:
-        json.dump(colors, file, indent=4)
+        json.dump(data, file, indent=4)
 
 
 def create_dir(directory):
