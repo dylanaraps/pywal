@@ -4,7 +4,7 @@ Global Constants.
 import pathlib
 
 
-__version__ = "0.3.7"
+__version__ = "0.3.8"
 
 
 COLOR_COUNT = 16
