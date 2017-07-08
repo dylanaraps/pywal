@@ -55,6 +55,9 @@ rofi.color-normal: {background}, {foreground}, {background}, {color10}, {backgro
 rofi.color-active: {background}, {foreground}, {background}, {color10}, {background}
 rofi.color-urgent: {background}, {color9}, {background}, {color9}, {foreground}
 
-! Emacs colors.
-emacs*background: {background}
-emacs*foreground: {foreground}
+! Xclock colors.
+XClock*majorColor:  {color15}
+XClock*minorColor:  {color15}
+XClock*hourColor:   {color15}
+XClock*minuteColor: {color15}
+XClock*secondColor: {color15}
