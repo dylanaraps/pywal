@@ -66,7 +66,7 @@ If your terminal's background color is now red, your terminal should work with `
 **Terminals that DON'T work with `wal`.**
 
 - Konsole. [#24](https://github.com/dylanaraps/pywal/issues/24)
-
+- Alacritty. [#37](https://github.com/dylanaraps/pywal/issues/37)
 
 ## Installation
 
