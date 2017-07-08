@@ -59,7 +59,9 @@ def get_colors(img, quiet):
     util.save_file(img, CACHE_DIR / "wal")
 
     # Cache the sequences file.
-    cache_file = CACHE_DIR / "schemes" / img.replace("/", "_")
+    # _home_dylan_img_jpg.json
+    cache_file = CACHE_DIR / "schemes" / \
+        img.replace("/", "_").replace(".", "_")
     cache_file = cache_file.with_suffix(".json")
 
     if cache_file.is_file():
