@@ -7,7 +7,6 @@ import pathlib
 import subprocess
 
 
-# pylint: disable=too-few-public-methods
 class Color:
     """Color formats."""
     def __init__(self, hex_color):
@@ -20,6 +19,11 @@ class Color:
     def rgb(self):
         """Convert a hex color to rgb."""
         return hex_to_rgb(self.hex_color)
+
+    @property
+    def xrgba(self):
+        """Convert a hex color to xrdb rgba."""
+        return hex_to_xrgba(self.hex_color)
 
 
 def set_grey(colors):
@@ -74,6 +78,12 @@ def hex_to_rgb(color):
     """Convert a hex color to rgb."""
     red, green, blue = list(bytes.fromhex(color.strip("#")))
     return f"{red},{green},{blue}"
+
+
+def hex_to_xrgba(color):
+    """Convert a hex color to xrdb rgba."""
+    col = color.lower()
+    return f"{col[1]}{col[2]}/{col[3]}{col[4]}/{col[5]}{col[6]}/ff"
 
 
 def disown(*cmd):

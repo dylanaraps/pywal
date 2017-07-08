@@ -69,8 +69,10 @@ class TestUtil(unittest.TestCase):
         result = util.hex_to_rgb("#98AEC2")
         self.assertEqual(result, "152,174,194")
 
-    # Figure out how to test this.
-    # def test_disown(self):
+    def test_hex_to_xrgba(self):
+        """> Convert #98AEC2 to XRGBA."""
+        result = util.hex_to_xrgba("#98AEC2")
+        self.assertEqual(result, "98/ae/c2/ff")
 
 
 if __name__ == "__main__":
