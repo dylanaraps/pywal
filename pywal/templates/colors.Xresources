@@ -58,3 +58,14 @@ rofi.color-urgent: {background}, {color9}, {background}, {color9}, {foreground}
 ! Emacs colors.
 emacs*background: {background}
 emacs*foreground: {foreground}
+
+! XClock colors.
+XClock*foreground: {foreground}
+XClock*background: {background}            
+
+! How to set these?
+!XClock*majorColor:  rgba:f0/f0/19/7b
+!XClock*minorColor:  rgba:a0/c0/f0/c0
+!XClock*hourColor:   rgba:c9/66/11/72
+!XClock*minuteColor: rgba:00/82/9f/72
+!XClock*secondColor: rgba:50/93/30/6f
