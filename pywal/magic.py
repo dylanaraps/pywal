@@ -41,6 +41,11 @@ def gen_colors(img):
               "color palette, trying a larger palette size",
               COLOR_COUNT + index)
 
+        if index > 20:
+            print("colors: Imagemagick couldn't generate a suitable scheme",
+                  "for the image. Exiting...")
+            quit(1)
+
     # Remove the first element, which isn't a color.
     del raw_colors[0]
 
