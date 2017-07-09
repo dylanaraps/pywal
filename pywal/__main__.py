@@ -89,20 +89,23 @@ def process_args(args):
     # -i
     if args.i:
         image_file = image.get_image(args.i)
-
-        # Create a list of hex colors.
         colors_plain = magic.get_colors(image_file, args.q)
-
-        if not args.n:
-            wallpaper.set_wallpaper(image_file)
 
     # -f
     elif args.f:
         colors_plain = util.read_file_json(args.f)
 
+        # If wallpaper is unset, set it to "None"
+        if "wallpaper" not in colors_plain:
+            colors_plain["wallpaper"] = "None"
+
     # -i or -f
     if args.i or args.f:
         sequences.send_sequences(colors_plain, args.t)
+
+        if not args.n:
+            wallpaper.set_wallpaper(colors_plain["wallpaper"])
+
         export.export_all_templates(colors_plain)
         reload.reload_env()
 
