@@ -54,6 +54,11 @@ def read_file_json(input_file):
     """Read data from a json file."""
     with open(input_file) as json_file:
         data = json.load(json_file)
+
+    # If wallpaper is unset, set it to "None"
+    if "wallpaper" not in data:
+        data["wallpaper"] = "None"
+
     return data
 
 
