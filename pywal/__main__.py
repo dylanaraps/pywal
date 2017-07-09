@@ -98,6 +98,7 @@ def process_args(args):
         # If wallpaper is unset, set it to "None"
         if "wallpaper" not in colors_plain:
             colors_plain["wallpaper"] = "None"
+            args.n = True
 
     # -i or -f
     if args.i or args.f:

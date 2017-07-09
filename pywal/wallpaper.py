@@ -82,9 +82,6 @@ def set_desktop_wallpaper(desktop, img):
 
 def set_wallpaper(img):
     """Set the wallpaper."""
-    if not os.path.isfile(img):
-        return
-
     desktop = get_desktop_env()
 
     if desktop:
