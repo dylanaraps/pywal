@@ -27,9 +27,9 @@ class TestExportColors(unittest.TestCase):
         self.assertTrue(result)
 
         content = pathlib.Path("/tmp/test_template").read_text()
-        self.assertEqual(content, '\n'.join(["test1 #3A5130",
-                                             "test2 #3A5130",
-                                             "test3 58,81,48", ""]))
+        self.assertEqual(content, '\n'.join(["test1 #1F211E",
+                                             "test2 #1F211E",
+                                             "test3 31,33,30", ""]))
 
 
 if __name__ == "__main__":

@@ -75,7 +75,7 @@ def get_colors(img, quiet):
 
         # Generate the colors.
         colors = gen_colors(img)
-        colors = sort_colors(colors)
+        colors = sort_colors(img, colors)
 
         # Cache the colorscheme.
         util.save_file_json(colors, cache_file)
@@ -87,10 +87,13 @@ def get_colors(img, quiet):
     return colors
 
 
-def sort_colors(colors):
+def sort_colors(img, colors):
     """Sort the generated colors and store them in a dict that
        we will later save in json format."""
     raw_colors = colors[:1] + colors[9:] + colors[8:]
+
+    # Wallpaper.
+    colors = {"wallpaper": img}
 
     # Special colors.
     colors_special = {}
@@ -98,16 +101,15 @@ def sort_colors(colors):
     colors_special.update({"foreground": raw_colors[15]})
     colors_special.update({"cursor": raw_colors[15]})
 
-    # Colors 0-15
+    # Colors 0-15.
     colors_hex = {}
     [colors_hex.update({f"color{index}": color})  # pylint: disable=W0106
      for index, color in enumerate(raw_colors)]
 
-    # Color 8
+    # Color 8.
     colors_hex["color8"] = util.set_grey(raw_colors)
 
     # Add the colors to a dict.
-    colors = {}
     colors["special"] = colors_special
     colors["colors"] = colors_hex
 
