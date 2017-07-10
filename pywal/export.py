@@ -35,7 +35,9 @@ def export_all_templates(colors, template_dir=None, output_dir=CACHE_DIR):
 
     # Merge all colors (specials and normals) into one dict so we can access
     # their values simpler.
-    all_colors = {**colors["special"], **colors["colors"]}
+    all_colors = {"wallpaper": colors["wallpaper"],
+                  **colors["special"],
+                  **colors["colors"]}
 
     # Turn all those colors into util.Color instances for accessing the
     # .hex and .rgb formats
