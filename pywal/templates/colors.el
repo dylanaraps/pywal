@@ -1,4 +1,6 @@
 ;;; A wal color theme for emacs, based on the Xresources theme
+;;; Credits to cqql who basically created this theme, here's the original:
+;;; https://github.com/cqql/xresources-theme
 
 (deftheme wal "wal colors as a theme")
 
