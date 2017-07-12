@@ -14,7 +14,7 @@ For more info, check out the [Wiki](https://github.com/dylanaraps/pywal/wiki).
 
 [Albums of examples (Warning large)](https://dylanaraps.com/pages/rice)
 
-![screen](https://i.imgur.com/1SU4xNo.png)
+![screen](https://i.imgur.com/hkAJjJg.png)
 
 
 ## Table of Contents
