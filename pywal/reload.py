@@ -20,8 +20,15 @@ def reload_i3():
         util.disown("i3-msg", "reload")
 
 
+def reload_polybar():
+    """Reload polybar colors."""
+    if shutil.which("polybar"):
+        util.disown("pkill", "-USR1", "polybar")
+
+
 def reload_env():
     """Reload environment."""
     reload_xrdb()
     reload_i3()
+    reload_polybar()
     print("reload: Reloaded environment.")
