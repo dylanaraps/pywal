@@ -53,7 +53,7 @@ def send_sequences(colors, vte):
         tty_pattern = "/dev/pts/[0-9]*"
 
     elif OS == "Darwin":
-        tty_pattern = "/dev/ttys[0-9]*"
+        tty_pattern = "/dev/ttys00[0-9]*"
 
     # Create a list of pseudo terminals.
     terminals = [term for term in glob.glob(tty_pattern)]
