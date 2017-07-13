@@ -55,7 +55,7 @@ def send_sequences(colors, vte):
     elif OS == "Darwin":
         tty_pattern = "/dev/ttys[0-9]*"
 
-    # Create a list of psuedo terminals.
+    # Create a list of pseudo terminals.
     terminals = [term for term in glob.glob(tty_pattern)]
 
     # Send sequences to cache file as well.
