@@ -2,11 +2,9 @@
 Send sequences to all open terminals.
 """
 import glob
-import os
-import platform
 import re
 
-from pywal.settings import CACHE_DIR
+from pywal.settings import CACHE_DIR, OS
 from pywal import util
 
 
@@ -49,13 +47,12 @@ def create_sequences(colors, vte):
 def send_sequences(colors, vte):
     """Send colors to all open terminals."""
     sequences = create_sequences(colors, vte)
-    kernel = platform.uname()[0]
 
     # Get the pseudo terminal directory.
-    if kernel == "Linux":
+    if OS == "Linux":
         tty_pattern = "/dev/pts/[0-9]*"
 
-    elif kernel == "Darwin":
+    elif OS == "Darwin":
         tty_pattern = "/dev/ttys[0-9]*"
 
     # Create a list of psuedo terminals.
