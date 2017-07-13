@@ -24,8 +24,6 @@ For more info, check out the [Wiki](https://github.com/dylanaraps/pywal/wiki).
     * [Dependencies](#dependencies)
     * [Terminal Emulator](#terminal-emulator)
 * [Installation](#installation)
-    * [Pip install](#pip-install)
-    * [Manual/Git install](#manualgit-install)
 * [Setup](#setup)
     * [Applying the theme to new terminals.](#applying-the-theme-to-new-terminals)
     * [Making the colorscheme persist on reboot.](#making-the-colorscheme-persist-on-reboot)
@@ -70,20 +68,7 @@ If your terminal's background color is now red, your terminal should work with `
 
 ## Installation
 
-
-### Pip install
-
-```sh
-pip install pywal
-```
-
-### Manual/Git install
-
-```sh
-git clone https://github.com/dylanaraps/pywal
-cd pywal
-pip install .
-```
+https://github.com/dylanaraps/pywal/wiki/Installation
 
 
 ## Setup
