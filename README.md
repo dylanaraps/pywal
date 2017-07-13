@@ -67,6 +67,9 @@ If your terminal's background color is now red, your terminal should work with `
 
 - Konsole. [#24](https://github.com/dylanaraps/pywal/issues/24)
 - Alacritty. [#37](https://github.com/dylanaraps/pywal/issues/37)
+- Iterm.
+- Hyper.
+- Terminal.app.
 
 ## Installation
 
