@@ -70,6 +70,7 @@ If your terminal's background color is now red, your terminal should work with `
 - Terminal.app.
 - Terminology. [#50](https://github.com/dylanaraps/pywal/issues/50)
 
+
 ## Installation
 
 https://github.com/dylanaraps/pywal/wiki/Installation

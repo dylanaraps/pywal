@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 
+from pywal.settings import OS
 from pywal import util
 
 
@@ -87,7 +88,14 @@ def set_wallpaper(img):
 
     desktop = get_desktop_env()
 
-    if desktop:
+    if OS == "Darwin":
+        subprocess.Popen(["sqlite3",
+                          "~/Library/Application Support/Dock/\
+                           desktoppicture.db",
+                          f"update data set value = '{img}'"])
+        subprocess.Popen(["killall", "Dock"])
+
+    elif desktop:
         set_desktop_wallpaper(desktop, img)
 
     else:

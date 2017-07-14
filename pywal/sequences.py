@@ -1,25 +1,63 @@
 """
 Send sequences to all open terminals.
 """
-import os
+import glob
 import re
 
-from pywal.settings import CACHE_DIR
+from pywal.settings import CACHE_DIR, OS
 from pywal import util
+
+
+def get_color_name(index):
+    """Get the color name from a number."""
+    return {
+        "0":  "black",
+        "1":  "red",
+        "2":  "green",
+        "3":  "yellow",
+        "4":  "blue",
+        "5":  "magenta",
+        "6":  "cyan",
+        "7":  "white",
+        "8":  "br_black",
+        "9":  "br_red",
+        "10": "br_green",
+        "11": "br_yellow",
+        "12": "br_blue",
+        "13": "br_magenta",
+        "14": "br_cyan",
+        "15": "br_white",
+    }.get(index, "black")
+
+
+def get_special_name(index):
+    """Get the color name from special number."""
+    return {
+        "10": "fg",
+        "11": "bg",
+        "12": "curfg",
+        "13": "curfg",
+    }.get(index, "black")
 
 
 def set_special(index, color):
     """Convert a hex color to a special sequence."""
+    if OS == "Darwin":
+        return f"\033]1337;SetColors={get_color_name(index)}={color}\a"
+
     return f"\033]{index};{color}\007"
 
 
 def set_color(index, color):
     """Convert a hex color to a text color sequence."""
+    if OS == "Darwin":
+        return f"\033]1337;SetColors={get_color_name(index)}={color}\a"
+
     return f"\033]4;{index};{color}\007"
 
 
-def send_sequences(colors, vte):
-    """Send colors to all open terminals."""
+def create_sequences(colors, vte):
+    """Create the escape sequences."""
     # Colors 0-15.
     sequences = [set_color(num, color)
                  for num, color in enumerate(colors["colors"].values())]
@@ -41,15 +79,28 @@ def send_sequences(colors, vte):
     if not vte:
         sequences.append(set_special(708, colors["special"]["background"]))
 
-    # Get the list of terminals.
-    terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")
-                 if len(term) < 4]
+    return sequences
+
+
+def send_sequences(colors, vte):
+    """Send colors to all open terminals."""
+    sequences = create_sequences(colors, vte)
+
+    # Get the pseudo terminal directory.
+    if OS == "Linux":
+        tty_pattern = "/dev/pts/[0-9]*"
+
+    elif OS == "Darwin":
+        tty_pattern = "/dev/ttys00[0-9]*"
+
+    # Create a list of pseudo terminals.
+    terminals = [term for term in glob.glob(tty_pattern)]
+
+    # Send sequences to cache file as well.
     terminals.append(CACHE_DIR / "sequences")
 
-    # Send the sequences to all open terminals.
     # pylint: disable=W0106
     [util.save_file("".join(sequences), term) for term in terminals]
-
     print("colors: Set terminal colors")
 
 
