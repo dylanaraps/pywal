@@ -8,13 +8,51 @@ from pywal.settings import CACHE_DIR, OS
 from pywal import util
 
 
+def get_color_name(index):
+    """Get the color name from a number."""
+    return {
+        "0":  "black",
+        "1":  "red",
+        "2":  "green",
+        "3":  "yellow",
+        "4":  "blue",
+        "5":  "magenta",
+        "6":  "cyan",
+        "7":  "white",
+        "8":  "br_black",
+        "9":  "br_red",
+        "10": "br_green",
+        "11": "br_yellow",
+        "12": "br_blue",
+        "13": "br_magenta",
+        "14": "br_cyan",
+        "15": "br_white",
+    }.get(index, "black")
+
+
+def get_special_name(index):
+    """Get the color name from special number."""
+    return {
+        "10": "fg",
+        "11": "bg",
+        "12": "curfg",
+        "13": "curfg",
+    }.get(index, "black")
+
+
 def set_special(index, color):
     """Convert a hex color to a special sequence."""
+    if OS == "Darwin":
+        return f"\033]1337;SetColors={get_color_name(index)}={color}\a"
+
     return f"\033]{index};{color}\007"
 
 
 def set_color(index, color):
     """Convert a hex color to a text color sequence."""
+    if OS == "Darwin":
+        return f"\033]1337;SetColors={get_color_name(index)}={color}\a"
+
     return f"\033]4;{index};{color}\007"
 
 
