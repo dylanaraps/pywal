@@ -34,3 +34,4 @@ def reload_env():
     reload_polybar()
     gtk.gtk_main()
     print("reload: Reloaded environment.")
+    
