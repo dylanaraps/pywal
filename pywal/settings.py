@@ -4,10 +4,9 @@ Global Constants.
 import pathlib
 
 
-__version__ = "0.3.6"
+__version__ = "0.4.0"
 
 
-# Internal variables.
 COLOR_COUNT = 16
 HOME = pathlib.Path.home()
 CACHE_DIR = HOME / ".cache/wal/"

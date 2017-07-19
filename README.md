@@ -14,7 +14,7 @@ For more info, check out the [Wiki](https://github.com/dylanaraps/pywal/wiki).
 
 [Albums of examples (Warning large)](https://dylanaraps.com/pages/rice)
 
-![screen](http://i.imgur.com/4aLsvvW.png)
+![screen](https://i.imgur.com/hkAJjJg.png)
 
 
 ## Table of Contents
@@ -24,8 +24,6 @@ For more info, check out the [Wiki](https://github.com/dylanaraps/pywal/wiki).
     * [Dependencies](#dependencies)
     * [Terminal Emulator](#terminal-emulator)
 * [Installation](#installation)
-    * [Pip install](#pip-install)
-    * [Manual/Git install](#manualgit-install)
 * [Setup](#setup)
     * [Applying the theme to new terminals.](#applying-the-theme-to-new-terminals)
     * [Making the colorscheme persist on reboot.](#making-the-colorscheme-persist-on-reboot)
@@ -66,24 +64,15 @@ If your terminal's background color is now red, your terminal should work with `
 **Terminals that DON'T work with `wal`.**
 
 - Konsole. [#24](https://github.com/dylanaraps/pywal/issues/24)
-
+- Alacritty. [#37](https://github.com/dylanaraps/pywal/issues/37)
+- Iterm.
+- Hyper.
+- Terminal.app.
+- Terminology. [#50](https://github.com/dylanaraps/pywal/issues/50)
 
 ## Installation
 
-
-### Pip install
-
-```sh
-pip install pywal
-```
-
-### Manual/Git install
-
-```sh
-git clone https://github.com/dylanaraps/pywal
-cd pywal
-pip install .
-```
+https://github.com/dylanaraps/pywal/wiki/Installation
 
 
 ## Setup

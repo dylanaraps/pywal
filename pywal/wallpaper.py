@@ -32,7 +32,7 @@ def xfconf(path, img):
 
 
 def set_wm_wallpaper(img):
-    """Set the wallpaper for window manager environments."""
+    """Set the wallpaper for non desktop environments."""
     if shutil.which("feh"):
         subprocess.Popen(["feh", "--bg-fill", img])
 
@@ -65,12 +65,12 @@ def set_desktop_wallpaper(desktop, img):
     elif "muffin" in desktop or "cinnamon" in desktop:
         subprocess.Popen(["gsettings", "set",
                           "org.cinnamon.desktop.background",
-                          "picture-uri", "file:///" + img])
+                          "picture-uri", "file://" + img])
 
     elif "gnome" in desktop:
         subprocess.Popen(["gsettings", "set",
                           "org.gnome.desktop.background",
-                          "picture-uri", "file:///" + img])
+                          "picture-uri", "file://" + img])
 
     elif "mate" in desktop:
         subprocess.Popen(["gsettings", "set", "org.mate.background",
@@ -82,6 +82,9 @@ def set_desktop_wallpaper(desktop, img):
 
 def set_wallpaper(img):
     """Set the wallpaper."""
+    if not os.path.isfile(img):
+        return
+
     desktop = get_desktop_env()
 
     if desktop:
@@ -91,4 +94,3 @@ def set_wallpaper(img):
         set_wm_wallpaper(img)
 
     print("wallpaper: Set the new wallpaper")
-    return 0

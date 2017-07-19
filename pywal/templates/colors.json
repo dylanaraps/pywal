@@ -1,4 +1,6 @@
 {{
+    "wallpaper": "{wallpaper}",
+
     "special": {{
         "background": "{background}",
         "foreground": "{foreground}",

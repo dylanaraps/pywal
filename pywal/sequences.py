@@ -9,12 +9,12 @@ from pywal import util
 
 
 def set_special(index, color):
-    """Build the escape sequence for special colors."""
+    """Convert a hex color to a special sequence."""
     return f"\033]{index};{color}\007"
 
 
 def set_color(index, color):
-    """Build the escape sequence we need for each color."""
+    """Convert a hex color to a text color sequence."""
     return f"\033]4;{index};{color}\007"
 
 
@@ -34,13 +34,14 @@ def send_sequences(colors, vte):
     sequences.append(set_special(13, colors["special"]["cursor"]))
 
     # Set a blank color that isn"t affected by bold highlighting.
+    # Used in wal.vim's airline theme.
     sequences.append(set_color(66, colors["special"]["background"]))
 
     # This escape sequence doesn"t work in VTE terminals.
     if not vte:
         sequences.append(set_special(708, colors["special"]["background"]))
 
-    # Get a list of terminals.
+    # Get the list of terminals.
     terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")
                  if len(term) < 4]
     terminals.append(CACHE_DIR / "sequences")
@@ -53,17 +54,16 @@ def send_sequences(colors, vte):
 
 
 def reload_colors(vte):
-    """Reload colors."""
+    """Reload the current scheme."""
     sequence_file = CACHE_DIR / "sequences"
 
     if sequence_file.is_file():
         sequences = "".join(util.read_file(sequence_file))
 
-        # If vte mode was used, remove the problem sequence.
+        # If vte mode was used, remove the unsupported sequence.
         if vte:
             sequences = re.sub(r"\]708;\#.{6}", "", sequences)
 
-        # Make the terminal interpret escape sequences.
         print(sequences, end="")
 
     exit(0)

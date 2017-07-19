@@ -16,7 +16,7 @@ class TestUtil(unittest.TestCase):
         """> Get grey color based on brightness of color0"""
         colors = [list(COLORS["colors"].values())]
         result = util.set_grey(colors[0])
-        self.assertEqual(result, "#999999")
+        self.assertEqual(result, "#666666")
 
     def test_read_file(self):
         """> Read colors from a file."""
@@ -26,12 +26,17 @@ class TestUtil(unittest.TestCase):
     def test_read_file_start(self):
         """> Read colors from a file."""
         result = util.read_file_json("tests/test_files/test_file.json")
-        self.assertEqual(result["colors"]["color0"], "#3A5130")
+        self.assertEqual(result["colors"]["color0"], "#1F211E")
 
     def test_read_file_end(self):
         """> Read colors from a file."""
         result = util.read_file_json("tests/test_files/test_file.json")
-        self.assertEqual(result["colors"]["color15"], "#FAF9F5")
+        self.assertEqual(result["colors"]["color15"], "#F5F1F4")
+
+    def test_read_wallpaper(self):
+        """> Read wallpaper from json file."""
+        result = util.read_file_json("tests/test_files/test_file.json")
+        self.assertEqual(result["wallpaper"], "5.png")
 
     def test_save_file(self):
         """> Save colors to a file."""
@@ -69,8 +74,10 @@ class TestUtil(unittest.TestCase):
         result = util.hex_to_rgb("#98AEC2")
         self.assertEqual(result, "152,174,194")
 
-    # Figure out how to test this.
-    # def test_disown(self):
+    def test_hex_to_xrgba(self):
+        """> Convert #98AEC2 to XRGBA."""
+        result = util.hex_to_xrgba("#98AEC2")
+        self.assertEqual(result, "98/ae/c2/ff")
 
 
 if __name__ == "__main__":

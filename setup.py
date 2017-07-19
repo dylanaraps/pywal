@@ -1,6 +1,11 @@
 """wal - setup.py"""
-from setuptools import setup
-import pywal
+import setuptools
+
+try:
+    import pywal
+except (ImportError, SyntaxError):
+    print("error: pywal requires Python 3.6 or greater.")
+    quit(1)
 
 
 DESC = (
@@ -10,10 +15,10 @@ DESC = (
 )
 
 VERSION = pywal.__version__
-DOWNLOAD_URL = f"https://github.com/dylanaraps/pywal/archive/{VERSION}.tar.gz"
+DOWNLOAD = "https://github.com/dylanaraps/pywal/archive/%s.tar.gz" % VERSION
 
 
-setup(
+setuptools.setup(
     name="pywal",
     version=VERSION,
     author="Dylan Araps",
@@ -22,7 +27,7 @@ setup(
     long_description=DESC,
     license="MIT",
     url="https://github.com/dylanaraps/pywal",
-    download_url=DOWNLOAD_URL,
+    download_url=DOWNLOAD,
     classifiers=[
         "Environment :: X11 Applications",
         "License :: OSI Approved :: MIT License",
