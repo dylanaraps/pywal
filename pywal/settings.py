@@ -8,4 +8,5 @@ __version__ = "0.4.0"
 
 
 COLOR_COUNT = 16
-CACHE_DIR = pathlib.Path.home() / ".cache/wal/"
+HOME = pathlib.Path.home()
+CACHE_DIR = HOME / ".cache/wal/"

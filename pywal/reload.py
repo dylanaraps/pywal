@@ -6,6 +6,7 @@ import subprocess
 
 from pywal.settings import CACHE_DIR
 from pywal import util
+from pywal import gtk
 
 
 def reload_xrdb():
@@ -31,4 +32,6 @@ def reload_env():
     reload_xrdb()
     reload_i3()
     reload_polybar()
+    gtk.gtk_main()
     print("reload: Reloaded environment.")
+    
