@@ -79,6 +79,7 @@ def set_desktop_wallpaper(desktop, img):
     elif "mate" in desktop:
         subprocess.Popen(["gsettings", "set", "org.mate.background",
                           "picture-filename", img])
+        
     elif "kde" in desktop:
         jscript = """
         var allDesktops = desktops();
