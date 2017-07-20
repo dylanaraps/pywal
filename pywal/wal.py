@@ -2,7 +2,6 @@
 wal - Generate and change colorschemes on the fly.
 Created by Dylan Araps.
 """
-from pywal.settings import CACHE_DIR
 from pywal import export
 from pywal import image
 from pywal import magic
@@ -31,7 +30,7 @@ def reload_env():
     reload.reload_env()
 
 
-def export_all_templates(colors, template_dir=None, export_dir=CACHE_DIR):
+def export_all_templates(colors, template_dir=None, export_dir=None):
     """Export all templates."""
     export.export_all_templates(colors, template_dir, export_dir)
 
