@@ -9,7 +9,6 @@ def main():
     image = pywal.get_image("/home/dylan/Pictures/Wallpapers/")
 
     # Return a dict with the palette.
-    #
     # Set quiet to 'True' to disable notifications.
     colors = pywal.create_palette(image, quiet=False)
 
