@@ -20,3 +20,6 @@ def main():
 
     # Set the wallpaper.
     pywal.set_wallpaper(image)
+
+
+main()
