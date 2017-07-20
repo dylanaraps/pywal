@@ -2,35 +2,10 @@
 wal - Generate and change colorschemes on the fly.
 Created by Dylan Araps.
 """
-from pywal.settings import __version__  # noqa: F401
-from pywal import magic
-from pywal import reload
-from pywal import sequences
-from pywal import wallpaper
-
-
-def create_palette(img):
-    """Create a palette and return it as a dict."""
-    colors = magic.gen_colors(img)
-    colors = magic.sort_colors(img, colors)
-    return colors
-
-
-def send_sequences(colors, vte):
-    """Send the sequences."""
-    sequences.send_sequences(colors, vte)
-
-
-def reload_env():
-    """Reload the environment."""
-    reload.reload_env()
-
-
-def set_wallpaper(img):
-    """Set the wallpaper."""
-    wallpaper.set_wallpaper(img)
-
-
-# def reload_colors(vte):
-#     """Reload the colors."""
-#     sequences.reload_colors(vte)
+# flake8: noqa: F401
+from pywal.settings import __version__
+from pywal.wal import create_palette
+from pywal.wal import get_image
+from pywal.wal import reload_env
+from pywal.wal import send_sequences
+from pywal.wal import set_wallpaper
