@@ -4,7 +4,7 @@ Send sequences to all open terminals.
 import os
 import re
 
-from pywal.settings import CACHE_DIR
+# from pywal.settings import CACHE_DIR
 from pywal import util
 
 
@@ -18,7 +18,7 @@ def set_color(index, color):
     return f"\033]4;{index};{color}\007"
 
 
-def send_sequences(colors, vte):
+def send_sequences(colors, vte, cache_dir):
     """Send colors to all open terminals."""
     # Colors 0-15.
     sequences = [set_color(num, color)
@@ -44,7 +44,7 @@ def send_sequences(colors, vte):
     # Get the list of terminals.
     terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")
                  if len(term) < 4]
-    terminals.append(CACHE_DIR / "sequences")
+    terminals.append(cache_dir / "sequences")
 
     # Send the sequences to all open terminals.
     # pylint: disable=W0106
@@ -53,9 +53,9 @@ def send_sequences(colors, vte):
     print("colors: Set terminal colors")
 
 
-def reload_colors(vte, sequence_file=None):
+def reload_colors(vte, cache_dir):
     """Reload the current scheme."""
-    sequence_file = sequence_file or CACHE_DIR / "sequences"
+    sequence_file = cache_dir / "sequences"
 
     if sequence_file.is_file():
         sequences = "".join(util.read_file(sequence_file))

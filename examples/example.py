@@ -1,3 +1,4 @@
+"""Test script for wal api."""
 import pywal
 
 
@@ -20,9 +21,9 @@ def main():
     pywal.reload_env()
 
     # Export template files.
-    pywal.export_all_templates(colors,
-                               "path/to/templates",
-                               "path/to/save/files/")
+    # pywal.export_all_templates(colors,
+    #                            "path/to/templates",
+    #                            "path/to/save/files/")
 
     # Set the wallpaper.
     pywal.set_wallpaper(image)

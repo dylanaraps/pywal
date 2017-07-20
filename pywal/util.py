@@ -98,8 +98,3 @@ def disown(*cmd):
                      stdout=subprocess.DEVNULL,
                      stderr=subprocess.DEVNULL,
                      preexec_fn=os.setpgrp)
-
-
-def str_to_path(str_path):
-    """Convert a string to a Path type."""
-    return pathlib.Path(str_path)

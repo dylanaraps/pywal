@@ -4,14 +4,13 @@ Reload programs.
 import shutil
 import subprocess
 
-from pywal.settings import CACHE_DIR
 from pywal import util
 
 
-def reload_xrdb():
+def reload_xrdb(cache_dir):
     """Merge the colors into the X db so new terminals use them."""
     if shutil.which("xrdb"):
-        subprocess.call(["xrdb", "-merge", CACHE_DIR / "colors.Xresources"])
+        subprocess.call(["xrdb", "-merge", cache_dir / "colors.Xresources"])
 
 
 def reload_i3():
@@ -26,9 +25,9 @@ def reload_polybar():
         util.disown("pkill", "-USR1", "polybar")
 
 
-def reload_env():
+def reload_env(cache_dir):
     """Reload environment."""
-    reload_xrdb()
+    reload_xrdb(cache_dir)
     reload_i3()
     reload_polybar()
     print("reload: Reloaded environment.")

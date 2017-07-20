@@ -5,13 +5,12 @@ import os
 import pathlib
 import random
 
-from pywal.settings import CACHE_DIR
 from pywal import util
 
 
-def get_random_image(img_dir):
+def get_random_image(img_dir, cache_dir):
     """Pick a random image file from a directory."""
-    current_wall = CACHE_DIR / "wal"
+    current_wall = cache_dir / "wal"
 
     if current_wall.is_file():
         current_wall = util.read_file(current_wall)
@@ -30,7 +29,7 @@ def get_random_image(img_dir):
     return img_dir / random.choice(images).name
 
 
-def get_image(img):
+def get_image(img, cache_dir):
     """Validate image input."""
     image = pathlib.Path(img)
 
@@ -38,7 +37,7 @@ def get_image(img):
         wal_img = image
 
     elif image.is_dir():
-        wal_img = get_random_image(image)
+        wal_img = get_random_image(image, cache_dir)
 
     else:
         print("error: No valid image file found.")

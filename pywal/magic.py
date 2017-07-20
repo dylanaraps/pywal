@@ -5,7 +5,7 @@ import re
 import shutil
 import subprocess
 
-from pywal.settings import CACHE_DIR, COLOR_COUNT
+# from pywal.settings import color_count
 from pywal import util
 
 
@@ -18,7 +18,7 @@ def imagemagick(color_count, img):
     return colors.stdout.readlines()
 
 
-def gen_colors(img):
+def gen_colors(img, color_count):
     """Format the output from imagemagick into a list
        of hex colors."""
     # Check if the user has Imagemagick installed.
@@ -28,18 +28,18 @@ def gen_colors(img):
         exit(1)
 
     # Generate initial scheme.
-    raw_colors = imagemagick(COLOR_COUNT, img)
+    raw_colors = imagemagick(color_count, img)
 
     # If imagemagick finds less than 16 colors, use a larger source number
     # of colors.
     index = 0
-    while len(raw_colors) - 1 < COLOR_COUNT:
+    while len(raw_colors) - 1 < color_count:
         index += 1
-        raw_colors = imagemagick(COLOR_COUNT + index, img)
+        raw_colors = imagemagick(color_count + index, img)
 
-        print("colors: Imagemagick couldn't generate a", COLOR_COUNT,
+        print("colors: Imagemagick couldn't generate a", color_count,
               "color palette, trying a larger palette size",
-              COLOR_COUNT + index)
+              color_count + index)
 
         if index > 20:
             print("colors: Imagemagick couldn't generate a suitable scheme",
@@ -53,14 +53,14 @@ def gen_colors(img):
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors]
 
 
-def get_colors(img, quiet=False):
+def get_colors(img, cache_dir, color_count, quiet):
     """Get the colorscheme."""
     # Cache the wallpaper name.
-    util.save_file(img, CACHE_DIR / "wal")
+    util.save_file(img, cache_dir / "wal")
 
     # Cache the sequences file.
     # _home_dylan_img_jpg.json
-    cache_file = CACHE_DIR / "schemes" / \
+    cache_file = cache_dir / "schemes" / \
         img.replace("/", "_").replace(".", "_")
     cache_file = cache_file.with_suffix(".json")
 
@@ -74,7 +74,7 @@ def get_colors(img, quiet=False):
             util.disown("notify-send", "wal: Generating a colorscheme...")
 
         # Generate the colors.
-        colors = gen_colors(img)
+        colors = gen_colors(img, color_count)
         colors = sort_colors(img, colors)
 
         # Cache the colorscheme.

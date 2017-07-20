@@ -2,6 +2,8 @@
 wal - Generate and change colorschemes on the fly.
 Created by Dylan Araps.
 """
+import pathlib
+
 from pywal import export
 from pywal import image
 from pywal import magic
@@ -10,29 +12,37 @@ from pywal import sequences
 from pywal import wallpaper
 
 
-def get_image(img):
+__version__ = "0.4.0"
+
+
+COLOR_COUNT = 16
+CACHE_DIR = pathlib.Path.home() / ".cache/wal/"
+
+
+def get_image(img, cache_dir=CACHE_DIR):
     """Validate image input."""
-    return image.get_image(img)
+    return image.get_image(img, cache_dir)
 
 
-def create_palette(img, quiet=False):
+def create_palette(img, cache_dir=CACHE_DIR,
+                   color_count=COLOR_COUNT, quiet=False):
     """Create a palette and return it as a dict."""
-    return magic.get_colors(img, quiet)
+    return magic.get_colors(img, cache_dir, color_count, quiet)
 
 
-def send_sequences(colors, vte):
+def send_sequences(colors, vte, cache_dir=CACHE_DIR):
     """Send the sequences."""
-    sequences.send_sequences(colors, vte)
+    sequences.send_sequences(colors, vte, cache_dir)
 
 
-def reload_env():
+def reload_env(cache_dir=CACHE_DIR):
     """Reload the environment."""
-    reload.reload_env()
+    reload.reload_env(cache_dir)
 
 
-def export_all_templates(colors, template_dir=None, export_dir=None):
+def export_all_templates(colors, output_dir=CACHE_DIR, template_dir=None):
     """Export all templates."""
-    export.export_all_templates(colors, template_dir, export_dir)
+    export.export_all_templates(colors, output_dir, template_dir)
 
 
 def set_wallpaper(img):
@@ -40,6 +50,6 @@ def set_wallpaper(img):
     wallpaper.set_wallpaper(img)
 
 
-def reload_colors(vte, sequence_file=None):
+def reload_colors(vte, cache_dir=CACHE_DIR):
     """Reload the colors."""
-    sequences.reload_colors(vte, sequence_file)
+    sequences.reload_colors(vte, cache_dir)
