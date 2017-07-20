@@ -1,10 +1,11 @@
-"""pywal api example."""
 import pywal
 
 
 def main():
     """Main function."""
-    image = "/home/dylan/Pictures/Wallpapers/anVmEaA.jpg"
+    # Validate image and pick a random image if a
+    # directory is given below.
+    image = pywal.get_image("/home/dylan/Pictures/Wallpapers/")
 
     # Return a dict with the palette.
     colors = pywal.create_palette(image)
