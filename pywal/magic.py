@@ -53,7 +53,7 @@ def gen_colors(img):
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors]
 
 
-def get_colors(img, quiet):
+def get_colors(img, quiet=False):
     """Get the colorscheme."""
     # Cache the wallpaper name.
     util.save_file(img, CACHE_DIR / "wal")

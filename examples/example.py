@@ -19,6 +19,11 @@ def main():
     # Reload xrdb, i3 and polybar.
     pywal.reload_env()
 
+    # Export template files.
+    pywal.export_all_templates(colors,
+                               "path/to/templates",
+                               "path/to/save/files/")
+
     # Set the wallpaper.
     pywal.set_wallpaper(image)
 

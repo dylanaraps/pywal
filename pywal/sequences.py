@@ -53,9 +53,9 @@ def send_sequences(colors, vte):
     print("colors: Set terminal colors")
 
 
-def reload_colors(vte):
+def reload_colors(vte, sequence_file=None):
     """Reload the current scheme."""
-    sequence_file = CACHE_DIR / "sequences"
+    sequence_file = sequence_file or CACHE_DIR / "sequences"
 
     if sequence_file.is_file():
         sequences = "".join(util.read_file(sequence_file))

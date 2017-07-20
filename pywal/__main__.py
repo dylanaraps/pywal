@@ -8,13 +8,8 @@ import shutil
 import sys
 
 from pywal.settings import CACHE_DIR, __version__
-from pywal import export
-from pywal import image
-from pywal import magic
-from pywal import reload
-from pywal import sequences
+from pywal import wal
 from pywal import util
-from pywal import wallpaper
 
 
 def get_args():
@@ -79,7 +74,7 @@ def process_args(args):
 
     # -r
     if args.r:
-        sequences.reload_colors(args.t)
+        wal.reload_colors(args.t)
 
     # -v
     if args.v:
@@ -88,8 +83,8 @@ def process_args(args):
 
     # -i
     if args.i:
-        image_file = image.get_image(args.i)
-        colors_plain = magic.get_colors(image_file, args.q)
+        image_file = wal.get_image(args.i)
+        colors_plain = wal.create_palette(image_file, args.q)
 
     # -f
     elif args.f:
@@ -97,13 +92,13 @@ def process_args(args):
 
     # -i or -f
     if args.i or args.f:
-        sequences.send_sequences(colors_plain, args.t)
+        wal.send_sequences(colors_plain, args.t)
 
         if not args.n:
-            wallpaper.set_wallpaper(colors_plain["wallpaper"])
+            wal.set_wallpaper(colors_plain["wallpaper"])
 
-        export.export_all_templates(colors_plain)
-        reload.reload_env()
+        wal.export_all_templates(colors_plain)
+        wal.reload_env()
 
     # -o
     if args.o:
