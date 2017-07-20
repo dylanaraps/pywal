@@ -4,7 +4,6 @@ Send sequences to all open terminals.
 import os
 import re
 
-# from pywal.settings import CACHE_DIR
 from pywal import util
 
 
