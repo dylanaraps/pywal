@@ -25,7 +25,7 @@ def main():
     #
     # The last argument is 'quiet' mode. When set to true, no notifications
     # are displayed.
-    colors = pywal.create_palette(image, CACHE_DIR, COLOR_COUNT, True)
+    colors = pywal.create_palette(image, CACHE_DIR, COLOR_COUNT, quiet=True)
 
     # Apply the palette to all open terminals.
     # Second argument is a boolean for VTE terminals.
