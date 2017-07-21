@@ -5,7 +5,6 @@ import re
 import shutil
 import subprocess
 
-# from pywal.settings import color_count
 from pywal import util
 
 
@@ -21,17 +20,13 @@ def imagemagick(color_count, img):
 def gen_colors(img, color_count):
     """Format the output from imagemagick into a list
        of hex colors."""
-    # Check if the user has Imagemagick installed.
     if not shutil.which("convert"):
         print("error: imagemagick not found, exiting...\n"
               "error: wal requires imagemagick to function.")
         exit(1)
 
-    # Generate initial scheme.
     raw_colors = imagemagick(color_count, img)
 
-    # If imagemagick finds less than 16 colors, use a larger source number
-    # of colors.
     index = 0
     while len(raw_colors) - 1 < color_count:
         index += 1
@@ -46,19 +41,16 @@ def gen_colors(img, color_count):
                   "for the image. Exiting...")
             quit(1)
 
-    # Remove the first element, which isn't a color.
+    # Remove the first element because it isn't a color code.
     del raw_colors[0]
 
-    # Create a list of hex colors.
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors]
 
 
 def get_colors(img, cache_dir, color_count, quiet):
     """Get the colorscheme."""
-    # Cache the wallpaper name.
     util.save_file(img, cache_dir / "wal")
 
-    # Cache the sequences file.
     # _home_dylan_img_jpg.json
     cache_file = cache_dir / "schemes" / \
         img.replace("/", "_").replace(".", "_")
@@ -71,11 +63,9 @@ def get_colors(img, cache_dir, color_count, quiet):
     else:
         util.msg("wal: Generating a colorscheme...", quiet)
 
-        # Generate the colors.
         colors = gen_colors(img, color_count)
         colors = sort_colors(img, colors)
 
-        # Cache the colorscheme.
         util.save_file_json(colors, cache_file)
         util.msg("wal: Generation complete.", quiet)
 
@@ -87,24 +77,18 @@ def sort_colors(img, colors):
        we will later save in json format."""
     raw_colors = colors[:1] + colors[9:] + colors[8:]
 
-    # Wallpaper.
     colors = {"wallpaper": img}
 
-    # Special colors.
     colors_special = {}
     colors_special.update({"background": raw_colors[0]})
     colors_special.update({"foreground": raw_colors[15]})
     colors_special.update({"cursor": raw_colors[15]})
 
-    # Colors 0-15.
     colors_hex = {}
     [colors_hex.update({f"color{index}": color})  # pylint: disable=W0106
      for index, color in enumerate(raw_colors)]
-
-    # Color 8.
     colors_hex["color8"] = util.set_grey(raw_colors)
 
-    # Add the colors to a dict.
     colors["special"] = colors_special
     colors["colors"] = colors_hex
 

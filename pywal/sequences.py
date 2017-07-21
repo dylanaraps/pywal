@@ -40,7 +40,6 @@ def send_sequences(colors, vte, cache_dir):
     if not vte:
         sequences.append(set_special(708, colors["special"]["background"]))
 
-    # Get the list of terminals.
     terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")
                  if len(term) < 4]
     terminals.append(cache_dir / "sequences")
@@ -48,7 +47,6 @@ def send_sequences(colors, vte, cache_dir):
     # Send the sequences to all open terminals.
     # pylint: disable=W0106
     [util.save_file("".join(sequences), term) for term in terminals]
-
     print("colors: Set terminal colors")
 
 

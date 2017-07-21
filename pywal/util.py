@@ -44,21 +44,28 @@ def set_grey(colors):
 
 
 def read_file(input_file):
-    """Read data from a file."""
-    with open(input_file) as file:
+    """Read data from a file and trim newlines."""
+    with open(input_file, "r") as file:
         data = file.read().splitlines()
     return data
 
 
 def read_file_json(input_file):
     """Read data from a json file."""
-    with open(input_file) as json_file:
+    with open(input_file, "r") as json_file:
         data = json.load(json_file)
 
-    # If wallpaper is unset, set it to "None"
     if "wallpaper" not in data:
         data["wallpaper"] = "None"
 
+    return data
+
+
+def read_file_raw(input_file):
+    """Read data from a file as is, don't strip
+       newlines or other special characters.."""
+    with open(input_file, "r") as file:
+        data = file.readlines()
     return data
 
 

@@ -16,12 +16,10 @@ def get_random_image(img_dir, cache_dir):
         current_wall = util.read_file(current_wall)
         current_wall = os.path.basename(current_wall[0])
 
-    # Add all images to a list excluding the current wallpaper.
     file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
     images = [img for img in os.scandir(img_dir)
               if img.name.endswith(file_types) and img.name != current_wall]
 
-    # If no images are found, use the current wallpaper.
     if not images:
         print("image: No new images found (nothing to do), exiting...")
         quit(1)
