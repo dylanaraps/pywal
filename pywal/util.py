@@ -98,3 +98,12 @@ def disown(*cmd):
                      stdout=subprocess.DEVNULL,
                      stderr=subprocess.DEVNULL,
                      preexec_fn=os.setpgrp)
+
+
+def msg(input_msg, quiet):
+    """Print to the terminal and a libnotify
+       notification."""
+    if not quiet:
+        disown("notify-send", input_msg)
+
+    print(input_msg)

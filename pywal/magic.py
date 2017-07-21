@@ -69,9 +69,7 @@ def get_colors(img, cache_dir, color_count, quiet):
         print("colors: Found cached colorscheme.")
 
     else:
-        print("colors: Generating a colorscheme...")
-        if not quiet:
-            util.disown("notify-send", "wal: Generating a colorscheme...")
+        util.msg("wal: Generating a colorscheme...", quiet)
 
         # Generate the colors.
         colors = gen_colors(img, color_count)
@@ -79,10 +77,7 @@ def get_colors(img, cache_dir, color_count, quiet):
 
         # Cache the colorscheme.
         util.save_file_json(colors, cache_file)
-
-        print("colors: Generated colorscheme")
-        if not quiet:
-            util.disown("notify-send", "wal: Generation complete.")
+        util.msg("wal: Generation complete.", quiet)
 
     return colors
 
