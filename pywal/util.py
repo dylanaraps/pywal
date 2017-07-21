@@ -108,7 +108,7 @@ def disown(*cmd):
 
 
 def msg(input_msg, quiet):
-    """Print to the terminal and a libnotify
+    """Print to the terminal and display a libnotify
        notification."""
     if not quiet:
         disown("notify-send", input_msg)
