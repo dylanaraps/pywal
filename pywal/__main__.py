@@ -60,23 +60,22 @@ def process_args(args):
               "       Refer to \"wal -h\" for more info.")
         exit(1)
 
+    if args.v:
+        print(f"wal {wal.__version__}")
+        exit(0)
+
     if args.q:
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
     if args.c:
         shutil.rmtree(wal.CACHE_DIR / "schemes")
-        util.create_dir(wal.CACHE_DIR / "schemes")
 
     if args.r:
         wal.reload_colors(args.t)
 
-    if args.v:
-        print(f"wal {wal.__version__}")
-        exit(0)
-
     if args.i:
         image_file = wal.get_image(args.i)
-        colors_plain = wal.create_palette(img=image_file, quiet=args.q)
+        colors_plain = wal.create_palette(img=image_file, notify=not args.q)
 
     elif args.f:
         colors_plain = util.read_file_json(args.f)
@@ -96,7 +95,6 @@ def process_args(args):
 
 def main():
     """Main script function."""
-    util.create_dir(wal.CACHE_DIR / "schemes")
     args = get_args()
     process_args(args)
 

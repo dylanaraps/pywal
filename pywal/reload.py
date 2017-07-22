@@ -10,7 +10,9 @@ from pywal import util
 def reload_xrdb(cache_dir):
     """Merge the colors into the X db so new terminals use them."""
     if shutil.which("xrdb"):
-        subprocess.call(["xrdb", "-merge", cache_dir / "colors.Xresources"])
+        subprocess.call(["xrdb", "-merge", cache_dir / "colors.Xresources"],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL)
 
 
 def reload_i3():

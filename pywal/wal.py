@@ -25,9 +25,9 @@ def get_image(img, cache_dir=CACHE_DIR):
 
 
 def create_palette(img, cache_dir=CACHE_DIR,
-                   color_count=COLOR_COUNT, quiet=True):
+                   color_count=COLOR_COUNT, notify=False):
     """Create a palette and return it as a dict."""
-    return magic.get_colors(img, cache_dir, color_count, quiet)
+    return magic.get_colors(img, cache_dir, color_count, notify)
 
 
 def send_sequences(colors, vte, cache_dir=CACHE_DIR):

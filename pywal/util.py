@@ -71,12 +71,16 @@ def read_file_raw(input_file):
 
 def save_file(data, export_file):
     """Write data to a file."""
+    create_dir(os.path.dirname(export_file))
+
     with open(export_file, "w") as file:
         file.write(data)
 
 
 def save_file_json(data, export_file):
     """Write data to a json file."""
+    create_dir(os.path.dirname(export_file))
+
     with open(export_file, "w") as file:
         json.dump(data, file, indent=4)
 
@@ -107,10 +111,10 @@ def disown(*cmd):
                      preexec_fn=os.setpgrp)
 
 
-def msg(input_msg, quiet):
+def msg(input_msg, notify):
     """Print to the terminal and display a libnotify
        notification."""
-    if not quiet:
+    if notify:
         disown("notify-send", input_msg)
 
     print(input_msg)
