@@ -49,8 +49,6 @@ def gen_colors(img, color_count):
 
 def get_colors(img, cache_dir, color_count, quiet):
     """Get the colorscheme."""
-    util.save_file(img, cache_dir / "wal")
-
     # _home_dylan_img_jpg.json
     cache_file = cache_dir / "schemes" / \
         img.replace("/", "_").replace(".", "_")

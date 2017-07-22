@@ -24,7 +24,7 @@ def get_random_image(img_dir, cache_dir):
         print("image: No new images found (nothing to do), exiting...")
         quit(1)
 
-    return img_dir / random.choice(images).name
+    return str(img_dir / random.choice(images).name)
 
 
 def get_image(img, cache_dir):
@@ -32,7 +32,7 @@ def get_image(img, cache_dir):
     image = pathlib.Path(img)
 
     if image.is_file():
-        wal_img = image
+        wal_img = str(image)
 
     elif image.is_dir():
         wal_img = get_random_image(image, cache_dir)
@@ -41,5 +41,8 @@ def get_image(img, cache_dir):
         print("error: No valid image file found.")
         exit(1)
 
+    # Cache the image file path.
+    util.save_file(wal_img, cache_dir / "wal")
+
     print("image: Using image", wal_img)
-    return str(wal_img)
+    return wal_img
