@@ -83,10 +83,10 @@ def sort_colors(img, colors):
     colors_special.update({"cursor": raw_colors[15]})
 
     colors_hex = {}
-    [colors_hex.update({f"color{index}": color})  # pylint: disable=W0106
-     for index, color in enumerate(raw_colors)]
-    colors_hex["color8"] = util.set_grey(raw_colors)
+    for index, color in enumerate(raw_colors):
+        colors_hex.update({f"color{index}": color})
 
+    colors_hex["color8"] = util.set_grey(raw_colors)
     colors["special"] = colors_special
     colors["colors"] = colors_hex
 

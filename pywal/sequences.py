@@ -44,9 +44,10 @@ def send_sequences(colors, vte, cache_dir):
                  if len(term) < 4]
     terminals.append(cache_dir / "sequences")
 
-    # Send the sequences to all open terminals.
-    # pylint: disable=W0106
-    [util.save_file("".join(sequences), term) for term in terminals]
+    # Writing to "/dev/pts/[0-9] lets you send data to open terminals.
+    for term in terminals:
+        util.save_file("".join(sequences), term)
+
     print("colors: Set terminal colors")
 
 

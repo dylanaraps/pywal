@@ -68,7 +68,7 @@ def process_args(args):
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
     if args.c:
-        shutil.rmtree(wal.CACHE_DIR / "schemes")
+        shutil.rmtree(wal.CACHE_DIR / "schemes", ignore_errors=True)
 
     if args.r:
         wal.reload_colors(args.t)

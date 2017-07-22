@@ -26,6 +26,5 @@ def export_all_templates(colors, output_dir, template_dir=None):
                   **colors["colors"]}
     all_colors = {k: util.Color(v) for k, v in all_colors.items()}
 
-    # pylint: disable=W0106
-    [template(all_colors, file.path, output_dir)
-     for file in os.scandir(template_dir)]
+    for file in os.scandir(template_dir):
+        template(all_colors, file.path, output_dir)
