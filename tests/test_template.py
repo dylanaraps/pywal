@@ -8,6 +8,7 @@ from pywal import util
 
 # Import colors.
 COLORS = util.read_file_json("tests/test_files/test_file.json")
+COLORS["colors"].update(COLORS["special"])
 OUTPUT_DIR = pathlib.Path("/tmp/wal")
 
 util.create_dir("/tmp/wal")
@@ -18,10 +19,6 @@ class TestExportColors(unittest.TestCase):
 
     def test_all_templates(self):
         """> Test substitutions in template file."""
-        # Merge both dicts so we can access their
-        # values simpler.
-        COLORS["colors"].update(COLORS["special"])
-
         template.export_all(COLORS, OUTPUT_DIR)
 
         result = pathlib.Path("/tmp/colors.sh").is_file()
@@ -33,10 +30,6 @@ class TestExportColors(unittest.TestCase):
 
     def test_css_template(self):
         """> Test substitutions in template file (css)."""
-        # Merge both dicts so we can access their
-        # values simpler.
-        COLORS["colors"].update(COLORS["special"])
-
         template.export(COLORS, "colors.css", OUTPUT_DIR)
 
         result = pathlib.Path("/tmp/colors.css").is_file()
