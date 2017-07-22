@@ -4,11 +4,11 @@ Created by Dylan Araps.
 """
 import pathlib
 
-from pywal import export
 from pywal import image
 from pywal import magic
 from pywal import reload
 from pywal import sequences
+from pywal import template
 from pywal import wallpaper
 
 
@@ -42,7 +42,7 @@ def reload_env(cache_dir=CACHE_DIR):
 
 def export_all_templates(colors, output_dir=CACHE_DIR, template_dir=None):
     """Export all templates."""
-    export.export_all_templates(colors, output_dir, template_dir)
+    template.export_all_templates(colors, output_dir, template_dir)
 
 
 def set_wallpaper(img):
