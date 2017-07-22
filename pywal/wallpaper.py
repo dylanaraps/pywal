@@ -80,7 +80,7 @@ def set_desktop_wallpaper(desktop, img):
         set_wm_wallpaper(img)
 
 
-def set_wallpaper(img):
+def change(img):
     """Set the wallpaper."""
     if not os.path.isfile(img):
         return

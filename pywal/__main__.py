@@ -1,14 +1,27 @@
 """
-wal - Generate and change colorschemes on the fly.
+                                      '||
+... ...  .... ... ... ... ...  ....    ||
+ ||'  ||  '|.  |   ||  ||  |  '' .||   ||
+ ||    |   '|.|     ||| |||   .|' ||   ||
+ ||...'     '|       |   |    '|..'|' .||.
+ ||      .. |
+''''      ''
 Created by Dylan Araps.
 """
+
 import argparse
 import os
 import shutil
 import sys
 
-from pywal import wal
-from pywal import util
+from .settings import __version__, __cache_dir__
+from . import colors
+from . import image
+from . import reload
+from . import sequences
+from . import template
+from . import util
+from . import wallpaper
 
 
 def get_args():
@@ -61,33 +74,33 @@ def process_args(args):
         exit(1)
 
     if args.v:
-        print(f"wal {wal.__version__}")
+        print(f"wal {__version__}")
         exit(0)
 
     if args.q:
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
     if args.c:
-        shutil.rmtree(wal.CACHE_DIR / "schemes", ignore_errors=True)
+        shutil.rmtree(__cache_dir__ / "schemes", ignore_errors=True)
 
     if args.r:
-        wal.reload_colors(args.t)
+        reload.colors(args.t)
 
     if args.i:
-        image_file = wal.get_image(args.i)
-        colors_plain = wal.create_palette(img=image_file, notify=not args.q)
+        image_file = image.get(args.i)
+        colors_plain = colors.get(image_file, notify=not args.q)
 
-    elif args.f:
+    if args.f:
         colors_plain = util.read_file_json(args.f)
 
     if args.i or args.f:
-        wal.send_sequences(colors_plain, args.t)
+        sequences.send(colors_plain, args.t)
 
         if not args.n:
-            wal.set_wallpaper(colors_plain["wallpaper"])
+            wallpaper.change(colors_plain["wallpaper"])
 
-        wal.export_all_templates(colors_plain)
-        wal.reload_env()
+        template.export_all(colors_plain)
+        reload.env()
 
     if args.o:
         util.disown(args.o)

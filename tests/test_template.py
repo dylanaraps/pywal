@@ -2,7 +2,7 @@
 import unittest
 import pathlib
 
-from pywal import wal
+from pywal import template
 from pywal import util
 
 
@@ -21,7 +21,7 @@ class TestExportColors(unittest.TestCase):
 
         output_dir = pathlib.Path("/tmp")
         template_dir = pathlib.Path("tests/test_files/templates")
-        wal.export_all_templates(COLORS, output_dir, template_dir)
+        template.export_all(COLORS, output_dir, template_dir)
 
         result = pathlib.Path("/tmp/test_template").is_file()
         self.assertTrue(result)

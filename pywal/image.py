@@ -5,7 +5,8 @@ import os
 import pathlib
 import random
 
-from pywal import util
+from .settings import __cache_dir__
+from . import util
 
 
 def get_random_image(img_dir, cache_dir):
@@ -27,7 +28,7 @@ def get_random_image(img_dir, cache_dir):
     return str(img_dir / random.choice(images).name)
 
 
-def get_image(img, cache_dir):
+def get(img, cache_dir=__cache_dir__):
     """Validate image input."""
     image = pathlib.Path(img)
 

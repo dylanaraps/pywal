@@ -1,7 +1,7 @@
 """Test imagemagick functions."""
 import unittest
 
-from pywal import wal
+from pywal import colors
 
 
 class TestGenColors(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestGenColors(unittest.TestCase):
 
     def test_gen_colors(self):
         """> Generate a colorscheme."""
-        result = wal.create_palette("tests/test_files/test.jpg")
+        result = colors.get("tests/test_files/test.jpg")
         self.assertEqual(result["colors"]["color0"], "#0F191A")
 
 

@@ -3,7 +3,8 @@ Export colors in various formats.
 """
 import os
 
-from pywal import util
+from .settings import __cache_dir__
+from . import util
 
 
 def template(colors, input_file, output_dir):
@@ -16,7 +17,7 @@ def template(colors, input_file, output_dir):
     print(f"export: Exported {template_name}.")
 
 
-def export_all_templates(colors, output_dir, template_dir=None):
+def export_all(colors, output_dir=__cache_dir__, template_dir=None):
     """Export all template files."""
     template_dir = template_dir or \
         os.path.join(os.path.dirname(__file__), "templates")
