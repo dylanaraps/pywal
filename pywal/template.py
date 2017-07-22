@@ -13,6 +13,7 @@ def template(colors, input_file, output_dir):
     template_data = util.read_file_raw(input_file)
     template_data = "".join(template_data).format(**colors)
     template_name = os.path.basename(input_file)
+
     util.save_file(template_data, output_dir / template_name)
     print(f"export: Exported {template_name}.")
 
