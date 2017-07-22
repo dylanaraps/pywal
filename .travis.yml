@@ -11,5 +11,5 @@ install:
 
 script:
     - flake8 pywal tests setup.py
-    - pylint --ignore-imports=yes pywal tests setup.py
+    - pylint pywal tests setup.py
     - python setup.py test
