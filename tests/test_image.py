@@ -5,20 +5,20 @@ import unittest
 from pywal import wal
 
 
-DEVNULL = pathlib.Path("/dev/null")
+CACHE_DIR = pathlib.Path("/tmp/wal")
 
 
 class TestImage(unittest.TestCase):
     """Test image functions."""
     def test_get_img(self):
         """> Validate image file."""
-        result = wal.get_image("tests/test_files/test.jpg", DEVNULL)
+        result = wal.get_image("tests/test_files/test.jpg", CACHE_DIR)
         self.assertEqual(result, "tests/test_files/test.jpg")
 
     def test_get_img_dir(self):
         """> Validate image directory."""
-        result = wal.get_image("tests/test_files", DEVNULL)
-        self.assertEqual(result, "tests/test_files/test.jpg")
+        result = wal.get_image("tests/test_files", CACHE_DIR)
+        self.assertEqual(result, "tests/test_files/test2.jpg")
 
 
 if __name__ == "__main__":
