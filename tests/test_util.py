@@ -1,5 +1,7 @@
 """Test util functions."""
 import unittest
+import unittest.mock
+import io
 import os
 import pathlib
 import time
@@ -94,6 +96,14 @@ class TestUtil(unittest.TestCase):
         result = test_file.is_file()
         self.assertTrue(result)
         os.remove(test_file)
+
+    def test_msg(self):
+        """> Test displaying a message."""
+        # Since this function just prints a message we redirect
+        # it's output so that we can read it.
+        with unittest.mock.patch('sys.stdout', new=io.StringIO()) as fake_out:
+            util.msg("test", True)
+            self.assertEqual(fake_out.getvalue().strip(), "test")
 
 
 if __name__ == "__main__":
