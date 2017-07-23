@@ -2,8 +2,12 @@
 import unittest
 import unittest.mock
 import io
+import pathlib
 
 from pywal import colors
+
+
+CACHE_DIR = pathlib.Path("/tmp/wal")
 
 
 class TestGenColors(unittest.TestCase):
@@ -11,7 +15,7 @@ class TestGenColors(unittest.TestCase):
 
     def test_gen_colors(self):
         """> Generate a colorscheme."""
-        result = colors.get("tests/test_files/test.jpg")
+        result = colors.get("tests/test_files/test.jpg", CACHE_DIR)
         self.assertEqual(len(result["colors"]["color0"]), 7)
 
     def test_gen_colors_fail(self):
@@ -25,7 +29,7 @@ class TestGenColors(unittest.TestCase):
         # it's output so that we can read it.
         message = "colors: Found cached colorscheme."
         with unittest.mock.patch('sys.stdout', new=io.StringIO()) as fake_out:
-            colors.get("tests/test_files/test.jpg")
+            colors.get("tests/test_files/test.jpg", CACHE_DIR)
             self.assertEqual(fake_out.getvalue().strip(), message)
 
     def test_color_import(self):
