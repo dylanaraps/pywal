@@ -2,6 +2,7 @@
 import unittest
 import os
 import pathlib
+import time
 
 from pywal import util
 
@@ -85,6 +86,11 @@ class TestUtil(unittest.TestCase):
         """> Test disown command."""
         test_file = pathlib.Path("/tmp/wal-test-disown")
         util.disown("touch", test_file)
+
+        # We won't know when 'disown' will finish so we
+        # sleep here.
+        time.sleep(10)
+
         result = test_file.is_file()
         self.assertTrue(result)
         os.remove(test_file)
