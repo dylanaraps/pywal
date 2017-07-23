@@ -12,6 +12,11 @@ class TestGenColors(unittest.TestCase):
         result = colors.get("tests/test_files/test.jpg")
         self.assertEqual(len(result["colors"]["color0"]), 7)
 
+    def test_gen_colors_fail(self):
+        """> Generate a colorscheme and fail."""
+        with self.assertRaises(SystemExit):
+            colors.get("tests/test_files/test.png")
+
 
 if __name__ == "__main__":
     unittest.main()
