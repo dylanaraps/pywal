@@ -16,6 +16,16 @@ class TestImage(unittest.TestCase):
         result = image.get("tests/test_files")
         self.assertEqual(result.endswith(".jpg"), True)
 
+    def test_get_img_fail(self):
+        """> Validate image file. (fail)"""
+        with self.assertRaises(SystemExit):
+            image.get("tests/test_files/test_fail.jpg")
+
+    def test_get_img_dir_fail(self):
+        """> Validate image directory. (fail)"""
+        with self.assertRaises(SystemExit):
+            image.get("tests")
+
 
 if __name__ == "__main__":
     unittest.main()
