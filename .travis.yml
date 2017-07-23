@@ -7,9 +7,10 @@ before_install:
     - sudo apt-get install -y imagemagick
 
 install:
-    - pip install flake8 pylint
+    - pip install flake8 pylint codecov
 
 script:
     - flake8 pywal tests setup.py
     - pylint pywal tests setup.py
     - python setup.py test
+    - codecov
