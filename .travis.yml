@@ -12,7 +12,7 @@ install:
 script:
     - flake8 pywal tests setup.py
     - pylint pywal tests setup.py
-    - coverage run --omit=pywal/wallpaper.py --source=pywal/ ./setup.py test
+    - coverage run --omit=pywal/wallpaper.py,pywal/reload.py --source=pywal/ ./setup.py test
 
 after_success:
 - codecov
