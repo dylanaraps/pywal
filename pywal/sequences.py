@@ -9,6 +9,11 @@ from . import util
 
 def set_special(index, color):
     """Convert a hex color to a special sequence."""
+    alpha = util.Color.alpha_num
+
+    if index in [11, 708] and alpha != 100:
+        return f"\033]{index};[{alpha}]{color}\007"
+
     return f"\033]{index};{color}\007"
 
 

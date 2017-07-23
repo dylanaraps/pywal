@@ -29,6 +29,10 @@ def get_args():
     description = "wal - Generate colorschemes on the fly"
     arg = argparse.ArgumentParser(description=description)
 
+    arg.add_argument("-a", metavar="\"alpha\"",
+                     help="Set terminal background transparency. \
+                           *Only works in URxvt*")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -85,6 +89,9 @@ def process_args(args):
 
     if args.r:
         reload.colors(args.t)
+
+    if args.a:
+        util.Color.alpha_num = args.a
 
     if args.i:
         image_file = image.get(args.i)
