@@ -17,16 +17,6 @@ For more info, check out the [Wiki](https://github.com/dylanaraps/pywal/wiki).
 ![screenshot](https://i.imgur.com/hkAJjJg.png)
 
 
-## Table of Contents
-
-<!-- vim-markdown-toc GFM -->
-* [Installation](#installation)
-* [Getting Started](#getting-started)
-* [Customization](#customization)
-
-<!-- vim-markdown-toc -->
-
-
 ## Installation
 
 https://github.com/dylanaraps/pywal/wiki/Installation
