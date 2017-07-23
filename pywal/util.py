@@ -77,8 +77,11 @@ def save_file(data, export_file):
     """Write data to a file."""
     create_dir(os.path.dirname(export_file))
 
-    with open(export_file, "w") as file:
-        file.write(data)
+    try:
+        with open(export_file, "w") as file:
+            file.write(data)
+    except PermissionError:
+        print(f"[!] warning: Couldn't write to {export_file}.")
 
 
 def save_file_json(data, export_file):
