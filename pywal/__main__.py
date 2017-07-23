@@ -24,7 +24,7 @@ from . import util
 from . import wallpaper
 
 
-def get_args():
+def get_args(args):
     """Get the script arguments."""
     description = "wal - Generate colorschemes on the fly"
     arg = argparse.ArgumentParser(description=description)
@@ -62,7 +62,7 @@ def get_args():
     arg.add_argument("-v", action="store_true",
                      help="Print \"wal\" version.")
 
-    return arg.parse_args()
+    return arg.parse_args(args)
 
 
 def process_args(args):
@@ -115,7 +115,7 @@ def process_args(args):
 
 def main():
     """Main script function."""
-    args = get_args()
+    args = get_args(sys.argv[1:])
     process_args(args)
 
     # This saves 10ms.
