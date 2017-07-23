@@ -28,8 +28,8 @@ class Testsequences(unittest.TestCase):
         """> Send sequences to all open terminals."""
         with unittest.mock.patch('sys.stdout', new=io.StringIO()) as fake_out:
             sequences.send(COLORS, False)
-            self.assertEqual(fake_out.getvalue().strip(),
-                             "colors: Set terminal colors")
+            data = fake_out.getvalue().strip()
+            self.assertTrue(data.endswith("colors: Set terminal colors"))
 
 
 if __name__ == "__main__":
