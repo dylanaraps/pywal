@@ -9,10 +9,12 @@ from .settings import __cache_dir__
 from . import util
 
 
-def xrdb(cache_dir):
+def xrdb(xrdb_file=None):
     """Merge the colors into the X db so new terminals use them."""
+    xrdb_file = xrdb_file or __cache_dir__ / "colors.Xresources"
+
     if shutil.which("xrdb"):
-        subprocess.call(["xrdb", "-merge", cache_dir / "colors.Xresources"],
+        subprocess.call(["xrdb", "-merge", xrdb_file],
                         stdout=subprocess.DEVNULL,
                         stderr=subprocess.DEVNULL)
 
@@ -29,9 +31,9 @@ def polybar():
         util.disown("pkill", "-USR1", "polybar")
 
 
-def env(cache_dir=__cache_dir__):
+def env(xrdb_file=None):
     """Reload environment."""
-    xrdb(cache_dir)
+    xrdb(xrdb_file)
     i3()
     polybar()
     print("reload: Reloaded environment.")
