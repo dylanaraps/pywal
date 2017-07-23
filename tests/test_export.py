@@ -1,5 +1,7 @@
 """Test export functions."""
 import unittest
+import unittest.mock
+import io
 import pathlib
 
 from pywal import export
@@ -38,6 +40,16 @@ class TestExportColors(unittest.TestCase):
         content = pathlib.Path("/tmp/wal/test.css").read_text()
         content = content.split("\n")[6]
         self.assertEqual(content, "    --background: #1F211E;")
+
+    def test_invalid_template(self):
+        """> Test template validation."""
+        error_msg = "[!] warning: template 'dummy' doesn't exist."
+
+        # Since this function prints a message on fail we redirect
+        # it's output so that we can read it.
+        with unittest.mock.patch('sys.stdout', new=io.StringIO()) as fake_out:
+            export.color(COLORS, "dummy", OUTPUT_DIR / "test.css")
+            self.assertEqual(fake_out.getvalue().strip(), error_msg)
 
 
 if __name__ == "__main__":
