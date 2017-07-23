@@ -14,7 +14,7 @@ class TestImage(unittest.TestCase):
     def test_get_img_dir(self):
         """> Validate image directory."""
         result = image.get("tests/test_files")
-        self.assertEqual(result, "tests/test_files/test2.jpg")
+        self.assertEqual(result.endswith(".jpg"), True)
 
 
 if __name__ == "__main__":

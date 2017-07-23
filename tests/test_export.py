@@ -2,7 +2,7 @@
 import unittest
 import pathlib
 
-from pywal import template
+from pywal import export
 from pywal import util
 
 
@@ -19,7 +19,7 @@ class TestExportColors(unittest.TestCase):
 
     def test_all_templates(self):
         """> Test substitutions in template file."""
-        template.export_all(COLORS, OUTPUT_DIR)
+        export.every(COLORS, OUTPUT_DIR)
 
         result = pathlib.Path("/tmp/wal/colors.sh").is_file()
         self.assertTrue(result)
@@ -30,12 +30,12 @@ class TestExportColors(unittest.TestCase):
 
     def test_css_template(self):
         """> Test substitutions in template file (css)."""
-        template.export(COLORS, "colors.css", OUTPUT_DIR)
+        export.color(COLORS, "css", OUTPUT_DIR / "test.css")
 
-        result = pathlib.Path("/tmp/wal/colors.css").is_file()
+        result = pathlib.Path("/tmp/wal/test.css").is_file()
         self.assertTrue(result)
 
-        content = pathlib.Path("/tmp/wal/colors.css").read_text()
+        content = pathlib.Path("/tmp/wal/test.css").read_text()
         content = content.split("\n")[6]
         self.assertEqual(content, "    --background: #1F211E;")
 
