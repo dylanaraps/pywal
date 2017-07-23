@@ -1,2 +1,5 @@
 [BASIC]
 good-names=i3
+
+[SIMILARITIES]
+ignore-imports=yes

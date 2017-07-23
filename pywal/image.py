@@ -10,7 +10,7 @@ from . import util
 from . import wallpaper
 
 
-def get_random_image(img_dir, cache_dir):
+def get_random_image(img_dir):
     """Pick a random image file from a directory."""
     current_wall = wallpaper.get()
     current_wall = os.path.basename(current_wall[0])
@@ -34,7 +34,7 @@ def get(img, cache_dir=__cache_dir__):
         wal_img = str(image)
 
     elif image.is_dir():
-        wal_img = get_random_image(image, cache_dir)
+        wal_img = get_random_image(image)
 
     else:
         print("error: No valid image file found.")
