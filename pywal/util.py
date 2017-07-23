@@ -55,9 +55,6 @@ def read_file_json(input_file):
     with open(input_file, "r") as json_file:
         data = json.load(json_file)
 
-    if "wallpaper" not in data:
-        data["wallpaper"] = "None"
-
     return data
 
 

@@ -93,3 +93,13 @@ def get(img, cache_dir=__cache_dir__,
         util.msg("wal: Generation complete.", notify)
 
     return colors
+
+
+def file(input_file):
+    """Import colorscheme from json file."""
+    data = util.read_file_json(input_file)
+
+    if "wallpaper" not in data:
+        data["wallpaper"] = "None"
+
+    return data
