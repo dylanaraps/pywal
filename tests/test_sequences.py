@@ -16,6 +16,7 @@ class Testsequences(unittest.TestCase):
 
     def test_set_special(self):
         """> Create special escape sequence."""
+        util.Color.alpha_num = 100
         result = sequences.set_special(11, COLORS["special"]["background"])
         self.assertEqual(result, "\033]11;#1F211E\007")
 
