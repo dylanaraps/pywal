@@ -1,5 +1,6 @@
 """Test util functions."""
 import unittest
+import os
 import pathlib
 
 from pywal import util
@@ -58,6 +59,7 @@ class TestUtil(unittest.TestCase):
         util.create_dir(tmp_dir)
         result = tmp_dir.is_dir()
         self.assertTrue(result)
+        os.rmdir(tmp_dir)
 
     def test_hex_to_rgb_black(self):
         """> Convert #000000 to RGB."""
@@ -78,6 +80,14 @@ class TestUtil(unittest.TestCase):
         """> Convert #98AEC2 to XRGBA."""
         result = util.hex_to_xrgba("#98AEC2")
         self.assertEqual(result, "98/ae/c2/ff")
+
+    def test_disown(self):
+        """> Test disown command."""
+        test_file = pathlib.Path("/tmp/wal-test-disown")
+        util.disown("touch", test_file)
+        result = test_file.is_file()
+        self.assertTrue(result)
+        os.remove(test_file)
 
 
 if __name__ == "__main__":
