@@ -19,6 +19,12 @@ class Testsequences(unittest.TestCase):
         result = sequences.set_special(11, COLORS["special"]["background"])
         self.assertEqual(result, "\033]11;#1F211E\007")
 
+    def test_set_special_alpha(self):
+        """> Create special escape sequence with alpha."""
+        util.Color.alpha_num = 40
+        result = sequences.set_special(11, COLORS["special"]["background"])
+        self.assertEqual(result, "\033]11;[40]#1F211E\007")
+
     def test_set_color(self):
         """> Create color escape sequence."""
         result = sequences.set_color(11, COLORS["colors"]["color0"])
