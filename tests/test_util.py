@@ -1,10 +1,7 @@
 """Test util functions."""
 import unittest
-import unittest.mock
-import io
 import os
 import pathlib
-import time
 
 from pywal import util
 
@@ -83,27 +80,6 @@ class TestUtil(unittest.TestCase):
         """> Convert #98AEC2 to XRGBA."""
         result = util.hex_to_xrgba("#98AEC2")
         self.assertEqual(result, "98/ae/c2/ff")
-
-    def test_disown(self):
-        """> Test disown command."""
-        test_file = pathlib.Path("/tmp/wal-test-disown")
-        util.disown("touch", test_file)
-
-        # We won't know when 'disown' will finish so we
-        # sleep here.
-        time.sleep(10)
-
-        result = test_file.is_file()
-        self.assertTrue(result)
-        os.remove(test_file)
-
-    def test_msg(self):
-        """> Test displaying a message."""
-        # Since this function just prints a message we redirect
-        # it's output so that we can read it.
-        with unittest.mock.patch('sys.stdout', new=io.StringIO()) as fake_out:
-            util.msg("test", True)
-            self.assertEqual(fake_out.getvalue().strip(), "test")
 
 
 if __name__ == "__main__":

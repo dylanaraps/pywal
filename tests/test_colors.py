@@ -1,11 +1,7 @@
 """Test imagemagick functions."""
 import unittest
-import unittest.mock
-import io
-import pathlib
 
 from pywal import colors
-from pywal import util
 
 
 class TestGenColors(unittest.TestCase):
@@ -20,20 +16,6 @@ class TestGenColors(unittest.TestCase):
         """> Generate a colorscheme and fail."""
         with self.assertRaises(SystemExit):
             colors.get("tests/test_files/test.png")
-
-    def test_color_cache(self):
-        """> Test importing a cached scheme."""
-        # Create the file to import.
-        cache_dir = pathlib.Path("/tmp/wal2/")
-        util.save_file("true", cache_dir / "schemes"
-                       / "tests_test_files_test_jpg.json")
-
-        # Since this function just prints a message we redirect
-        # it's output so that we can read it.
-        message = "colors: Found cached colorscheme."
-        with unittest.mock.patch('sys.stdout', new=io.StringIO()) as fake_out:
-            colors.get("tests/test_files/test.jpg", cache_dir)
-            self.assertEqual(fake_out.getvalue().strip(), message)
 
     def test_color_import(self):
         """> Read colors from a file."""

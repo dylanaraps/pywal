@@ -1,7 +1,5 @@
 """Test sequence functions."""
 import unittest
-import unittest.mock
-import io
 
 from pywal import sequences
 from pywal import util
@@ -30,13 +28,6 @@ class Testsequences(unittest.TestCase):
         """> Create color escape sequence."""
         result = sequences.set_color(11, COLORS["colors"]["color0"])
         self.assertEqual(result, "\033]4;11;#1F211E\007")
-
-    def test_send_sequences(self):
-        """> Send sequences to all open terminals."""
-        with unittest.mock.patch('sys.stdout', new=io.StringIO()) as fake_out:
-            sequences.send(COLORS, False)
-            data = fake_out.getvalue().strip()
-            self.assertTrue(data.endswith("colors: Set terminal colors"))
 
 
 if __name__ == "__main__":
