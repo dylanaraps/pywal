@@ -22,7 +22,7 @@ def imagemagick(color_count, img):
 def gen_colors(img, color_count):
     """Format the output from imagemagick into a list
        of hex colors."""
-    if not shutil.which("convert"):  # pragma: no cover
+    if not shutil.which("convert"):
         print("error: imagemagick not found, exiting...\n"
               "error: wal requires imagemagick to function.")
         exit(1)

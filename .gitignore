@@ -4,3 +4,4 @@ pywal.egg-info/*
 subprocess
 re
 build/*
+.coverage

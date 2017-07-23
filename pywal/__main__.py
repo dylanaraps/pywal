@@ -67,7 +67,7 @@ def get_args(args):
 
 def process_args(args):
     """Process args."""
-    if not len(sys.argv) > 1:  # pragma: no cover
+    if not len(sys.argv) > 1:
         print("error: wal needs to be given arguments to run.\n"
               "       Refer to \"wal -h\" for more info.")
         exit(1)

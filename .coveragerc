@@ -1,0 +1,11 @@
+[report]
+exclude_lines =
+    pragma: no cover
+
+    if not len\(sys\.argv\) > 1:
+    def main\(\):
+    if __name__ == .__main__.:
+    if not shutil\.which\(.convert.\):
+    except PermissionError:
+
+omit = pywal/wallpaper.py,pywal/reload.py
