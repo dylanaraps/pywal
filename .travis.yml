@@ -13,6 +13,7 @@ script:
     - flake8 pywal tests setup.py
     - pylint pywal tests setup.py
     - coverage run --source=pywal/ ./setup.py test
+    - coverage report --omit=pywal/wallpaper.py
 
 after_success:
 - codecov
