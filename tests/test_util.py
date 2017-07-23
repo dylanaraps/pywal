@@ -57,7 +57,7 @@ class TestUtil(unittest.TestCase):
         self.assertTrue(result)
 
     def test_create_dir(self):
-        """> Create a directoru."""
+        """> Create a directory."""
         tmp_dir = pathlib.Path("/tmp/test_dir")
         util.create_dir(tmp_dir)
         result = tmp_dir.is_dir()

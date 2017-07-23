@@ -6,8 +6,13 @@ from pywal import __main__
 class TestMain(unittest.TestCase):
     """Test the gen_colors functions."""
 
+    def test_main(self):
+        """> Test main function."""
+        with self.assertRaises(SystemExit):
+            __main__.main()
+
     def test_no_args(self):
-        """> Generate a colorscheme and fail."""
+        """> Test no args."""
         with self.assertRaises(SystemExit):
             args = __main__.get_args([""])
             __main__.process_args(args)
