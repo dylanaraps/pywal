@@ -91,7 +91,7 @@ def process_args(args):
         colors_plain = colors.get(image_file, notify=not args.q)
 
     if args.f:
-        colors_plain = colors.load(args.f)
+        colors_plain = colors.file(args.f)
 
     if args.i or args.f:
         sequences.send(colors_plain, args.t)
