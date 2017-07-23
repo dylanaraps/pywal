@@ -3,7 +3,8 @@ import os
 import shutil
 import subprocess
 
-from pywal import util
+from .settings import __cache_dir__
+from . import util
 
 
 def get_desktop_env():
@@ -94,3 +95,11 @@ def change(img):
         set_wm_wallpaper(img)
 
     print("wallpaper: Set the new wallpaper")
+
+
+def get(cache_dir=__cache_dir__):
+    """Get the current wallpaper."""
+    current_wall = cache_dir / "wal"
+
+    if current_wall.is_file():
+        return util.read_file(current_wall)[0]

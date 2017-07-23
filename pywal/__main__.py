@@ -16,10 +16,10 @@ import sys
 
 from .settings import __version__, __cache_dir__
 from . import colors
+from . import export
 from . import image
 from . import reload
 from . import sequences
-from . import template
 from . import util
 from . import wallpaper
 
@@ -99,7 +99,7 @@ def process_args(args):
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])
 
-        template.export_all(colors_plain)
+        export.every(colors_plain)
         reload.env()
 
     if args.o:

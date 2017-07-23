@@ -7,15 +7,13 @@ import random
 
 from .settings import __cache_dir__
 from . import util
+from . import wallpaper
 
 
 def get_random_image(img_dir, cache_dir):
     """Pick a random image file from a directory."""
-    current_wall = cache_dir / "wal"
-
-    if current_wall.is_file():
-        current_wall = util.read_file(current_wall)
-        current_wall = os.path.basename(current_wall[0])
+    current_wall = wallpaper.get()
+    current_wall = os.path.basename(current_wall[0])
 
     file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
     images = [img for img in os.scandir(img_dir)
