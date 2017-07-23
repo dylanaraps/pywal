@@ -9,6 +9,8 @@ import subprocess
 
 class Color:
     """Color formats."""
+    alpha_num = 100
+
     def __init__(self, hex_color):
         self.hex_color = hex_color
 
@@ -24,6 +26,11 @@ class Color:
     def xrgba(self):
         """Convert a hex color to xrdb rgba."""
         return hex_to_xrgba(self.hex_color)
+
+    @property
+    def alpha(self):
+        """Add URxvt alpha value to color."""
+        return f"[{self.alpha_num}]{self.hex_color}"
 
 
 def set_grey(colors):

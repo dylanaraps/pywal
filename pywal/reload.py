@@ -48,7 +48,7 @@ def colors(vte, cache_dir=__cache_dir__):
 
         # If vte mode was used, remove the unsupported sequence.
         if vte:
-            sequences = re.sub(r"\]708;\#.{6}", "", sequences)
+            sequences = re.sub(r"\]708;(\[..\])?\#.{6}", "", sequences)
 
         print(sequences, end="")
 
