@@ -28,6 +28,11 @@ class TestGenColors(unittest.TestCase):
             colors.get("tests/test_files/test.jpg")
             self.assertEqual(fake_out.getvalue().strip(), message)
 
+    def test_color_import(self):
+        """> Read colors from a file."""
+        result = colors.file("tests/test_files/test_file.json")
+        self.assertEqual(result["colors"]["color0"], "#1F211E")
+
 
 if __name__ == "__main__":
     unittest.main()
