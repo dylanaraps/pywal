@@ -7,5 +7,3 @@ exclude_lines =
     if __name__ == .__main__.:
     if not shutil\.which\(.convert.\):
     except PermissionError:
-
-omit = pywal/wallpaper.py,pywal/reload.py
