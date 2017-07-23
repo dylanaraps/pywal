@@ -20,17 +20,20 @@ class TestMain(unittest.TestCase):
 
     def test_version(self):
         """> Test arg parsing (-v)"""
-        args = __main__.get_args(["-v"])
-        self.assertTrue(args.v)
+        with self.assertRaises(SystemExit):
+            args = __main__.get_args(["-v"])
+            __main__.process_args(args)
 
     def test_quiet(self):
         """> Test arg parsing (-q)"""
         args = __main__.get_args(["-q"])
+        __main__.process_args(args)
         self.assertTrue(args.q)
 
     def test_ext_script(self):
         """> Test arg parsing (-o)"""
         args = __main__.get_args(["-o", "true"])
+        __main__.process_args(args)
         self.assertTrue(args.o)
 
 
