@@ -10,7 +10,7 @@ class TestGenColors(unittest.TestCase):
     def test_gen_colors(self):
         """> Generate a colorscheme."""
         result = colors.get("tests/test_files/test.jpg")
-        self.assertEqual(result["colors"]["color0"], "#0F191A")
+        self.assertEqual(result["colors"]["color0"], "#0D191B")
 
 
 if __name__ == "__main__":
