@@ -20,7 +20,7 @@ class TestMain(unittest.TestCase):
     def test_conflict(self):
         """> Test arg parsing (-i, -f)"""
         with self.assertRaises(SystemExit):
-            args = __main__.get_args(["-i", "-f"])
+            args = __main__.get_args(["-i", "file", "-f", "file"])
             __main__.process_args(args)
 
     def test_version(self):
