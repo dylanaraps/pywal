@@ -33,5 +33,6 @@ class TestMain(unittest.TestCase):
         args = __main__.get_args(["-o", "true"])
         self.assertTrue(args.o)
 
+
 if __name__ == "__main__":
     unittest.main()
