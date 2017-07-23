@@ -12,5 +12,7 @@ install:
 script:
     - flake8 pywal tests setup.py
     - pylint pywal tests setup.py
-    - python setup.py test
-    - codecov
+    - coverage run ./setup.py test
+
+after_success:
+- codecov
