@@ -1,8 +1,6 @@
 # pywal (A `wal` rewrite in Python 3)
 
-[![PyPI](https://img.shields.io/pypi/v/pywal.svg)](https://pypi.python.org/pypi/pywal/) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) [![Build Status](https://travis-ci.org/dylanaraps/pywal.svg?branch=master)](https://travis-ci.org/dylanaraps/pywal) [![codecov](https://codecov.io/gh/dylanaraps/pywal/branch/master/graph/badge.svg)](https://codecov.io/gh/dylanaraps/pywal)
-
-
+[![PyPI](https://img.shields.io/pypi/v/pywal.svg)](https://pypi.python.org/pypi/pywal/) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) [![Build Status](https://travis-ci.org/dylanaraps/pywal.svg?branch=master)](https://travis-ci.org/dylanaraps/pywal) [![Coverage](https://img.shields.io/codecov/c/github/dylanaraps/pywal/master.svg)](https://codecov.io/gh/dylanaraps/pywal)
 
 **\[[Installation](https://github.com/dylanaraps/pywal/wiki/Installation)\] \[[Getting Started](https://github.com/dylanaraps/pywal/wiki/Getting-Started)\] \[[Customization](https://github.com/dylanaraps/pywal/wiki/Customization)\] \[[Wiki](https://github.com/dylanaraps/pywal/wiki)\]**
 
