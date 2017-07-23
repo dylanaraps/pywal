@@ -1,20 +1,16 @@
-"""Test image functions."""
+"""Test imagemagick functions."""
 import unittest
 
-from pywal import image
+from pywal import colors
 
 
-class TestImage(unittest.TestCase):
-    """Test image functions."""
-    def test_get_img(self):
-        """> Validate image file."""
-        result = image.get_image("tests/test_files/test.jpg")
-        self.assertEqual(result, "tests/test_files/test.jpg")
+class TestGenColors(unittest.TestCase):
+    """Test the gen_colors functions."""
 
-    def test_get_img_dir(self):
-        """> Validate image directory."""
-        result = image.get_image("tests/test_files")
-        self.assertEqual(result, "tests/test_files/test.jpg")
+    def test_gen_colors(self):
+        """> Generate a colorscheme."""
+        result = colors.get("tests/test_files/test.jpg")
+        self.assertEqual(result["colors"]["color0"], "#0F191A")
 
 
 if __name__ == "__main__":

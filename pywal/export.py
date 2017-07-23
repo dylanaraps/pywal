@@ -2,47 +2,67 @@
 Export colors in various formats.
 """
 import os
+import pathlib
 
-from pywal.settings import CACHE_DIR
-from pywal import util
+from .settings import __cache_dir__
+from . import util
 
 
-def template(colors, input_file, output_dir):
+TEMPLATE_DIR = pathlib.Path(__file__).parent / "templates"
+
+
+def template(colors, input_file, output_file=None):
     """Read template file, substitute markers and
        save the file elsewhere."""
-    # Import the template.
-    with open(input_file) as file:
-        template_data = file.readlines()
-
-    # Format the markers.
+    template_data = util.read_file_raw(input_file)
     template_data = "".join(template_data).format(**colors)
 
-    # Get the template name.
-    template_file = os.path.basename(input_file)
-
-    # Export the template.
-    output_file = output_dir / template_file
     util.save_file(template_data, output_file)
 
-    print(f"export: Exported {template_file}.")
 
-
-def export_all_templates(colors, template_dir=None, output_dir=CACHE_DIR):
-    """Export all template files."""
-    # Add the template dir to module path.
-    template_dir = template_dir or \
-        os.path.join(os.path.dirname(__file__), "templates")
-
-    # Merge all colors (specials and normals) into one dict so we can access
-    # their values simpler.
+def flatten_colors(colors):
+    """Prepare colors to be exported.
+       Flatten dicts and convert colors to util.Color()"""
     all_colors = {"wallpaper": colors["wallpaper"],
                   **colors["special"],
                   **colors["colors"]}
+    return {k: util.Color(v) for k, v in all_colors.items()}
 
-    # Turn all those colors into util.Color instances for accessing the
-    # .hex and .rgb formats
-    all_colors = {k: util.Color(v) for k, v in all_colors.items()}
 
-    # pylint: disable=W0106
-    [template(all_colors, file.path, output_dir)
-     for file in os.scandir(template_dir)]
+def get_export_type(export_type):
+    """Convert template type to the right filename."""
+    return {
+        "css": "colors.css",
+        "json": "colors.json",
+        "konsole": "colors-konsole.colorscheme",
+        "putty": "colors-putty.reg",
+        "scss": "colors.scss",
+        "shell": "colors.sh",
+        "xresources": "colors.Xresources",
+    }.get(export_type, export_type)
+
+
+def every(colors, output_dir=__cache_dir__):
+    """Export all template files."""
+    all_colors = flatten_colors(colors)
+    output_dir = pathlib.Path(output_dir)
+
+    for file in os.scandir(TEMPLATE_DIR):
+        template(all_colors, file.path, output_dir / file.name)
+
+    print(f"export: Exported all files.")
+
+
+def color(colors, export_type, output_file=None):
+    """Export a single template file."""
+    all_colors = flatten_colors(colors)
+
+    template_name = get_export_type(export_type)
+    template_file = TEMPLATE_DIR / template_name
+    output_file = output_file or __cache_dir__ / template_name
+
+    if template_file.is_file():
+        template(all_colors, template_file, output_file)
+        print(f"export: Exported {export_type}.")
+    else:
+        print(f"[!] warning: template '{export_type}' doesn't exist.")

@@ -44,32 +44,40 @@ def set_grey(colors):
 
 
 def read_file(input_file):
-    """Read data from a file."""
-    with open(input_file) as file:
+    """Read data from a file and trim newlines."""
+    with open(input_file, "r") as file:
         data = file.read().splitlines()
     return data
 
 
 def read_file_json(input_file):
     """Read data from a json file."""
-    with open(input_file) as json_file:
+    with open(input_file, "r") as json_file:
         data = json.load(json_file)
 
-    # If wallpaper is unset, set it to "None"
-    if "wallpaper" not in data:
-        data["wallpaper"] = "None"
+    return data
 
+
+def read_file_raw(input_file):
+    """Read data from a file as is, don't strip
+       newlines or other special characters.."""
+    with open(input_file, "r") as file:
+        data = file.readlines()
     return data
 
 
 def save_file(data, export_file):
     """Write data to a file."""
+    create_dir(os.path.dirname(export_file))
+
     with open(export_file, "w") as file:
         file.write(data)
 
 
 def save_file_json(data, export_file):
     """Write data to a json file."""
+    create_dir(os.path.dirname(export_file))
+
     with open(export_file, "w") as file:
         json.dump(data, file, indent=4)
 
@@ -98,3 +106,12 @@ def disown(*cmd):
                      stdout=subprocess.DEVNULL,
                      stderr=subprocess.DEVNULL,
                      preexec_fn=os.setpgrp)
+
+
+def msg(input_msg, notify):
+    """Print to the terminal and display a libnotify
+       notification."""
+    if notify:
+        disown("notify-send", input_msg)
+
+    print(input_msg)

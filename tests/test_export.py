@@ -8,28 +8,36 @@ from pywal import util
 
 # Import colors.
 COLORS = util.read_file_json("tests/test_files/test_file.json")
+COLORS["colors"].update(COLORS["special"])
+OUTPUT_DIR = pathlib.Path("/tmp/wal")
+
+util.create_dir("/tmp/wal")
 
 
 class TestExportColors(unittest.TestCase):
     """Test the export functions."""
 
-    def test_template(self):
+    def test_all_templates(self):
         """> Test substitutions in template file."""
-        # Merge both dicts so we can access their
-        # values simpler.
-        COLORS["colors"].update(COLORS["special"])
+        export.every(COLORS, OUTPUT_DIR)
 
-        output_dir = pathlib.Path("/tmp")
-        template_dir = pathlib.Path("tests/test_files/templates")
-        export.export_all_templates(COLORS, template_dir, output_dir)
-
-        result = pathlib.Path("/tmp/test_template").is_file()
+        result = pathlib.Path("/tmp/wal/colors.sh").is_file()
         self.assertTrue(result)
 
-        content = pathlib.Path("/tmp/test_template").read_text()
-        self.assertEqual(content, '\n'.join(["test1 #1F211E",
-                                             "test2 #1F211E",
-                                             "test3 31,33,30", ""]))
+        content = pathlib.Path("/tmp/wal/colors.sh").read_text()
+        content = content.split("\n")[6]
+        self.assertEqual(content, "foreground='#F5F1F4'")
+
+    def test_css_template(self):
+        """> Test substitutions in template file (css)."""
+        export.color(COLORS, "css", OUTPUT_DIR / "test.css")
+
+        result = pathlib.Path("/tmp/wal/test.css").is_file()
+        self.assertTrue(result)
+
+        content = pathlib.Path("/tmp/wal/test.css").read_text()
+        content = content.split("\n")[6]
+        self.assertEqual(content, "    --background: #1F211E;")
 
 
 if __name__ == "__main__":

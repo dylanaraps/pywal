@@ -1,20 +1,27 @@
 """
-wal - Generate and change colorschemes on the fly.
+                                      '||
+... ...  .... ... ... ... ...  ....    ||
+ ||'  ||  '|.  |   ||  ||  |  '' .||   ||
+ ||    |   '|.|     ||| |||   .|' ||   ||
+ ||...'     '|       |   |    '|..'|' .||.
+ ||      .. |
+''''      ''
 Created by Dylan Araps.
 """
+
 import argparse
 import os
 import shutil
 import sys
 
-from pywal.settings import CACHE_DIR, __version__
-from pywal import export
-from pywal import image
-from pywal import magic
-from pywal import reload
-from pywal import sequences
-from pywal import util
-from pywal import wallpaper
+from .settings import __version__, __cache_dir__
+from . import colors
+from . import export
+from . import image
+from . import reload
+from . import sequences
+from . import util
+from . import wallpaper
 
 
 def get_args():
@@ -22,7 +29,6 @@ def get_args():
     description = "wal - Generate colorschemes on the fly"
     arg = argparse.ArgumentParser(description=description)
 
-    # Add the args.
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -57,7 +63,6 @@ def get_args():
 
 def process_args(args):
     """Process args."""
-    # If no args were passed.
     if not len(sys.argv) > 1:
         print("error: wal needs to be given arguments to run.\n"
               "       Refer to \"wal -h\" for more info.")
@@ -68,51 +73,41 @@ def process_args(args):
               "       Refer to \"wal -h\" for more info.")
         exit(1)
 
-    # -q
-    if args.q:
-        sys.stdout = sys.stderr = open(os.devnull, "w")
-
-    # -c
-    if args.c:
-        shutil.rmtree(CACHE_DIR / "schemes")
-        util.create_dir(CACHE_DIR / "schemes")
-
-    # -r
-    if args.r:
-        sequences.reload_colors(args.t)
-
-    # -v
     if args.v:
         print(f"wal {__version__}")
         exit(0)
 
-    # -i
+    if args.q:
+        sys.stdout = sys.stderr = open(os.devnull, "w")
+
+    if args.c:
+        shutil.rmtree(__cache_dir__ / "schemes", ignore_errors=True)
+
+    if args.r:
+        reload.colors(args.t)
+
     if args.i:
-        image_file = image.get_image(args.i)
-        colors_plain = magic.get_colors(image_file, args.q)
+        image_file = image.get(args.i)
+        colors_plain = colors.get(image_file, notify=not args.q)
 
-    # -f
-    elif args.f:
-        colors_plain = util.read_file_json(args.f)
+    if args.f:
+        colors_plain = colors.file(args.f)
 
-    # -i or -f
     if args.i or args.f:
-        sequences.send_sequences(colors_plain, args.t)
+        sequences.send(colors_plain, args.t)
 
         if not args.n:
-            wallpaper.set_wallpaper(colors_plain["wallpaper"])
+            wallpaper.change(colors_plain["wallpaper"])
 
-        export.export_all_templates(colors_plain)
-        reload.reload_env()
+        export.every(colors_plain)
+        reload.env()
 
-    # -o
     if args.o:
         util.disown(args.o)
 
 
 def main():
     """Main script function."""
-    util.create_dir(CACHE_DIR / "schemes")
     args = get_args()
     process_args(args)
 
