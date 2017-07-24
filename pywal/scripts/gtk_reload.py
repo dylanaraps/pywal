@@ -4,6 +4,8 @@ Small Python 2 script to reload GTK2 themes.
 
 This uses Python2 since this requires 'send_clientmessage_toall()'
 which isn't available in Python 3.
+
+Original source: https://crunchbang.org/forums/viewtopic.php?id=39646
 """
 import gtk
 
