@@ -1,6 +1,7 @@
 """
 Reload programs.
 """
+import pathlib
 import re
 import shutil
 import subprocess
@@ -19,6 +20,25 @@ def xrdb(xrdb_file=None):
                         stderr=subprocess.DEVNULL)
 
 
+def gtk():
+    """Move gtkrc files to the correct location."""
+    home = pathlib.Path.home()
+    theme_path = home / ".themes" / "Flatabulous-wal"
+    gtk2_file = __cache_dir__ / "colors-gtk2.rc"
+    gtk3_file = __cache_dir__ / "colors-gtk3.css"
+
+    if theme_path.is_dir():
+        if gtk2_file.is_file():
+            shutil.copy(gtk2_file, theme_path / "gtk-2.0")
+
+        if gtk3_file.is_file():
+            shutil.copy(gtk3_file, theme_path / "gtk-3.0")
+
+    if shutil.which("python2"):
+        module_dir = pathlib.Path(__file__).parent
+        util.disown("python2", module_dir / "scripts" / "gtk_reload.py")
+
+
 def i3():
     """Reload i3 colors."""
     if shutil.which("i3-msg"):
@@ -34,6 +54,7 @@ def polybar():
 def env(xrdb_file=None):
     """Reload environment."""
     xrdb(xrdb_file)
+    gtk()
     i3()
     polybar()
     print("reload: Reloaded environment.")
