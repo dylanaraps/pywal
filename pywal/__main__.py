@@ -14,7 +14,7 @@ import os
 import shutil
 import sys
 
-from .settings import __version__, __cache_dir__
+from .settings import __version__, CACHE_DIR
 from . import colors
 from . import export
 from . import image
@@ -85,7 +85,7 @@ def process_args(args):
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
     if args.c:
-        shutil.rmtree(__cache_dir__ / "schemes", ignore_errors=True)
+        shutil.rmtree(CACHE_DIR / "schemes", ignore_errors=True)
 
     if args.r:
         reload.colors(args.t)

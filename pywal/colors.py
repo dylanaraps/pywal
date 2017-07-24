@@ -5,7 +5,7 @@ import re
 import shutil
 import subprocess
 
-from .settings import __cache_dir__, __color_count__
+from .settings import CACHE_DIR, COLOR_COUNT
 from . import util
 
 
@@ -72,8 +72,8 @@ def sort_colors(img, colors):
     return colors
 
 
-def get(img, cache_dir=__cache_dir__,
-        color_count=__color_count__, notify=False):
+def get(img, cache_dir=CACHE_DIR,
+        color_count=COLOR_COUNT, notify=False):
     """Get the colorscheme."""
     # _home_dylan_img_jpg.json
     cache_file = cache_dir / "schemes" / \

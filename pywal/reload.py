@@ -1,18 +1,17 @@
 """
 Reload programs.
 """
-import pathlib
 import re
 import shutil
 import subprocess
 
-from .settings import __cache_dir__
+from .settings import CACHE_DIR, HOME, MODULE_DIR
 from . import util
 
 
 def xrdb(xrdb_file=None):
     """Merge the colors into the X db so new terminals use them."""
-    xrdb_file = xrdb_file or __cache_dir__ / "colors.Xresources"
+    xrdb_file = xrdb_file or CACHE_DIR / "colors.Xresources"
 
     if shutil.which("xrdb"):
         subprocess.call(["xrdb", "-merge", xrdb_file],
@@ -22,9 +21,8 @@ def xrdb(xrdb_file=None):
 
 def gtk():
     """Move gtkrc files to the correct location."""
-    home = pathlib.Path.home()
-    theme_path = home / ".themes" / "Flatabulous-wal"
-    gtk2_file = __cache_dir__ / "colors-gtk2.rc"
+    theme_path = HOME / ".themes" / "Flatabulous-wal"
+    gtk2_file = CACHE_DIR / "colors-gtk2.rc"
 
     if theme_path.is_dir():
         if gtk2_file.is_file():
@@ -34,8 +32,7 @@ def gtk():
         # This is done because the Python 3 GTK/Gdk libraries don't
         # provide a way of doing this.
         if shutil.which("python2"):
-            module_dir = pathlib.Path(__file__).parent
-            util.disown("python2", module_dir / "scripts" / "gtk_reload.py")
+            util.disown("python2", MODULE_DIR / "scripts" / "gtk_reload.py")
 
 
 def i3():
@@ -52,14 +49,14 @@ def polybar():
 
 def env(xrdb_file=None):
     """Reload environment."""
-    xrdb(xrdb_file)
     gtk()
+    xrdb(xrdb_file)
     i3()
     polybar()
     print("reload: Reloaded environment.")
 
 
-def colors(vte, cache_dir=__cache_dir__):
+def colors(vte, cache_dir=CACHE_DIR):
     """Reload the current scheme."""
     sequence_file = cache_dir / "sequences"
 

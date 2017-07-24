@@ -3,7 +3,7 @@ import os
 import shutil
 import subprocess
 
-from .settings import __cache_dir__
+from .settings import CACHE_DIR
 from . import util
 
 
@@ -97,7 +97,7 @@ def change(img):
     print("wallpaper: Set the new wallpaper")
 
 
-def get(cache_dir=__cache_dir__):
+def get(cache_dir=CACHE_DIR):
     """Get the current wallpaper."""
     current_wall = cache_dir / "wal"
 

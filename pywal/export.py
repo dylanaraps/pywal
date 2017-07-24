@@ -4,11 +4,8 @@ Export colors in various formats.
 import os
 import pathlib
 
-from .settings import __cache_dir__
+from .settings import CACHE_DIR, MODULE_DIR
 from . import util
-
-
-TEMPLATE_DIR = pathlib.Path(__file__).parent / "templates"
 
 
 def template(colors, input_file, output_file=None):
@@ -42,12 +39,12 @@ def get_export_type(export_type):
     }.get(export_type, export_type)
 
 
-def every(colors, output_dir=__cache_dir__):
+def every(colors, output_dir=CACHE_DIR):
     """Export all template files."""
     all_colors = flatten_colors(colors)
     output_dir = pathlib.Path(output_dir)
 
-    for file in os.scandir(TEMPLATE_DIR):
+    for file in os.scandir(MODULE_DIR / "templates"):
         template(all_colors, file.path, output_dir / file.name)
 
     print(f"export: Exported all files.")
@@ -58,8 +55,8 @@ def color(colors, export_type, output_file=None):
     all_colors = flatten_colors(colors)
 
     template_name = get_export_type(export_type)
-    template_file = TEMPLATE_DIR / template_name
-    output_file = output_file or __cache_dir__ / template_name
+    template_file = MODULE_DIR / "templates" / template_name
+    output_file = output_file or CACHE_DIR / template_name
 
     if template_file.is_file():
         template(all_colors, template_file, output_file)
