@@ -7,7 +7,11 @@ which isn't available in Python 3.
 
 Original source: https://crunchbang.org/forums/viewtopic.php?id=39646
 """
-import gtk
+try:
+    import gtk
+except ImportError:
+    print("error: GTK reload requires PyGTK.")
+    exit(1)
 
 
 def gtk_reload():
