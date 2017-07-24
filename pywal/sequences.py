@@ -3,7 +3,7 @@ Send sequences to all open terminals.
 """
 import os
 
-from .settings import __cache_dir__
+from .settings import CACHE_DIR
 from . import util
 
 
@@ -22,7 +22,7 @@ def set_color(index, color):
     return f"\033]4;{index};{color}\007"
 
 
-def send(colors, vte, cache_dir=__cache_dir__):
+def send(colors, vte, cache_dir=CACHE_DIR):
     """Send colors to all open terminals."""
     # Colors 0-15.
     sequences = [set_color(num, color)

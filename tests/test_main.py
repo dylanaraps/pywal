@@ -2,7 +2,7 @@
 import unittest
 
 from pywal import __main__
-from pywal.settings import __cache_dir__
+from pywal.settings import CACHE_DIR
 
 
 class TestMain(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestMain(unittest.TestCase):
         """> Test arg parsing (-c)"""
         args = __main__.get_args(["-c"])
         __main__.process_args(args)
-        self.assertFalse((__cache_dir__ / "schemes").is_dir())
+        self.assertFalse((CACHE_DIR / "schemes").is_dir())
 
 
 if __name__ == "__main__":

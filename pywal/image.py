@@ -5,7 +5,7 @@ import os
 import pathlib
 import random
 
-from .settings import __cache_dir__
+from .settings import CACHE_DIR
 from . import util
 from . import wallpaper
 
@@ -26,7 +26,7 @@ def get_random_image(img_dir):
     return str(img_dir / random.choice(images).name)
 
 
-def get(img, cache_dir=__cache_dir__):
+def get(img, cache_dir=CACHE_DIR):
     """Validate image input."""
     image = pathlib.Path(img)
 
