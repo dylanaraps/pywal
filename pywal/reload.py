@@ -33,6 +33,8 @@ def gtk():
         # provide a way of doing this.
         if shutil.which("python2"):
             util.disown("python2", MODULE_DIR / "scripts" / "gtk_reload.py")
+        else:
+            print("warning: GTK2 reload support requires Python 2.")
 
 
 def i3():
