@@ -8,11 +8,12 @@ except (ImportError, SyntaxError):
     quit(1)
 
 
-DESC = (
-    "View the DOCS at: https://github.com/dylanaraps/pywal\n\n"
-    "Pypi doesn't like markdown OR rst with anchor links so "
-    "you'll have to view the documentation elsewhere.\n"
-)
+try:
+    import pypandoc
+    LONG_DESC = pypandoc.convert("README.md", "rst")
+except(IOError, ImportError):
+    LONG_DESC = open('README.md').read()
+
 
 VERSION = pywal.__version__
 DOWNLOAD = "https://github.com/dylanaraps/pywal/archive/%s.tar.gz" % VERSION
@@ -24,7 +25,7 @@ setuptools.setup(
     author="Dylan Araps",
     author_email="dylan.araps@gmail.com",
     description="Generate and change colorschemes on the fly",
-    long_description=DESC,
+    long_description=LONG_DESC,
     license="MIT",
     url="https://github.com/dylanaraps/pywal",
     download_url=DOWNLOAD,
