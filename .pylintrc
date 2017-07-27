@@ -1,5 +1,6 @@
 [BASIC]
 good-names=i3
+disable=R0912
 
 [SIMILARITIES]
 ignore-imports=yes

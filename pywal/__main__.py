@@ -33,6 +33,9 @@ def get_args(args):
                      help="Set terminal background transparency. \
                            *Only works in URxvt*")
 
+    arg.add_argument("-b", metavar="background",
+                     help="Custom background color to use.")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -99,6 +102,10 @@ def process_args(args):
 
     if args.f:
         colors_plain = colors.file(args.f)
+
+    if args.b:
+        colors_plain["special"]["background"] = args.b
+        colors_plain["colors"]["color0"] = args.b
 
     if args.i or args.f:
         sequences.send(colors_plain, args.t)
