@@ -11,7 +11,7 @@ except (ImportError, SyntaxError):
 try:
     import pypandoc
     LONG_DESC = pypandoc.convert("README.md", "rst")
-except(IOError, ImportError):
+except(IOError, ImportError, RuntimeError):
     LONG_DESC = open('README.md').read()
 
 
