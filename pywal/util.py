@@ -20,7 +20,8 @@ class Color:
     @property
     def rgb(self):
         """Convert a hex color to rgb."""
-        return hex_to_rgb(self.hex_color)
+        red, green, blue = hex_to_rgb(self.hex_color)
+        return f"{red},{green},{blue}"
 
     @property
     def xrgba(self):
@@ -99,14 +100,23 @@ def create_dir(directory):
 
 def hex_to_rgb(color):
     """Convert a hex color to rgb."""
-    red, green, blue = list(bytes.fromhex(color.strip("#")))
-    return f"{red},{green},{blue}"
+    return tuple(bytes.fromhex(color.strip("#")))
 
 
 def hex_to_xrgba(color):
     """Convert a hex color to xrdb rgba."""
     col = color.lower()
     return f"{col[1]}{col[2]}/{col[3]}{col[4]}/{col[5]}{col[6]}/ff"
+
+
+def rgb_to_hex(color):
+    """Convert an rgb color to hex."""
+    return f"#{color[0]:02x}{color[1]:02x}{color[2]:02x}"
+
+
+def darken_color(color, darkness):
+    """Darken a hex color."""
+    return rgb_to_hex([int(col * (1 - darkness)) for col in hex_to_rgb(color)])
 
 
 def disown(*cmd):

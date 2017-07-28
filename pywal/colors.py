@@ -54,6 +54,13 @@ def sort_colors(img, colors):
        we will later save in json format."""
     raw_colors = colors[:1] + colors[9:] + colors[8:]
 
+    # Darken the background color if it's too light.
+    if int(raw_colors[0][1]) in [3, 4]:
+        raw_colors[0] = util.darken_color(raw_colors[0], 0.50)
+
+    elif int(raw_colors[0][1]) >= 5:
+        raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
+
     colors = {"wallpaper": img}
 
     colors_special = {}
