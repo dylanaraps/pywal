@@ -12,7 +12,7 @@ Created by Dylan Araps.
 import pathlib
 
 
-__version__ = "0.5.3"
+__version__ = "0.5.4"
 
 
 HOME = pathlib.Path.home()
