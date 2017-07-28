@@ -13,6 +13,6 @@ For more info, check out the [Wiki](https://github.com/dylanaraps/pywal/wiki).
 
 [Albums of examples (Warning large)](https://dylanaraps.com/pages/rice)
 
-![screenshot](https://i.imgur.com/hkAJjJg.png)
+![screenshot](https://i.imgur.com/gxeELFY.png)
 
 
