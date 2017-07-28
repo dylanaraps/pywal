@@ -4,6 +4,7 @@ Get the image file.
 import os
 import pathlib
 import random
+import sys
 
 from .settings import CACHE_DIR
 from . import util
@@ -21,7 +22,7 @@ def get_random_image(img_dir):
 
     if not images:
         print("image: No new images found (nothing to do), exiting...")
-        quit(1)
+        sys.exit(1)
 
     return str(img_dir / random.choice(images).name)
 
@@ -38,7 +39,7 @@ def get(img, cache_dir=CACHE_DIR):
 
     else:
         print("error: No valid image file found.")
-        exit(1)
+        sys.exit(1)
 
     # Cache the image file path.
     util.save_file(wal_img, cache_dir / "wal")

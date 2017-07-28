@@ -4,6 +4,7 @@ Generate a colorscheme using imagemagick.
 import re
 import shutil
 import subprocess
+import sys
 
 from .settings import CACHE_DIR, COLOR_COUNT
 from . import util
@@ -25,7 +26,7 @@ def gen_colors(img, color_count):
     if not shutil.which("convert"):
         print("error: imagemagick not found, exiting...\n"
               "error: wal requires imagemagick to function.")
-        exit(1)
+        sys.exit(1)
 
     raw_colors = imagemagick(color_count, img)
 
@@ -41,7 +42,7 @@ def gen_colors(img, color_count):
         if index > 20:
             print("colors: Imagemagick couldn't generate a suitable scheme",
                   "for the image. Exiting...")
-            quit(1)
+            sys.exit(1)
 
     # Remove the first element because it isn't a color code.
     del raw_colors[0]

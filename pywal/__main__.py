@@ -73,16 +73,16 @@ def process_args(args):
     if not len(sys.argv) > 1:
         print("error: wal needs to be given arguments to run.\n"
               "       Refer to \"wal -h\" for more info.")
-        exit(1)
+        sys.exit(1)
 
     if args.i and args.f:
         print("error: Conflicting arguments -i and -f.\n"
               "       Refer to \"wal -h\" for more info.")
-        exit(1)
+        sys.exit(1)
 
     if args.v:
         print(f"wal {__version__}")
-        exit(0)
+        sys.exit(0)
 
     if args.q:
         sys.stdout = sys.stderr = open(os.devnull, "w")
@@ -124,10 +124,6 @@ def main():
     """Main script function."""
     args = get_args(sys.argv[1:])
     process_args(args)
-
-    # This saves 10ms.
-    # pylint: disable=W0212
-    # os._exit(0)
 
 
 if __name__ == "__main__":

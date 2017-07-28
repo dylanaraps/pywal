@@ -4,6 +4,7 @@ Reload programs.
 import re
 import shutil
 import subprocess
+import sys
 
 from .settings import CACHE_DIR, HOME, MODULE_DIR
 from . import util
@@ -71,4 +72,4 @@ def colors(vte, cache_dir=CACHE_DIR):
 
         print(sequences, end="")
 
-    exit(0)
+    sys.exit(0)
