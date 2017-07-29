@@ -36,6 +36,7 @@ def get_export_type(export_type):
         "scss": "colors.scss",
         "shell": "colors.sh",
         "xresources": "colors.Xresources",
+        "yml": "colors.yml",
     }.get(export_type, export_type)
 
 
