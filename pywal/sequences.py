@@ -45,7 +45,7 @@ def create_sequences(colors, vte):
 
     # Set a blank color that isn't affected by bold highlighting.
     # Used in wal.vim's airline theme.
-    sequences.append(set_color(66, colors["special"]["background"], "h"))
+    sequences.append(set_color(66, colors["special"]["background"]))
 
     # This escape sequence doesn"t work in VTE terminals.
     if not vte:
