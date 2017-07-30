@@ -63,7 +63,8 @@ def send(colors, vte, cache_dir=CACHE_DIR):
 
     else:
         tty_pattern = "/dev/pts/[0-9]*"
-
+        
+    # Writing to "/dev/pts/[0-9] lets you send data to open terminals.
     for term in glob.glob(tty_pattern):
         util.save_file(sequences, term)
 
