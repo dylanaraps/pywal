@@ -103,3 +103,5 @@ def get(cache_dir=CACHE_DIR):
 
     if current_wall.is_file():
         return util.read_file(current_wall)[0]
+
+    return "None"
