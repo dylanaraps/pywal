@@ -48,7 +48,7 @@ def every(colors, output_dir=CACHE_DIR):
     for file in os.scandir(MODULE_DIR / "templates"):
         template(all_colors, file.path, output_dir / file.name)
 
-    print(f"export: Exported all files.")
+    print("export: Exported all files.")
 
 
 def color(colors, export_type, output_file=None):
