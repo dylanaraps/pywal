@@ -1,7 +1,7 @@
 """
 Send sequences to all open terminals.
 """
-import os
+import glob
 
 from .settings import CACHE_DIR
 from . import util
@@ -22,11 +22,11 @@ def set_color(index, color):
     return f"\033]4;{index};{color}\007"
 
 
-def send(colors, vte, cache_dir=CACHE_DIR):
-    """Send colors to all open terminals."""
+def create_sequences(colors, vte):
+    """Create the escape sequences."""
     # Colors 0-15.
-    sequences = [set_color(num, color)
-                 for num, color in enumerate(colors["colors"].values())]
+    sequences = [set_color(num, color) for num, color in
+                 enumerate(colors["colors"].values())]
 
     # Special colors.
     # Source: https://goo.gl/KcoQgP
@@ -45,12 +45,16 @@ def send(colors, vte, cache_dir=CACHE_DIR):
     if not vte:
         sequences.append(set_special(708, colors["special"]["background"]))
 
-    terminals = [f"/dev/pts/{term}" for term in os.listdir("/dev/pts/")
-                 if len(term) < 4]
-    terminals.append(cache_dir / "sequences")
+    return "".join(sequences)
+
+
+def send(colors, vte, cache_dir=CACHE_DIR):
+    """Send colors to all open terminals."""
+    sequences = create_sequences(colors, vte)
 
     # Writing to "/dev/pts/[0-9] lets you send data to open terminals.
-    for term in terminals:
-        util.save_file("".join(sequences), term)
+    for term in glob.glob("/dev/pts/[0-9]*"):
+        util.save_file(sequences, term)
 
+    util.save_file(sequences, cache_dir / "sequences")
     print("colors: Set terminal colors")
