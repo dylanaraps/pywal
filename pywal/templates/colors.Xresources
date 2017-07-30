@@ -52,7 +52,7 @@ rofi.color-active: {background}, {foreground}, {background}, {color10}, {backgro
 rofi.color-urgent: {background}, {color9}, {background}, {color9}, {foreground}
 
 ! Xclock colors.
-XClock*foreground: {foreground{
+XClock*foreground: {foreground}
 XClock*background: {background}
 XClock*majorColor:  rgba:{color15.xrgba}
 XClock*minorColor:  rgba:{color15.xrgba}
