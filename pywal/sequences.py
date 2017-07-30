@@ -25,7 +25,7 @@ def set_color(index, color):
 def create_sequences(colors, vte):
     """Create the escape sequences."""
     # Colors 0-15.
-    sequences = [set_color(num, color) for num, color in
+    sequences = [set_color(num, col) for num, col in
                  enumerate(colors["colors"].values())]
 
     # Special colors.
