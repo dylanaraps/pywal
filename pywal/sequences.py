@@ -2,15 +2,17 @@
 Send sequences to all open terminals.
 """
 import glob
-import os
 
 from .settings import CACHE_DIR, OS
 from . import util
 
 
-def set_special(index, color):
+def set_special(index, color, iterm_name):
     """Convert a hex color to a special sequence."""
     alpha = util.Color.alpha_num
+
+    if OS == "Darwin":
+        return f"\033]P{iterm_name}{color.strip('#')}\033\\"
 
     if index in [11, 708] and alpha != 100:
         return f"\033]{index};[{alpha}]{color}\007"
@@ -36,10 +38,10 @@ def create_sequences(colors, vte):
     # Source: https://goo.gl/KcoQgP
     # 10 = foreground, 11 = background, 12 = cursor foregound
     # 13 = mouse foreground
-    sequences.append(set_special(10, colors["special"]["foreground"]))
-    sequences.append(set_special(11, colors["special"]["background"]))
-    sequences.append(set_special(12, colors["special"]["cursor"]))
-    sequences.append(set_special(13, colors["special"]["cursor"]))
+    sequences.append(set_special(10, colors["special"]["foreground"], "g"))
+    sequences.append(set_special(11, colors["special"]["background"], "h"))
+    sequences.append(set_special(12, colors["special"]["cursor"], "l"))
+    sequences.append(set_special(13, colors["special"]["cursor"], "l"))
 
     # Set a blank color that isn't affected by bold highlighting.
     # Used in wal.vim's airline theme.
