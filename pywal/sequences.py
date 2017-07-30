@@ -3,7 +3,7 @@ Send sequences to all open terminals.
 """
 import os
 
-from .settings import CACHE_DIR
+from .settings import CACHE_DIR, OS
 from . import util
 
 
@@ -19,6 +19,9 @@ def set_special(index, color):
 
 def set_color(index, color):
     """Convert a hex color to a text color sequence."""
+    if OS == "Darwin":
+        return f"\033]P{index:x}{color.strip('#')}\033\\"
+
     return f"\033]4;{index};{color}\007"
 
 
