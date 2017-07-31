@@ -83,9 +83,8 @@ def set_desktop_wallpaper(desktop, img):
 
 def set_mac_wallpaper(img):
     """Set the wallpaper on macOS."""
-    subprocess.call(["osascript", "tell", "application", "\"Finder\"",
-                     "set", "desktop", "picture", "to", "POSIX", "file",
-                     f"\"{img}\""])
+    subprocess.call(["osascript", "tell", "application", "Finder", "set",
+                     "desktop", "picture", "to", "POSIX", "file", img])
 
 
 def change(img):
