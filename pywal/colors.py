@@ -56,7 +56,9 @@ def sort_colors(img, colors):
     raw_colors = colors[:1] + colors[9:] + colors[8:]
 
     # Darken the background color if it's too light.
-    if int(raw_colors[0][1]) >= 3:
+    # The value can be a letter or an int so we treat the
+    # entire test as strings.
+    if raw_colors[0][1] not in ["0", "1", "2"]:
         raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
 
     colors = {"wallpaper": img}
