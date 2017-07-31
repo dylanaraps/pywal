@@ -34,6 +34,10 @@ def create_sequences(colors, vte):
     sequences = [set_color(num, col) for num, col in
                  enumerate(colors["colors"].values())]
 
+    # Set a blank color that isn't affected by bold highlighting.
+    # Used in wal.vim's airline theme.
+    sequences.append(set_color(66, colors["special"]["background"]))
+
     # Special colors.
     # Source: https://goo.gl/KcoQgP
     # 10 = foreground, 11 = background, 12 = cursor foregound
@@ -42,10 +46,6 @@ def create_sequences(colors, vte):
     sequences.append(set_special(11, colors["special"]["background"], "h"))
     sequences.append(set_special(12, colors["special"]["cursor"], "l"))
     sequences.append(set_special(13, colors["special"]["cursor"], "l"))
-
-    # Set a blank color that isn't affected by bold highlighting.
-    # Used in wal.vim's airline theme.
-    sequences.append(set_color(66, colors["special"]["background"]))
 
     # This escape sequence doesn"t work in VTE terminals.
     if not vte:
