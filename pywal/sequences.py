@@ -7,7 +7,7 @@ from .settings import CACHE_DIR, OS
 from . import util
 
 
-def set_special(index, color, iterm_name="g"):
+def set_special(index, color, iterm_name="h"):
     """Convert a hex color to a special sequence."""
     alpha = util.Color.alpha_num
 
