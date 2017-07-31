@@ -3,7 +3,7 @@ import os
 import shutil
 import subprocess
 
-from .settings import CACHE_DIR, OS
+from .settings import CACHE_DIR, HOME, OS
 from . import util
 
 
@@ -83,8 +83,11 @@ def set_desktop_wallpaper(desktop, img):
 
 def set_mac_wallpaper(img):
     """Set the wallpaper on macOS."""
-    subprocess.call(["osascript", "tell", "application", "Finder", "set",
-                     "desktop", "picture", "to", "POSIX", "file", img])
+    db_file = HOME / "Library/Application Support/Dock/desktoppicture.db"
+    subprocess.call(["sqlite3", db_file, f"update data set value = {img}"])
+
+    # Kill the dock to fix issues with wallpapers sharing names.
+    util.disown("killall", "Dock")
 
 
 def change(img):
