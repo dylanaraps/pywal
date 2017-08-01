@@ -119,10 +119,10 @@ def darken_color(color, darkness):
     return rgb_to_hex([int(col * (1 - darkness)) for col in hex_to_rgb(color)])
 
 
-def disown(*cmd):
+def disown(cmd):
     """Call a system command in the background,
        disown it and hide it's output."""
-    subprocess.Popen(["nohup"] + list(cmd),
+    subprocess.Popen(["nohup", *cmd],
                      stdout=subprocess.DEVNULL,
                      stderr=subprocess.DEVNULL,
                      preexec_fn=os.setpgrp)
@@ -132,6 +132,6 @@ def msg(input_msg, notify):
     """Print to the terminal and display a libnotify
        notification."""
     if notify:
-        disown("notify-send", input_msg)
+        disown(["notify-send", input_msg])
 
     print(input_msg)

@@ -69,4 +69,4 @@ def send(colors, vte, cache_dir=CACHE_DIR):
         util.save_file(sequences, term)
 
     util.save_file(sequences, cache_dir / "sequences")
-    print("colors: Set terminal colors")
+    print("colors: Set terminal colors.")

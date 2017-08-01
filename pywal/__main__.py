@@ -117,7 +117,7 @@ def process_args(args):
         reload.env()
 
     if args.o:
-        util.disown(args.o)
+        util.disown([args.o])
 
 
 def main():

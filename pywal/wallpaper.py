@@ -28,26 +28,26 @@ def get_desktop_env():
 
 def xfconf(path, img):
     """Call xfconf to set the wallpaper on XFCE."""
-    util.disown("xfconf-query", "--channel", "xfce4-desktop",
-                "--property", path, "--set", img)
+    util.disown(["xfconf-query", "--channel", "xfce4-desktop",
+                 "--property", path, "--set", img])
 
 
 def set_wm_wallpaper(img):
     """Set the wallpaper for non desktop environments."""
     if shutil.which("feh"):
-        subprocess.Popen(["feh", "--bg-fill", img])
+        util.disown(["feh", "--bg-fill", img])
 
     elif shutil.which("nitrogen"):
-        subprocess.Popen(["nitrogen", "--set-zoom-fill", img])
+        util.disown(["nitrogen", "--set-zoom-fill", img])
 
     elif shutil.which("bgs"):
-        subprocess.Popen(["bgs", img])
+        util.disown(["bgs", img])
 
     elif shutil.which("hsetroot"):
-        subprocess.Popen(["hsetroot", "-fill", img])
+        util.disown(["hsetroot", "-fill", img])
 
     elif shutil.which("habak"):
-        subprocess.Popen(["habak", "-mS", img])
+        util.disown(["habak", "-mS", img])
 
     else:
         print("error: No wallpaper setter found.")
@@ -64,18 +64,18 @@ def set_desktop_wallpaper(desktop, img):
         xfconf("/backdrop/screen0/monitor0/workspace0/last-image", img)
 
     elif "muffin" in desktop or "cinnamon" in desktop:
-        subprocess.Popen(["gsettings", "set",
-                          "org.cinnamon.desktop.background",
-                          "picture-uri", "file://" + img])
+        util.disown(["gsettings", "set",
+                     "org.cinnamon.desktop.background",
+                     "picture-uri", "file://" + img])
 
     elif "gnome" in desktop:
-        subprocess.Popen(["gsettings", "set",
-                          "org.gnome.desktop.background",
-                          "picture-uri", "file://" + img])
+        util.disown(["gsettings", "set",
+                     "org.gnome.desktop.background",
+                     "picture-uri", "file://" + img])
 
     elif "mate" in desktop:
-        subprocess.Popen(["gsettings", "set", "org.mate.background",
-                          "picture-filename", img])
+        util.disown(["gsettings", "set", "org.mate.background",
+                     "picture-filename", img])
 
     else:
         set_wm_wallpaper(img)
@@ -86,8 +86,11 @@ def set_mac_wallpaper(img):
     db_file = HOME / "Library/Application Support/Dock/desktoppicture.db"
     subprocess.call(["sqlite3", db_file, f"update data set value = '{img}'"])
 
-    # Kill the dock to fix issues with wallpapers sharing names.
-    util.disown("killall", "Dock")
+    # Kill the dock to fix issues with cached wallpapers.
+    # macOS caches wallpapers and if a wallpaper is set that shares
+    # the filename with a cached wallpaper, the cached wallpaper is
+    # used instead.
+    util.disown(["killall", "Dock"])
 
 
 def change(img):
@@ -106,7 +109,7 @@ def change(img):
     else:
         set_wm_wallpaper(img)
 
-    print("wallpaper: Set the new wallpaper")
+    print("wallpaper: Set the new wallpaper.")
 
 
 def get(cache_dir=CACHE_DIR):
