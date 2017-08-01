@@ -48,7 +48,7 @@ def i3():
 def polybar():
     """Reload polybar colors."""
     if shutil.which("polybar"):
-        util.disown("pkill", "-USR1", "polybar")
+        util.disown(["pkill", "-USR1", "polybar"])
 
 
 def env(xrdb_file=None):
