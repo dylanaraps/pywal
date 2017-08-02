@@ -28,6 +28,16 @@ def set_color(index, color):
     return f"\033]4;{index};{color}\007"
 
 
+def set_iterm_tab_color(color):
+    """Set iTerm2 window color"""
+    red, green, blue = util.hex_to_rgb(color)
+    return [
+        f"\033]6;1;bg;red;brightness;{red}\a",
+        f"\033]6;1;bg;green;brightness;{green}\a",
+        f"\033]6;1;bg;blue;brightness;{blue}\a",
+    ]
+
+
 def create_sequences(colors, vte):
     """Create the escape sequences."""
     # Colors 0-15.
@@ -46,6 +56,9 @@ def create_sequences(colors, vte):
     sequences.append(set_special(11, colors["special"]["background"], "h"))
     sequences.append(set_special(12, colors["special"]["cursor"], "l"))
     sequences.append(set_special(13, colors["special"]["cursor"], "l"))
+
+    if OS == "Darwin":
+        sequences += set_iterm_tab_color(colors["special"]["background"])
 
     # This escape sequence doesn"t work in VTE terminals.
     if not vte:
