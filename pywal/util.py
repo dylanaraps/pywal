@@ -34,23 +34,6 @@ class Color:
         return f"[{self.alpha_num}]{self.hex_color}"
 
 
-def set_grey(colors):
-    """Set a grey color based on the brightness
-       of another color."""
-    return {
-        "0": "#666666",
-        "1": "#666666",
-        "2": "#757575",
-        "3": "#999999",
-        "4": "#999999",
-        "5": "#8a8a8a",
-        "6": "#a1a1a1",
-        "7": "#a1a1a1",
-        "8": "#a1a1a1",
-        "9": "#a1a1a1",
-    }.get(colors[0][1], colors[7])
-
-
 def read_file(input_file):
     """Read data from a file and trim newlines."""
     with open(input_file, "r") as file:
@@ -114,9 +97,16 @@ def rgb_to_hex(color):
     return f"#{color[0]:02x}{color[1]:02x}{color[2]:02x}"
 
 
-def darken_color(color, darkness):
+def darken_color(color, amount):
     """Darken a hex color."""
-    return rgb_to_hex([int(col * (1 - darkness)) for col in hex_to_rgb(color)])
+    color = [int(col * (1 - amount)) for col in hex_to_rgb(color)]
+    return rgb_to_hex(color)
+
+
+def lighten_color(color, amount):
+    """Lighten a hex color."""
+    color = [int(col + (255 - col) * amount) for col in hex_to_rgb(color)]
+    return rgb_to_hex(color)
 
 
 def disown(cmd):

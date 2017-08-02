@@ -13,12 +13,6 @@ COLORS = util.read_file_json("tests/test_files/test_file.json")
 class TestUtil(unittest.TestCase):
     """Test the util functions."""
 
-    def test_set_grey(self):
-        """> Get grey color based on brightness of color0"""
-        colors = [list(COLORS["colors"].values())]
-        result = util.set_grey(colors[0])
-        self.assertEqual(result, "#666666")
-
     def test_read_file(self):
         """> Read colors from a file."""
         result = util.read_file("tests/test_files/test_file")
@@ -90,6 +84,11 @@ class TestUtil(unittest.TestCase):
         """> Darken #ffffff by 0.25."""
         result = util.darken_color("#ffffff", 0.25)
         self.assertEqual(result, "#bfbfbf")
+
+    def test_lighten_color(self):
+        """> Lighten #000000 by 0.25."""
+        result = util.lighten_color("#000000", 0.25)
+        self.assertEqual(result, "#3f3f3f")
 
 
 if __name__ == "__main__":
