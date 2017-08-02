@@ -61,18 +61,21 @@ def sort_colors(img, colors):
     if raw_colors[0][1] not in ["0", "1", "2"]:
         raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
 
+    # Create a comment color from the background.
+    raw_colors[8] = util.lighten_color(raw_colors[0], 0.40)
+
     colors = {"wallpaper": img}
 
     colors_special = {}
+    colors_hex = {}
+
     colors_special.update({"background": raw_colors[0]})
     colors_special.update({"foreground": raw_colors[15]})
     colors_special.update({"cursor": raw_colors[15]})
 
-    colors_hex = {}
     for index, color in enumerate(raw_colors):
         colors_hex.update({f"color{index}": color})
 
-    colors_hex["color8"] = util.set_grey(raw_colors)
     colors["special"] = colors_special
     colors["colors"] = colors_hex
 
