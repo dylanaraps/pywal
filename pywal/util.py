@@ -100,7 +100,6 @@ def rgb_to_hex(color):
 def darken_color(color, amount):
     """Darken a hex color."""
     color = [int(col * (1 - amount)) for col in hex_to_rgb(color)]
-    print(color)
     return rgb_to_hex(color)
 
 

@@ -65,7 +65,6 @@ def sort_colors(img, colors):
     raw_colors[8] = util.lighten_color(raw_colors[0], 0.40)
 
     colors = {"wallpaper": img}
-
     colors_special = {}
     colors_hex = {}
 
