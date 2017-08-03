@@ -83,14 +83,7 @@ def set_desktop_wallpaper(desktop, img):
 
 def set_mac_wallpaper(img):
     """Set the wallpaper on macOS."""
-    db_file = HOME / "Library/Application Support/Dock/desktoppicture.db"
-    subprocess.call(["sqlite3", db_file, f"update data set value = '{img}'"])
-
-    # Kill the dock to fix issues with cached wallpapers.
-    # macOS caches wallpapers and if a wallpaper is set that shares
-    # the filename with a cached wallpaper, the cached wallpaper is
-    # used instead.
-    util.disown(["killall", "Dock"])
+    subprocess.Popen(f"""osascript -e 'tell application "Finder" to set desktop picture to POSIX file "{img}"'""", shell=True)
 
 
 def change(img):
