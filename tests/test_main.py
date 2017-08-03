@@ -20,7 +20,8 @@ class TestMain(unittest.TestCase):
         reload.env = MagicMock()
         args = __main__.get_args(["-e"])
         __main__.process_args(args)
-        reload.env.assert_not_called()
+        self.assertFalse(reload.env.called)
+
 
 if __name__ == "__main__":
     unittest.main()
