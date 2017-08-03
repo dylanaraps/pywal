@@ -65,6 +65,9 @@ def get_args(args):
     arg.add_argument("-v", action="store_true",
                      help="Print \"wal\" version.")
 
+    arg.add_argument("-e", action="store_true",
+                     help="Skip Reloading Environment gtk/xrdb/i3/polybar")
+
     return arg.parse_args(args)
 
 
@@ -114,7 +117,9 @@ def process_args(args):
             wallpaper.change(colors_plain["wallpaper"])
 
         export.every(colors_plain)
-        reload.env()
+
+        if not args.e:
+            reload.env()
 
     if args.o:
         util.disown([args.o])

@@ -90,7 +90,7 @@ def set_mac_wallpaper(img):
     # macOS caches wallpapers and if a wallpaper is set that shares
     # the filename with a cached wallpaper, the cached wallpaper is
     # used instead.
-    util.disown(["killall", "Dock"])
+    subprocess.call(["killall", "Dock"])
 
 
 def change(img):
