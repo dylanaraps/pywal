@@ -2,7 +2,8 @@
 import unittest
 from unittest.mock import MagicMock
 
-from pywal import __main__, reload
+from pywal import __main__
+from pywal import reload
 from pywal.settings import CACHE_DIR
 
 
