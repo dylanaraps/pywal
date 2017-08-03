@@ -29,7 +29,7 @@ def set_color(index, color):
 
 
 def set_iterm_tab_color(color):
-    """Set iTerm2 window color"""
+    """Set iTerm2 tab/window color"""
     red, green, blue = util.hex_to_rgb(color)
     return [
         f"\033]6;1;bg;red;brightness;{red}\a",
