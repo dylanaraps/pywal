@@ -32,11 +32,11 @@ def gtk():
         # Here we call a Python 2 script to reload the GTK themes.
         # This is done because the Python 3 GTK/Gdk libraries don't
         # provide a way of doing this.
-        if shutil.which("python2"):
-            util.disown(["python2", MODULE_DIR / "scripts" / "gtk_reload.py"])
+    if shutil.which("python2"):
+        util.disown(["python2", MODULE_DIR / "scripts" / "gtk_reload.py"])
 
-        else:
-            print("warning: GTK2 reload support requires Python 2.")
+    else:
+        print("warning: GTK2 reload support requires Python 2.")
 
 
 def i3():
