@@ -29,9 +29,9 @@ def gtk():
         if gtk2_file.is_file():
             shutil.copy(gtk2_file, theme_path / "gtk-2.0")
 
-        # Here we call a Python 2 script to reload the GTK themes.
-        # This is done because the Python 3 GTK/Gdk libraries don't
-        # provide a way of doing this.
+    # Here we call a Python 2 script to reload the GTK themes.
+    # This is done because the Python 3 GTK/Gdk libraries don't
+    # provide a way of doing this.
     if shutil.which("python2"):
         util.disown(["python2", MODULE_DIR / "scripts" / "gtk_reload.py"])
 
