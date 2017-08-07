@@ -109,6 +109,18 @@ def lighten_color(color, amount):
     return rgb_to_hex(color)
 
 
+def fade_color(color, amount):
+    """Fade a hex color."""
+    red, green, blue = hex_to_rgb(color)
+    luma = 0.3 * red + 0.6 * green + 0.1 * blue
+
+    new_red = int(red + amount * (luma - red))
+    new_green = int(green + amount * (luma - green))
+    new_blue = int(blue + amount * (luma - blue))
+
+    return rgb_to_hex([new_red, new_green, new_blue])
+
+
 def disown(cmd):
     """Call a system command in the background,
        disown it and hide it's output."""
