@@ -3,7 +3,6 @@ Misc helper functions.
 """
 import json
 import os
-import pathlib
 import subprocess
 
 
@@ -78,7 +77,7 @@ def save_file_json(data, export_file):
 
 def create_dir(directory):
     """Alias to create the cache dir."""
-    pathlib.Path(directory).mkdir(parents=True, exist_ok=True)
+    os.makedirs(directory, exist_ok=True)
 
 
 def hex_to_rgb(color):

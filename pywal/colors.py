@@ -2,6 +2,7 @@
 Generate a colorscheme using imagemagick.
 """
 import collections
+import os
 import re
 import shutil
 import subprocess
@@ -84,11 +85,10 @@ def get(img, cache_dir=CACHE_DIR,
         color_count=COLOR_COUNT, notify=False):
     """Get the colorscheme."""
     # _home_dylan_img_jpg.json
-    cache_file = cache_dir / "schemes" / \
-        img.replace("/", "_").replace(".", "_")
-    cache_file = cache_file.with_suffix(".json")
+    cache_file = os.path.join(cache_dir, "schemes",
+                              img.replace("/", "_"), ".json")
 
-    if cache_file.is_file():
+    if os.path.isfile(cache_file):
         colors = util.read_file_json(cache_file)
         print("colors: Found cached colorscheme.")
 

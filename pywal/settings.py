@@ -9,15 +9,15 @@
 Created by Dylan Araps.
 """
 
-import pathlib
+import os
 import platform
 
 
 __version__ = "0.5.12"
 
 
-HOME = pathlib.Path.home()
-CACHE_DIR = HOME / ".cache/wal/"
-MODULE_DIR = pathlib.Path(__file__).parent
+HOME = os.environ["HOME"]
+CACHE_DIR = os.path.join(HOME, ".cache/wal/")
+MODULE_DIR = os.path.dirname(__file__)
 COLOR_COUNT = 16
 OS = platform.uname()[0]

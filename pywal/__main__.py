@@ -91,7 +91,8 @@ def process_args(args):
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
     if args.c:
-        shutil.rmtree(str(CACHE_DIR / "schemes"), ignore_errors=True)
+        scheme_dir = os.path.join(CACHE_DIR, "schemes")
+        shutil.rmtree(scheme_dir, ignore_errors=True)
 
     if args.r:
         reload.colors(args.t)

@@ -2,6 +2,7 @@
 Send sequences to all open terminals.
 """
 import glob
+import os
 
 from .settings import CACHE_DIR, OS
 from . import util
@@ -81,5 +82,5 @@ def send(colors, vte, cache_dir=CACHE_DIR):
     for term in glob.glob(tty_pattern):
         util.save_file(sequences, term)
 
-    util.save_file(sequences, cache_dir / "sequences")
+    util.save_file(sequences, os.path.join(cache_dir, "sequences"))
     print("colors: Set terminal colors.")
