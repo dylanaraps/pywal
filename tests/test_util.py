@@ -1,7 +1,6 @@
 """Test util functions."""
 import unittest
 import os
-import pathlib
 
 from pywal import util
 
@@ -35,16 +34,16 @@ class TestUtil(unittest.TestCase):
 
     def test_save_file(self):
         """> Save colors to a file."""
-        tmp_file = pathlib.Path("/tmp/test_file")
+        tmp_file = "/tmp/test_file"
         util.save_file("Hello, world", tmp_file)
-        result = tmp_file.is_file()
+        result = os.path.isfile(tmp_file)
         self.assertTrue(result)
 
     def test_save_file_json(self):
         """> Save colors to a file."""
-        tmp_file = pathlib.Path("/tmp/test_file.json")
+        tmp_file = "/tmp/test_file.json"
         util.save_file_json(COLORS, tmp_file)
-        result = tmp_file.is_file()
+        result = os.path.isfile(tmp_file)
         self.assertTrue(result)
 
     def test_create_dir(self):
