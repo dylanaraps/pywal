@@ -4,7 +4,7 @@ import setuptools
 try:
     import pywal
 except (ImportError, SyntaxError):
-    print("error: pywal requires Python 3.6 or greater.")
+    print("error: pywal requires Python 3.5 or greater.")
     quit(1)
 
 
