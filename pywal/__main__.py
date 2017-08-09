@@ -84,7 +84,7 @@ def process_args(args):
         sys.exit(1)
 
     if args.v:
-        print("wal %s" % __version__)
+        print("wal", __version__)
         sys.exit(0)
 
     if args.q:
