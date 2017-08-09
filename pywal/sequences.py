@@ -42,8 +42,8 @@ def set_iterm_tab_color(color):
 def create_sequences(colors, vte):
     """Create the escape sequences."""
     # Colors 0-15.
-    sequences = [set_color(num, col) for num, col in
-                 enumerate(colors["colors"].values())]
+    sequences = [set_color(index, colors["colors"]["color%s" % index])
+                 for index in range(16)]
 
     # Set a blank color that isn't affected by bold highlighting.
     # Used in wal.vim's airline theme.

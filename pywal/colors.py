@@ -1,7 +1,6 @@
 """
 Generate a colorscheme using imagemagick.
 """
-import collections
 import os
 import re
 import shutil
@@ -69,7 +68,7 @@ def sort_colors(img, colors):
     colors = {}
     colors["wallpaper"] = img
     colors["special"] = {}
-    colors["colors"] = collections.OrderedDict()
+    colors["colors"] = {}
 
     colors["special"]["background"] = raw_colors[0]
     colors["special"]["foreground"] = raw_colors[15]
