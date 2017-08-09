@@ -59,7 +59,7 @@ def read_file_raw(input_file):
 
 def save_file(data, export_file):
     """Write data to a file."""
-    create_dir(export_file.parent)
+    create_dir(os.path.dirname(str(export_file)))
 
     try:
         with open(str(export_file), "w") as file:
@@ -70,7 +70,7 @@ def save_file(data, export_file):
 
 def save_file_json(data, export_file):
     """Write data to a json file."""
-    create_dir(export_file.parent)
+    create_dir(os.path.dirname(str(export_file)))
 
     with open(str(export_file), "w") as file:
         json.dump(data, file, indent=4)
