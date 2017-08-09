@@ -1,6 +1,7 @@
 """
 Generate a colorscheme using imagemagick.
 """
+import collections
 import re
 import shutil
 import subprocess
@@ -64,19 +65,17 @@ def sort_colors(img, colors):
     # Create a comment color from the background.
     raw_colors[8] = util.lighten_color(raw_colors[0], 0.40)
 
-    colors = {"wallpaper": img}
-    colors_special = {}
-    colors_hex = {}
+    colors = {}
+    colors["wallpaper"] = img
+    colors["special"] = {}
+    colors["colors"] = collections.OrderedDict()
 
-    colors_special.update({"background": raw_colors[0]})
-    colors_special.update({"foreground": raw_colors[15]})
-    colors_special.update({"cursor": raw_colors[15]})
+    colors["special"]["background"] = raw_colors[0]
+    colors["special"]["foreground"] = raw_colors[15]
+    colors["special"]["cursor"] = raw_colors[15]
 
     for index, color in enumerate(raw_colors):
-        colors_hex.update({"color%s" % index: color})
-
-    colors["special"] = colors_special
-    colors["colors"] = colors_hex
+        colors["colors"]["color%s" % index] = color
 
     return colors
 
