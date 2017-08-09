@@ -65,7 +65,7 @@ def colors(vte, cache_dir=CACHE_DIR):
     """Reload the current scheme."""
     sequence_file = os.path.join(cache_dir, "sequences")
 
-    if sequence_file.is_file():
+    if os.path.isfile(sequence_file):
         sequences = "".join(util.read_file(sequence_file))
 
         # If vte mode was used, remove the unsupported sequence.
