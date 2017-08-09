@@ -32,7 +32,8 @@ class Testsequences(unittest.TestCase):
     def test_set_iterm_tab_color(self):
         """> Create iterm tab color sequences"""
         result = sequences.set_iterm_tab_color(COLORS["special"]["background"])
-        self.assertEqual(len(result), 3)
+        print(result)
+        self.assertEqual(len(result), 104)
 
 
 if __name__ == "__main__":

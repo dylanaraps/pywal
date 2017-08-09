@@ -12,30 +12,30 @@ def set_special(index, color, iterm_name="h"):
     alpha = util.Color.alpha_num
 
     if OS == "Darwin":
-        return f"\033]P{iterm_name}{color.strip('#')}\033\\"
+        return "\033[P%s%s\033\\" % (iterm_name, color.strip("#"))
 
     if index in [11, 708] and alpha != 100:
-        return f"\033]{index};[{alpha}]{color}\007"
+        return "\033]%s;[%s]%s\007" % (index, alpha, color)
 
-    return f"\033]{index};{color}\007"
+    return "\033]%s;%s\007" % (index, color)
 
 
 def set_color(index, color):
     """Convert a hex color to a text color sequence."""
     if OS == "Darwin":
-        return f"\033]P{index:x}{color.strip('#')}\033\\"
+        return "\033]P%x%s\033\\" % (index, color.strip("#"))
 
-    return f"\033]4;{index};{color}\007"
+    return "\033]4;%s;%s\007" % (index, color)
 
 
 def set_iterm_tab_color(color):
     """Set iTerm2 tab/window color"""
     red, green, blue = util.hex_to_rgb(color)
-    return [
-        f"\033]6;1;bg;red;brightness;{red}\a",
-        f"\033]6;1;bg;green;brightness;{green}\a",
-        f"\033]6;1;bg;blue;brightness;{blue}\a",
-    ]
+    return """
+    \033]6;1;bg;red;brightness;%s\a
+    \033]6;1;bg;green;brightness;%s\a
+    \033]6;1;bg;blue;brightness;%s\a
+    """ % (red, green, blue)
 
 
 def create_sequences(colors, vte):

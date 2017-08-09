@@ -84,14 +84,14 @@ def process_args(args):
         sys.exit(1)
 
     if args.v:
-        print(f"wal {__version__}")
+        print("wal %s" % __version__)
         sys.exit(0)
 
     if args.q:
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
     if args.c:
-        shutil.rmtree(CACHE_DIR / "schemes", ignore_errors=True)
+        shutil.rmtree(str(CACHE_DIR / "schemes"), ignore_errors=True)
 
     if args.r:
         reload.colors(args.t)

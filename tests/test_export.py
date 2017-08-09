@@ -43,7 +43,7 @@ class TestExportColors(unittest.TestCase):
 
     def test_invalid_template(self):
         """> Test template validation."""
-        error_msg = "[!] warning: template 'dummy' doesn't exist."
+        error_msg = "warning: template 'dummy' doesn't exist."
 
         # Since this function prints a message on fail we redirect
         # it's output so that we can read it.

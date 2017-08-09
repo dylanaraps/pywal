@@ -21,7 +21,7 @@ class Color:
     def rgb(self):
         """Convert a hex color to rgb."""
         red, green, blue = hex_to_rgb(self.hex_color)
-        return f"{red},{green},{blue}"
+        return "%s,%s,%s" % (red, green, blue)
 
     @property
     def xrgba(self):
@@ -31,19 +31,19 @@ class Color:
     @property
     def alpha(self):
         """Add URxvt alpha value to color."""
-        return f"[{self.alpha_num}]{self.hex_color}"
+        return "[%s]%s" % (self.alpha_num, self.hex_color)
 
 
 def read_file(input_file):
     """Read data from a file and trim newlines."""
-    with open(input_file, "r") as file:
+    with open(str(input_file), "r") as file:
         data = file.read().splitlines()
     return data
 
 
 def read_file_json(input_file):
     """Read data from a json file."""
-    with open(input_file, "r") as json_file:
+    with open(str(input_file), "r") as json_file:
         data = json.load(json_file)
 
     return data
@@ -52,27 +52,27 @@ def read_file_json(input_file):
 def read_file_raw(input_file):
     """Read data from a file as is, don't strip
        newlines or other special characters.."""
-    with open(input_file, "r") as file:
+    with open(str(input_file), "r") as file:
         data = file.readlines()
     return data
 
 
 def save_file(data, export_file):
     """Write data to a file."""
-    create_dir(os.path.dirname(export_file))
+    create_dir(export_file.parent)
 
     try:
-        with open(export_file, "w") as file:
+        with open(str(export_file), "w") as file:
             file.write(data)
     except PermissionError:
-        print(f"[!] warning: Couldn't write to {export_file}.")
+        print("warning: Couldn't write to %s." % export_file)
 
 
 def save_file_json(data, export_file):
     """Write data to a json file."""
-    create_dir(os.path.dirname(export_file))
+    create_dir(export_file.parent)
 
-    with open(export_file, "w") as file:
+    with open(str(export_file), "w") as file:
         json.dump(data, file, indent=4)
 
 
@@ -88,13 +88,13 @@ def hex_to_rgb(color):
 
 def hex_to_xrgba(color):
     """Convert a hex color to xrdb rgba."""
-    col = color.lower()
-    return f"{col[1]}{col[2]}/{col[3]}{col[4]}/{col[5]}{col[6]}/ff"
+    col = color.lower().strip("#")
+    return "%s%s/%s%s/%s%s/ff" % (*col,)
 
 
 def rgb_to_hex(color):
     """Convert an rgb color to hex."""
-    return f"#{color[0]:02x}{color[1]:02x}{color[2]:02x}"
+    return "#%02x%02x%02x" % (*color,)
 
 
 def darken_color(color, amount):

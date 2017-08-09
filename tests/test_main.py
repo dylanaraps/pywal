@@ -2,6 +2,8 @@
 import unittest
 from unittest.mock import MagicMock
 
+import os
+
 from pywal import __main__
 from pywal import reload
 from pywal.settings import CACHE_DIR
@@ -14,7 +16,7 @@ class TestMain(unittest.TestCase):
         """> Test arg parsing (-c)"""
         args = __main__.get_args(["-c"])
         __main__.process_args(args)
-        self.assertFalse((CACHE_DIR / "schemes").is_dir())
+        self.assertFalse(os.path.isdir(str(CACHE_DIR / "schemes")))
 
     def test_args_e(self):
         """> Test arg parsing (-e)"""

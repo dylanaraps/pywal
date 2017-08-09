@@ -49,10 +49,9 @@ class TestUtil(unittest.TestCase):
 
     def test_create_dir(self):
         """> Create a directory."""
-        tmp_dir = pathlib.Path("/tmp/test_dir")
+        tmp_dir = "/tmp/test_dir"
         util.create_dir(tmp_dir)
-        result = tmp_dir.is_dir()
-        self.assertTrue(result)
+        self.assertTrue(os.path.isdir(tmp_dir))
         os.rmdir(tmp_dir)
 
     def test_hex_to_rgb_black(self):

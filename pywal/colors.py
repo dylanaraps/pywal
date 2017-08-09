@@ -73,7 +73,7 @@ def sort_colors(img, colors):
     colors_special.update({"cursor": raw_colors[15]})
 
     for index, color in enumerate(raw_colors):
-        colors_hex.update({f"color{index}": color})
+        colors_hex.update({"color%s" % index: color})
 
     colors["special"] = colors_special
     colors["colors"] = colors_hex

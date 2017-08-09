@@ -45,7 +45,7 @@ def every(colors, output_dir=CACHE_DIR):
     all_colors = flatten_colors(colors)
     output_dir = pathlib.Path(output_dir)
 
-    for file in os.scandir(MODULE_DIR / "templates"):
+    for file in os.scandir(str(MODULE_DIR / "templates")):
         template(all_colors, file.path, output_dir / file.name)
 
     print("export: Exported all files.")
@@ -61,6 +61,6 @@ def color(colors, export_type, output_file=None):
 
     if template_file.is_file():
         template(all_colors, template_file, output_file)
-        print(f"export: Exported {export_type}.")
+        print("export: Exported %s." % export_type)
     else:
-        print(f"[!] warning: template '{export_type}' doesn't exist.")
+        print("warning: template '%s' doesn't exist." % export_type)

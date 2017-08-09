@@ -15,7 +15,7 @@ def xrdb(xrdb_file=None):
     xrdb_file = xrdb_file or CACHE_DIR / "colors.Xresources"
 
     if shutil.which("xrdb"):
-        subprocess.Popen(["xrdb", "-merge", xrdb_file],
+        subprocess.Popen(["xrdb", "-merge", str(xrdb_file)],
                          stdout=subprocess.DEVNULL,
                          stderr=subprocess.DEVNULL).wait()
 
@@ -27,13 +27,13 @@ def gtk():
 
     if theme_path.is_dir():
         if gtk2_file.is_file():
-            shutil.copy(gtk2_file, theme_path / "gtk-2.0")
+            shutil.copy(str(gtk2_file), str(theme_path / "gtk-2.0"))
 
     # Here we call a Python 2 script to reload the GTK themes.
     # This is done because the Python 3 GTK/Gdk libraries don't
     # provide a way of doing this.
     if shutil.which("python2"):
-        util.disown(["python2", MODULE_DIR / "scripts" / "gtk_reload.py"])
+        util.disown(["python2", str(MODULE_DIR / "scripts" / "gtk_reload.py")])
 
     else:
         print("warning: GTK2 reload support requires Python 2.")
