@@ -33,13 +33,14 @@ setuptools.setup(
         "Environment :: X11 Applications",
         "License :: OSI Approved :: MIT License",
         "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
     ],
     packages=["pywal"],
     entry_points={
         "console_scripts": ["wal=pywal.__main__:main"]
     },
-    python_requires=">=3.6",
+    python_requires=">=3.5",
     test_suite="tests",
     include_package_data=True
 )
