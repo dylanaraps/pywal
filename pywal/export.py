@@ -2,7 +2,6 @@
 Export colors in various formats.
 """
 import os
-import pathlib
 
 from .settings import CACHE_DIR, MODULE_DIR
 from . import util
@@ -43,10 +42,10 @@ def get_export_type(export_type):
 def every(colors, output_dir=CACHE_DIR):
     """Export all template files."""
     all_colors = flatten_colors(colors)
-    output_dir = pathlib.Path(output_dir)
+    template_dir = os.path.join(MODULE_DIR, "templates")
 
-    for file in os.scandir(MODULE_DIR / "templates"):
-        template(all_colors, file.path, output_dir / file.name)
+    for file in os.scandir(template_dir):
+        template(all_colors, file.path, os.path.join(output_dir, file.name))
 
     print("export: Exported all files.")
 
@@ -56,11 +55,11 @@ def color(colors, export_type, output_file=None):
     all_colors = flatten_colors(colors)
 
     template_name = get_export_type(export_type)
-    template_file = MODULE_DIR / "templates" / template_name
-    output_file = output_file or CACHE_DIR / template_name
+    template_file = os.path.join(MODULE_DIR, "templates", template_name)
+    output_file = output_file or os.path.join(CACHE_DIR, template_name)
 
-    if template_file.is_file():
+    if os.path.isfile(template_file):
         template(all_colors, template_file, output_file)
-        print(f"export: Exported {export_type}.")
+        print("export: Exported %s." % export_type)
     else:
-        print(f"[!] warning: template '{export_type}' doesn't exist.")
+        print("warning: template '%s' doesn't exist." % export_type)

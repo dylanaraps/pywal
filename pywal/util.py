@@ -3,7 +3,6 @@ Misc helper functions.
 """
 import json
 import os
-import pathlib
 import subprocess
 
 
@@ -21,7 +20,7 @@ class Color:
     def rgb(self):
         """Convert a hex color to rgb."""
         red, green, blue = hex_to_rgb(self.hex_color)
-        return f"{red},{green},{blue}"
+        return "%s,%s,%s" % (red, green, blue)
 
     @property
     def xrgba(self):
@@ -31,7 +30,7 @@ class Color:
     @property
     def alpha(self):
         """Add URxvt alpha value to color."""
-        return f"[{self.alpha_num}]{self.hex_color}"
+        return "[%s]%s" % (self.alpha_num, self.hex_color)
 
 
 def read_file(input_file):
@@ -65,7 +64,7 @@ def save_file(data, export_file):
         with open(export_file, "w") as file:
             file.write(data)
     except PermissionError:
-        print(f"[!] warning: Couldn't write to {export_file}.")
+        print("warning: Couldn't write to %s." % export_file)
 
 
 def save_file_json(data, export_file):
@@ -78,7 +77,7 @@ def save_file_json(data, export_file):
 
 def create_dir(directory):
     """Alias to create the cache dir."""
-    pathlib.Path(directory).mkdir(parents=True, exist_ok=True)
+    os.makedirs(directory, exist_ok=True)
 
 
 def hex_to_rgb(color):
@@ -88,13 +87,13 @@ def hex_to_rgb(color):
 
 def hex_to_xrgba(color):
     """Convert a hex color to xrdb rgba."""
-    col = color.lower()
-    return f"{col[1]}{col[2]}/{col[3]}{col[4]}/{col[5]}{col[6]}/ff"
+    col = color.lower().strip("#")
+    return "%s%s/%s%s/%s%s/ff" % (*col,)
 
 
 def rgb_to_hex(color):
     """Convert an rgb color to hex."""
-    return f"#{color[0]:02x}{color[1]:02x}{color[2]:02x}"
+    return "#%02x%02x%02x" % (*color,)
 
 
 def darken_color(color, amount):

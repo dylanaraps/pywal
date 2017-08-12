@@ -84,7 +84,7 @@ def set_desktop_wallpaper(desktop, img):
 def set_mac_wallpaper(img):
     """Set the wallpaper on macOS."""
     db_file = HOME / "Library/Application Support/Dock/desktoppicture.db"
-    subprocess.call(["sqlite3", db_file, f"update data set value = '{img}'"])
+    subprocess.call(["sqlite3", db_file, "update data set value = '%s'" % img])
 
     # Kill the dock to fix issues with cached wallpapers.
     # macOS caches wallpapers and if a wallpaper is set that shares
@@ -114,9 +114,9 @@ def change(img):
 
 def get(cache_dir=CACHE_DIR):
     """Get the current wallpaper."""
-    current_wall = cache_dir / "wal"
+    current_wall = os.path.join(cache_dir, "wal")
 
-    if current_wall.is_file():
+    if os.path.isfile(current_wall):
         return util.read_file(current_wall)[0]
 
     return "None"

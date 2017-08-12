@@ -2,7 +2,6 @@
 Get the image file.
 """
 import os
-import pathlib
 import random
 import sys
 
@@ -24,25 +23,23 @@ def get_random_image(img_dir):
         print("image: No new images found (nothing to do), exiting...")
         sys.exit(1)
 
-    return str(img_dir / random.choice(images).name)
+    return os.path.join(img_dir, random.choice(images).name)
 
 
 def get(img, cache_dir=CACHE_DIR):
     """Validate image input."""
-    image = pathlib.Path(img)
+    if os.path.isfile(img):
+        wal_img = img
 
-    if image.is_file():
-        wal_img = str(image)
-
-    elif image.is_dir():
-        wal_img = get_random_image(image)
+    elif os.path.isdir(img):
+        wal_img = get_random_image(img)
 
     else:
         print("error: No valid image file found.")
         sys.exit(1)
 
     # Cache the image file path.
-    util.save_file(wal_img, cache_dir / "wal")
+    util.save_file(wal_img, os.path.join(cache_dir, "wal"))
 
     print("image: Using image", wal_img)
     return wal_img

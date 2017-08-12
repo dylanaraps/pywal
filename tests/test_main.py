@@ -2,6 +2,8 @@
 import unittest
 import unittest.mock
 
+import os
+
 from pywal import __main__
 from pywal import reload
 from pywal import wallpaper
@@ -22,7 +24,8 @@ class TestMain(unittest.TestCase):
         """> Test arg parsing (-c)."""
         args = __main__.get_args(["-c"])
         __main__.process_args(args)
-        self.assertFalse((CACHE_DIR / "schemes").is_dir())
+        scheme_dir = os.path.join(CACHE_DIR, "schemes")
+        self.assertFalse(os.path.isdir(scheme_dir))
 
     def test_args_e(self):
         """> Test arg parsing (-e)."""

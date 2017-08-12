@@ -1,6 +1,7 @@
 """
 Generate a colorscheme using imagemagick.
 """
+import os
 import re
 import shutil
 import subprocess
@@ -64,19 +65,17 @@ def sort_colors(img, colors):
     # Create a comment color from the background.
     raw_colors[8] = util.lighten_color(raw_colors[0], 0.40)
 
-    colors = {"wallpaper": img}
-    colors_special = {}
-    colors_hex = {}
+    colors = {}
+    colors["wallpaper"] = img
+    colors["special"] = {}
+    colors["colors"] = {}
 
-    colors_special.update({"background": raw_colors[0]})
-    colors_special.update({"foreground": raw_colors[15]})
-    colors_special.update({"cursor": raw_colors[15]})
+    colors["special"]["background"] = raw_colors[0]
+    colors["special"]["foreground"] = raw_colors[15]
+    colors["special"]["cursor"] = raw_colors[15]
 
     for index, color in enumerate(raw_colors):
-        colors_hex.update({f"color{index}": color})
-
-    colors["special"] = colors_special
-    colors["colors"] = colors_hex
+        colors["colors"]["color%s" % index] = color
 
     return colors
 
@@ -85,11 +84,10 @@ def get(img, cache_dir=CACHE_DIR,
         color_count=COLOR_COUNT, notify=False):
     """Get the colorscheme."""
     # _home_dylan_img_jpg.json
-    cache_file = cache_dir / "schemes" / \
-        img.replace("/", "_").replace(".", "_")
-    cache_file = cache_file.with_suffix(".json")
+    cache_file = img.replace("/", "_").replace(".", "_")
+    cache_file = os.path.join(cache_dir, "schemes", cache_file + ".json")
 
-    if cache_file.is_file():
+    if os.path.isfile(cache_file):
         colors = util.read_file_json(cache_file)
         print("colors: Found cached colorscheme.")
 
