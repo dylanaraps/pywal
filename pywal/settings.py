@@ -13,7 +13,7 @@ import pathlib
 import platform
 
 
-__version__ = "0.5.12"
+__version__ = "0.5.13"
 
 
 HOME = pathlib.Path.home()
