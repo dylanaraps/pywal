@@ -58,6 +58,9 @@ def get_args(args):
     arg.add_argument("-r", action="store_true",
                      help="Reload current colorscheme.")
 
+    arg.add_argument("-R", action="store_true",
+                     help="Restore previous theme.")
+
     arg.add_argument("-t", action="store_true",
                      help="Fix artifacts in VTE Terminals. \
                            (Termite, xfce4-terminal)")
@@ -98,6 +101,15 @@ def process_args(args):
 
     if args.a:
         util.Color.alpha_num = args.a
+
+    if args.R:
+        image_file = os.path.join(CACHE_DIR, "wal")
+
+        if os.path.isfile(image_file):
+            args.i = util.read_file(image_file)[0]
+        else:
+            print("image: No colorscheme to restore, try 'wal -i' first.")
+            sys.exit(1)
 
     if args.i:
         image_file = image.get(args.i)
