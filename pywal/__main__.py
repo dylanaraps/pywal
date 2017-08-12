@@ -59,7 +59,7 @@ def get_args(args):
                      help="Reload current colorscheme.")
 
     arg.add_argument("-R", action="store_true",
-                     help="Restore previous theme.")
+                     help="Restore previous colorscheme.")
 
     arg.add_argument("-t", action="store_true",
                      help="Fix artifacts in VTE Terminals. \
