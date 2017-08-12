@@ -9,6 +9,7 @@ UXTerm*background:  {background}
 URxvt*cursorColor:  {cursor}
 XTerm*cursorColor:  {cursor}
 UXTerm*cursorColor: {cursor}
+URxvt*borderColor:  {background}
 
 ! Colors 0-15.
 *.color0: {color0}
