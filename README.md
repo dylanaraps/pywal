@@ -18,7 +18,9 @@ For more info, check out the [Wiki](https://github.com/dylanaraps/pywal/wiki).
 
 ## Donate
 
-Donations will allow me to spend more time working on `pywal`. If you like `pywal` and want to give back in some way you can donate here:
+Donations will allow me to spend more time working on `pywal`.
+
+If you like `pywal` and want to give back in some way you can donate here:
 
 **https://patreon.com/dyla**
 
