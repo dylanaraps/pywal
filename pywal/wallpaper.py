@@ -2,6 +2,7 @@
 import os
 import shutil
 import subprocess
+import urllib
 
 from .settings import CACHE_DIR, HOME, OS
 from . import util
@@ -66,12 +67,12 @@ def set_desktop_wallpaper(desktop, img):
     elif "muffin" in desktop or "cinnamon" in desktop:
         util.disown(["gsettings", "set",
                      "org.cinnamon.desktop.background",
-                     "picture-uri", "file://" + img])
+                     "picture-uri", "file://" + urllib.parse.quote(img)])
 
     elif "gnome" in desktop:
         util.disown(["gsettings", "set",
                      "org.gnome.desktop.background",
-                     "picture-uri", "file://" + img])
+                     "picture-uri", "file://" + urllib.parse.quote(img)])
 
     elif "mate" in desktop:
         util.disown(["gsettings", "set", "org.mate.background",
