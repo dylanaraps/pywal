@@ -13,7 +13,7 @@ import os
 import platform
 
 
-__version__ = "0.6.2"
+__version__ = "0.6.3"
 
 
 HOME = os.environ["HOME"]
