@@ -111,7 +111,6 @@ def change(img):
         set_wm_wallpaper(img)
 
     print("wallpaper: Set the new wallpaper.")
-    print(urllib.parse.quote(img))
 
 
 def get(cache_dir=CACHE_DIR):
