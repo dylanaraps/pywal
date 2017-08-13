@@ -2,7 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/pywal.svg)](https://pypi.python.org/pypi/pywal/) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) [![Build Status](https://travis-ci.org/dylanaraps/pywal.svg?branch=master)](https://travis-ci.org/dylanaraps/pywal)
 
-\[[Installation](https://github.com/dylanaraps/pywal/wiki/Installation)\] \[[Getting Started](https://github.com/dylanaraps/pywal/wiki/Getting-Started)\] \[[Customization](https://github.com/dylanaraps/pywal/wiki/Customization)\] \[[Wiki](https://github.com/dylanaraps/pywal/wiki)\]
+\[[Installation](https://github.com/dylanaraps/pywal/wiki/Installation)\] \[[Getting Started](https://github.com/dylanaraps/pywal/wiki/Getting-Started)\] \[[Customization](https://github.com/dylanaraps/pywal/wiki/Customization)\] \[[Wiki](https://github.com/dylanaraps/pywal/wiki)\] \[[Donate](https://patreon.com/dyla)\]
 
 `wal` is a script that takes an image (or a directory of images), generates a colorscheme (using `imagemagick`) and then changes all of your open terminal's colors to the new colorscheme on the fly. `wal` then caches each generated colorscheme so that cycling through wallpapers while changing colorschemes is instantaneous.
 
@@ -15,4 +15,10 @@ For more info, check out the [Wiki](https://github.com/dylanaraps/pywal/wiki).
 
 ![screenshot](https://i.imgur.com/gxeELFY.png)
 
+
+## Donate
+
+Donations will allow me to spend more time working on `pywal`. If you like `pywal` and want to give back in some way you can donate here:
+
+**https://patreon.com/dyla**
 
