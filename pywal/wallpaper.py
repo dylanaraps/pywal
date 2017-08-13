@@ -2,7 +2,7 @@
 import os
 import shutil
 import subprocess
-import urllib
+import urllib.parse
 
 from .settings import CACHE_DIR, HOME, OS
 from . import util
@@ -111,6 +111,7 @@ def change(img):
         set_wm_wallpaper(img)
 
     print("wallpaper: Set the new wallpaper.")
+    print(urllib.parse.quote(img))
 
 
 def get(cache_dir=CACHE_DIR):
