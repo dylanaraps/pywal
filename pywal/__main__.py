@@ -45,6 +45,10 @@ def get_args(args):
     arg.add_argument("-f", metavar="\"/path/to/colorscheme/file\"",
                      help="Which colorscheme file to use.")
 
+    arg.add_argument("--font", metavar="\"font-name\"",
+                     help="Which font to use in export files. \
+                           (Must follow \"fc-list : family\" format.")
+
     arg.add_argument("-n", action="store_true",
                      help="Skip setting the wallpaper.")
 
@@ -129,6 +133,7 @@ def process_args(args):
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])
 
+        colors_plain["font"] = args.font or "None"
         export.every(colors_plain)
 
         if not args.e:
