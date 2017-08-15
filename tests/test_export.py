@@ -34,7 +34,7 @@ class TestExportColors(unittest.TestCase):
     def is_file_contents(self, tmp_file, pattern):
         """> Check for pattern in file."""
         content = util.read_file(tmp_file)
-        self.assertEqual(content[7], pattern)
+        self.assertEqual(content[6], pattern)
 
     def test_all_templates(self):
         """> Test substitutions in template file."""
