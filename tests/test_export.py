@@ -28,7 +28,7 @@ class TestExportColors(unittest.TestCase):
         with open("/tmp/wal/colors.sh") as file:
             content = file.read().splitlines()
 
-        self.assertEqual(content[6], "foreground='#F5F1F4'")
+        self.assertEqual(content[7], "foreground='#F5F1F4'")
 
     def test_css_template(self):
         """> Test substitutions in template file (css)."""
@@ -40,7 +40,7 @@ class TestExportColors(unittest.TestCase):
         with open("/tmp/wal/test.css") as file:
             content = file.read().splitlines()
 
-        self.assertEqual(content[6], "    --background: #1F211E;")
+        self.assertEqual(content[7], "    --background: #1F211E;")
 
     def test_invalid_template(self):
         """> Test template validation."""
