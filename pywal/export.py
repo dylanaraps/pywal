@@ -20,7 +20,7 @@ def flatten_colors(colors):
     """Prepare colors to be exported.
        Flatten dicts and convert colors to util.Color()"""
     all_colors = {"wallpaper": colors["wallpaper"],
-                  "font": colors["font"],
+                  "font": colors.get("font", "None"),
                   **colors["special"],
                   **colors["colors"]}
     return {k: util.Color(v) for k, v in all_colors.items()}

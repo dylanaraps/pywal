@@ -133,7 +133,9 @@ def process_args(args):
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])
 
-        colors_plain["font"] = args.fn or "None"
+        if args.fn:
+            colors_plain["font"] = args.fn
+
         export.every(colors_plain)
 
         if not args.e:
