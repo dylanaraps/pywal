@@ -38,6 +38,8 @@ def get(img, cache_dir=CACHE_DIR):
         print("error: No valid image file found.")
         sys.exit(1)
 
+    wal_img = os.path.abspath(wal_img)
+
     # Cache the image file path.
     util.save_file(wal_img, os.path.join(cache_dir, "wal"))
 
