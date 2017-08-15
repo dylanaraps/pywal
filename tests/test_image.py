@@ -9,7 +9,7 @@ class TestImage(unittest.TestCase):
     def test_get_img(self):
         """> Validate image file."""
         result = image.get("tests/test_files/test.jpg")
-        self.assertEqual(result, "tests/test_files/test.jpg")
+        self.assertIn("tests/test_files/test.jpg", result)
 
     def test_get_img_dir(self):
         """> Validate image directory."""
