@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import sys
 
-from .settings import CACHE_DIR, HOME, MODULE_DIR
+from .settings import CACHE_DIR, HOME, MODULE_DIR, OS
 from . import util
 
 
@@ -15,7 +15,7 @@ def xrdb(xrdb_file=None):
     """Merge the colors into the X db so new terminals use them."""
     xrdb_file = xrdb_file or os.path.join(CACHE_DIR, "colors.Xresources")
 
-    if shutil.which("xrdb"):
+    if shutil.which("xrdb") or OS != "Darwin":
         subprocess.Popen(["xrdb", "-merge", xrdb_file],
                          stdout=subprocess.DEVNULL,
                          stderr=subprocess.DEVNULL).wait()
