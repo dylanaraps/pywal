@@ -5,3 +5,4 @@ subprocess
 re
 build/*
 .coverage
+.vscode/*

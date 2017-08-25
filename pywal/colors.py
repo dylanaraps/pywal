@@ -13,7 +13,12 @@ from . import util
 
 def imagemagick(color_count, img):
     """Call Imagemagick to generate a scheme."""
-    colors = subprocess.Popen(["convert", img, "-resize", "25%",
+    if shutil.which("magick"):
+        magick_command = ["magick", "convert"]
+    else:
+        magick_command = ["convert"]
+
+    colors = subprocess.Popen([*magick_command, img, "-resize", "25%",
                                "+dither", "-colors", str(color_count),
                                "-unique-colors", "txt:-"],
                               stdout=subprocess.PIPE)
@@ -84,7 +89,7 @@ def get(img, cache_dir=CACHE_DIR,
         color_count=COLOR_COUNT, notify=False):
     """Get the colorscheme."""
     # _home_dylan_img_jpg.json
-    cache_file = img.replace("/", "_").replace(".", "_")
+    cache_file = img.replace("/", "_").replace("\\", "_").replace(".", "_")
     cache_file = os.path.join(cache_dir, "schemes", cache_file + ".json")
 
     if os.path.isfile(cache_file):

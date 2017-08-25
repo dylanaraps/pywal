@@ -15,7 +15,7 @@ def xrdb(xrdb_file=None):
     """Merge the colors into the X db so new terminals use them."""
     xrdb_file = xrdb_file or os.path.join(CACHE_DIR, "colors.Xresources")
 
-    if shutil.which("xrdb") or OS != "Darwin":
+    if shutil.which("xrdb") and OS != "Darwin":
         subprocess.Popen(["xrdb", "-merge", xrdb_file],
                          stdout=subprocess.DEVNULL,
                          stderr=subprocess.DEVNULL).wait()
