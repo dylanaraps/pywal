@@ -89,7 +89,7 @@ def get(img, cache_dir=CACHE_DIR,
         color_count=COLOR_COUNT, notify=False):
     """Get the colorscheme."""
     # _home_dylan_img_jpg.json
-    cache_file = img.replace("/", "_").replace(".", "_")
+    cache_file = img.replace("/", "_").replace("\\", "_").replace(".", "_")
     cache_file = os.path.join(cache_dir, "schemes", cache_file + ".json")
 
     if os.path.isfile(cache_file):
