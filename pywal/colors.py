@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import sys
 
-from .settings import CACHE_DIR, COLOR_COUNT, OS
+from .settings import CACHE_DIR, COLOR_COUNT
 from . import util
 
 
