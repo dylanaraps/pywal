@@ -45,10 +45,6 @@ def create_sequences(colors, vte):
     sequences = [set_color(index, colors["colors"]["color%s" % index])
                  for index in range(16)]
 
-    # Set a blank color that isn't affected by bold highlighting.
-    # Used in wal.vim's airline theme.
-    sequences.append(set_color(66, colors["special"]["background"]))
-
     # Special colors.
     # Source: https://goo.gl/KcoQgP
     # 10 = foreground, 11 = background, 12 = cursor foregound
