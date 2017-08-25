@@ -13,7 +13,7 @@ from . import util
 
 def imagemagick(color_count, img):
     """Call Imagemagick to generate a scheme."""
-    colors = subprocess.Popen(["convert", img, "-resize", "25%",
+    colors = subprocess.Popen(["magick", "convert", img, "-resize", "25%",
                                "+dither", "-colors", str(color_count),
                                "-unique-colors", "txt:-"],
                               stdout=subprocess.PIPE)

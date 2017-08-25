@@ -113,8 +113,7 @@ def disown(cmd):
        disown it and hide it's output."""
     subprocess.Popen(["nohup", *cmd],
                      stdout=subprocess.DEVNULL,
-                     stderr=subprocess.DEVNULL,
-                     preexec_fn=os.setpgrp)
+                     stderr=subprocess.DEVNULL)
 
 
 def msg(input_msg, notify):
