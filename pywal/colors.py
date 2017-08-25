@@ -7,13 +7,18 @@ import shutil
 import subprocess
 import sys
 
-from .settings import CACHE_DIR, COLOR_COUNT
+from .settings import CACHE_DIR, COLOR_COUNT, OS
 from . import util
 
 
 def imagemagick(color_count, img):
     """Call Imagemagick to generate a scheme."""
-    colors = subprocess.Popen(["magick", "convert", img, "-resize", "25%",
+    if OS == "Windows":
+        magick_command = ["magick", "convert"]
+    else:
+        magick_command = ["convert"]
+
+    colors = subprocess.Popen([*magick_command, img, "-resize", "25%",
                                "+dither", "-colors", str(color_count),
                                "-unique-colors", "txt:-"],
                               stdout=subprocess.PIPE)
