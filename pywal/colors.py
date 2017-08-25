@@ -13,7 +13,7 @@ from . import util
 
 def imagemagick(color_count, img):
     """Call Imagemagick to generate a scheme."""
-    if OS == "Windows":
+    if shutil.which("magick"):
         magick_command = ["magick", "convert"]
     else:
         magick_command = ["convert"]
