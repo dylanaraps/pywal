@@ -3,6 +3,7 @@ Misc helper functions.
 """
 import json
 import os
+import shutil
 import subprocess
 
 
@@ -111,7 +112,7 @@ def lighten_color(color, amount):
 def disown(cmd):
     """Call a system command in the background,
        disown it and hide it's output."""
-    subprocess.Popen(["nohup", *cmd],
+    subprocess.Popen(cmd,
                      stdout=subprocess.DEVNULL,
                      stderr=subprocess.DEVNULL)
 
@@ -119,7 +120,7 @@ def disown(cmd):
 def msg(input_msg, notify):
     """Print to the terminal and display a libnotify
        notification."""
-    if notify:
+    if notify and shutil.which("notify"):
         disown(["notify-send", input_msg])
 
     print(input_msg)
