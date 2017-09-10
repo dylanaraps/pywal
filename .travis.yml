@@ -3,9 +3,15 @@ python:
     - "3.5"
     - "3.6"
 
+os:
+    - "linux"
+    - "osx"
+
 before_install:
-    - sudo apt-get -qq update
-    - sudo apt-get install -y imagemagick
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install imagemagick; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; sudo apt-get -qq update; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; sudo apt-get install -y imagemagick; fi
 
 install:
     - pip install flake8 pylint
