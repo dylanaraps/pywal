@@ -1,16 +1,14 @@
-language: python
-
 matrix:
   include:
     - os: linux
+      language: python
       sudo: required
       python: 3.5
     - os: linux
+      language: python
       sudo: required
       python: 3.6
     - os: osx
-      python: 3.5
-    - os: osx
-      python: 3.6
-install: ./travis-install.sh
-script: python setup.py test
+      language: generic
+before_install: ./travis-install.sh
+script: python3 setup.py test
