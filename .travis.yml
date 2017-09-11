@@ -16,7 +16,4 @@ before_install:
 install:
     - pip install flake8 pylint
 
-script:
-    - flake8 pywal tests setup.py
-    - pylint pywal tests setup.py
-    - python setup.py test
+script: python setup.py test
