@@ -1,19 +1,16 @@
 language: python
-python:
-    - "3.5"
-    - "3.6"
 
-os:
-    - "linux"
-    - "osx"
-
-before_install:
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sudo brew update; fi
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sudo brew install imagemagick; fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y imagemagick; fi
-
-install:
-    - pip install flake8 pylint
-
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      python: 3.5
+    - os: linux
+      sudo: required
+      python: 3.6
+    - os: osx
+      python: 3.5
+    - os: osx
+      python: 3.6
+install: ./travis-install.sh
 script: python setup.py test
