@@ -16,6 +16,7 @@ matrix:
         - sudo apt-get -y install imagemagick
     - os: osx
       language: generic
+      env: HOMEBREW_NO_AUTO_UPDATE=1
       before_install:
         - brew install imagemagick
         - brew install python3
