@@ -55,7 +55,7 @@ def create_sequences(colors, vte):
     # 13 = mouse foreground
     sequences.append(set_special(10, colors["special"]["foreground"], "g"))
     sequences.append(set_special(11, colors["special"]["background"], "h"))
-    sequences.append(set_special(12, colors["special"]["cursor"], "l"))
+    sequences.append(set_special(12, colors["colors"]["color1"], "l"))
     sequences.append(set_special(13, colors["special"]["cursor"], "l"))
 
     if OS == "Darwin":
