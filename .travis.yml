@@ -7,7 +7,8 @@ matrix:
           before_install:
               - brew install imagemagick
               - brew install python3
-              - brew link --overwite python3
+              - virtualenv env -p python3
+              - source env/bin/activate
         - os: linux
           python: 3.5
         - os: linux
