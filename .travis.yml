@@ -15,11 +15,12 @@ matrix:
 
 
 before_install:
+    - pip install flake8 pylint
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y imagemagick; fi
 
-install:
-    - pip install flake8 pylint
+#install:
+    #- pip install flake8 pylint
 
 script:
     - flake8 pywal tests setup.py
