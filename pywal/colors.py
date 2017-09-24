@@ -18,12 +18,12 @@ def imagemagick(color_count, img):
     else:
         magick_command = ["convert"]
 
-    colors = subprocess.Popen([*magick_command, img, "-resize", "25%",
-                               "+dither", "-colors", str(color_count),
-                               "-unique-colors", "txt:-"],
-                              stdout=subprocess.PIPE)
+    colors = subprocess.run([*magick_command, img, "-resize", "25%",
+                             "+dither", "-colors", str(color_count),
+                             "-unique-colors", "txt:-"],
+                            stdout=subprocess.PIPE)
 
-    return colors.stdout.readlines()
+    return colors.stdout.splitlines()
 
 
 def gen_colors(img, color_count):
