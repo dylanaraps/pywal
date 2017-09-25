@@ -5,7 +5,6 @@ import platform
 from pywal import sequences
 from pywal import util
 
-
 # Import colors.
 COLORS = util.read_file_json("tests/test_files/test_file.json")
 
@@ -17,6 +16,7 @@ class Testsequences(unittest.TestCase):
         """> Create special escape sequence."""
         util.Color.alpha_num = 100
         result = sequences.set_special(11, COLORS["special"]["background"])
+
         if platform.uname()[0] == "Darwin":
             self.assertEqual(result, "\033]Ph1F211E\033\\")
         else:
@@ -26,6 +26,7 @@ class Testsequences(unittest.TestCase):
         """> Create special escape sequence with alpha."""
         util.Color.alpha_num = 99
         result = sequences.set_special(11, COLORS["special"]["background"])
+
         if platform.uname()[0] == "Darwin":
             self.assertEqual(result, "\033]Ph1F211E\033\\")
         else:
@@ -34,6 +35,7 @@ class Testsequences(unittest.TestCase):
     def test_set_color(self):
         """> Create color escape sequence."""
         result = sequences.set_color(11, COLORS["colors"]["color0"])
+
         if platform.uname()[0] == "Darwin":
             self.assertEqual(result, "\033]Pb1F211E\033\\")
         else:
