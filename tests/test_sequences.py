@@ -18,7 +18,7 @@ class Testsequences(unittest.TestCase):
         result = sequences.set_special(11, COLORS["special"]["background"])
 
         if platform.uname()[0] == "Darwin":
-            self.assertEqual(result, "\033]Ph1F211E\033\\")
+            self.assertEqual(result, "\033]1337;SetColors=bg=1F211E\a")
         else:
             self.assertEqual(result, "\033]11;#1F211E\007")
 
@@ -28,7 +28,7 @@ class Testsequences(unittest.TestCase):
         result = sequences.set_special(11, COLORS["special"]["background"])
 
         if platform.uname()[0] == "Darwin":
-            self.assertEqual(result, "\033]Ph1F211E\033\\")
+            self.assertEqual(result, "\033]1337;SetColors=bg=1F211E\a")
         else:
             self.assertEqual(result, "\033]11;[99]#1F211E\007")
 
@@ -44,7 +44,7 @@ class Testsequences(unittest.TestCase):
     def test_set_iterm_tab_color(self):
         """> Create iterm tab color sequences"""
         result = sequences.set_iterm_tab_color(COLORS["special"]["background"])
-        self.assertEqual(len(result), 104)
+        self.assertEqual(result, "\033]1337;SetColors=tab=1F211E\a")
 
 
 if __name__ == "__main__":
