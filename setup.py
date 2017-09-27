@@ -3,21 +3,18 @@ import setuptools
 
 try:
     import pywal
-except (ImportError, SyntaxError):
+except ImportError:
     print("error: pywal requires Python 3.5 or greater.")
     quit(1)
-
 
 try:
     import pypandoc
     LONG_DESC = pypandoc.convert("README.md", "rst")
-except(IOError, ImportError, RuntimeError):
+except (IOError, ImportError, RuntimeError):
     LONG_DESC = open('README.md').read()
-
 
 VERSION = pywal.__version__
 DOWNLOAD = "https://github.com/dylanaraps/pywal/archive/%s.tar.gz" % VERSION
-
 
 setuptools.setup(
     name="pywal",
@@ -37,10 +34,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6",
     ],
     packages=["pywal"],
-    entry_points={
-        "console_scripts": ["wal=pywal.__main__:main"]
-    },
+    entry_points={"console_scripts": ["wal=pywal.__main__:main"]},
     python_requires=">=3.5",
     test_suite="tests",
-    include_package_data=True
-)
+    include_package_data=True)
