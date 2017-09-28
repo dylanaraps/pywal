@@ -8,12 +8,12 @@ from .settings import CACHE_DIR, OS
 from . import util
 
 
-def set_special(index, color, iterm_name="h"):
+def set_special(index, color, iterm_name="bg"):
     """Convert a hex color to a special sequence."""
     alpha = util.Color.alpha_num
 
     if OS == "Darwin":
-        return "\033]P%s%s\033\\" % (iterm_name, color.strip("#"))
+        return "\033]1337;SetColors=%s=%s\a" % (iterm_name, color.strip("#"))
 
     if index in [11, 708] and alpha != 100:
         return "\033]%s;[%s]%s\007" % (index, alpha, color)
@@ -31,12 +31,7 @@ def set_color(index, color):
 
 def set_iterm_tab_color(color):
     """Set iTerm2 tab/window color"""
-    red, green, blue = util.hex_to_rgb(color)
-    return """
-    \033]6;1;bg;red;brightness;%s\a
-    \033]6;1;bg;green;brightness;%s\a
-    \033]6;1;bg;blue;brightness;%s\a
-    """ % (red, green, blue)
+    return "\033]1337;SetColors=tab=%s\a" % color.strip("#")
 
 
 def create_sequences(colors, vte):
@@ -53,10 +48,10 @@ def create_sequences(colors, vte):
     # Source: https://goo.gl/KcoQgP
     # 10 = foreground, 11 = background, 12 = cursor foregound
     # 13 = mouse foreground
-    sequences.append(set_special(10, colors["special"]["foreground"], "g"))
-    sequences.append(set_special(11, colors["special"]["background"], "h"))
-    sequences.append(set_special(12, colors["special"]["cursor"], "l"))
-    sequences.append(set_special(13, colors["special"]["cursor"], "l"))
+    sequences.append(set_special(10, colors["special"]["foreground"], "fg"))
+    sequences.append(set_special(11, colors["special"]["background"], "bg"))
+    sequences.append(set_special(12, colors["special"]["cursor"], "curbg"))
+    sequences.append(set_special(13, colors["special"]["cursor"], "curbg"))
 
     if OS == "Darwin":
         sequences += set_iterm_tab_color(colors["special"]["background"])
