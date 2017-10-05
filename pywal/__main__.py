@@ -69,7 +69,7 @@ def get_args(args):
                      help="Print \"wal\" version.")
 
     arg.add_argument("-e", action="store_true",
-                     help="Skip Reloading Environment gtk/xrdb/i3/polybar")
+                     help="Skip Reloading Environment gtk/xrdb/i3/sway/polybar")
 
     return arg.parse_args(args)
 
