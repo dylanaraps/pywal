@@ -80,4 +80,5 @@ def send(colors, vte, cache_dir=CACHE_DIR, set_terms=True):
             util.save_file(sequences, term)
 
     util.save_file(sequences, os.path.join(cache_dir, "sequences"))
-    print("colors: Set terminal colors.")
+    if set_terms:
+        print("colors: Set terminal colors.")
