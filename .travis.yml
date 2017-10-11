@@ -5,6 +5,7 @@ matrix:
         - os: osx
           language: generic
           before_install:
+              - brew update
               - brew install imagemagick
               - brew install python3
               - virtualenv env -p python3
