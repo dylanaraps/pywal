@@ -34,6 +34,7 @@ def get_export_type(export_type):
         "putty": "colors-putty.reg",
         "scss": "colors.scss",
         "shell": "colors.sh",
+        "sway": "colors-sway",
         "xresources": "colors.Xresources",
         "yaml": "colors.yml",
     }.get(export_type, export_type)

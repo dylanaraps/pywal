@@ -52,11 +52,18 @@ def polybar():
         util.disown(["pkill", "-USR1", "polybar"])
 
 
+def sway():
+    """Reload sway colors."""
+    if shutil.which("swaymsg"):
+        util.disown(["swaymsg", "reload"])
+
+
 def env(xrdb_file=None):
     """Reload environment."""
     gtk()
     xrdb(xrdb_file)
     i3()
+    sway()
     polybar()
     print("reload: Reloaded environment.")
 
