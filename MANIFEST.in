@@ -1,3 +1,4 @@
 include pywal/templates/*
 include pywal/scripts/*
 include README.md
+include LICENSE.md
