@@ -15,7 +15,9 @@ def get_random_image(img_dir):
     current_wall = wallpaper.get()
     current_wall = os.path.basename(current_wall)
 
-    file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
+    file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif",
+                  ".PNG", ".JPG", ".JPEG", ".JPE", ".GIF")
+
     images = [img for img in os.scandir(img_dir)
               if img.name.endswith(file_types) and img.name != current_wall]
 
