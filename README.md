@@ -11,7 +11,7 @@
 For more info, check out the [Wiki](https://github.com/dylanaraps/pywal/wiki).
 
 
-[Albums of examples (Warning large)](https://dylanaraps.com/pages/rice)
+[Screenshot Examples (Reddit)](https://www.reddit.com/r/unixporn/search?q=wal&restrict_sr=on&sort=relevance&t=all)
 
 ![screenshot](http://i.imgur.com/ThihqTS.png)
 
