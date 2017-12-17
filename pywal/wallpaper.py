@@ -27,6 +27,10 @@ def get_desktop_env():
     if desktop:
         return "MATE"
 
+    desktop = os.environ.get("SWAYSOCK")
+    if desktop:
+        return "SWAY"
+
 
 def xfconf(path, img):
     """Call xfconf to set the wallpaper on XFCE."""
@@ -78,6 +82,9 @@ def set_desktop_wallpaper(desktop, img):
     elif "mate" in desktop:
         util.disown(["gsettings", "set", "org.mate.background",
                      "picture-filename", img])
+
+    elif "sway" in desktop:
+        util.disown(["swaymsg", "output", "*", "bg", img, "fill"])
 
     else:
         set_wm_wallpaper(img)
