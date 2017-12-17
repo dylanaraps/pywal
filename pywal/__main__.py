@@ -99,6 +99,7 @@ def process_args(args):
 
     if args.r:
         reload.colors(args.t)
+        sys.exit(0)
 
     if args.a:
         util.Color.alpha_num = args.a

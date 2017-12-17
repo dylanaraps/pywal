@@ -80,5 +80,3 @@ def colors(vte, cache_dir=CACHE_DIR):
             sequences = re.sub(r"\]708;(\[.{0,3}\])?\#.{6}", "", sequences)
 
         print(sequences, end="")
-
-    sys.exit(0)
