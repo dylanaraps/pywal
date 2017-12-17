@@ -31,6 +31,8 @@ def get_desktop_env():
     if desktop:
         return "SWAY"
 
+    return "WM"
+
 
 def xfconf(path, img):
     """Call xfconf to set the wallpaper on XFCE."""
@@ -64,7 +66,10 @@ def set_desktop_wallpaper(desktop, img):
     """Set the wallpaper for the desktop environment."""
     desktop = str(desktop).lower()
 
-    if "xfce" in desktop or "xubuntu" in desktop:
+    if desktop == "WM":
+        set_wm_wallpaper(img)
+
+    elif "xfce" in desktop or "xubuntu" in desktop:
         # XFCE requires two commands since they differ between versions.
         xfconf("/backdrop/screen0/monitor0/image-path", img)
         xfconf("/backdrop/screen0/monitor0/workspace0/last-image", img)
@@ -85,9 +90,6 @@ def set_desktop_wallpaper(desktop, img):
 
     elif "sway" in desktop:
         util.disown(["swaymsg", "output", "*", "bg", img, "fill"])
-
-    else:
-        set_wm_wallpaper(img)
 
 
 def set_mac_wallpaper(img):
