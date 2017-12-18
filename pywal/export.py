@@ -3,7 +3,7 @@ Export colors in various formats.
 """
 import os
 
-from .settings import CACHE_DIR, MODULE_DIR
+from .settings import CACHE_DIR, MODULE_DIR, CONF_DIR
 from . import util
 
 
@@ -42,13 +42,19 @@ def get_export_type(export_type):
 
 def every(colors, output_dir=CACHE_DIR):
     """Export all template files."""
-    all_colors = flatten_colors(colors)
+    colors = flatten_colors(colors)
     template_dir = os.path.join(MODULE_DIR, "templates")
+    template_dir_user = os.path.join(CONF_DIR, "templates")
+    util.create_dir(template_dir_user)
 
     for file in os.scandir(template_dir):
-        template(all_colors, file.path, os.path.join(output_dir, file.name))
+        template(colors, file.path, os.path.join(output_dir, file.name))
+
+    for file in os.scandir(template_dir_user):
+        template(colors, file.path, os.path.join(output_dir, file.name))
 
     print("export: Exported all files.")
+    print("export: Exported all user files.")
 
 
 def color(colors, export_type, output_file=None):
