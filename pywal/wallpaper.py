@@ -66,7 +66,7 @@ def set_desktop_wallpaper(desktop, img):
     """Set the wallpaper for the desktop environment."""
     desktop = str(desktop).lower()
 
-    if desktop == "WM":
+    if desktop == "wm":
         set_wm_wallpaper(img)
 
     elif "xfce" in desktop or "xubuntu" in desktop:
