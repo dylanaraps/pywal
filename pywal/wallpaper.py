@@ -31,6 +31,8 @@ def get_desktop_env():
     if desktop:
         return "SWAY"
 
+    return None
+
 
 def xfconf(path, img):
     """Call xfconf to set the wallpaper on XFCE."""
