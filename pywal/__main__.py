@@ -71,6 +71,9 @@ def get_args(args):
     arg.add_argument("-e", action="store_true",
                      help="Skip reloading gtk/xrdb/i3/sway/polybar")
 
+    arg.add_argument("-s", action="store_true",
+                     help="Skip sending colors to terminals.")
+
     return arg.parse_args(args)
 
 
@@ -125,7 +128,10 @@ def process_args(args):
         colors_plain["colors"]["color0"] = args.b
 
     if args.i or args.f:
-        sequences.send(colors_plain, args.t)
+        if args.s:
+            sequences.send(colors_plain, args.t, set_terms=False)
+        else:
+            sequences.send(colors_plain, args.t)
 
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])
