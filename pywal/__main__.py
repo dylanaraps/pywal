@@ -55,9 +55,6 @@ def get_args(args):
                      help="Quiet mode, don\"t print anything and \
                            don't display notifications.")
 
-    arg.add_argument("-r", action="store_true",
-                     help="Reload current colorscheme.")
-
     arg.add_argument("-R", action="store_true",
                      help="Restore previous colorscheme.")
 
@@ -96,10 +93,6 @@ def process_args(args):
     if args.c:
         scheme_dir = os.path.join(CACHE_DIR, "schemes")
         shutil.rmtree(scheme_dir, ignore_errors=True)
-
-    if args.r:
-        reload.colors(args.t)
-        sys.exit(0)
 
     if args.a:
         util.Color.alpha_num = args.a

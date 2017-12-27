@@ -45,10 +45,6 @@ def create_sequences(colors, vte):
     sequences = [set_color(index, colors["colors"]["color%s" % index])
                  for index in range(16)]
 
-    # This escape sequence doesn"t work in VTE terminals.
-    if not vte:
-        sequences.append(set_special(708, colors["special"]["background"]))
-
     # Special colors.
     # Source: https://goo.gl/KcoQgP
     # 10 = foreground, 11 = background, 12 = cursor foregound
@@ -60,6 +56,13 @@ def create_sequences(colors, vte):
 
     if OS == "Darwin":
         sequences += set_iterm_tab_color(colors["special"]["background"])
+
+    # Send sequences to object.
+    util.Color.sequences = "".join(sequences)
+
+    # This escape sequence doesn"t work in VTE terminals.
+    if not vte:
+        sequences.append(set_special(708, colors["special"]["background"]))
 
     return "".join(sequences)
 
