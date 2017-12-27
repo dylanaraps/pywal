@@ -62,6 +62,9 @@ def get_args(args):
     arg.add_argument("-R", action="store_true",
                      help="Restore previous colorscheme.")
 
+    arg.add_argument("-s", action="store_true",
+                     help="Skip changing colors in terminals.")
+
     arg.add_argument("-t", action="store_false",
                      help="Deprecated: Does nothing and is no longer needed.")
 
@@ -125,7 +128,8 @@ def process_args(args):
         colors_plain["colors"]["color0"] = args.b
 
     if args.i or args.f:
-        sequences.send(colors_plain)
+        if not args.s:
+            sequences.send(colors_plain)
 
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])
