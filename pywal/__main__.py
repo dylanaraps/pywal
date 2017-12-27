@@ -58,10 +58,6 @@ def get_args(args):
     arg.add_argument("-R", action="store_true",
                      help="Restore previous colorscheme.")
 
-    arg.add_argument("-t", action="store_true",
-                     help="Fix artifacts in VTE Terminals. \
-                           (Termite, xfce4-terminal)")
-
     arg.add_argument("-v", action="store_true",
                      help="Print \"wal\" version.")
 
@@ -118,7 +114,7 @@ def process_args(args):
         colors_plain["colors"]["color0"] = args.b
 
     if args.i or args.f:
-        sequences.send(colors_plain, args.t)
+        sequences.send(colors_plain)
 
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])

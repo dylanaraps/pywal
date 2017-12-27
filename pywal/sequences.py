@@ -39,7 +39,7 @@ def set_iterm_tab_color(color):
     """ % (red, green, blue)
 
 
-def create_sequences(colors, vte):
+def create_sequences(colors):
     """Create the escape sequences."""
     # Colors 0-15.
     sequences = [set_color(index, colors["colors"]["color%s" % index])
@@ -61,15 +61,14 @@ def create_sequences(colors, vte):
     util.Color.sequences = "".join(sequences)
 
     # This escape sequence doesn"t work in VTE terminals.
-    if not vte:
-        sequences.append(set_special(708, colors["special"]["background"]))
+    sequences.append(set_special(708, colors["special"]["background"]))
 
     return "".join(sequences)
 
 
-def send(colors, vte, cache_dir=CACHE_DIR):
+def send(colors, cache_dir=CACHE_DIR):
     """Send colors to all open terminals."""
-    sequences = create_sequences(colors, vte)
+    sequences = create_sequences(colors)
 
     if OS == "Darwin":
         tty_pattern = "/dev/ttys00[0-9]*"
