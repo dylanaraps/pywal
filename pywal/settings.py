@@ -13,7 +13,7 @@ import os
 import platform
 
 
-__version__ = "0.7.5"
+__version__ = "1.0.0"
 
 
 HOME = os.getenv("HOME", os.getenv("USERPROFILE"))
