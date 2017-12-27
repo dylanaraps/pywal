@@ -52,7 +52,9 @@ def create_sequences(colors):
     sequences.append(set_special(10, colors["special"]["foreground"], "g"))
     sequences.append(set_special(11, colors["special"]["background"], "h"))
     sequences.append(set_special(12, colors["colors"]["color1"], "l"))
-    sequences.append(set_special(13, colors["special"]["cursor"], "l"))
+
+    # Hide the cursor.
+    sequences.append(set_special(13, colors["special"]["foreground"], "l"))
 
     if OS == "Darwin":
         sequences += set_iterm_tab_color(colors["special"]["background"])
@@ -67,6 +69,9 @@ def create_sequences(colors):
     # \0338                # Restore cursor position.
     sequences.append("\0337\033[1000H\033[8m\033]708;%s\007\0338" %
                      colors['special']['background'])
+
+    # Show the cursor.
+    sequences.append(set_special(13, colors["special"]["cursor"], "l"))
 
     return "".join(sequences)
 
