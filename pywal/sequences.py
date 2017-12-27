@@ -39,15 +39,11 @@ def set_iterm_tab_color(color):
     """ % (red, green, blue)
 
 
-def create_sequences(colors, vte):
+def create_sequences(colors):
     """Create the escape sequences."""
     # Colors 0-15.
     sequences = [set_color(index, colors["colors"]["color%s" % index])
                  for index in range(16)]
-
-    # This escape sequence doesn"t work in VTE terminals.
-    if not vte:
-        sequences.append(set_special(708, colors["special"]["background"]))
 
     # Special colors.
     # Source: https://goo.gl/KcoQgP
@@ -61,12 +57,23 @@ def create_sequences(colors, vte):
     if OS == "Darwin":
         sequences += set_iterm_tab_color(colors["special"]["background"])
 
+    # This escape sequence doesn't work in VTE terminals and their parsing of
+    # unknown sequences is garbage so we need to use some escape sequence
+    # M A G I C to hide the output.
+    # \0337                # Save cursor position.
+    # \033[1000H           # Move the cursor off screen.
+    # \033[8m              # Conceal text.
+    # \033]708;#000000\007 # Garbage sequence.
+    # \0338                # Restore cursor position.
+    sequences.append("\0337\033[1000H\033[8m\033]708;%s\007\0338" %
+                     colors['special']['background'])
+
     return "".join(sequences)
 
 
-def send(colors, vte, cache_dir=CACHE_DIR):
+def send(colors, cache_dir=CACHE_DIR):
     """Send colors to all open terminals."""
-    sequences = create_sequences(colors, vte)
+    sequences = create_sequences(colors)
 
     if OS == "Darwin":
         tty_pattern = "/dev/ttys00[0-9]*"

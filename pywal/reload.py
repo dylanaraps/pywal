@@ -2,7 +2,6 @@
 Reload programs.
 """
 import os
-import re
 import shutil
 import subprocess
 
@@ -65,17 +64,3 @@ def env(xrdb_file=None):
     sway()
     polybar()
     print("reload: Reloaded environment.")
-
-
-def colors(vte, cache_dir=CACHE_DIR):
-    """Reload the current scheme."""
-    sequence_file = os.path.join(cache_dir, "sequences")
-
-    if os.path.isfile(sequence_file):
-        sequences = "".join(util.read_file(sequence_file))
-
-        # If vte mode was used, remove the unsupported sequence.
-        if vte:
-            sequences = re.sub(r"\]708;(\[.{0,3}\])?\#.{6}", "", sequences)
-
-        print(sequences, end="")
