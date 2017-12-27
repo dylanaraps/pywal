@@ -61,9 +61,10 @@ def create_sequences(colors):
     # unknown sequences is garbage so we need to use some escape sequence
     # M A G I C to hide the output.
     # \0337                # Save cursor position.
+    # \033[1000H           # Move the cursor off screen.
     # \033[8m              # Conceal text.
     # \033]708;#000000\007 # Garbage sequence.
-    # \0338 i              # Restore cursor position.
+    # \0338                # Restore cursor position.
     sequences.append(f"\0337\033[1000H\033[8m\033]708;{colors['special']['background']}\007\0338")
 
     return "".join(sequences)
