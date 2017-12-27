@@ -60,8 +60,14 @@ def create_sequences(colors):
     # Send sequences to object.
     util.Color.sequences = "".join(sequences)
 
-    # This escape sequence doesn"t work in VTE terminals.
-    sequences.append(set_special(708, colors["special"]["background"]))
+    # This escape sequence doesn't work in VTE terminals and their parsing of
+    # unknown sequences is garbage so we need to use some escape sequence
+    # M A G I C to hide the output.
+    # \0337                # Save cursor position.
+    # \033[8m              # Conceal text.
+    # \033]708;#000000\007 # Garbage sequence.
+    # \0338 i              # Restore cursor position.
+    sequences.append(f"\0337\033[8m\033]708;{colors['special']['background']}\007\0338")
 
     return "".join(sequences)
 
