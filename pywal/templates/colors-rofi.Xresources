@@ -1,5 +1,5 @@
-#define BG #CC{background.strip}
-#define HI #CC{color10.strip}
+#define BG #FF{background.strip}
+#define HI #FF{color10.strip}
 #define FG {foreground}
 #define TX {background}
 
