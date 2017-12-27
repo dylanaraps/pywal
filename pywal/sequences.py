@@ -65,7 +65,7 @@ def create_sequences(colors):
     # \033[8m              # Conceal text.
     # \033]708;#000000\007 # Garbage sequence.
     # \0338                # Restore cursor position.
-    sequences.append(f"\0337\033[1000H\033[8m\033]708;%s\007\0338" %
+    sequences.append("\0337\033[1000H\033[8m\033]708;%s\007\0338" %
                      colors['special']['background'])
 
     return "".join(sequences)
