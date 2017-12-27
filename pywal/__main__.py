@@ -61,6 +61,9 @@ def get_args(args):
     arg.add_argument("-R", action="store_true",
                      help="Restore previous colorscheme.")
 
+    arg.add_argument("-t", action="store_false",
+                     help="Deprecated: Does nothing and is no longer needed.")
+
     arg.add_argument("-v", action="store_true",
                      help="Print \"wal\" version.")
 
