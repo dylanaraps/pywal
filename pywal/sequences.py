@@ -57,9 +57,6 @@ def create_sequences(colors):
     if OS == "Darwin":
         sequences += set_iterm_tab_color(colors["special"]["background"])
 
-    # Send sequences to object.
-    util.Color.sequences = "".join(sequences)
-
     # This escape sequence doesn't work in VTE terminals and their parsing of
     # unknown sequences is garbage so we need to use some escape sequence
     # M A G I C to hide the output.
