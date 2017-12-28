@@ -19,13 +19,10 @@ def sort_colors(img, colors):
        we will later save in json format."""
     raw_colors = [colors[0], *colors[8:], *colors[8:]]
 
-    # Darken the background color if it's too light.
-    # The value can be a letter or an int so we treat the
-    # entire test as strings.
     raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
-
-    # Create a comment color from the background.
     raw_colors[8] = util.lighten_color(raw_colors[0], 0.40)
+    raw_colors[7] = util.lighten_color(raw_colors[7], 0.25)
+    raw_colors[15] = util.lighten_color(raw_colors[15], 0.25)
 
     colors = {}
     colors["wallpaper"] = img
@@ -62,7 +59,7 @@ def kmeans(img, color_count):
                                                  minit="points")
 
     counts = numpy.unique(labels, return_counts=True)[1]
-    best_centroid = numpy.argsort(counts)[::-1]
+    best_centroid = numpy.argsort(counts)
     colors = centroids[best_centroid].astype(int)
     colors = colors.tolist()
 
