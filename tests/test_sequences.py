@@ -20,7 +20,7 @@ class Testsequences(unittest.TestCase):
         if platform.uname()[0] == "Darwin":
             self.assertEqual(result, "\033]Ph1F211E\033\\")
         else:
-            self.assertEqual(result, "\033]11;#1F211E\007")
+            self.assertEqual(result, "\033]11;#1F211E\033\\")
 
     def test_set_special_alpha(self):
         """> Create special escape sequence with alpha."""
@@ -30,7 +30,7 @@ class Testsequences(unittest.TestCase):
         if platform.uname()[0] == "Darwin":
             self.assertEqual(result, "\033]Ph1F211E\033\\")
         else:
-            self.assertEqual(result, "\033]11;[99]#1F211E\007")
+            self.assertEqual(result, "\033]11;[99]#1F211E\033\\")
 
     def test_set_color(self):
         """> Create color escape sequence."""
@@ -39,7 +39,7 @@ class Testsequences(unittest.TestCase):
         if platform.uname()[0] == "Darwin":
             self.assertEqual(result, "\033]Pb1F211E\033\\")
         else:
-            self.assertEqual(result, "\033]4;11;#1F211E\007")
+            self.assertEqual(result, "\033]4;11;#1F211E\033\\")
 
     def test_set_iterm_tab_color(self):
         """> Create iterm tab color sequences"""
