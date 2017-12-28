@@ -17,15 +17,12 @@ from . import util
 def sort_colors(img, colors):
     """Sort the generated colors and store them in a dict that
        we will later save in json format."""
-    # raw_colors = [colors[0], *colors[15:23], *colors[15:23]]
     raw_colors = [colors[0], *colors[8:], *colors[8:]]
 
     # Darken the background color if it's too light.
     # The value can be a letter or an int so we treat the
     # entire test as strings.
-    print(raw_colors[0][1])
-    if raw_colors[0][1] not in ["0", "1", "2"]:
-        raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
+    raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
 
     # Create a comment color from the background.
     raw_colors[8] = util.lighten_color(raw_colors[0], 0.40)
@@ -47,31 +44,37 @@ def sort_colors(img, colors):
 
 def kmeans(img, color_count):
     """Get colors using kmeans."""
+    numpy.warnings.filterwarnings('ignore')
+    numpy.random.seed(12345)
+
+    # Process the image.
     image = Image.open(img)
     image.thumbnail((100, 100), Image.ANTIALIAS)
     enhancer = ImageEnhance.Brightness(image)
-    image = enhancer.enhance(1.0)
+    image = enhancer.enhance(1.2)
 
+    # Turn the image into an array.
     arr = numpy.asarray(image)
-    shape = arr.shape
-    arr = arr.reshape(scipy.product(shape[:2]), shape[2]).astype(float)
+    arr = arr.reshape(scipy.product(arr.shape[:2]), arr.shape[2]).astype(float)
 
-    colors = scipy.cluster.vq.kmeans2(arr, color_count*2)[0]
+    centroids, labels = scipy.cluster.vq.kmeans2(arr, color_count,
+                                                 check_finite=False,
+                                                 minit="points")
 
-    if len(colors) < 16:
-        print("error: Failed to find enough colors.")
-        exit(1)
+    counts = numpy.unique(labels, return_counts=True)[1]
+    best_centroid = numpy.argsort(counts)[::-1]
+    colors = centroids[best_centroid].astype(int)
+    colors = colors.tolist()
 
-    colors = [list(map(int, color)) for color in colors.tolist()]
-
+    # Calculate brightness
     for color in colors:
-        red, gre, blu = color
+        red, gre, blu = color[:3]
         color.append((red+red+blu+gre+gre+gre) / 6)
 
+    # Sort the colors by brightness.
     colors = sorted(colors, key=lambda e: e[3])
-    del colors[1::2]
 
-    return ["#%02x%02x%02x" % tuple(color[:-1]) for color in colors]
+    return ["#%02x%02x%02x" % tuple(color[:3]) for color in colors]
 
 
 def get(img, cache_dir=CACHE_DIR,
