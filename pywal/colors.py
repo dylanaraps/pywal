@@ -15,11 +15,18 @@ def imagemagick(color_count, img):
     """Call Imagemagick to generate a scheme."""
     if shutil.which("magick"):
         magick_command = ["magick", "convert"]
-    else:
+
+    elif shutil.which("convert"):
         magick_command = ["convert"]
 
-    colors = subprocess.run([*magick_command, img, "-resize", "25%",
-                             "+dither", "-colors", str(color_count),
+    else:
+        print("error: imagemagick not found, exiting...\n"
+              "error: wal requires imagemagick to function.")
+        sys.exit(1)
+
+    colors = subprocess.run([*magick_command, img,
+                             "-resize", "25%", "+dither",
+                             "-colors", str(color_count),
                              "-unique-colors", "txt:-"],
                             stdout=subprocess.PIPE)
 
@@ -29,11 +36,6 @@ def imagemagick(color_count, img):
 def gen_colors(img, color_count):
     """Format the output from imagemagick into a list
        of hex colors."""
-    if not shutil.which("convert"):
-        print("error: imagemagick not found, exiting...\n"
-              "error: wal requires imagemagick to function.")
-        sys.exit(1)
-
     raw_colors = imagemagick(color_count, img)
 
     index = 0
@@ -59,12 +61,12 @@ def gen_colors(img, color_count):
 def sort_colors(img, colors):
     """Sort the generated colors and store them in a dict that
        we will later save in json format."""
-    raw_colors = colors[:1] + colors[9:] + colors[8:]
+    raw_colors = colors[:1] + colors[8:] + colors[8:-1]
 
     # Darken the background color if it's too light.
     # The value can be a letter or an int so we treat the
     # entire test as strings.
-    if raw_colors[0][1] not in ["0", "1", "2"]:
+    if raw_colors[0][1] != "0":
         raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
 
     # Create a comment color from the background.
