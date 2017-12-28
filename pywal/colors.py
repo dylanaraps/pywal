@@ -2,68 +2,28 @@
 Generate a colorscheme using imagemagick.
 """
 import os
-import re
-import shutil
-import subprocess
-import sys
+import numpy
+import scipy
+import scipy.misc
+import scipy.cluster
+
+from PIL import Image
+from PIL import ImageEnhance
 
 from .settings import CACHE_DIR, COLOR_COUNT
 from . import util
 
 
-def imagemagick(color_count, img):
-    """Call Imagemagick to generate a scheme."""
-    if shutil.which("magick"):
-        magick_command = ["magick", "convert"]
-    else:
-        magick_command = ["convert"]
-
-    colors = subprocess.run([*magick_command, img, "-resize", "25%",
-                             "+dither", "-colors", str(color_count),
-                             "-unique-colors", "txt:-"],
-                            stdout=subprocess.PIPE)
-
-    return colors.stdout.splitlines()
-
-
-def gen_colors(img, color_count):
-    """Format the output from imagemagick into a list
-       of hex colors."""
-    if not shutil.which("convert"):
-        print("error: imagemagick not found, exiting...\n"
-              "error: wal requires imagemagick to function.")
-        sys.exit(1)
-
-    raw_colors = imagemagick(color_count, img)
-
-    index = 0
-    while len(raw_colors) - 1 < color_count:
-        index += 1
-        raw_colors = imagemagick(color_count + index, img)
-
-        print("colors: Imagemagick couldn't generate a", color_count,
-              "color palette, trying a larger palette size",
-              color_count + index)
-
-        if index > 20:
-            print("colors: Imagemagick couldn't generate a suitable scheme",
-                  "for the image. Exiting...")
-            sys.exit(1)
-
-    # Remove the first element because it isn't a color code.
-    del raw_colors[0]
-
-    return [re.search("#.{6}", str(col)).group(0) for col in raw_colors]
-
-
 def sort_colors(img, colors):
     """Sort the generated colors and store them in a dict that
        we will later save in json format."""
-    raw_colors = colors[:1] + colors[9:] + colors[8:]
+    # raw_colors = [colors[0], *colors[15:23], *colors[15:23]]
+    raw_colors = [colors[0], *colors[8:], *colors[8:]]
 
     # Darken the background color if it's too light.
     # The value can be a letter or an int so we treat the
     # entire test as strings.
+    print(raw_colors[0][1])
     if raw_colors[0][1] not in ["0", "1", "2"]:
         raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
 
@@ -85,6 +45,35 @@ def sort_colors(img, colors):
     return colors
 
 
+def kmeans(img, color_count):
+    """Get colors using kmeans."""
+    image = Image.open(img)
+    image.thumbnail((100, 100), Image.ANTIALIAS)
+    enhancer = ImageEnhance.Brightness(image)
+    image = enhancer.enhance(1.0)
+
+    arr = numpy.asarray(image)
+    shape = arr.shape
+    arr = arr.reshape(scipy.product(shape[:2]), shape[2]).astype(float)
+
+    colors = scipy.cluster.vq.kmeans2(arr, color_count*2)[0]
+
+    if len(colors) < 16:
+        print("error: Failed to find enough colors.")
+        exit(1)
+
+    colors = [list(map(int, color)) for color in colors.tolist()]
+
+    for color in colors:
+        red, gre, blu = color
+        color.append((red+red+blu+gre+gre+gre) / 6)
+
+    colors = sorted(colors, key=lambda e: e[3])
+    del colors[1::2]
+
+    return ["#%02x%02x%02x" % tuple(color[:-1]) for color in colors]
+
+
 def get(img, cache_dir=CACHE_DIR,
         color_count=COLOR_COUNT, notify=False):
     """Get the colorscheme."""
@@ -99,7 +88,7 @@ def get(img, cache_dir=CACHE_DIR,
     else:
         util.msg("wal: Generating a colorscheme...", notify)
 
-        colors = gen_colors(img, color_count)
+        colors = kmeans(img, color_count)
         colors = sort_colors(img, colors)
 
         util.save_file_json(colors, cache_file)
