@@ -62,12 +62,12 @@ def create_sequences(colors):
     # This escape sequence doesn't work in VTE terminals and their parsing of
     # unknown sequences is garbage so we need to use some escape sequence
     # M A G I C to hide the output.
-    # \0337                # Save cursor position.
+    # \033[s               # Save cursor position.
     # \033[1000H           # Move the cursor off screen.
     # \033[8m              # Conceal text.
     # \033]708;#000000\007 # Garbage sequence.
-    # \0338                # Restore cursor position.
-    sequences.append("\0337\033[1000H\033[8m\033]708;%s\007\0338" %
+    # \033[u               # Restore cursor position.
+    sequences.append("\033[s\033[1000H\033[8m\033]708;%s\007\033[u" %
                      colors['special']['background'])
 
     # Show the cursor.
