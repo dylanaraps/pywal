@@ -29,10 +29,6 @@ def get_args(args):
     description = "wal - Generate colorschemes on the fly"
     arg = argparse.ArgumentParser(description=description)
 
-    arg.add_argument("-a", metavar="\"alpha\"",
-                     help="Set terminal background transparency. \
-                           *Only works in URxvt*")
-
     arg.add_argument("-b", metavar="background",
                      help="Custom background color to use.")
 
@@ -103,9 +99,6 @@ def process_args(args):
     if args.c:
         scheme_dir = os.path.join(CACHE_DIR, "schemes")
         shutil.rmtree(scheme_dir, ignore_errors=True)
-
-    if args.a:
-        util.Color.alpha_num = args.a
 
     if args.R:
         image_file = os.path.join(CACHE_DIR, "wal")
