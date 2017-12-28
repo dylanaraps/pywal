@@ -63,14 +63,14 @@ def sort_colors(img, colors):
        we will later save in json format."""
     raw_colors = colors[:1] + colors[8:] + colors[8:-1]
 
-    # Darken the background color if it's too light.
-    # The value can be a letter or an int so we treat the
-    # entire test as strings.
+    # Darken the background color slightly.
     if raw_colors[0][1] != "0":
         raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
 
-    # Create a comment color from the background.
-    raw_colors[8] = util.lighten_color(raw_colors[0], 0.40)
+    # Manually adjust colors.
+    raw_colors[7] = util.lighten_color(raw_colors[7], 0.25)
+    raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
+    raw_colors[15] = util.lighten_color(raw_colors[15], 0.25)
 
     colors = {}
     colors["wallpaper"] = img
