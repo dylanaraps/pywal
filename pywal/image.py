@@ -25,7 +25,9 @@ def get_random_image(img_dir):
         print("image: No new images found (nothing to do), exiting...")
         sys.exit(1)
 
-    return os.path.join(img_dir, random.choice(images).name)
+    random.shuffle(images)
+
+    return os.path.join(img_dir, images[0].name)
 
 
 def get(img, cache_dir=CACHE_DIR):
