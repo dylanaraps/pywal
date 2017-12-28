@@ -16,9 +16,9 @@ def set_special(index, color, iterm_name="h"):
         return "\033]P%s%s\033\\" % (iterm_name, color.strip("#"))
 
     if index in [11, 708] and alpha != 100:
-        return "\033]%s;[%s]%s\007" % (index, alpha, color)
+        return "\033]%s;[%s]%s\033\\" % (index, alpha, color)
 
-    return "\033]%s;%s\007" % (index, color)
+    return "\033]%s;%s\033\\" % (index, color)
 
 
 def set_color(index, color):
@@ -26,7 +26,7 @@ def set_color(index, color):
     if OS == "Darwin":
         return "\033]P%x%s\033\\" % (index, color.strip("#"))
 
-    return "\033]4;%s;%s\007" % (index, color)
+    return "\033]4;%s;%s\033\\" % (index, color)
 
 
 def set_iterm_tab_color(color):
@@ -62,12 +62,12 @@ def create_sequences(colors):
     # This escape sequence doesn't work in VTE terminals and their parsing of
     # unknown sequences is garbage so we need to use some escape sequence
     # M A G I C to hide the output.
-    # \033[s               # Save cursor position.
-    # \033[1000H           # Move the cursor off screen.
-    # \033[8m              # Conceal text.
-    # \033]708;#000000\007 # Garbage sequence.
-    # \033[u               # Restore cursor position.
-    sequences.append("\033[s\033[1000H\033[8m\033]708;%s\007\033[u" %
+    # \033[s                 # Save cursor position.
+    # \033[1000H             # Move the cursor off screen.
+    # \033[8m                # Conceal text.
+    # \033]708;#000000\033\\ # Garbage sequence.
+    # \033[u                 # Restore cursor position.
+    sequences.append("\033[s\033[1000H\033[8m\033]708;%s\234\033[u" %
                      colors['special']['background'])
 
     # Show the cursor.
