@@ -4,6 +4,7 @@ Reload programs.
 import os
 import shutil
 import subprocess
+import sys
 
 from .settings import CACHE_DIR, HOME, MODULE_DIR, OS
 from . import util
@@ -59,6 +60,9 @@ def sway():
 def colors(cache_dir=CACHE_DIR):
     """Reload colors. (Deprecated)"""
     sequences = os.path.join(cache_dir, "sequences")
+
+    sys.stderr.write("'wal -r' is deprecated: "
+                     "Use 'cat %s' instead.\n" % sequences)
 
     if os.path.isfile(sequences):
         print("".join(util.read_file(sequences)), end="")
