@@ -19,16 +19,29 @@ def imagemagick(color_count, img):
     elif shutil.which("convert"):
         magick_command = ["convert"]
 
+    elif shutil.which("gm"):
+        magick_command = ["gm", "convert"]
+
     else:
         print("error: imagemagick not found, exiting...\n"
               "error: wal requires imagemagick to function.")
         sys.exit(1)
 
-    colors = subprocess.run([*magick_command, img,
-                             "-resize", "25%", "+dither",
-                             "-colors", str(color_count),
-                             "-unique-colors", "txt:-"],
-                            stdout=subprocess.PIPE)
+    magick_command = ["gm", "convert"]
+
+    def magick(magic="-unique-colors"):
+        """Run Imagemagick."""
+        return subprocess.run([*magick_command, img,
+                               "-resize", "25%", "+dither",
+                               "-colors", str(color_count),
+                               magic, "txt:-"],
+                              stdout=subprocess.PIPE)
+
+    if magick_command[0] == "gm":
+        colors = magick("")
+
+    else:
+        colors = magick()
 
     return colors.stdout.splitlines()
 
@@ -51,6 +64,14 @@ def gen_colors(img, color_count):
             print("colors: Imagemagick couldn't generate a suitable scheme",
                   "for the image. Exiting...")
             sys.exit(1)
+
+    if len(raw_colors) > 30:
+        raw_colors = [re.search("#.{6}", str(col)).group(0)
+                      for col in raw_colors]
+
+        seen = set()
+        seen_add = seen.add
+        return [x for x in raw_colors if not (x in seen or seen_add(x))]
 
     # Remove the first element because it isn't a color code.
     del raw_colors[0]
