@@ -56,7 +56,7 @@ def get_args(args):
                            don't display notifications.")
 
     arg.add_argument("-r", action="store_true",
-                     help="Deprecated: Use \
+                     help="'wal -r' is deprecated: Use \
                            (cat ~/.cache/wal/sequences &) instead.")
 
     arg.add_argument("-R", action="store_true",
@@ -94,7 +94,8 @@ def process_args(args):
         sys.exit(0)
 
     if args.r:
-        print("Deprecated: Use (cat ~/.cache/wal/sequences &) instead.")
+        print("'wal -r' is deprecated: "
+              "Use 'cat ~/.cache/wal/sequences' instead.")
         sys.exit(1)
 
     if args.q:
