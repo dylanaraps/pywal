@@ -56,6 +56,14 @@ def sway():
         util.disown(["swaymsg", "reload"])
 
 
+def colors(cache_dir=CACHE_DIR):
+    """Reload colors. (Deprecated)"""
+    sequences = os.path.join(cache_dir, "sequences")
+
+    if os.path.isfile(sequences):
+        print("".join(util.read_file(sequences)), end="")
+
+
 def env(xrdb_file=None):
     """Reload environment."""
     gtk()

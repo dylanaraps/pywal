@@ -94,9 +94,11 @@ def process_args(args):
         sys.exit(0)
 
     if args.r:
-        print("'wal -r' is deprecated: "
-              "Use 'cat ~/.cache/wal/sequences' instead.")
-        sys.exit(1)
+        sys.stderr.write("'wal -r' is deprecated: "
+                         "Use 'cat ~/.cache/wal/sequences' instead.\n")
+
+        reload.colors()
+        sys.exit(0)
 
     if args.q:
         sys.stdout = sys.stderr = open(os.devnull, "w")
