@@ -19,10 +19,13 @@ def get_random_image(img_dir):
                   ".PNG", ".JPG", ".JPEG", ".JPE", ".GIF")
 
     images = [img for img in os.scandir(img_dir)
-              if img.name.endswith(file_types) and img.name != current_wall]
+              if img.name.endswith(file_types)]
 
-    if not images:
-        print("image: No new images found (nothing to do), exiting...")
+    if len(images) > 2 and current_wall in images:
+        images.remove(current_wall)
+
+    elif not images:
+        print("error: No images found in directory.")
         sys.exit(1)
 
     random.shuffle(images)
