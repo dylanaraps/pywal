@@ -17,9 +17,10 @@ def xrdb(xrdb_files=None):
          os.path.join(CACHE_DIR, "colors-rofi.Xresources")]
 
     if shutil.which("xrdb") and OS != "Darwin":
-        subprocess.Popen(["xrdb", "-merge", "-nocpp", *xrdb_files],
-                         stdout=subprocess.DEVNULL,
-                         stderr=subprocess.DEVNULL).wait()
+        for file in xrdb_files:
+            subprocess.Popen(["xrdb", "-merge", "-nocpp", file],
+                             stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL).wait()
 
 
 def gtk():
