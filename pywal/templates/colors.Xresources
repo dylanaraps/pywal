@@ -60,13 +60,5 @@ XClock*hourColor:   rgba:{color15.xrgba}
 XClock*minuteColor: rgba:{color15.xrgba}
 XClock*secondColor: rgba:{color15.xrgba}
 
-! Rofi (fallback)
-rofi.color-normal: {background}, {foreground}, {background},   {color10},   {background}
-rofi.color-active: {background}, {foreground}, {background},   {color10},   {background}
-rofi.color-urgent: {background}, {color10},    {background},   {color10},   {foreground}
-rofi.color-window: {background}, {background}, {background}
-
 ! Set depth to make transparency work.
 URxvt*depth: 32
-
-#include "colors-rofi.Xresources"

@@ -10,12 +10,14 @@ from .settings import CACHE_DIR, HOME, MODULE_DIR, OS
 from . import util
 
 
-def xrdb(xrdb_file=None):
+def xrdb(xrdb_files=None):
     """Merge the colors into the X db so new terminals use them."""
-    xrdb_file = xrdb_file or os.path.join(CACHE_DIR, "colors.Xresources")
+    xrdb_files = xrdb_files or \
+        [os.path.join(CACHE_DIR, "colors.Xresources"),
+         os.path.join(CACHE_DIR, "colors-rofi.Xresources")]
 
     if shutil.which("xrdb") and OS != "Darwin":
-        subprocess.Popen(["xrdb", "-merge", xrdb_file],
+        subprocess.Popen(["xrdb", "-merge", *xrdb_files],
                          stdout=subprocess.DEVNULL,
                          stderr=subprocess.DEVNULL).wait()
 
