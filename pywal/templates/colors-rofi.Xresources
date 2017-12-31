@@ -1,5 +1,5 @@
 ! Rofi
-rofi.color-normal: {background}, {foreground}, {background},   {color10},   {background}
-rofi.color-active: {background}, {foreground}, {background},   {color10},   {background}
-rofi.color-urgent: {background}, {color10},    {background},   {color10},   {foreground}
-rofi.color-window: {background}, {background}, {background}
+rofi.color-window: {background}, {background}, {color10}
+rofi.color-normal: {background}, {foreground}, {background}, {color10}, {background}
+rofi.color-active: {background}, {foreground}, {background}, {color10}, {background}
+rofi.color-urgent: {background}, {color9},     {background}, {color9}, {foreground}
