@@ -1,5 +1,5 @@
 [BASIC]
-good-names=i,j,k,n,x,y,fg,bg,r,g,b
+good-names=i,j,k,n,x,y,fg,bg,r,g,b,i3
 
 [MESSAGES CONTROL]
 # inconsistent-return-statements:
@@ -8,3 +8,6 @@ good-names=i,j,k,n,x,y,fg,bg,r,g,b
 #   Disabled as it's a non-issue and only occurs in the
 #   process_args() function.
 disable=inconsistent-return-statements,too-many-branches
+
+[SIMILARITIES]
+ignore-imports=y
