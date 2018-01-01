@@ -11,19 +11,8 @@ from .settings import CACHE_DIR, COLOR_COUNT
 from . import util
 
 
-def imagemagick(color_count, img):
+def imagemagick(color_count, img, magick_command):
     """Call Imagemagick to generate a scheme."""
-    if shutil.which("magick"):
-        magick_command = ["magick", "convert"]
-
-    elif shutil.which("convert"):
-        magick_command = ["convert"]
-
-    else:
-        print("error: imagemagick not found, exiting...\n"
-              "error: wal requires imagemagick to function.")
-        sys.exit(1)
-
     colors = subprocess.run([*magick_command, img,
                              "-resize", "25%", "+dither",
                              "-colors", str(color_count),
@@ -36,12 +25,23 @@ def imagemagick(color_count, img):
 def gen_colors(img, color_count):
     """Format the output from imagemagick into a list
        of hex colors."""
-    raw_colors = imagemagick(color_count, img)
+    if shutil.which("magick"):
+        magick_command = ["magick", "convert"]
+
+    elif shutil.which("convert"):
+        magick_command = ["convert"]
+
+    else:
+        print("error: imagemagick not found, exiting...\n"
+              "error: wal requires imagemagick to function.")
+        sys.exit(1)
+
+    raw_colors = imagemagick(color_count, img, magick_command)
 
     index = 0
     while len(raw_colors) - 1 < color_count:
         index += 1
-        raw_colors = imagemagick(color_count + index, img)
+        raw_colors = imagemagick(color_count + index, img, magick_command)
 
         print("colors: Imagemagick couldn't generate a", color_count,
               "color palette, trying a larger palette size",
