@@ -42,7 +42,7 @@ def gen_colors(img, color_count):
         if len(raw_colors) > 16:
             break
 
-        elif index == 20:
+        elif index == 19:
             print("colors: Imagemagick couldn't generate a suitable scheme",
                   "for the image. Exiting...")
             sys.exit(1)
