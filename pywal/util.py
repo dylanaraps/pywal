@@ -20,7 +20,7 @@ class Color:
     @property
     def rgb(self):
         """Convert a hex color to rgb."""
-        return "%s,%s,%s" % (*hex_to_rgb(self.hex_color))
+        return "%s,%s,%s" % (*hex_to_rgb(self.hex_color),)
 
     @property
     def xrgba(self):

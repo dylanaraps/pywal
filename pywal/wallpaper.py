@@ -129,11 +129,8 @@ def change(img):
     elif OS == "Windows":
         set_win_wallpaper(img)
 
-    elif desktop:
-        set_desktop_wallpaper(desktop, img)
-
     else:
-        set_wm_wallpaper(img)
+        set_desktop_wallpaper(desktop, img)
 
     print("wallpaper: Set the new wallpaper.")
 
