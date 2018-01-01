@@ -2,4 +2,9 @@
 good-names=i,j,k,n,x,y,fg,bg,r,g,b
 
 [MESSAGES CONTROL]
-disable=inconsistent-return-statements
+# inconsistent-return-statements:
+#   Disabled as it's a false-positive and a bug in pylint.
+# too-many-branches:
+#   Disabled as it's a non-issue and only occurs in the
+#   process_args() function.
+disable=inconsistent-return-statements,too-many-branches
