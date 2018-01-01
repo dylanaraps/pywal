@@ -11,6 +11,7 @@ try:
     import pypandoc
     LONG_DESC = pypandoc.convert("README.md", "rst")
 except (IOError, ImportError, RuntimeError):
+    print("warning: pypandoc not found. Not converting markdown to rst.")
     LONG_DESC = open('README.md').read()
 
 VERSION = pywal.__version__
