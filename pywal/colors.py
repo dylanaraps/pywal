@@ -36,21 +36,21 @@ def gen_colors(img, color_count):
               "error: wal requires imagemagick to function.")
         sys.exit(1)
 
-    raw_colors = imagemagick(color_count, img, magick_command)
-
-    index = 0
-    while len(raw_colors) - 1 < color_count:
-        index += 1
+    for index in range(0, 20, 1):
         raw_colors = imagemagick(color_count + index, img, magick_command)
 
-        print("colors: Imagemagick couldn't generate a", color_count,
-              "color palette, trying a larger palette size",
-              color_count + index)
+        if len(raw_colors) > 16:
+            break
 
-        if index > 20:
+        elif index == 20:
             print("colors: Imagemagick couldn't generate a suitable scheme",
                   "for the image. Exiting...")
             sys.exit(1)
+
+        else:
+            print("colors: Imagemagick couldn't generate a", color_count,
+                  "color palette, trying a larger palette size",
+                  color_count + index)
 
     # Remove the first element because it isn't a color code.
     del raw_colors[0]
