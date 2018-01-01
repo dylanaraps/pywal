@@ -1,6 +1,5 @@
 [BASIC]
-good-names=i3
-disable=R0912
+good-names=i,j,k,n,x,y,fg,bg,r,g,b
 
-[SIMILARITIES]
-ignore-imports=yes
+[MESSAGES CONTROL]
+disable=inconsistent-return-statements

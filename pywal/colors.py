@@ -40,13 +40,13 @@ def gen_colors(img, color_count):
        of hex colors."""
     magick_command = has_im()
 
-    for index in range(0, 20, 1):
-        raw_colors = imagemagick(color_count + index, img, magick_command)
+    for i in range(0, 20, 1):
+        raw_colors = imagemagick(color_count + i, img, magick_command)
 
         if len(raw_colors) > 16:
             break
 
-        elif index == 19:
+        elif i == 19:
             print("colors: Imagemagick couldn't generate a suitable scheme",
                   "for the image. Exiting...")
             sys.exit(1)
@@ -54,7 +54,7 @@ def gen_colors(img, color_count):
         else:
             print("colors: Imagemagick couldn't generate a %s color palette, "
                   "trying a larger palette size %s."
-                  % (color_count, color_count + index))
+                  % (color_count, color_count + i))
 
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
@@ -82,8 +82,8 @@ def sort_colors(img, colors):
     colors["special"]["foreground"] = raw_colors[15]
     colors["special"]["cursor"] = raw_colors[15]
 
-    for index, color in enumerate(raw_colors):
-        colors["colors"]["color%s" % index] = color
+    for i, color in enumerate(raw_colors):
+        colors["colors"]["color%s" % i] = color
 
     return colors
 
