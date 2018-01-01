@@ -22,19 +22,23 @@ def imagemagick(color_count, img, magick_command):
     return colors.stdout.splitlines()
 
 
+def has_im():
+    """Check to see if the user has im installed."""
+    if shutil.which("magick"):
+        return ["magick", "convert"]
+
+    elif shutil.which("convert"):
+        return ["convert"]
+
+    print("error: imagemagick not found, exiting...\n"
+          "error: wal requires imagemagick to function.")
+    sys.exit(1)
+
+
 def gen_colors(img, color_count):
     """Format the output from imagemagick into a list
        of hex colors."""
-    if shutil.which("magick"):
-        magick_command = ["magick", "convert"]
-
-    elif shutil.which("convert"):
-        magick_command = ["convert"]
-
-    else:
-        print("error: imagemagick not found, exiting...\n"
-              "error: wal requires imagemagick to function.")
-        sys.exit(1)
+    magick_command = has_im()
 
     for index in range(0, 20, 1):
         raw_colors = imagemagick(color_count + index, img, magick_command)
@@ -52,10 +56,7 @@ def gen_colors(img, color_count):
                   "trying a larger palette size %s."
                   % (color_count, color_count + index))
 
-    # Remove the first element because it isn't a color code.
-    del raw_colors[0]
-
-    return [re.search("#.{6}", str(col)).group(0) for col in raw_colors]
+    return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
 
 def sort_colors(img, colors):
