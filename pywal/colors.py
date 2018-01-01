@@ -48,9 +48,9 @@ def gen_colors(img, color_count):
             sys.exit(1)
 
         else:
-            print("colors: Imagemagick couldn't generate a", color_count,
-                  "color palette, trying a larger palette size",
-                  color_count + index)
+            print("colors: Imagemagick couldn't generate a %s color palette, "
+                  "trying a larger palette size %s."
+                  % (color_count, color_count + index))
 
     # Remove the first element because it isn't a color code.
     del raw_colors[0]
