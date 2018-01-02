@@ -53,11 +53,13 @@ def every(colors, output_dir=CACHE_DIR):
     template_dir_user = os.path.join(CONF_DIR, "templates")
     util.create_dir(template_dir_user)
 
+    join = os.path.join  # Minor optimization.
+
     for file in os.scandir(template_dir):
-        template(colors, file.path, os.path.join(output_dir, file.name))
+        template(colors, file.path, join(output_dir, file.name))
 
     for file in os.scandir(template_dir_user):
-        template(colors, file.path, os.path.join(output_dir, file.name))
+        template(colors, file.path, join(output_dir, file.name))
 
     print("export: Exported all files.")
     print("export: Exported all user files.")

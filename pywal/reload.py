@@ -18,9 +18,7 @@ def xrdb(xrdb_files=None):
 
     if shutil.which("xrdb") and OS != "Darwin":
         for file in xrdb_files:
-            subprocess.Popen(["xrdb", "-merge", "-nocpp", file],
-                             stdout=subprocess.DEVNULL,
-                             stderr=subprocess.DEVNULL).wait()
+            subprocess.run(["xrdb", "-merge", "-nocpp", file])
 
 
 def gtk():

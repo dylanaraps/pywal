@@ -13,13 +13,11 @@ from . import util
 
 def imagemagick(color_count, img, magick_command):
     """Call Imagemagick to generate a scheme."""
-    colors = subprocess.run([*magick_command, img,
-                             "-resize", "25%", "+dither",
-                             "-colors", str(color_count),
-                             "-unique-colors", "txt:-"],
-                            stdout=subprocess.PIPE)
+    flags = ["-resize", "25%", "-colors", str(color_count),
+             "-unique-colors", "txt:-"]
 
-    return colors.stdout.splitlines()
+    return subprocess.check_output([*magick_command,
+                                    img, *flags]).splitlines()
 
 
 def has_im():

@@ -73,13 +73,13 @@ def create_sequences(colors):
 
 def send(colors, cache_dir=CACHE_DIR):
     """Send colors to all open terminals."""
-    sequences = create_sequences(colors)
-
     if OS == "Darwin":
         tty_pattern = "/dev/ttys00[0-9]*"
 
     else:
         tty_pattern = "/dev/pts/[0-9]*"
+
+    sequences = create_sequences(colors)
 
     # Writing to "/dev/pts/[0-9] lets you send data to open terminals.
     for term in glob.glob(tty_pattern):
