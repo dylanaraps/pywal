@@ -1,4 +1,7 @@
 include pywal/templates/*
 include pywal/scripts/*
+include tests/*
+include tests/test_files/*
+include .pylintrc
 include README.md
 include LICENSE.md
