@@ -128,11 +128,11 @@ def process_args(args):
         colors_plain["colors"]["color0"] = args.b
 
     if args.i or args.f:
-        if not args.s:
-            sequences.send(colors_plain)
-
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])
+
+        if not args.s:
+            sequences.send(colors_plain)
 
         export.every(colors_plain)
 

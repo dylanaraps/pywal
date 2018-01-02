@@ -57,6 +57,9 @@ def set_wm_wallpaper(img):
     elif shutil.which("habak"):
         util.disown(["habak", "-mS", img])
 
+    elif shutil.which("display"):
+        util.disown(["display", "-backdrop", "-window", "root", img])
+
     else:
         print("error: No wallpaper setter found.")
         return
