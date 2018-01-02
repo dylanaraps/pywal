@@ -15,11 +15,10 @@ def get_random_image(img_dir):
     current_wall = wallpaper.get()
     current_wall = os.path.basename(current_wall)
 
-    file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif",
-                  ".PNG", ".JPG", ".JPEG", ".JPE", ".GIF")
+    file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
 
     images = [img for img in os.scandir(img_dir)
-              if img.name.endswith(file_types)]
+              if img.name.lower().endswith(file_types)]
 
     if len(images) > 2 and current_wall in images:
         images.remove(current_wall)
