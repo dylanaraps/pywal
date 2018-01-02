@@ -41,24 +41,20 @@ class Color:
 def read_file(input_file):
     """Read data from a file and trim newlines."""
     with open(input_file, "r") as file:
-        data = file.read().splitlines()
-    return data
+        return file.read().splitlines()
 
 
 def read_file_json(input_file):
     """Read data from a json file."""
     with open(input_file, "r") as json_file:
-        data = json.load(json_file)
-
-    return data
+        return json.load(json_file)
 
 
 def read_file_raw(input_file):
     """Read data from a file as is, don't strip
        newlines or other special characters.."""
     with open(input_file, "r") as file:
-        data = file.readlines()
-    return data
+        return file.readlines()
 
 
 def save_file(data, export_file):
