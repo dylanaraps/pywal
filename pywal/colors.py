@@ -59,7 +59,7 @@ def gen_colors(img, color_count):
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
 
-def sort_colors(img, colors):
+def create_palette(img, colors):
     """Sort the generated colors and store them in a dict that
        we will later save in json format."""
     raw_colors = colors[:1] + colors[8:] + colors[8:-1]
@@ -73,11 +73,7 @@ def sort_colors(img, colors):
     raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
     raw_colors[15] = util.lighten_color(raw_colors[15], 0.25)
 
-    colors = {}
-    colors["wallpaper"] = img
-    colors["special"] = {}
-    colors["colors"] = {}
-
+    colors = {"wallpaper": img, "special": {}, "colors": {}}
     colors["special"]["background"] = raw_colors[0]
     colors["special"]["foreground"] = raw_colors[15]
     colors["special"]["cursor"] = raw_colors[15]
@@ -103,7 +99,7 @@ def get(img, cache_dir=CACHE_DIR,
         util.msg("wal: Generating a colorscheme...", notify)
 
         colors = gen_colors(img, color_count)
-        colors = sort_colors(img, colors)
+        colors = create_palette(img, colors)
 
         util.save_file_json(colors, cache_file)
         util.msg("wal: Generation complete.", notify)
