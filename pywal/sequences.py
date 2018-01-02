@@ -31,12 +31,11 @@ def set_color(index, color):
 
 def set_iterm_tab_color(color):
     """Set iTerm2 tab/window color"""
-    red, green, blue = util.hex_to_rgb(color)
     return """
     \033]6;1;bg;red;brightness;%s\a
     \033]6;1;bg;green;brightness;%s\a
     \033]6;1;bg;blue;brightness;%s\a
-    """ % (red, green, blue)
+    """ % (*util.hex_to_rgb(color),)
 
 
 def create_sequences(colors):
@@ -49,15 +48,10 @@ def create_sequences(colors):
     # Source: https://goo.gl/KcoQgP
     # 10 = foreground, 11 = background, 12 = cursor foregound
     # 13 = mouse foreground
-    sequences.append(set_special(10, colors["special"]["foreground"], "g"))
-    sequences.append(set_special(11, colors["special"]["background"], "h"))
-    sequences.append(set_special(12, colors["colors"]["color1"], "l"))
-
-    # Hide the cursor.
-    sequences.append(set_special(13, colors["special"]["foreground"], "l"))
-
-    if OS == "Darwin":
-        sequences += set_iterm_tab_color(colors["special"]["background"])
+    sequences.extend([set_special(10, colors["special"]["foreground"], "g"),
+                      set_special(11, colors["special"]["background"], "h"),
+                      set_special(12, colors["colors"]["color1"], "l"),
+                      set_special(13, colors["special"]["foreground"], "l")])
 
     # This escape sequence doesn't work in VTE terminals and their parsing of
     # unknown sequences is garbage so we need to use some escape sequence
@@ -67,11 +61,12 @@ def create_sequences(colors):
     # \033[8m                # Conceal text.
     # \033]708;#000000\033\\ # Garbage sequence.
     # \033[u                 # Restore cursor position.
-    sequences.append("\033[s\033[1000H\033[8m\033]708;%s\234\033[u" %
-                     colors['special']['background'])
+    sequences.extend(["\033[s\033[1000H\033[8m\033]708;%s\234\033[u" %
+                      colors['special']['background'],
+                      set_special(13, colors["special"]["cursor"], "l")])
 
-    # Show the cursor.
-    sequences.append(set_special(13, colors["special"]["cursor"], "l"))
+    if OS == "Darwin":
+        sequences += set_iterm_tab_color(colors["special"]["background"])
 
     return "".join(sequences)
 
