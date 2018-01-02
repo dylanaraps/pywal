@@ -16,8 +16,7 @@ def imagemagick(color_count, img, magick_command):
     flags = ["-resize", "25%", "-colors", str(color_count),
              "-unique-colors", "txt:-"]
 
-    return subprocess.check_output([*magick_command,
-                                    img, *flags]).splitlines()
+    return subprocess.check_output([*magick_command, img, *flags]).splitlines()
 
 
 def has_im():
