@@ -29,13 +29,18 @@ def get_export_type(export_type):
     """Convert template type to the right filename."""
     return {
         "css": "colors.css",
+        "dwm": "colors-wal-dwm.h",
+        "st": "colors-wal-st.h",
+        "tabbed": "colors-wal-tabbed.h",
+        "gtk2": "colors-gtk2.rc",
         "json": "colors.json",
         "konsole": "colors-konsole.colorscheme",
+        "plain": "colors",
         "putty": "colors-putty.reg",
+        "rofi": "colors-rofi.Xresources",
         "scss": "colors.scss",
         "shell": "colors.sh",
         "sway": "colors-sway",
-        "rofi": "colors-rofi.Xresources",
         "xresources": "colors.Xresources",
         "yaml": "colors.yml",
     }.get(export_type, export_type)
