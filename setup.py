@@ -24,6 +24,7 @@ setuptools.setup(
     author_email="dylan.araps@gmail.com",
     description="Generate and change colorschemes on the fly",
     long_description=LONG_DESC,
+    keywords="wal colorscheme terminal-emulators changing-colorschemes",
     license="MIT",
     url="https://github.com/dylanaraps/pywal",
     download_url=DOWNLOAD,
@@ -38,4 +39,5 @@ setuptools.setup(
     entry_points={"console_scripts": ["wal=pywal.__main__:main"]},
     python_requires=">=3.5",
     test_suite="tests",
-    include_package_data=True)
+    include_package_data=True,
+    zip_safe=False)

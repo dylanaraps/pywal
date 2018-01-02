@@ -21,9 +21,10 @@ before_install:
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y imagemagick; fi
 
 install:
-    - pip install flake8 pylint
+    - pip install flake8 pylint pyroma
 
 script:
     - flake8 pywal tests setup.py
     - pylint pywal tests setup.py
+    - pyroma .
     - python setup.py test
