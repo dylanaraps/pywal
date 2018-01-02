@@ -61,8 +61,8 @@ def create_sequences(colors):
     # \033[8m                # Conceal text.
     # \033]708;#000000\033\\ # Garbage sequence.
     # \033[u                 # Restore cursor position.
-    sequences.extend(["\033[s\033[1000H\033[8m\033]708;%s\234\033[u" %
-                      colors['special']['background'],
+    sequences.extend(["\033[s\033[1000H\033[8m%s\033[u" %
+                      set_special(708, colors['special']['background']),
                       set_special(13, colors["special"]["cursor"], "l")])
 
     if OS == "Darwin":
