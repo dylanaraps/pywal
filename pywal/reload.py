@@ -10,6 +10,14 @@ from .settings import CACHE_DIR, HOME, MODULE_DIR, OS
 from . import util
 
 
+def tty():
+    """Load colors in tty."""
+    tty_script = os.path.join(CACHE_DIR, "colors-tty.sh")
+
+    if os.path.isfile(tty_script):
+        subprocess.Popen([tty_script])
+
+
 def xrdb(xrdb_files=None):
     """Merge the colors into the X db so new terminals use them."""
     xrdb_files = xrdb_files or \
@@ -77,3 +85,4 @@ def env(xrdb_file=None):
     sway()
     polybar()
     print("reload: Reloaded environment.")
+    tty()
