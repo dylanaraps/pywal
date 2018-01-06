@@ -109,6 +109,18 @@ def lighten_color(color, amount):
     return rgb_to_hex(color)
 
 
+def blend_color(color, color2):
+    """Blend two colors together."""
+    r1, g1, b1 = hex_to_rgb(color)
+    r2, g2, b2 = hex_to_rgb(color2)
+
+    r3 = int(0.5 * r1 + 0.5 * r2)
+    g3 = int(0.5 * g1 + 0.5 * g2)
+    b3 = int(0.5 * b1 + 0.5 * b2)
+
+    return rgb_to_hex((r3, g3, b3))
+
+
 def disown(cmd):
     """Call a system command in the background,
        disown it and hide it's output."""
