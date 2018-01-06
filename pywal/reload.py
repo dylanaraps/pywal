@@ -15,7 +15,7 @@ def tty():
     tty_script = os.path.join(CACHE_DIR, "colors-tty.sh")
 
     if os.path.isfile(tty_script):
-        subprocess.Popen([tty_script])
+        subprocess.Popen(["sh", tty_script])
 
 
 def xrdb(xrdb_files=None):
