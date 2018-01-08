@@ -29,8 +29,8 @@ def xrdb(xrdb_files=None):
             subprocess.run(["xrdb", "-merge", "-nocpp", file])
 
 
-def gtk():
-    """Move gtkrc files to the correct location."""
+def oomox():
+    """Call oomox to generate a theme."""
     oomox_file = os.path.join(CACHE_DIR, "colors-oomox")
 
     if shutil.which("oomox-cli"):
@@ -38,6 +38,9 @@ def gtk():
         subprocess.run(["oomox-cli", "-o", "wal", oomox_file],
                        stdout=subprocess.DEVNULL)
 
+
+def gtk():
+    """Reload GTK theme on the fly."""
     # Here we call a Python 2 script to reload the GTK themes.
     # This is done because the Python 3 GTK/Gdk libraries don't
     # provide a way of doing this.
@@ -81,7 +84,6 @@ def colors(cache_dir=CACHE_DIR):
 def env(xrdb_file=None):
     """Reload environment."""
     xrdb(xrdb_file)
-    gtk()
     i3()
     sway()
     polybar()

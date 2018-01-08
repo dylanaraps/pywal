@@ -143,6 +143,10 @@ def process_args(args):
     if args.o:
         util.disown([args.o])
 
+    if not args.e:
+        reload.oomox()
+        reload.gtk()
+
 
 def main():
     """Main script function."""
