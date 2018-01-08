@@ -124,6 +124,7 @@ def process_args(args):
         colors_plain = colors.file(args.f)
 
     if args.b:
+        args.b = "#%s" % (args.b.strip("#"))
         colors_plain["special"]["background"] = args.b
         colors_plain["colors"]["color0"] = args.b
 
