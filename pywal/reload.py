@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import sys
 
-from .settings import CACHE_DIR, HOME, MODULE_DIR, OS
+from .settings import CACHE_DIR, MODULE_DIR, OS
 from . import util
 
 
