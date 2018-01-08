@@ -35,7 +35,8 @@ def gtk():
 
     if shutil.which("oomox-cli"):
         print("reload: Waiting for oomox...")
-        subprocess.run(["oomox-cli", oomox_file], stdout=subprocess.DEVNULL)
+        subprocess.run(["oomox-cli", "-o", "wal", oomox_file],
+                       stdout=subprocess.DEVNULL)
 
     # Here we call a Python 2 script to reload the GTK themes.
     # This is done because the Python 3 GTK/Gdk libraries don't
