@@ -31,11 +31,11 @@ def xrdb(xrdb_files=None):
 
 def gtk():
     """Move gtkrc files to the correct location."""
-    theme_path = os.path.join(HOME, ".themes", "Flatabulous-wal")
-    gtk2_file = os.path.join(CACHE_DIR, "colors-gtk2.rc")
+    oomox_file = os.path.join(CACHE_DIR, "colors-oomox")
 
-    if os.path.isdir(theme_path):
-        shutil.copy(gtk2_file, os.path.join(theme_path, "gtk-2.0"))
+    if shutil.which("oomox-cli"):
+        print("reload: Waiting for oomox...")
+        subprocess.run(["oomox-cli", oomox_file], stdout=subprocess.DEVNULL)
 
     # Here we call a Python 2 script to reload the GTK themes.
     # This is done because the Python 3 GTK/Gdk libraries don't
@@ -79,8 +79,8 @@ def colors(cache_dir=CACHE_DIR):
 
 def env(xrdb_file=None):
     """Reload environment."""
-    gtk()
     xrdb(xrdb_file)
+    gtk()
     i3()
     sway()
     polybar()
