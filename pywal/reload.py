@@ -35,6 +35,7 @@ def oomox():
 
     if shutil.which("oomox-cli"):
         print("reload: Waiting for oomox...")
+        print("reload: Use -g to skip running oomox.")
         subprocess.run(["oomox-cli", "-o", "wal", oomox_file],
                        stdout=subprocess.DEVNULL)
 
