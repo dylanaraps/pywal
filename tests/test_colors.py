@@ -27,6 +27,11 @@ class TestGenColors(unittest.TestCase):
         result = colors.file("tests/test_files/test_file2.json")
         self.assertEqual(result["wallpaper"], "None")
 
+    def test_color_import_no_alpha(self):
+        """> Read colors from a file without an alpha."""
+        result = colors.file("tests/test_files/test_file2.json")
+        self.assertEqual(result["alpha"], "100")
+
 
 if __name__ == "__main__":
     unittest.main()

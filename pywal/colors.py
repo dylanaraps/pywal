@@ -114,6 +114,6 @@ def file(input_file):
         data["wallpaper"] = "None"
 
     if "alpha" not in data:
-        data["alpha"] = 100
+        data["alpha"] = "100"
 
     return data
