@@ -107,9 +107,6 @@ def process_args(args):
         scheme_dir = os.path.join(CACHE_DIR, "schemes")
         shutil.rmtree(scheme_dir, ignore_errors=True)
 
-    if args.a:
-        util.Color.alpha_num = args.a
-
     if args.R:
         image_file = os.path.join(CACHE_DIR, "wal")
 
@@ -125,6 +122,9 @@ def process_args(args):
 
     if args.f:
         colors_plain = colors.file(args.f)
+
+    if args.a:
+        util.Color.alpha_num = args.a
 
     if args.b:
         args.b = "#%s" % (args.b.strip("#"))

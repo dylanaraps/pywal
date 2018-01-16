@@ -70,7 +70,8 @@ def create_palette(img, colors):
     raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
     raw_colors[15] = util.blend_color(raw_colors[15], "#EEEEEE")
 
-    colors = {"wallpaper": img, "special": {}, "colors": {}}
+    colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
+              "special": {}, "colors": {}}
     colors["special"]["background"] = raw_colors[0]
     colors["special"]["foreground"] = raw_colors[15]
     colors["special"]["cursor"] = raw_colors[15]
@@ -90,6 +91,7 @@ def get(img, cache_dir=CACHE_DIR,
 
     if os.path.isfile(cache_file):
         colors = util.read_file_json(cache_file)
+        util.Color.alpha_num = colors["alpha"]
         print("colors: Found cached colorscheme.")
 
     else:
@@ -110,5 +112,8 @@ def file(input_file):
 
     if "wallpaper" not in data:
         data["wallpaper"] = "None"
+
+    if "alpha" not in data:
+        data["alpha"] = 100
 
     return data

@@ -15,7 +15,7 @@ def set_special(index, color, iterm_name="h"):
     if OS == "Darwin":
         return "\033]P%s%s\033\\" % (iterm_name, color.strip("#"))
 
-    if index in [11, 708] and alpha != 100:
+    if index in [11, 708] and alpha != "100":
         return "\033]%s;[%s]%s\033\\" % (index, alpha, color)
 
     return "\033]%s;%s\033\\" % (index, color)
