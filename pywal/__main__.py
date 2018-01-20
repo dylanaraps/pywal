@@ -55,7 +55,7 @@ def get_args(args):
                      help="External script to run after \"wal\".")
 
     arg.add_argument("-q", action="store_true",
-                     help="Quiet mode, don\"t print anything and \
+                     help="Quiet mode, don\'t print anything and \
                            don't display notifications.")
 
     arg.add_argument("-r", action="store_true",
