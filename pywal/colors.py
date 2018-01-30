@@ -90,7 +90,7 @@ def get(img, cache_dir=CACHE_DIR,
     cache_file = os.path.join(cache_dir, "schemes", cache_file + ".json")
 
     if os.path.isfile(cache_file):
-        colors = util.read_file_json(cache_file)
+        colors = file(cache_file)
         util.Color.alpha_num = colors["alpha"]
         print("colors: Found cached colorscheme.")
 
