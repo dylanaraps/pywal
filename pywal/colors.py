@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import sys
 
-from .settings import CACHE_DIR, COLOR_COUNT
+from .settings import CACHE_DIR, COLOR_COUNT, __version__
 from . import util
 
 
@@ -85,9 +85,10 @@ def create_palette(img, colors):
 def get(img, cache_dir=CACHE_DIR,
         color_count=COLOR_COUNT, notify=False):
     """Get the colorscheme."""
-    # _home_dylan_img_jpg.json
-    cache_file = img.replace("/", "_").replace("\\", "_").replace(".", "_")
-    cache_file = os.path.join(cache_dir, "schemes", cache_file + ".json")
+    # home_dylan_img_jpg_1.2.2.json
+    cache_file = re.sub("[/|\\|.]", "_", img)
+    cache_file = os.path.join(cache_dir, "schemes", cache_file + "_" +
+                              __version__ + ".json")
 
     if os.path.isfile(cache_file):
         colors = file(cache_file)
