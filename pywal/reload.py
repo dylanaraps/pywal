@@ -28,15 +28,21 @@ def xrdb(xrdb_files=None):
             subprocess.run(["xrdb", "-merge", "-nocpp", file])
 
 
-def oomox():
+def oomox(gen_theme):
     """Call oomox to generate a theme."""
-    oomox_file = os.path.join(CACHE_DIR, "colors-oomox")
+    if gen_theme:
+        if not shutil.which("oomox-cli"):
+            print("gtk: oomox not found, skipping...")
+            return
 
-    if shutil.which("oomox-cli"):
+        oomox_file = os.path.join(CACHE_DIR, "colors-oomox")
+
         print("reload: Waiting for oomox...")
-        print("reload: Use -g to skip running oomox.")
         subprocess.run(["oomox-cli", "-o", "wal", oomox_file],
                        stdout=subprocess.DEVNULL)
+
+    else:
+        print("gtk: Use -g to generate an oomox theme.")
 
 
 def gtk():

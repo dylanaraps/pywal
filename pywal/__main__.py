@@ -46,7 +46,7 @@ def get_args(args):
                      help="Which colorscheme file to use.")
 
     arg.add_argument("-g", action="store_true",
-                     help="Skip generating oomox theme.")
+                     help="Generate an oomox theme.")
 
     arg.add_argument("-n", action="store_true",
                      help="Skip setting the wallpaper.")
@@ -146,8 +146,8 @@ def process_args(args):
     if args.o:
         util.disown([args.o])
 
-    if not args.e and not args.g:
-        reload.oomox()
+    if not args.e:
+        reload.oomox(args.g)
         reload.gtk()
 
 
