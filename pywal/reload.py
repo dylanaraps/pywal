@@ -21,8 +21,7 @@ def tty():
 def xrdb(xrdb_files=None):
     """Merge the colors into the X db so new terminals use them."""
     xrdb_files = xrdb_files or \
-        [os.path.join(CACHE_DIR, "colors.Xresources"),
-         os.path.join(CACHE_DIR, "colors-rofi.Xresources")]
+        [os.path.join(CACHE_DIR, "colors.Xresources")]
 
     if shutil.which("xrdb") and OS != "Darwin":
         for file in xrdb_files:
