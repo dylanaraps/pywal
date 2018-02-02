@@ -64,7 +64,7 @@ def create_palette(img, colors, light):
     if light:
         # Manually adjust colors.
         raw_colors[7] = raw_colors[0]
-        raw_colors[0] = util.lighten_color(raw_colors[15], 0.85)
+        raw_colors[0] = util.lighten_color(raw_colors[15], 0.90)
         raw_colors[15] = raw_colors[7]
         raw_colors[8] = util.lighten_color(raw_colors[7], 0.25)
 
@@ -75,7 +75,6 @@ def create_palette(img, colors, light):
 
         # Manually adjust colors.
         raw_colors[7] = util.blend_color(raw_colors[7], "#EEEEEE")
-        raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
         raw_colors[15] = util.blend_color(raw_colors[15], "#EEEEEE")
 
     colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
@@ -86,10 +85,12 @@ def create_palette(img, colors, light):
 
     if light:
         for i, color in enumerate(raw_colors):
-            color = util.darken_color(color, 0.30)
-            colors["colors"]["color%s" % i] = util.saturate_color(color, 50)
+            colors["colors"]["color%s" % i] = util.saturate_color(color, 0.5)
 
         colors["colors"]["color0"] = raw_colors[0]
+        colors["colors"]["color7"] = raw_colors[15]
+        colors["colors"]["color8"] = util.darken_color(raw_colors[0], 0.5)
+        colors["colors"]["color15"] = raw_colors[15]
 
     else:
         for i, color in enumerate(raw_colors):

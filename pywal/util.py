@@ -1,6 +1,7 @@
 """
 Misc helper functions.
 """
+import colorsys
 import json
 import os
 import shutil
@@ -124,12 +125,14 @@ def blend_color(color, color2):
 def saturate_color(color, amount):
     """Saturate a hex color."""
     r, g, b = hex_to_rgb(color)
+    r, g, b = [x/255.0 for x in (r, g, b)]
+    h, s, v = colorsys.rgb_to_hsv(r, g, b)
+    s = amount
+    v = 0.2
+    r, g, b = colorsys.hls_to_rgb(h, s, v)
+    r, g, b = [x*255.0 for x in (r, g, b)]
 
-    r2 = r + amount
-    g2 = g + amount
-    b2 = b + amount
-
-    return rgb_to_hex((r2, g2, b2))
+    return rgb_to_hex((int(r), int(g), int(b)))
 
 
 def disown(cmd):
