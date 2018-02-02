@@ -102,9 +102,10 @@ def get(img, cache_dir=CACHE_DIR,
         color_count=COLOR_COUNT, light=False, notify=False):
     """Get the colorscheme."""
     # home_dylan_img_jpg_1.2.2.json
+    color_type = "light" if light else "dark"
     cache_file = re.sub("[/|\\|.]", "_", img)
-    cache_file = os.path.join(cache_dir, "schemes", cache_file + "_" +
-                              __version__ + ".json")
+    cache_file = os.path.join(cache_dir, "schemes", "%s_%s_%s.json"
+                              % (cache_file, color_type, __version__))
 
     if os.path.isfile(cache_file):
         colors = file(cache_file)
