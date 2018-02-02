@@ -68,18 +68,6 @@ def create_palette(img, colors, light):
         raw_colors[15] = raw_colors[7]
         raw_colors[8] = util.lighten_color(raw_colors[7], 0.25)
 
-        colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
-                  "special": {}, "colors": {}}
-        colors["special"]["background"] = raw_colors[0]
-        colors["special"]["foreground"] = raw_colors[15]
-        colors["special"]["cursor"] = raw_colors[15]
-
-        for i, color in enumerate(raw_colors):
-            color = util.darken_color(color, 0.30)
-            colors["colors"]["color%s" % i] = util.saturate_color(color, 50)
-
-        colors["colors"]["color0"] = raw_colors[0]
-
     else:
         # Darken the background color slightly.
         if raw_colors[0][1] != "0":
@@ -90,12 +78,20 @@ def create_palette(img, colors, light):
         raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
         raw_colors[15] = util.blend_color(raw_colors[15], "#EEEEEE")
 
-        colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
-                  "special": {}, "colors": {}}
-        colors["special"]["background"] = raw_colors[0]
-        colors["special"]["foreground"] = raw_colors[15]
-        colors["special"]["cursor"] = raw_colors[15]
+    colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
+              "special": {}, "colors": {}}
+    colors["special"]["background"] = raw_colors[0]
+    colors["special"]["foreground"] = raw_colors[15]
+    colors["special"]["cursor"] = raw_colors[15]
 
+    if light:
+        for i, color in enumerate(raw_colors):
+            color = util.darken_color(color, 0.30)
+            colors["colors"]["color%s" % i] = util.saturate_color(color, 50)
+
+        colors["colors"]["color0"] = raw_colors[0]
+
+    else:
         for i, color in enumerate(raw_colors):
             colors["colors"]["color%s" % i] = color
 
