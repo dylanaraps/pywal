@@ -64,7 +64,7 @@ def create_palette(img, colors, light):
     if light:
         # Manually adjust colors.
         raw_colors[7] = raw_colors[0]
-        raw_colors[0] = util.lighten_color(raw_colors[15], 0.90)
+        raw_colors[0] = util.lighten_color(raw_colors[15], 0.85)
         raw_colors[15] = raw_colors[7]
         raw_colors[8] = util.lighten_color(raw_colors[7], 0.25)
 
