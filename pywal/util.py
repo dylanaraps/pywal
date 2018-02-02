@@ -121,6 +121,17 @@ def blend_color(color, color2):
     return rgb_to_hex((r3, g3, b3))
 
 
+def saturate_color(color, amount):
+    """Saturate a hex color."""
+    r, g, b = hex_to_rgb(color)
+
+    r2 = r + amount
+    g2 = g + amount
+    b2 = b + amount
+
+    return rgb_to_hex((r2, g2, b2))
+
+
 def disown(cmd):
     """Call a system command in the background,
        disown it and hide it's output."""

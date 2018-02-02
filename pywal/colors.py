@@ -56,34 +56,54 @@ def gen_colors(img, color_count):
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
 
-def create_palette(img, colors):
+def create_palette(img, colors, light):
     """Sort the generated colors and store them in a dict that
        we will later save in json format."""
     raw_colors = colors[:1] + colors[8:16] + colors[8:-1]
 
-    # Darken the background color slightly.
-    if raw_colors[0][1] != "0":
-        raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
+    if light:
+        # Manually adjust colors.
+        raw_colors[7] = raw_colors[0]
+        raw_colors[0] = util.lighten_color(raw_colors[15], 0.9)
+        raw_colors[15] = raw_colors[7]
+        raw_colors[8] = util.lighten_color(raw_colors[7], 0.25)
 
-    # Manually adjust colors.
-    raw_colors[7] = util.blend_color(raw_colors[7], "#EEEEEE")
-    raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
-    raw_colors[15] = util.blend_color(raw_colors[15], "#EEEEEE")
+        colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
+                  "special": {}, "colors": {}}
+        colors["special"]["background"] = raw_colors[0]
+        colors["special"]["foreground"] = raw_colors[15]
+        colors["special"]["cursor"] = raw_colors[15]
 
-    colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
-              "special": {}, "colors": {}}
-    colors["special"]["background"] = raw_colors[0]
-    colors["special"]["foreground"] = raw_colors[15]
-    colors["special"]["cursor"] = raw_colors[15]
+        for i, color in enumerate(raw_colors):
+            color = util.darken_color(color, 0.30)
+            colors["colors"]["color%s" % i] = util.saturate_color(color, 50)
 
-    for i, color in enumerate(raw_colors):
-        colors["colors"]["color%s" % i] = color
+        colors["colors"]["color0"] = raw_colors[0]
+
+    else:
+        # Darken the background color slightly.
+        if raw_colors[0][1] != "0":
+            raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
+
+        # Manually adjust colors.
+        raw_colors[7] = util.blend_color(raw_colors[7], "#EEEEEE")
+        raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
+        raw_colors[15] = util.blend_color(raw_colors[15], "#EEEEEE")
+
+        colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
+                  "special": {}, "colors": {}}
+        colors["special"]["background"] = raw_colors[0]
+        colors["special"]["foreground"] = raw_colors[15]
+        colors["special"]["cursor"] = raw_colors[15]
+
+        for i, color in enumerate(raw_colors):
+            colors["colors"]["color%s" % i] = color
 
     return colors
 
 
 def get(img, cache_dir=CACHE_DIR,
-        color_count=COLOR_COUNT, notify=False):
+        color_count=COLOR_COUNT, light=False, notify=False):
     """Get the colorscheme."""
     # home_dylan_img_jpg_1.2.2.json
     cache_file = re.sub("[/|\\|.]", "_", img)
@@ -99,7 +119,7 @@ def get(img, cache_dir=CACHE_DIR,
         util.msg("wal: Generating a colorscheme...", notify)
 
         colors = gen_colors(img, color_count)
-        colors = create_palette(img, colors)
+        colors = create_palette(img, colors, light)
 
         util.save_file_json(colors, cache_file)
         util.msg("wal: Generation complete.", notify)
