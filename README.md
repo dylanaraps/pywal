@@ -13,7 +13,7 @@ For more info, check out the [Wiki](https://github.com/dylanaraps/pywal/wiki).
 
 [Screenshot Examples (Reddit)](https://www.reddit.com/r/unixporn/search?q=wal&restrict_sr=on&sort=relevance&t=all)
 
-![screenshot](http://i.imgur.com/ThihqTS.png)
+![screenshot](https://i.imgur.com/EUdn0Kx.jpg)
 
 
 ## Donate
