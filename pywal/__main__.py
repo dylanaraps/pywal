@@ -48,6 +48,9 @@ def get_args(args):
     arg.add_argument("-g", action="store_true",
                      help="Generate an oomox theme.")
 
+    arg.add_argument("-l", action="store_true",
+                     help="Generate a light colorscheme.")
+
     arg.add_argument("-n", action="store_true",
                      help="Skip setting the wallpaper.")
 
@@ -118,7 +121,7 @@ def process_args(args):
 
     if args.i:
         image_file = image.get(args.i)
-        colors_plain = colors.get(image_file, notify=not args.q)
+        colors_plain = colors.get(image_file, light=args.l, notify=not args.q)
 
     if args.f:
         colors_plain = colors.file(args.f)
