@@ -146,7 +146,7 @@ def disown(cmd):
 def msg(input_msg, notify):
     """Print to the terminal and display a libnotify
        notification."""
-    if notify and shutil.which("notify"):
+    if notify and shutil.which("notify-send"):
         disown(["notify-send", input_msg])
 
     print(input_msg)
