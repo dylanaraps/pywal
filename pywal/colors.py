@@ -75,6 +75,7 @@ def create_palette(img, colors, light):
 
         # Manually adjust colors.
         raw_colors[7] = util.blend_color(raw_colors[7], "#EEEEEE")
+        raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
         raw_colors[15] = util.blend_color(raw_colors[15], "#EEEEEE")
 
     colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
