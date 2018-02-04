@@ -14,6 +14,7 @@ import platform
 
 
 __version__ = "1.3.0"
+__template_version__ = "1.0.0"
 
 
 HOME = os.getenv("HOME", os.getenv("USERPROFILE"))

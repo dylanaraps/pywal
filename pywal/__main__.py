@@ -15,6 +15,7 @@ import shutil
 import sys
 
 from .settings import __version__, CACHE_DIR
+from .settings import __template_version__
 from . import colors
 from . import export
 from . import image
