@@ -58,8 +58,7 @@ def get_args(args):
                      help="External script to run after \"wal\".")
 
     arg.add_argument("-q", action="store_true",
-                     help="Quiet mode, don\'t print anything and \
-                           don't display notifications.")
+                     help="Quiet mode, don\'t print anything.")
 
     arg.add_argument("-r", action="store_true",
                      help="'wal -r' is deprecated: Use \
@@ -121,7 +120,7 @@ def process_args(args):
 
     if args.i:
         image_file = image.get(args.i)
-        colors_plain = colors.get(image_file, light=args.l, notify=not args.q)
+        colors_plain = colors.get(image_file, light=args.l)
 
     if args.f:
         colors_plain = colors.file(args.f)
