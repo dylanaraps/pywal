@@ -4,7 +4,6 @@ Misc helper functions.
 import colorsys
 import json
 import os
-import shutil
 import subprocess
 
 
@@ -141,12 +140,3 @@ def disown(cmd):
     subprocess.Popen(cmd,
                      stdout=subprocess.DEVNULL,
                      stderr=subprocess.DEVNULL)
-
-
-def msg(input_msg, notify):
-    """Print to the terminal and display a libnotify
-       notification."""
-    if notify and shutil.which("notify-send"):
-        disown(["notify-send", input_msg])
-
-    print(input_msg)

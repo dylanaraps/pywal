@@ -100,7 +100,7 @@ def create_palette(img, colors, light):
 
 
 def get(img, cache_dir=CACHE_DIR,
-        color_count=COLOR_COUNT, light=False, notify=False):
+        color_count=COLOR_COUNT, light=False):
     """Get the colorscheme."""
     # home_dylan_img_jpg_1.2.2.json
     color_type = "light" if light else "dark"
@@ -114,13 +114,13 @@ def get(img, cache_dir=CACHE_DIR,
         print("colors: Found cached colorscheme.")
 
     else:
-        util.msg("wal: Generating a colorscheme...", notify)
+        print("wal: Generating a colorscheme...")
 
         colors = gen_colors(img, color_count)
         colors = create_palette(img, colors, light)
 
         util.save_file_json(colors, cache_file)
-        util.msg("wal: Generation complete.", notify)
+        print("wal: Generation complete.")
 
     return colors
 
