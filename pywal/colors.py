@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import sys
 
-from .settings import CACHE_DIR, COLOR_COUNT, __chache_version__
+from .settings import CACHE_DIR, COLOR_COUNT, __cache_version__
 from . import util
 
 
@@ -106,7 +106,7 @@ def get(img, cache_dir=CACHE_DIR,
     color_type = "light" if light else "dark"
     cache_file = re.sub("[/|\\|.]", "_", img)
     cache_file = os.path.join(cache_dir, "schemes", "%s_%s_%s.json"
-                              % (cache_file, color_type, __chache_version__))
+                              % (cache_file, color_type, __cache_version__))
 
     if os.path.isfile(cache_file):
         colors = file(cache_file)

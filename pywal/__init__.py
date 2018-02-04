@@ -9,7 +9,7 @@
 Created by Dylan Araps.
 """
 
-from .settings import __version__, __chache_version__
+from .settings import __version__, __cache_version__
 from . import colors
 from . import export
 from . import image
@@ -19,7 +19,7 @@ from . import wallpaper
 
 __all__ = [
     "__version__",
-    "__chache_version__",
+    "__cache_version__",
     "colors",
     "export",
     "image",
