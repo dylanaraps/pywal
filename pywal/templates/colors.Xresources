@@ -51,6 +51,10 @@ URxvt*borderColor:  {background.alpha}
 *.color66: {color0}
 *color66:  {color0}
 
+! Static light/dark colors.
+light: {light}
+dark: {dark}
+
 ! Xclock colors.
 XClock*foreground: {foreground}
 XClock*background: {background}

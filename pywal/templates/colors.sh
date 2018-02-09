@@ -25,6 +25,10 @@ color13='{color13}'
 color14='{color14}'
 color15='{color15}'
 
+# Static
+light='{light}'
+dark='{dark}'
+
 # FZF colors
 export FZF_DEFAULT_OPTS="
     $FZF_DEFAULT_OPTS

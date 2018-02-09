@@ -4,6 +4,8 @@ special:
     background: "{background}"
     foreground: "{foreground}"
     cursor: "{cursor}"
+    dark: "{dark}"
+    light: "{light}"
 
 colors:
     color0: "{color0}"
