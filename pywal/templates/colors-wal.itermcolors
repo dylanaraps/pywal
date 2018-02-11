@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Ansi 0 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color0.b}</real>
+		<key>Green Component</key>
+		<real>{color0.g}</real>
+		<key>Red Component</key>
+		<real>{color0.r}</real>
+	</dict>
+	<key>Ansi 1 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color1.b}</real>
+		<key>Green Component</key>
+		<real>{color1.g}</real>
+		<key>Red Component</key>
+		<real>{color1.r}</real>
+	</dict>
+	<key>Ansi 10 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color10.b}</real>
+		<key>Green Component</key>
+		<real>{color10.g}</real>
+		<key>Red Component</key>
+		<real>{color10.r}</real>
+	</dict>
+	<key>Ansi 11 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color11.b}</real>
+		<key>Green Component</key>
+		<real>{color11.g}</real>
+		<key>Red Component</key>
+		<real>{color11.r}</real>
+	</dict>
+	<key>Ansi 12 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color12.b}</real>
+		<key>Green Component</key>
+		<real>{color12.g}</real>
+		<key>Red Component</key>
+		<real>{color12.r}</real>
+	</dict>
+	<key>Ansi 13 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color13.b}</real>
+		<key>Green Component</key>
+		<real>{color13.g}</real>
+		<key>Red Component</key>
+		<real>{color13.r}</real>
+	</dict>
+	<key>Ansi 14 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color14.b}</real>
+		<key>Green Component</key>
+		<real>{color14.g}</real>
+		<key>Red Component</key>
+		<real>{color14.r}</real>
+	</dict>
+	<key>Ansi 15 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color15.b}</real>
+		<key>Green Component</key>
+		<real>{color15.g}</real>
+		<key>Red Component</key>
+		<real>{color15.r}</real>
+	</dict>
+	<key>Ansi 2 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color2.b}</real>
+		<key>Green Component</key>
+		<real>{color2.g}</real>
+		<key>Red Component</key>
+		<real>{color2.r}</real>
+	</dict>
+	<key>Ansi 3 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color3.b}</real>
+		<key>Green Component</key>
+		<real>{color3.g}</real>
+		<key>Red Component</key>
+		<real>{color3.r}</real>
+	</dict>
+	<key>Ansi 4 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color4.b}</real>
+		<key>Green Component</key>
+		<real>{color4.g}</real>
+		<key>Red Component</key>
+		<real>{color4.r}</real>
+	</dict>
+	<key>Ansi 5 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color5.b}</real>
+		<key>Green Component</key>
+		<real>{color5.g}</real>
+		<key>Red Component</key>
+		<real>{color5.r}</real>
+	</dict>
+	<key>Ansi 6 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color6.b}</real>
+		<key>Green Component</key>
+		<real>{color6.g}</real>
+		<key>Red Component</key>
+		<real>{color6.r}</real>
+	</dict>
+	<key>Ansi 7 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color7.b}</real>
+		<key>Green Component</key>
+		<real>{color7.g}</real>
+		<key>Red Component</key>
+		<real>{color7.r}</real>
+	</dict>
+	<key>Ansi 8 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color8.b}</real>
+		<key>Green Component</key>
+		<real>{color8.g}</real>
+		<key>Red Component</key>
+		<real>{color8.r}</real>
+	</dict>
+	<key>Ansi 9 Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{color9.b}</real>
+		<key>Green Component</key>
+		<real>{color9.g}</real>
+		<key>Red Component</key>
+		<real>{color9.r}</real>
+	</dict>
+	<key>Background Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{background.b}</real>
+		<key>Green Component</key>
+		<real>{background.g}</real>
+		<key>Red Component</key>
+		<real>{background.r}</real>
+	</dict>
+	<key>Bold Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{foreground.b}</real>
+		<key>Green Component</key>
+		<real>{foreground.g}</real>
+		<key>Red Component</key>
+		<real>{foreground.r}</real>
+	</dict>
+	<key>Cursor Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{cursor.b}</real>
+		<key>Green Component</key>
+		<real>{cursor.g}</real>
+		<key>Red Component</key>
+		<real>{cursor.r}</real>
+	</dict>
+	<key>Cursor Text Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{background.b}</real>
+		<key>Green Component</key>
+		<real>{background.g}</real>
+		<key>Red Component</key>
+		<real>{background.r}</real>
+	</dict>
+	<key>Foreground Color</key>
+	<dict>
+		<key>Blue Component</key>
+        <real>{foreground.b}</real>
+		<key>Green Component</key>
+		<real>{foreground.g}</real>
+		<key>Red Component</key>
+		<real>{foreground.r}</real>
+	</dict>
+</dict>
+</plist>
