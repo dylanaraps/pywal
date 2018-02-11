@@ -5,9 +5,7 @@
     "special": {{
         "background": "{background}",
         "foreground": "{foreground}",
-        "cursor": "{cursor}",
-        "dark": "{dark}",
-        "light": "{light}"
+        "cursor": "{cursor}"
     }},
     "colors": {{
         "color0": "{color0}",

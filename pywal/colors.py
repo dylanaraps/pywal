@@ -93,15 +93,9 @@ def create_palette(img, colors, light):
         colors["colors"]["color8"] = util.darken_color(raw_colors[0], 0.5)
         colors["colors"]["color15"] = raw_colors[15]
 
-        colors["special"]["light"] = colors["special"]["background"]
-        colors["special"]["dark"] = colors["special"]["foreground"]
-
     else:
         for i, color in enumerate(raw_colors):
             colors["colors"]["color%s" % i] = color
-
-        colors["special"]["light"] = colors["special"]["foreground"]
-        colors["special"]["dark"] = colors["special"]["background"]
 
     return colors
 
