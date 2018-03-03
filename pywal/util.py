@@ -37,6 +37,16 @@ class Color:
         """Strip '#' from color."""
         return self.hex_color[1:]
 
+    @property
+    def octal(self):
+        """Export color in octal"""
+        return '#' + oct(int(self.hex_color[1:],16))[2:]
+
+    @property
+    def octal_strip(self):
+        """Strip '#' from octal color."""
+        return oct(int(self.hex_color[1:],16))[2:]
+
 
 def read_file(input_file):
     """Read data from a file and trim newlines."""
