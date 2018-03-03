@@ -33,6 +33,16 @@ class Color:
         return "[%s]%s" % (self.alpha_num, self.hex_color)
 
     @property
+    def octal(self):
+        """Export color in octal"""
+        return "%s%s" % ("#", oct(int(self.hex_color[1:], 16))[2:])
+
+    @property
+    def octal_strip(self):
+        """Strip '#' from octal color."""
+        return oct(int(self.hex_color[1:], 16))[2:]
+
+    @property
     def strip(self):
         """Strip '#' from color."""
         return self.hex_color[1:]
