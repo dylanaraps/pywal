@@ -2,14 +2,6 @@ language: python
 
 matrix:
     include:
-        - os: osx
-          language: generic
-          before_install:
-              - brew update
-              - brew install imagemagick
-              - brew upgrade python
-              - virtualenv env -p python3
-              - source env/bin/activate
         - os: linux
           python: 3.5
         - os: linux
