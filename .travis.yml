@@ -7,7 +7,7 @@ matrix:
           before_install:
               - brew update
               - brew install imagemagick
-              - brew install python3
+              - brew upgrade python
               - virtualenv env -p python3
               - source env/bin/activate
         - os: linux
