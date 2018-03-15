@@ -131,14 +131,14 @@ def get(img, cache_dir=CACHE_DIR,
 def terminal_sexy_to_wal(data):
     """Convert terminal.sexy json schema to wal."""
     data["colors"] = {}
-    data["special"] = {}
+    data["special"] = {
+        "foreground": data["foreground"],
+        "background": data["background"],
+        "cursor": data["color"][9]
+    }
 
     for i, color in enumerate(data["color"]):
         data["colors"]["color%s" % i] = color
-
-    data["special"]["foreground"] = data["foreground"]
-    data["special"]["background"] = data["background"]
-    data["special"]["cursor"] = data["colors"]["color1"]
 
     return data
 
