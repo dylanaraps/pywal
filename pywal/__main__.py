@@ -104,6 +104,14 @@ def process_args(args):
         reload.colors()
         sys.exit(0)
 
+    if args.f == "list_themes":
+        themes = os.listdir(os.path.join(CONF_DIR, "colorschemes"))
+        themes += os.listdir(os.path.join(MODULE_DIR, "colorschemes"))
+        themes = [theme.replace(".json", "") for theme in themes]
+
+        print("Themes:", ", ".join(themes))
+        sys.exit(0)
+
     if args.q:
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
@@ -123,15 +131,6 @@ def process_args(args):
     if args.i:
         image_file = image.get(args.i)
         colors_plain = colors.get(image_file, light=args.l)
-
-    if args.f == "list_themes":
-        themes = os.listdir(os.path.join(CONF_DIR, "colorschemes"))
-        themes += os.listdir(os.path.join(MODULE_DIR, "colorschemes"))
-
-        print("Themes:",
-              ", ".join([theme.replace(".json", "") for theme in themes]))
-
-        sys.exit(0)
 
     if args.f:
         colors_plain = colors.file(args.f)
