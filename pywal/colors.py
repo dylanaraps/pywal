@@ -7,7 +7,8 @@ import shutil
 import subprocess
 import sys
 
-from .settings import CACHE_DIR, COLOR_COUNT, MODULE_DIR, __cache_version__
+from .settings import CACHE_DIR, COLOR_COUNT, MODULE_DIR, \
+                      CONF_DIR, __cache_version__
 from . import util
 
 
@@ -144,10 +145,17 @@ def terminal_sexy_to_wal(data):
 
 def file(input_file):
     """Import colorscheme from json file."""
-    theme_file = os.path.join(MODULE_DIR, "colorschemes",
-                              ".".join((input_file, "json")))
+    theme_file = ".".join((input_file, "json"))
+    user_theme_dir = os.path.join(CONF_DIR, "colorschemes")
+    user_theme_file = os.path.join(user_theme_dir, theme_file)
+    theme_file = os.path.join(MODULE_DIR, "colorschemes", theme_file)
 
-    if os.path.isfile(theme_file):
+    util.create_dir(user_theme_dir)
+
+    if os.path.isfile(user_theme_file):
+        input_file = user_theme_file
+
+    elif os.path.isfile(theme_file):
         input_file = theme_file
 
     if os.path.isfile(input_file):

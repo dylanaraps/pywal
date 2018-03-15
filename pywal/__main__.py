@@ -14,7 +14,7 @@ import os
 import shutil
 import sys
 
-from .settings import __version__, CACHE_DIR, MODULE_DIR
+from .settings import __version__, CACHE_DIR, MODULE_DIR, CONF_DIR
 from . import colors
 from . import export
 from . import image
@@ -125,7 +125,8 @@ def process_args(args):
         colors_plain = colors.get(image_file, light=args.l)
 
     if args.f == "list_themes":
-        themes = os.listdir(os.path.join(MODULE_DIR, "colorschemes"))
+        themes = os.listdir(os.path.join(CONF_DIR, "colorschemes"))
+        themes += os.listdir(os.path.join(MODULE_DIR, "colorschemes"))
 
         print("Themes:",
               ", ".join([theme.replace(".json", "") for theme in themes]))
