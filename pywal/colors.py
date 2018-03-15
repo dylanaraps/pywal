@@ -127,6 +127,24 @@ def get(img, cache_dir=CACHE_DIR,
     return colors
 
 
+def terminal_sexy_to_wal(data):
+    """Convert terminal.sexy json schema to wal."""
+    data["colors"] = {}
+    data["special"] = {}
+
+    for i in range(0, 16):
+        data["colors"]["color%s" % i] = data["color"][i if i < 9 else i - 8]
+
+    data["colors"]["color0"] = data["background"]
+    data["colors"]["color7"] = data["foreground"]
+    data["colors"]["color15"] = data["foreground"]
+    data["special"]["foreground"] = data["foreground"]
+    data["special"]["background"] = data["background"]
+    data["special"]["cursor"] = data["colors"]["color1"]
+
+    return data
+
+
 def file(input_file):
     """Import colorscheme from json file."""
     theme_file = os.path.join(MODULE_DIR, "colorschemes",
@@ -143,6 +161,10 @@ def file(input_file):
 
         if "alpha" not in data:
             data["alpha"] = "100"
+
+        # Terminal.sexy format.
+        if isinstance(data["color"], list):
+            data = terminal_sexy_to_wal(data)
 
         return data
 
