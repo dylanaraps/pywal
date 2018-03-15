@@ -14,7 +14,7 @@ import os
 import shutil
 import sys
 
-from .settings import __version__, CACHE_DIR
+from .settings import __version__, CACHE_DIR, MODULE_DIR
 from . import colors
 from . import export
 from . import image
@@ -42,8 +42,10 @@ def get_args(args):
     arg.add_argument("-i", metavar="\"/path/to/img.jpg\"",
                      help="Which image or directory to use.")
 
-    arg.add_argument("-f", metavar="\"/path/to/colorscheme/file\"",
-                     help="Which colorscheme file to use.")
+    arg.add_argument("-f", metavar="/path/to/colorscheme/file or theme_name",
+                     help="Which colorscheme file to use. \
+                           Use 'wal -f' to list available builtin themes.",
+                     const="list_themes", nargs="?")
 
     arg.add_argument("-g", action="store_true",
                      help="Generate an oomox theme.")
@@ -121,6 +123,14 @@ def process_args(args):
     if args.i:
         image_file = image.get(args.i)
         colors_plain = colors.get(image_file, light=args.l)
+
+    if args.f == "list_themes":
+        themes = os.listdir(os.path.join(MODULE_DIR, "colorschemes"))
+
+        print("Themes:",
+              ", ".join([theme.replace(".json", "") for theme in themes]))
+
+        sys.exit(0)
 
     if args.f:
         colors_plain = colors.file(args.f)
