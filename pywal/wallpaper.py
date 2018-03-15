@@ -42,7 +42,17 @@ def xfconf(path, img):
 
 def set_wm_wallpaper(img):
     """Set the wallpaper for non desktop environments."""
-    if shutil.which("feh"):
+    if shutil.which("xwinwrap") and \
+       shutil.which("mpv") and \
+       img.endswith(".gif"):
+        xww_cmd = ["xwinwrap", "-ov", "-fs", "-ni", "-nf", "-b"]
+        mpv_cmd = ["mpv", "--wid", "WID", "--no-config", "--loop",
+                   "--no-config", "--no-audio", "--no-sub",
+                   "--x11-bypass-compositor=no",
+                   "--hwdec=auto", "--really-quiet"]
+        util.disown([*xww_cmd, "--", *mpv_cmd, img])
+
+    elif shutil.which("feh"):
         util.disown(["feh", "--bg-fill", img])
 
     elif shutil.which("nitrogen"):
@@ -124,6 +134,7 @@ def change(img):
     if not os.path.isfile(img):
         return
 
+    subprocess.call(["pkill", "xwinwrap"])
     desktop = get_desktop_env()
 
     if OS == "Darwin":
