@@ -132,12 +132,9 @@ def terminal_sexy_to_wal(data):
     data["colors"] = {}
     data["special"] = {}
 
-    for i in range(0, 16):
-        data["colors"]["color%s" % i] = data["color"][i if i < 9 else i - 8]
+    for i, color in enumerate(data["color"]):
+        data["colors"]["color%s" % i] = color
 
-    data["colors"]["color0"] = data["background"]
-    data["colors"]["color7"] = data["foreground"]
-    data["colors"]["color15"] = data["foreground"]
     data["special"]["foreground"] = data["foreground"]
     data["special"]["background"] = data["background"]
     data["special"]["cursor"] = data["colors"]["color1"]
