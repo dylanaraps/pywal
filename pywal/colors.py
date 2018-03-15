@@ -160,7 +160,7 @@ def file(input_file):
             data["alpha"] = "100"
 
         # Terminal.sexy format.
-        if isinstance(data["color"], list):
+        if "color" in data:
             data = terminal_sexy_to_wal(data)
 
         return data
