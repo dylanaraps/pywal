@@ -5,14 +5,14 @@
         "cursor": "#970b16"
     },
     "colors": {
-        "color0": "#3e3e3e",
+        "color0": "#ffffff",
         "color1": "#970b16",
         "color2": "#07962a",
         "color3": "#f8eec7",
         "color4": "#003e8a",
         "color5": "#e94691",
         "color6": "#89d1ec",
-        "color7": "#ffffff",
+        "color7": "#3e3e3e",
         "color8": "#666666",
         "color9": "#de0000",
         "color10": "#87d5a2",
@@ -20,6 +20,6 @@
         "color12": "#2e6cba",
         "color13": "#ffa29f",
         "color14": "#1cfafe",
-        "color15": "#ffffff"
+        "color15": "#3e3e3e"
     }
 }
