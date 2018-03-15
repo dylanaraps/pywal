@@ -1,5 +1,6 @@
 include pywal/templates/*
 include pywal/scripts/*
+include pywal/colorschemes/*
 include tests/*
 include tests/test_files/*
 include .pylintrc
