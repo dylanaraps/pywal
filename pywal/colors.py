@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import sys
 
-from .settings import CACHE_DIR, COLOR_COUNT, __cache_version__
+from .settings import CACHE_DIR, COLOR_COUNT, MODULE_DIR, __cache_version__
 from . import util
 
 
@@ -129,12 +129,23 @@ def get(img, cache_dir=CACHE_DIR,
 
 def file(input_file):
     """Import colorscheme from json file."""
-    data = util.read_file_json(input_file)
+    theme_file = os.path.join(MODULE_DIR, "colorschemes",
+                              ".".join((input_file, "json")))
 
-    if "wallpaper" not in data:
-        data["wallpaper"] = "None"
+    if os.path.isfile(theme_file):
+        input_file = theme_file
 
-    if "alpha" not in data:
-        data["alpha"] = "100"
+    if os.path.isfile(input_file):
+        data = util.read_file_json(input_file)
 
-    return data
+        if "wallpaper" not in data:
+            data["wallpaper"] = "None"
+
+        if "alpha" not in data:
+            data["alpha"] = "100"
+
+        return data
+
+    else:
+        print("No colorscheme file found, exiting...")
+        sys.exit(1)
