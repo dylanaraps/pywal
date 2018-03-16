@@ -10,11 +10,11 @@ from .settings import CACHE_DIR, MODULE_DIR, OS
 from . import util
 
 
-def tty():
+def tty(tty_reload):
     """Load colors in tty."""
     tty_script = os.path.join(CACHE_DIR, "colors-tty.sh")
 
-    if os.path.isfile(tty_script):
+    if os.path.isfile(tty_script) and tty_reload:
         subprocess.Popen(["sh", tty_script])
 
 
@@ -87,11 +87,11 @@ def colors(cache_dir=CACHE_DIR):
         print("".join(util.read_file(sequences)), end="")
 
 
-def env(xrdb_file=None):
+def env(xrdb_file=None, tty_reload=True):
     """Reload environment."""
     xrdb(xrdb_file)
     i3()
     sway()
     polybar()
     print("reload: Reloaded environment.")
-    tty()
+    tty(tty_reload)

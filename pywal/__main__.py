@@ -70,8 +70,8 @@ def get_args(args):
     arg.add_argument("-s", action="store_true",
                      help="Skip changing colors in terminals.")
 
-    arg.add_argument("-t", action="store_false",
-                     help="Deprecated: Does nothing and is no longer needed.")
+    arg.add_argument("-t", action="store_true",
+                     help="Skip changing colors in tty.")
 
     arg.add_argument("-v", action="store_true",
                      help="Print \"wal\" version.")
@@ -143,7 +143,7 @@ def process_args(args):
         export.every(colors_plain)
 
         if not args.e:
-            reload.env()
+            reload.env(tty_reload=not args.t)
 
     if args.o:
         util.disown([args.o])
