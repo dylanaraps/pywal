@@ -15,6 +15,7 @@ from . import export
 from . import image
 from . import reload
 from . import sequences
+from . import theme
 from . import wallpaper
 
 __all__ = [
@@ -25,5 +26,6 @@ __all__ = [
     "image",
     "reload",
     "sequences",
+    "theme",
     "wallpaper",
 ]

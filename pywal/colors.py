@@ -7,8 +7,9 @@ import shutil
 import subprocess
 import sys
 
-from .settings import CACHE_DIR, COLOR_COUNT, MODULE_DIR, \
-                      CONF_DIR, __cache_version__
+from . import theme
+
+from .settings import CACHE_DIR, COLOR_COUNT, __cache_version__
 from . import util
 
 
@@ -112,7 +113,7 @@ def get(img, cache_dir=CACHE_DIR,
                               % (cache_file, color_type, __cache_version__))
 
     if os.path.isfile(cache_file):
-        colors = file(cache_file)
+        colors = theme.file(cache_file)
         util.Color.alpha_num = colors["alpha"]
         print("colors: Found cached colorscheme.")
 
@@ -128,51 +129,6 @@ def get(img, cache_dir=CACHE_DIR,
     return colors
 
 
-def terminal_sexy_to_wal(data):
-    """Convert terminal.sexy json schema to wal."""
-    data["colors"] = {}
-    data["special"] = {
-        "foreground": data["foreground"],
-        "background": data["background"],
-        "cursor": data["color"][9]
-    }
-
-    for i, color in enumerate(data["color"]):
-        data["colors"]["color%s" % i] = color
-
-    return data
-
-
 def file(input_file):
-    """Import colorscheme from json file."""
-    theme_file = ".".join((input_file, "json"))
-    user_theme_dir = os.path.join(CONF_DIR, "colorschemes")
-    user_theme_file = os.path.join(user_theme_dir, theme_file)
-    theme_file = os.path.join(MODULE_DIR, "colorschemes", theme_file)
-
-    util.create_dir(user_theme_dir)
-
-    if os.path.isfile(user_theme_file):
-        input_file = user_theme_file
-
-    elif os.path.isfile(theme_file):
-        input_file = theme_file
-
-    if os.path.isfile(input_file):
-        data = util.read_file_json(input_file)
-
-        if "wallpaper" not in data:
-            data["wallpaper"] = "None"
-
-        if "alpha" not in data:
-            data["alpha"] = "100"
-
-        # Terminal.sexy format.
-        if "color" in data:
-            data = terminal_sexy_to_wal(data)
-
-        return data
-
-    else:
-        print("No colorscheme file found, exiting...")
-        sys.exit(1)
+    """Deprecated: symbolic link to --> theme.file"""
+    return theme.file(input_file)

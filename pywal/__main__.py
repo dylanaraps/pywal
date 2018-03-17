@@ -14,12 +14,13 @@ import os
 import shutil
 import sys
 
-from .settings import __version__, CACHE_DIR, MODULE_DIR, CONF_DIR
+from .settings import __version__, CACHE_DIR, CONF_DIR
 from . import colors
 from . import export
 from . import image
 from . import reload
 from . import sequences
+from . import theme
 from . import util
 from . import wallpaper
 
@@ -105,11 +106,7 @@ def process_args(args):
         sys.exit(0)
 
     if args.f == "list_themes":
-        themes = os.listdir(os.path.join(CONF_DIR, "colorschemes"))
-        themes += os.listdir(os.path.join(MODULE_DIR, "colorschemes"))
-        themes = [theme.replace(".json", "") for theme in themes]
-
-        print("Themes:", ", ".join(themes))
+        print("Themes:", ", ".join(theme.index()))
         sys.exit(0)
 
     if args.q:
@@ -133,7 +130,7 @@ def process_args(args):
         colors_plain = colors.get(image_file, light=args.l)
 
     if args.f:
-        colors_plain = colors.file(args.f)
+        colors_plain = theme.file(args.f)
 
     if args.a:
         util.Color.alpha_num = args.a
@@ -165,6 +162,9 @@ def process_args(args):
 
 def main():
     """Main script function."""
+    util.create_dir(os.path.join(CONF_DIR, "colorschemes"))
+    util.create_dir(os.path.join(CONF_DIR, "templates"))
+
     args = get_args(sys.argv[1:])
     process_args(args)
 
