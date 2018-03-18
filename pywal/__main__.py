@@ -106,9 +106,9 @@ def process_args(args):
         sys.exit(0)
 
     if args.f == "list_themes":
-        themes = theme.index()
-        themes = [theme.name.replace(".json", "") for theme in themes]
+        themes = [theme.name.replace(".json", "") for theme in theme.index()]
         print("Themes:", ", ".join(themes))
+        print("Extra: 'random (select a random theme)'")
         sys.exit(0)
 
     if args.q:
