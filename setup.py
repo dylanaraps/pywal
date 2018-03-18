@@ -17,6 +17,7 @@ setuptools.setup(
     author="Dylan Araps",
     author_email="dylan.araps@gmail.com",
     description="Generate and change colorschemes on the fly",
+    long_description_content_type="text/markdown",
     long_description=LONG_DESC,
     keywords="wal colorscheme terminal-emulators changing-colorschemes",
     license="MIT",
