@@ -11,11 +11,8 @@ from . import util
 
 def index():
     """List all installed theme files."""
-    themes = [theme for theme in
-              os.scandir(os.path.join(CONF_DIR, "colorschemes"))]
-    themes += [theme for theme in
-               os.scandir(os.path.join(MODULE_DIR, "colorschemes"))]
-    return themes
+    return [*os.scandir(os.path.join(CONF_DIR, "colorschemes")),
+            *os.scandir(os.path.join(MODULE_DIR, "colorschemes"))]
 
 
 def terminal_sexy_to_wal(data):
