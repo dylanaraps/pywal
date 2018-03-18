@@ -43,9 +43,6 @@ def file(input_file):
     elif os.path.isfile(user_theme_file):
         theme_file = user_theme_file
 
-    elif os.path.isfile(theme_file):
-        theme_file = theme_file
-
     elif input_file == "random":
         themes = [theme.path for theme in index()]
         random.shuffle(themes)
