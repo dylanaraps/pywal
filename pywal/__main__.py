@@ -164,9 +164,6 @@ def process_args(args):
 
 def main():
     """Main script function."""
-    util.create_dir(os.path.join(CONF_DIR, "colorschemes"))
-    util.create_dir(os.path.join(CONF_DIR, "templates"))
-
     args = get_args(sys.argv[1:])
     process_args(args)
 

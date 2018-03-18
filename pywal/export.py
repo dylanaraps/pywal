@@ -54,6 +54,8 @@ def every(colors, output_dir=CACHE_DIR):
     template_dir = os.path.join(MODULE_DIR, "templates")
     template_dir_user = os.path.join(CONF_DIR, "templates")
 
+    util.create_dir(template_dir_user)
+
     join = os.path.join  # Minor optimization.
 
     for file in os.scandir(template_dir):
