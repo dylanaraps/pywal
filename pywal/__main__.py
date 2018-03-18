@@ -106,7 +106,9 @@ def process_args(args):
         sys.exit(0)
 
     if args.f == "list_themes":
-        print("Themes:", ", ".join(theme.index()))
+        themes = theme.index()
+        themes = [theme.name.replace(".json", "") for theme in themes]
+        print("Themes:", ", ".join(themes))
         sys.exit(0)
 
     if args.q:

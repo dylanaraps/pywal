@@ -2,6 +2,7 @@
 Theme file handling.
 """
 import os
+import random
 import sys
 
 from .settings import CONF_DIR, MODULE_DIR
@@ -10,9 +11,11 @@ from . import util
 
 def index():
     """List all installed theme files."""
-    themes = os.listdir(os.path.join(CONF_DIR, "colorschemes"))
-    themes += os.listdir(os.path.join(MODULE_DIR, "colorschemes"))
-    return [theme.replace(".json", "") for theme in themes]
+    themes = [theme for theme in
+              os.scandir(os.path.join(CONF_DIR, "colorschemes"))]
+    themes += [theme for theme in
+               os.scandir(os.path.join(MODULE_DIR, "colorschemes"))]
+    return themes
 
 
 def terminal_sexy_to_wal(data):
@@ -45,6 +48,11 @@ def file(input_file):
 
     elif os.path.isfile(theme_file):
         theme_file = theme_file
+
+    elif input_file == "random":
+        themes = [theme.path for theme in index()]
+        random.shuffle(themes)
+        theme_file = themes[0]
 
     # Parse the theme file.
     if os.path.isfile(theme_file):
