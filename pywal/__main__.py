@@ -137,8 +137,7 @@ def process_args(args):
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])
 
-        if not args.s:
-            sequences.send(colors_plain)
+        sequences.send(colors_plain, to_send=not args.s)
 
         export.every(colors_plain)
 
