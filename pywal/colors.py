@@ -12,6 +12,7 @@ from .settings import CACHE_DIR, COLOR_COUNT, __cache_version__
 def get(backend_type="wal"):
     """Get backend function name from name."""
     return {
+        "colorthief": backends.colorthief.get,
         "wal": backends.wal.get,
     }.get(backend_type, backend_type)
 

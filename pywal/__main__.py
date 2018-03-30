@@ -36,6 +36,10 @@ def get_args(args):
     arg.add_argument("-b", metavar="background",
                      help="Custom background color to use.")
 
+    arg.add_argument("--backend", metavar="backend",
+                     help="Which color backend to use.",
+                     const="wal", type=str, nargs="?", default="wal")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -120,7 +124,8 @@ def process_args(args):
 
     if args.i:
         image_file = image.get(args.i)
-        colors_plain = colors.generate(image_file, light=args.l)
+        colors_plain = colors.generate(img=image_file, light=args.l,
+                                       backend=args.backend)
 
     if args.f:
         colors_plain = colors.file(args.f)
