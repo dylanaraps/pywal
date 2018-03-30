@@ -6,29 +6,26 @@ import sys
 from colorthief import ColorThief
 
 from .. import util
-from ..settings import COLOR_COUNT
 
 
-def gen_colors(img, color_count):
+def gen_colors(img):
     """Loop until 16 colors are generated."""
-    color_thief = ColorThief(img)
-    color_cmd = color_thief.get_palette
+    color_cmd = ColorThief(img).get_palette
 
     for i in range(0, 20, 1):
-        raw_colors = color_cmd(color_count=color_count + i)
+        raw_colors = color_cmd(color_count=16 + i)
 
         if len(raw_colors) > 16:
             break
 
         elif i == 19:
-            print("colors: ColorThief couldn't generate a suitable scheme",
+            print("colors: ColorThief couldn't generate a suitable palette",
                   "for the image. Exiting...")
             sys.exit(1)
 
         else:
-            print("colors: ColorThief couldn't generate a %s color palette, "
-                  "trying a larger palette size %s."
-                  % (color_count, color_count + i))
+            print("colors: ColorThief couldn't create a suitable palette, "
+                  "trying a larger palette size", 16 + i)
 
     return [util.rgb_to_hex(color) for color in raw_colors]
 
@@ -62,7 +59,7 @@ def adjust(img, colors, light):
     return colors
 
 
-def get(img, color_count=COLOR_COUNT, light=False):
+def get(img, light=False):
     """Get colorscheme."""
-    colors = gen_colors(img, color_count)
+    colors = gen_colors(img)
     return adjust(img, colors, light)

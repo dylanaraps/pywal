@@ -38,7 +38,7 @@ def get_args(args):
 
     arg.add_argument("--backend", metavar="backend",
                      help="Which color backend to use.",
-                     const="wal", type=str, nargs="?", default="wal")
+                     const="list_backends", type=str, nargs="?", default="wal")
 
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
@@ -104,6 +104,10 @@ def process_args(args):
 
     if args.r:
         reload.colors()
+        sys.exit(0)
+
+    if args.backend == "list_backends":
+        print("Available backends:", colors.list_backends())
         sys.exit(0)
 
     if args.q:

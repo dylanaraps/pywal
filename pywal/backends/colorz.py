@@ -4,14 +4,12 @@ Generate a colorscheme using Colorz.
 import subprocess
 
 from .. import util
-from ..settings import COLOR_COUNT
 
 
-def gen_colors(img, color_count):
+def gen_colors(img):
     """Generate a colorscheme using Colorz."""
-    flags = ["-n", "6", "--bold", "0", "--no-preview"]
-
-    return subprocess.check_output(["colorz", *flags, img]).splitlines()
+    colorz = ["colorz", "-n", "6", "--bold", "0", "--no-preview"]
+    return subprocess.check_output([*colorz, img]).splitlines()
 
 
 def adjust(img, colors, light):
@@ -42,8 +40,8 @@ def adjust(img, colors, light):
     return colors
 
 
-def get(img, color_count=COLOR_COUNT, light=False):
+def get(img, light=False):
     """Get colorscheme."""
-    colors = gen_colors(img, color_count)
+    colors = gen_colors(img)
     colors = [color.decode('UTF-8').split()[0] for color in colors]
     return adjust(img, colors, light)

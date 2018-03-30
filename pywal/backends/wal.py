@@ -7,7 +7,6 @@ import subprocess
 import sys
 
 from .. import util
-from ..settings import COLOR_COUNT
 
 
 def imagemagick(color_count, img, magick_command):
@@ -32,26 +31,25 @@ def has_im():
     sys.exit(1)
 
 
-def gen_colors(img, color_count):
+def gen_colors(img):
     """Format the output from imagemagick into a list
        of hex colors."""
     magick_command = has_im()
 
     for i in range(0, 20, 1):
-        raw_colors = imagemagick(color_count + i, img, magick_command)
+        raw_colors = imagemagick(16 + i, img, magick_command)
 
         if len(raw_colors) > 16:
             break
 
         elif i == 19:
-            print("colors: Imagemagick couldn't generate a suitable scheme",
+            print("colors: Imagemagick couldn't generate a suitable palette",
                   "for the image. Exiting...")
             sys.exit(1)
 
         else:
-            print("colors: Imagemagick couldn't generate a %s color palette, "
-                  "trying a larger palette size %s."
-                  % (color_count, color_count + i))
+            print("colors: Imagemagick couldn't generate a suitable palette, "
+                  "trying a larger palette size", 16 + i)
 
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
@@ -103,7 +101,7 @@ def adjust(img, colors, light):
     return colors
 
 
-def get(img, color_count=COLOR_COUNT, light=False):
+def get(img, light=False):
     """Get colorscheme."""
-    colors = gen_colors(img, color_count)
+    colors = gen_colors(img)
     return adjust(img, colors, light)

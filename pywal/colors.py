@@ -6,7 +6,7 @@ import os
 
 from . import backends
 from . import util
-from .settings import CACHE_DIR, COLOR_COUNT, __cache_version__
+from .settings import CACHE_DIR, __cache_version__
 
 
 def get(backend_type="wal"):
@@ -15,14 +15,18 @@ def get(backend_type="wal"):
         "colorthief": backends.colorthief.get,
         "colorz": backends.colorz.get,
         "wal": backends.wal.get,
-    }.get(backend_type, backend_type)
+    }.get(backend_type, backends.wal.get)
 
 
-def generate(img, cache_dir=CACHE_DIR,
-             color_count=COLOR_COUNT, light=False,
-             backend="wal"):
+def list_backends():
+    """List color backends."""
+    # TODO: Dynamically generate this.
+    return "colorthief, colorz, wal"
+
+
+def generate(img, cache_dir=CACHE_DIR, light=False, backend="wal"):
     """Generate a palette."""
-    # home_dylan_img_jpg_1.2.2.json
+    # home_dylan_img_jpg_backend_1.2.2.json
     color_type = "light" if light else "dark"
     cache_file = re.sub("[/|\\|.]", "_", img)
     cache_file = os.path.join(cache_dir, "schemes", "%s_%s_%s_%s.json"
@@ -37,8 +41,7 @@ def generate(img, cache_dir=CACHE_DIR,
     else:
         print("wal: Generating a colorscheme...")
 
-        backend = get(backend)
-        colors = backend(img, color_count, light)
+        colors = get(backend)(img, light)
 
         util.save_file_json(colors, cache_file)
         print("wal: Generation complete.")
