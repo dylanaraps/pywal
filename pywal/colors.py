@@ -13,6 +13,7 @@ def get(backend_type="wal"):
     """Get backend function name from name."""
     return {
         "colorthief": backends.colorthief.get,
+        "colorz": backends.colorz.get,
         "wal": backends.wal.get,
     }.get(backend_type, backend_type)
 

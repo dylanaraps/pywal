@@ -57,7 +57,7 @@ def gen_colors(img, color_count):
 
 
 def adjust(img, colors, light):
-    """Sort the generated colors and store them in a dict that
+    """Adjust the generated colors and store them in a dict that
        we will later save in json format."""
     raw_colors = colors[:1] + colors[8:16] + colors[8:-1]
 
@@ -78,8 +78,11 @@ def adjust(img, colors, light):
         raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
         raw_colors[15] = util.blend_color(raw_colors[15], "#EEEEEE")
 
-    colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
-              "special": {}, "colors": {}}
+    colors = {"wallpaper": img,
+              "alpha": util.Color.alpha_num,
+              "special": {},
+              "colors": {}}
+
     colors["special"]["background"] = raw_colors[0]
     colors["special"]["foreground"] = raw_colors[15]
     colors["special"]["cursor"] = raw_colors[15]
