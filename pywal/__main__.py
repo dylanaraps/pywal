@@ -128,8 +128,7 @@ def process_args(args):
 
     if args.i:
         image_file = image.get(args.i)
-        colors_plain = colors.generate(img=image_file, light=args.l,
-                                       backend=args.backend)
+        colors_plain = colors.gen(image_file, args.l, args.backend)
 
     if args.f:
         colors_plain = colors.file(args.f)

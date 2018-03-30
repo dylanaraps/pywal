@@ -24,7 +24,7 @@ def list_backends():
     return "colorthief, colorz, wal"
 
 
-def generate(img, cache_dir=CACHE_DIR, light=False, backend="wal"):
+def gen(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     """Generate a palette."""
     # home_dylan_img_jpg_backend_1.2.2.json
     color_type = "light" if light else "dark"
