@@ -9,7 +9,7 @@ from .. import util
 from ..settings import COLOR_COUNT
 
 
-def create_palette(img, colors):
+def adjust(img, colors):
     """Create palette."""
     raw_colors = colors[:1] + colors[8:16] + colors[8:-1]
 
@@ -61,4 +61,4 @@ def gen_colors(img, color_count):
 def get(img, color_count=COLOR_COUNT, light=False):
     """Get colorscheme."""
     colors = gen_colors(img, color_count)
-    return create_palette(img, colors)
+    return adjust(img, colors)

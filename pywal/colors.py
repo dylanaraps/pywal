@@ -24,8 +24,9 @@ def generate(img, cache_dir=CACHE_DIR,
     # home_dylan_img_jpg_1.2.2.json
     color_type = "light" if light else "dark"
     cache_file = re.sub("[/|\\|.]", "_", img)
-    cache_file = os.path.join(cache_dir, "schemes", "%s_%s_%s.json"
-                              % (cache_file, color_type, __cache_version__))
+    cache_file = os.path.join(cache_dir, "schemes", "%s_%s_%s_%s.json"
+                              % (cache_file, color_type,
+                                 backend, __cache_version__))
 
     if os.path.isfile(cache_file):
         colors = file(cache_file)

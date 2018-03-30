@@ -56,7 +56,7 @@ def gen_colors(img, color_count):
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
 
-def create_palette(img, colors, light):
+def adjust(img, colors, light):
     """Sort the generated colors and store them in a dict that
        we will later save in json format."""
     raw_colors = colors[:1] + colors[8:16] + colors[8:-1]
@@ -103,4 +103,4 @@ def create_palette(img, colors, light):
 def get(img, color_count=COLOR_COUNT, light=False):
     """Get colorscheme."""
     colors = gen_colors(img, color_count)
-    return create_palette(img, colors, light)
+    return adjust(img, colors, light)
