@@ -9,7 +9,7 @@ from .settings import CONF_DIR, MODULE_DIR
 from . import util
 
 
-def index():
+def list_themes():
     """List all installed theme files."""
     return [*os.scandir(os.path.join(CONF_DIR, "colorschemes")),
             *os.scandir(os.path.join(MODULE_DIR, "colorschemes"))]
@@ -46,7 +46,7 @@ def file(input_file):
         theme_file = user_theme_file
 
     elif input_file == "random":
-        themes = [theme.path for theme in index()]
+        themes = [theme.path for theme in list_themes()]
         random.shuffle(themes)
         theme_file = themes[0]
 
