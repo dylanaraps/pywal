@@ -18,5 +18,4 @@ install:
 script:
     - flake8 pywal tests setup.py
     - pylint pywal tests setup.py
-    - pyroma .
     - python setup.py test
