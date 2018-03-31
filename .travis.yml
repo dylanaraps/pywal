@@ -7,13 +7,12 @@ matrix:
         - os: linux
           python: 3.6
 
-
 before_install:
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y imagemagick; fi
 
 install:
-    - pip install flake8 pylint colorthief
+    - pip install flake8 pylint
 
 script:
     - flake8 pywal tests setup.py
