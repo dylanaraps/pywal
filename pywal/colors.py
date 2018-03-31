@@ -5,14 +5,15 @@ import os
 import re
 import sys
 
-from . import backends
 from . import util
-from .settings import CACHE_DIR, __cache_version__
+from .settings import CACHE_DIR, MODULE_DIR, __cache_version__
 
 
 def list_backends():
     """List color backends."""
-    return [backend for backend in dir(backends) if "__" not in backend]
+    return [b.name.replace(".py", "") for b in
+            os.scandir(os.path.join(MODULE_DIR, "backends"))
+            if "__" not in b.name]
 
 
 def colors_to_dict(colors, img):
@@ -92,7 +93,13 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     else:
         print("wal: Generating a colorscheme...")
 
-        # Dynamic shiz.
+        # Dynamically import the backend we want to use.
+        # This keeps the dependencies "optional".
+        try:
+            __import__("pywal.backends.%s" % backend)
+        except ImportError:
+            backend = "wal"
+
         backend = sys.modules["pywal.backends.%s" % backend]
         colors = colors_to_dict(getattr(backend, "get")(img, light), img)
 
