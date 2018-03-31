@@ -14,18 +14,26 @@ def gen_colors(img):
 
 def adjust(colors, light):
     """Create palette."""
-    if light:
-        print("colors: Colorz backend doesn't support light themes.")
-
     # Create list with placeholder values.
     raw_colors = ["#000000", *colors, "#FFFFFF",
                   "#333333", *colors, "#FFFFFF"]
 
     # Update placeholder values.
-    raw_colors[0] = util.darken_color(colors[0], 0.75)
-    raw_colors[8] = util.darken_color(colors[0], 0.25)
-    raw_colors[7] = util.lighten_color(colors[0], 0.75)
-    raw_colors[15] = raw_colors[7]
+    if light:
+        for color in raw_colors:
+            color = util.saturate_color(color, 0.50)
+            color = util.darken_color(color, 0.4)
+
+        raw_colors[0] = util.lighten_color(colors[0], 0.9)
+        raw_colors[7] = util.darken_color(colors[0], 0.75)
+        raw_colors[8] = util.darken_color(colors[0], 0.25)
+        raw_colors[15] = raw_colors[7]
+
+    else:
+        raw_colors[0] = util.darken_color(colors[0], 0.75)
+        raw_colors[7] = util.lighten_color(colors[0], 0.75)
+        raw_colors[8] = util.darken_color(colors[0], 0.25)
+        raw_colors[15] = raw_colors[7]
 
     return raw_colors
 

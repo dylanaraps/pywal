@@ -144,6 +144,11 @@ def saturate_color(color, amount):
     return rgb_to_hex((int(r), int(g), int(b)))
 
 
+def rgb_to_yiq(color):
+    """Sort a list of colors."""
+    return colorsys.rgb_to_yiq(*hex_to_rgb(color))
+
+
 def disown(cmd):
     """Call a system command in the background,
        disown it and hide it's output."""

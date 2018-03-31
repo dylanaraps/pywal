@@ -12,10 +12,10 @@ def gen_colors(img):
     """Loop until 16 colors are generated."""
     color_cmd = ColorThief(img).get_palette
 
-    for i in range(0, 20, 1):
-        raw_colors = color_cmd(color_count=16 + i)
+    for i in range(0, 10, 1):
+        raw_colors = color_cmd(color_count=8 + i)
 
-        if len(raw_colors) > 16:
+        if len(raw_colors) >= 8:
             break
 
         elif i == 19:
@@ -25,24 +25,28 @@ def gen_colors(img):
 
         else:
             print("colors: ColorThief couldn't create a suitable palette, "
-                  "trying a larger palette size", 16 + i)
+                  "trying a larger palette size", 8 + i)
 
     return [util.rgb_to_hex(color) for color in raw_colors]
 
 
 def adjust(colors, light):
     """Create palette."""
+    colors.sort(key=util.rgb_to_yiq)
+    raw_colors = [*colors, *colors]
+
     if light:
-        print("colors: Colortheif backend doesn't support light themes.")
+        raw_colors[0] = util.lighten_color(colors[0], 0.90)
+        raw_colors[7] = util.darken_color(colors[0], 0.75)
 
-    raw_colors = colors[:1] + colors[8:16] + colors[8:-1]
+    else:
+        for color in raw_colors:
+            color = util.lighten_color(color, 0.40)
 
-    for color in raw_colors:
-        color = util.lighten_color(color, 0.25)
+        raw_colors[0] = util.darken_color(colors[0], 0.80)
+        raw_colors[7] = util.lighten_color(colors[0], 0.60)
 
-    raw_colors[0] = util.darken_color(colors[0], 0.80)
-    raw_colors[7] = util.lighten_color(colors[15], 0.60)
-    raw_colors[8] = util.blend_color(colors[0], colors[15])
+    raw_colors[8] = util.lighten_color(colors[0], 0.20)
     raw_colors[15] = raw_colors[7]
 
     return raw_colors
