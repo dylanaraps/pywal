@@ -7,7 +7,7 @@ try:
     from colorthief import ColorThief
 
 except ImportError:
-    print("Error: ColorThief wasn't found on your system.",
+    print("error: ColorThief wasn't found on your system.",
           "Try another backend. (wal --backend)")
     sys.exit(1)
 
