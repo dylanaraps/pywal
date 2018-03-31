@@ -3,6 +3,7 @@ Generate a palette using various backends.
 """
 import os
 import re
+import shutil
 import sys
 
 from . import backends

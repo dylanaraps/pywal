@@ -1,7 +1,9 @@
 """
 Generate a colorscheme using Colorz.
 """
+import shutil
 import subprocess
+import sys
 
 from .. import util
 
@@ -40,6 +42,11 @@ def adjust(colors, light):
 
 def get(img, light=False):
     """Get colorscheme."""
+    if not shutil.which("colorz"):
+        print("Error: Colorz wasn't found on your system.",
+              "Try another backend. (wal --backend)")
+        sys.exit(1)
+
     colors = gen_colors(img)
     colors = [color.decode('UTF-8').split()[0] for color in colors]
     return adjust(colors, light)

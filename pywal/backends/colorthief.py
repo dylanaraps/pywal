@@ -3,7 +3,13 @@ Generate a colorscheme using ColorThief.
 """
 import sys
 
-from colorthief import ColorThief
+try:
+    from colorthief import ColorThief
+
+except ImportError:
+    print("Error: ColorThief wasn't found on your system.",
+          "Try another backend. (wal --backend)")
+    sys.exit(1)
 
 from .. import util
 

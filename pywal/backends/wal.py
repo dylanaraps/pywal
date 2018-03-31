@@ -26,8 +26,8 @@ def has_im():
     elif shutil.which("convert"):
         return ["convert"]
 
-    print("error: imagemagick not found, exiting...\n"
-          "error: wal requires imagemagick to function.")
+    print("Error: ImageMagick wasn't found on your system.",
+          "Try another backend. (wal --backend)")
     sys.exit(1)
 
 
