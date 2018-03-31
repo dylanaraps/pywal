@@ -1,27 +1,18 @@
 """
 Generate a palette using various backends.
 """
-import re
 import os
+import re
+import sys
 
 from . import backends
 from . import util
 from .settings import CACHE_DIR, __cache_version__
 
 
-def get(backend_type="wal"):
-    """Get backend function name from name."""
-    return {
-        "colorthief": backends.colorthief.get,
-        "colorz": backends.colorz.get,
-        "wal": backends.wal.get,
-    }.get(backend_type, backends.wal.get)
-
-
 def list_backends():
     """List color backends."""
-    # TODO: Dynamically generate this.
-    return "colorthief, colorz, wal"
+    return [backend for backend in dir(backends) if "__" not in backend]
 
 
 def colors_to_dict(colors, img):
@@ -58,8 +49,9 @@ def gen(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     else:
         print("wal: Generating a colorscheme...")
 
-        colors = get(backend)(img, light)
-        colors = colors_to_dict(colors, img)
+        # Dynamic shiz.
+        backend = sys.modules["pywal.backends.%s" % backend]
+        colors = colors_to_dict(getattr(backend, "get")(img, light), img)
 
         util.save_file_json(colors, cache_file)
         print("wal: Generation complete.")
