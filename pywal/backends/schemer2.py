@@ -17,7 +17,6 @@ def gen_colors(img):
 
 def adjust(cols, light):
     """Create palette."""
-    # Create list with placeholder values.
     cols.sort(key=util.rgb_to_yiq)
     raw_colors = [*cols[8:], *cols[8:]]
 

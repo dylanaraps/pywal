@@ -17,8 +17,8 @@ def gen_colors(img):
 
 def adjust(cols, light):
     """Create palette."""
-    # Create list with placeholder values.
     bg = util.blend_color("#555555", cols[1])
+
     raw_colors = [bg, *cols, "#FFFFFF",
                   "#333333", *cols, "#FFFFFF"]
 
