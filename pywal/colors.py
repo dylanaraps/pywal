@@ -53,7 +53,7 @@ def generic_adjust(colors, light):
     return colors
 
 
-def gen(img, light=False, backend="wal", cache_dir=CACHE_DIR):
+def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     """Generate a palette."""
     # home_dylan_img_jpg_backend_1.2.2.json
     color_type = "light" if light else "dark"
