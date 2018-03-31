@@ -54,54 +54,34 @@ def gen_colors(img):
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
 
-def adjust(img, colors, light):
+def adjust(colors, light):
     """Adjust the generated colors and store them in a dict that
        we will later save in json format."""
     raw_colors = colors[:1] + colors[8:16] + colors[8:-1]
 
+    # Manually adjust colors.
     if light:
-        # Manually adjust colors.
-        raw_colors[7] = raw_colors[0]
-        raw_colors[0] = util.lighten_color(raw_colors[15], 0.85)
-        raw_colors[15] = raw_colors[7]
-        raw_colors[8] = util.lighten_color(raw_colors[7], 0.25)
+        for color in raw_colors:
+            color = util.saturate_color(color, 0.5)
+
+        raw_colors[0] = util.lighten_color(colors[-1], 0.85)
+        raw_colors[7] = colors[0]
+        raw_colors[8] = util.darken_color(colors[-1], 0.4)
+        raw_colors[15] = colors[0]
 
     else:
         # Darken the background color slightly.
         if raw_colors[0][1] != "0":
             raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
 
-        # Manually adjust colors.
         raw_colors[7] = util.blend_color(raw_colors[7], "#EEEEEE")
         raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
         raw_colors[15] = util.blend_color(raw_colors[15], "#EEEEEE")
 
-    colors = {"wallpaper": img,
-              "alpha": util.Color.alpha_num,
-              "special": {},
-              "colors": {}}
-
-    colors["special"]["background"] = raw_colors[0]
-    colors["special"]["foreground"] = raw_colors[15]
-    colors["special"]["cursor"] = raw_colors[15]
-
-    if light:
-        for i, color in enumerate(raw_colors):
-            colors["colors"]["color%s" % i] = util.saturate_color(color, 0.5)
-
-        colors["colors"]["color0"] = raw_colors[0]
-        colors["colors"]["color7"] = raw_colors[15]
-        colors["colors"]["color8"] = util.darken_color(raw_colors[0], 0.5)
-        colors["colors"]["color15"] = raw_colors[15]
-
-    else:
-        for i, color in enumerate(raw_colors):
-            colors["colors"]["color%s" % i] = color
-
-    return colors
+    return raw_colors
 
 
 def get(img, light=False):
     """Get colorscheme."""
     colors = gen_colors(img)
-    return adjust(img, colors, light)
+    return adjust(colors, light)

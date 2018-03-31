@@ -24,6 +24,23 @@ def list_backends():
     return "colorthief, colorz, wal"
 
 
+def colors_to_dict(colors, img):
+    """Convert list of colors to pywal format."""
+    scheme = {"wallpaper": img,
+              "alpha": util.Color.alpha_num,
+              "special": {},
+              "colors": {}}
+
+    for i, color in enumerate(colors):
+        scheme["colors"]["color%s" % i] = color
+
+    scheme["special"]["background"] = colors[0]
+    scheme["special"]["foreground"] = colors[15]
+    scheme["special"]["cursor"] = colors[1]
+
+    return scheme
+
+
 def gen(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     """Generate a palette."""
     # home_dylan_img_jpg_backend_1.2.2.json
@@ -42,6 +59,7 @@ def gen(img, light=False, backend="wal", cache_dir=CACHE_DIR):
         print("wal: Generating a colorscheme...")
 
         colors = get(backend)(img, light)
+        colors = colors_to_dict(colors, img)
 
         util.save_file_json(colors, cache_file)
         print("wal: Generation complete.")
