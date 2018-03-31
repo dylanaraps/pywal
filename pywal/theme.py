@@ -30,6 +30,23 @@ def terminal_sexy_to_wal(data):
     return data
 
 
+def parse_theme(theme_file):
+    """Parse the theme file."""
+    data = util.read_file_json(theme_file)
+
+    if "wallpaper" not in data:
+        data["wallpaper"] = "None"
+
+    if "alpha" not in data:
+        data["alpha"] = "100"
+
+    # Terminal.sexy format.
+    if "color" in data:
+        data = terminal_sexy_to_wal(data)
+
+    return data
+
+
 def file(input_file):
     """Import colorscheme from json file."""
     theme_name = ".".join((input_file, "json"))
@@ -52,19 +69,7 @@ def file(input_file):
 
     # Parse the theme file.
     if os.path.isfile(theme_file):
-        data = util.read_file_json(theme_file)
-
-        if "wallpaper" not in data:
-            data["wallpaper"] = "None"
-
-        if "alpha" not in data:
-            data["alpha"] = "100"
-
-        # Terminal.sexy format.
-        if "color" in data:
-            data = terminal_sexy_to_wal(data)
-
-        return data
+        return parse_theme(theme_file)
 
     else:
         print("No colorscheme file found, exiting...")
