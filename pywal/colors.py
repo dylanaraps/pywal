@@ -17,19 +17,35 @@ def list_backends():
 
 def colors_to_dict(colors, img):
     """Convert list of colors to pywal format."""
-    scheme = {"wallpaper": img,
-              "alpha": util.Color.alpha_num,
-              "special": {},
-              "colors": {}}
+    return {
+        "wallpaper": img,
+        "alpha": util.Color.alpha_num,
 
-    for i, color in enumerate(colors):
-        scheme["colors"]["color%s" % i] = color
+        "special": {
+            "background": colors[0],
+            "foreground": colors[15],
+            "cursor": colors[1]
+        },
 
-    scheme["special"]["background"] = colors[0]
-    scheme["special"]["foreground"] = colors[15]
-    scheme["special"]["cursor"] = colors[1]
-
-    return scheme
+        "colors": {
+            "color0": colors[0],
+            "color1": colors[1],
+            "color2": colors[2],
+            "color3": colors[3],
+            "color4": colors[4],
+            "color5": colors[5],
+            "color6": colors[6],
+            "color7": colors[7],
+            "color8": colors[8],
+            "color9": colors[9],
+            "color10": colors[10],
+            "color11": colors[11],
+            "color12": colors[12],
+            "color13": colors[13],
+            "color14": colors[14],
+            "color15": colors[15]
+        }
+    }
 
 
 def generic_adjust(colors, light):
@@ -53,14 +69,20 @@ def generic_adjust(colors, light):
     return colors
 
 
+def cache_fname(img, backend, light, cache_dir):
+    """Create the cache file name."""
+    color_type = "light" if light else "dark"
+    file_name = re.sub("[/|\\|.]", "_", img)
+
+    file_parts = [file_name, color_type, backend, __cache_version__]
+    return [cache_dir, "schemes", "%s_%s_%s_%s.json" % (*file_parts,)]
+
+
 def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     """Generate a palette."""
     # home_dylan_img_jpg_backend_1.2.2.json
-    color_type = "light" if light else "dark"
-    cache_file = re.sub("[/|\\|.]", "_", img)
-    cache_file = os.path.join(cache_dir, "schemes", "%s_%s_%s_%s.json"
-                              % (cache_file, color_type,
-                                 backend, __cache_version__))
+    cache_name = cache_fname(img, backend, light, cache_dir)
+    cache_file = os.path.join(*cache_name)
 
     if os.path.isfile(cache_file):
         colors = file(cache_file)
