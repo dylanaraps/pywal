@@ -1,4 +1,5 @@
 include pywal/templates/*
+include pywal/backends/*
 include pywal/scripts/*
 include tests/*
 include tests/test_files/*
