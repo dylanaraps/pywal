@@ -1,116 +1,90 @@
 """
-Generate a colorscheme using imagemagick.
+Generate a palette using various backends.
 """
 import os
 import re
-import shutil
-import subprocess
 import sys
 
 from . import theme
-
-from .settings import CACHE_DIR, COLOR_COUNT, __cache_version__
 from . import util
+from .settings import CACHE_DIR, MODULE_DIR, __cache_version__
 
 
-def imagemagick(color_count, img, magick_command):
-    """Call Imagemagick to generate a scheme."""
-    flags = ["-resize", "25%", "-colors", str(color_count),
-             "-unique-colors", "txt:-"]
-    img += "[0]"
-
-    return subprocess.check_output([*magick_command, img, *flags]).splitlines()
+def list_backends():
+    """List color backends."""
+    return [b.name.replace(".py", "") for b in
+            os.scandir(os.path.join(MODULE_DIR, "backends"))
+            if "__" not in b.name]
 
 
-def has_im():
-    """Check to see if the user has im installed."""
-    if shutil.which("magick"):
-        return ["magick", "convert"]
+def colors_to_dict(colors, img):
+    """Convert list of colors to pywal format."""
+    return {
+        "wallpaper": img,
+        "alpha": util.Color.alpha_num,
 
-    elif shutil.which("convert"):
-        return ["convert"]
+        "special": {
+            "background": colors[0],
+            "foreground": colors[15],
+            "cursor": colors[1]
+        },
 
-    print("error: imagemagick not found, exiting...\n"
-          "error: wal requires imagemagick to function.")
-    sys.exit(1)
-
-
-def gen_colors(img, color_count):
-    """Format the output from imagemagick into a list
-       of hex colors."""
-    magick_command = has_im()
-
-    for i in range(0, 20, 1):
-        raw_colors = imagemagick(color_count + i, img, magick_command)
-
-        if len(raw_colors) > 16:
-            break
-
-        elif i == 19:
-            print("colors: Imagemagick couldn't generate a suitable scheme",
-                  "for the image. Exiting...")
-            sys.exit(1)
-
-        else:
-            print("colors: Imagemagick couldn't generate a %s color palette, "
-                  "trying a larger palette size %s."
-                  % (color_count, color_count + i))
-
-    return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
+        "colors": {
+            "color0": colors[0],
+            "color1": colors[1],
+            "color2": colors[2],
+            "color3": colors[3],
+            "color4": colors[4],
+            "color5": colors[5],
+            "color6": colors[6],
+            "color7": colors[7],
+            "color8": colors[8],
+            "color9": colors[9],
+            "color10": colors[10],
+            "color11": colors[11],
+            "color12": colors[12],
+            "color13": colors[13],
+            "color14": colors[14],
+            "color15": colors[15]
+        }
+    }
 
 
-def create_palette(img, colors, light):
-    """Sort the generated colors and store them in a dict that
-       we will later save in json format."""
-    raw_colors = colors[:1] + colors[8:16] + colors[8:-1]
-
+def generic_adjust(colors, light):
+    """Generic color adjustment for themers."""
     if light:
-        # Manually adjust colors.
-        raw_colors[7] = raw_colors[0]
-        raw_colors[0] = util.lighten_color(raw_colors[15], 0.85)
-        raw_colors[15] = raw_colors[7]
-        raw_colors[8] = util.lighten_color(raw_colors[7], 0.25)
+        for color in colors:
+            color = util.saturate_color(color, 0.50)
+            color = util.darken_color(color, 0.4)
+
+        colors[0] = util.lighten_color(colors[0], 0.9)
+        colors[7] = util.darken_color(colors[0], 0.75)
+        colors[8] = util.darken_color(colors[0], 0.25)
+        colors[15] = colors[7]
 
     else:
-        # Darken the background color slightly.
-        if raw_colors[0][1] != "0":
-            raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
-
-        # Manually adjust colors.
-        raw_colors[7] = util.blend_color(raw_colors[7], "#EEEEEE")
-        raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
-        raw_colors[15] = util.blend_color(raw_colors[15], "#EEEEEE")
-
-    colors = {"wallpaper": img, "alpha": util.Color.alpha_num,
-              "special": {}, "colors": {}}
-    colors["special"]["background"] = raw_colors[0]
-    colors["special"]["foreground"] = raw_colors[15]
-    colors["special"]["cursor"] = raw_colors[15]
-
-    if light:
-        for i, color in enumerate(raw_colors):
-            colors["colors"]["color%s" % i] = util.saturate_color(color, 0.5)
-
-        colors["colors"]["color0"] = raw_colors[0]
-        colors["colors"]["color7"] = raw_colors[15]
-        colors["colors"]["color8"] = util.darken_color(raw_colors[0], 0.5)
-        colors["colors"]["color15"] = raw_colors[15]
-
-    else:
-        for i, color in enumerate(raw_colors):
-            colors["colors"]["color%s" % i] = color
+        colors[0] = util.darken_color(colors[0], 0.75)
+        colors[7] = util.lighten_color(colors[0], 0.75)
+        colors[8] = util.lighten_color(colors[0], 0.25)
+        colors[15] = colors[7]
 
     return colors
 
 
-def get(img, cache_dir=CACHE_DIR,
-        color_count=COLOR_COUNT, light=False):
-    """Get the colorscheme."""
-    # home_dylan_img_jpg_1.2.2.json
+def cache_fname(img, backend, light, cache_dir):
+    """Create the cache file name."""
     color_type = "light" if light else "dark"
-    cache_file = re.sub("[/|\\|.]", "_", img)
-    cache_file = os.path.join(cache_dir, "schemes", "%s_%s_%s.json"
-                              % (cache_file, color_type, __cache_version__))
+    file_name = re.sub("[/|\\|.]", "_", img)
+
+    file_parts = [file_name, color_type, backend, __cache_version__]
+    return [cache_dir, "schemes", "%s_%s_%s_%s.json" % (*file_parts,)]
+
+
+def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
+    """Generate a palette."""
+    # home_dylan_img_jpg_backend_1.2.2.json
+    cache_name = cache_fname(img, backend, light, cache_dir)
+    cache_file = os.path.join(*cache_name)
 
     if os.path.isfile(cache_file):
         colors = theme.file(cache_file)
@@ -120,8 +94,15 @@ def get(img, cache_dir=CACHE_DIR,
     else:
         print("wal: Generating a colorscheme...")
 
-        colors = gen_colors(img, color_count)
-        colors = create_palette(img, colors, light)
+        # Dynamically import the backend we want to use.
+        # This keeps the dependencies "optional".
+        try:
+            __import__("pywal.backends.%s" % backend)
+        except ImportError:
+            backend = "wal"
+
+        backend = sys.modules["pywal.backends.%s" % backend]
+        colors = colors_to_dict(getattr(backend, "get")(img, light), img)
 
         util.save_file_json(colors, cache_file)
         print("wal: Generation complete.")

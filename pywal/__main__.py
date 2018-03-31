@@ -37,6 +37,10 @@ def get_args(args):
     arg.add_argument("-b", metavar="background",
                      help="Custom background color to use.")
 
+    arg.add_argument("--backend", metavar="backend",
+                     help="Which color backend to use.",
+                     const="list_backends", type=str, nargs="?", default="wal")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -73,8 +77,8 @@ def get_args(args):
     arg.add_argument("-s", action="store_true",
                      help="Skip changing colors in terminals.")
 
-    arg.add_argument("-t", action="store_false",
-                     help="Deprecated: Does nothing and is no longer needed.")
+    arg.add_argument("-t", action="store_true",
+                     help="Skip changing colors in tty.")
 
     arg.add_argument("-v", action="store_true",
                      help="Print \"wal\" version.")
@@ -111,6 +115,10 @@ def process_args(args):
         print("Extra: 'random (select a random theme)'")
         sys.exit(0)
 
+    if args.backend == "list_backends":
+        print("Available backends:", colors.list_backends())
+        sys.exit(0)
+
     if args.q:
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
@@ -129,7 +137,7 @@ def process_args(args):
 
     if args.i:
         image_file = image.get(args.i)
-        colors_plain = colors.get(image_file, light=args.l)
+        colors_plain = colors.get(image_file, args.l, args.backend)
 
     if args.f:
         colors_plain = theme.file(args.f)
@@ -146,13 +154,12 @@ def process_args(args):
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])
 
-        if not args.s:
-            sequences.send(colors_plain)
+        sequences.send(colors_plain, to_send=not args.s)
 
         export.every(colors_plain)
 
         if not args.e:
-            reload.env()
+            reload.env(tty_reload=not args.t)
 
     if args.o:
         util.disown([args.o])

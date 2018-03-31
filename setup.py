@@ -7,13 +7,7 @@ except ImportError:
     print("error: pywal requires Python 3.5 or greater.")
     quit(1)
 
-try:
-    import pypandoc
-    LONG_DESC = pypandoc.convert("README.md", "rst")
-except (IOError, ImportError, RuntimeError):
-    print("warning: pypandoc not found. Not converting markdown to rst.")
-    LONG_DESC = open('README.md').read()
-
+LONG_DESC = open('README.md').read()
 VERSION = pywal.__version__
 DOWNLOAD = "https://github.com/dylanaraps/pywal/archive/%s.tar.gz" % VERSION
 
@@ -23,6 +17,7 @@ setuptools.setup(
     author="Dylan Araps",
     author_email="dylan.araps@gmail.com",
     description="Generate and change colorschemes on the fly",
+    long_description_content_type="text/markdown",
     long_description=LONG_DESC,
     keywords="wal colorscheme terminal-emulators changing-colorschemes",
     license="MIT",
