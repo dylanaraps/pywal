@@ -5,6 +5,7 @@ import os
 import re
 import sys
 
+from . import theme
 from . import util
 from .settings import CACHE_DIR, MODULE_DIR, __cache_version__
 
@@ -86,7 +87,7 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     cache_file = os.path.join(*cache_name)
 
     if os.path.isfile(cache_file):
-        colors = file(cache_file)
+        colors = theme.file(cache_file)
         util.Color.alpha_num = colors["alpha"]
         print("colors: Found cached colorscheme.")
 
@@ -110,13 +111,5 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
 
 
 def file(input_file):
-    """Import colorscheme from json file."""
-    data = util.read_file_json(input_file)
-
-    if "wallpaper" not in data:
-        data["wallpaper"] = "None"
-
-    if "alpha" not in data:
-        data["alpha"] = "100"
-
-    return data
+    """Deprecated: symbolic link to --> theme.file"""
+    return theme.file(input_file)

@@ -20,6 +20,7 @@ from . import export
 from . import image
 from . import reload
 from . import sequences
+from . import theme
 from . import util
 from . import wallpaper
 
@@ -40,14 +41,16 @@ def get_args(args):
                      help="Which color backend to use.",
                      const="list_backends", type=str, nargs="?", default="wal")
 
+    arg.add_argument("--theme", metavar="/path/to/file or theme_name",
+                     help="Which colorscheme file to use. \
+                           Use 'wal -f' to list available builtin themes.",
+                     const="list_themes", nargs="?")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
     arg.add_argument("-i", metavar="\"/path/to/img.jpg\"",
                      help="Which image or directory to use.")
-
-    arg.add_argument("-f", metavar="\"/path/to/colorscheme/file\"",
-                     help="Which colorscheme file to use.")
 
     arg.add_argument("-g", action="store_true",
                      help="Generate an oomox theme.")
@@ -93,7 +96,7 @@ def process_args(args):
               "       Refer to \"wal -h\" for more info.")
         sys.exit(1)
 
-    if args.i and args.f:
+    if args.i and args.theme:
         print("error: Conflicting arguments -i and -f.\n"
               "       Refer to \"wal -h\" for more info.")
         sys.exit(1)
@@ -106,8 +109,15 @@ def process_args(args):
         reload.colors()
         sys.exit(0)
 
+    if args.theme == "list_themes":
+        themes = [theme.name.replace(".json", "")
+                  for theme in theme.list_themes()]
+        print("Themes:", themes)
+        print("Extra: 'random' (select a random theme)")
+        sys.exit(0)
+
     if args.backend == "list_backends":
-        print("Available backends:", colors.list_backends())
+        print("Backends:", colors.list_backends())
         sys.exit(0)
 
     if args.q:
@@ -130,8 +140,8 @@ def process_args(args):
         image_file = image.get(args.i)
         colors_plain = colors.get(image_file, args.l, args.backend)
 
-    if args.f:
-        colors_plain = colors.file(args.f)
+    if args.theme:
+        colors_plain = theme.file(args.theme)
 
     if args.a:
         util.Color.alpha_num = args.a
@@ -141,7 +151,7 @@ def process_args(args):
         colors_plain["special"]["background"] = args.b
         colors_plain["colors"]["color0"] = args.b
 
-    if args.i or args.f:
+    if args.i or args.theme:
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])
 

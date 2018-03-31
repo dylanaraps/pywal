@@ -50,7 +50,7 @@ def create_sequences(colors):
     # 13 = mouse foreground
     sequences.extend([set_special(10, colors["special"]["foreground"], "g"),
                       set_special(11, colors["special"]["background"], "h"),
-                      set_special(12, colors["colors"]["color1"], "l"),
+                      set_special(12, colors["colors"]["color9"], "l"),
                       set_special(13, colors["special"]["foreground"], "l"),
                       set_special(17, colors["special"]["foreground"], "l"),
                       set_special(19, colors["special"]["background"], "l")])
