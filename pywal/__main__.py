@@ -36,6 +36,10 @@ def get_args(args):
     arg.add_argument("-b", metavar="background",
                      help="Custom background color to use.")
 
+    arg.add_argument("--backend", metavar="backend",
+                     help="Which color backend to use.",
+                     const="list_backends", type=str, nargs="?", default="wal")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -102,6 +106,10 @@ def process_args(args):
         reload.colors()
         sys.exit(0)
 
+    if args.backend == "list_backends":
+        print("Available backends:", colors.list_backends())
+        sys.exit(0)
+
     if args.q:
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
@@ -120,7 +128,7 @@ def process_args(args):
 
     if args.i:
         image_file = image.get(args.i)
-        colors_plain = colors.get(image_file, light=args.l)
+        colors_plain = colors.get(image_file, args.l, args.backend)
 
     if args.f:
         colors_plain = colors.file(args.f)
