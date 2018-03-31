@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import sys
 
+from .. import colors
 from .. import util
 
 
@@ -14,30 +15,13 @@ def gen_colors(img):
     return subprocess.check_output([*cmd, img]).splitlines()
 
 
-def adjust(colors, light):
+def adjust(cols, light):
     """Create palette."""
     # Create list with placeholder values.
-    colors.sort(key=util.rgb_to_yiq)
-    raw_colors = [*colors[8:], *colors[8:]]
+    cols.sort(key=util.rgb_to_yiq)
+    raw_colors = [*cols[8:], *cols[8:]]
 
-    # Update placeholder values.
-    if light:
-        for color in raw_colors:
-            color = util.saturate_color(color, 0.50)
-            color = util.darken_color(color, 0.4)
-
-        raw_colors[0] = util.lighten_color(colors[0], 0.9)
-        raw_colors[7] = util.darken_color(colors[0], 0.75)
-        raw_colors[8] = util.darken_color(colors[0], 0.25)
-        raw_colors[15] = raw_colors[7]
-
-    else:
-        raw_colors[0] = util.darken_color(colors[0], 0.75)
-        raw_colors[7] = util.lighten_color(colors[0], 0.75)
-        raw_colors[8] = util.lighten_color(colors[0], 0.25)
-        raw_colors[15] = raw_colors[7]
-
-    return raw_colors
+    return colors.generic_adjust(raw_colors, light)
 
 
 def get(img, light=False):
@@ -47,6 +31,5 @@ def get(img, light=False):
               "Try another backend. (wal --backend)")
         sys.exit(1)
 
-    colors = gen_colors(img)
-    colors = [color.decode('UTF-8') for color in colors]
-    return adjust(colors, light)
+    cols = [col.decode('UTF-8') for col in gen_colors(img)]
+    return adjust(cols, light)

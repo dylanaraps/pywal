@@ -3,7 +3,6 @@ Generate a palette using various backends.
 """
 import os
 import re
-import shutil
 import sys
 
 from . import backends
@@ -31,6 +30,27 @@ def colors_to_dict(colors, img):
     scheme["special"]["cursor"] = colors[1]
 
     return scheme
+
+
+def generic_adjust(colors, light):
+    """Generic color adjustment for themers."""
+    if light:
+        for color in colors:
+            color = util.saturate_color(color, 0.50)
+            color = util.darken_color(color, 0.4)
+
+        colors[0] = util.lighten_color(colors[0], 0.9)
+        colors[7] = util.darken_color(colors[0], 0.75)
+        colors[8] = util.darken_color(colors[0], 0.25)
+        colors[15] = colors[7]
+
+    else:
+        colors[0] = util.darken_color(colors[0], 0.75)
+        colors[7] = util.lighten_color(colors[0], 0.75)
+        colors[8] = util.lighten_color(colors[0], 0.25)
+        colors[15] = colors[7]
+
+    return colors
 
 
 def gen(img, light=False, backend="wal", cache_dir=CACHE_DIR):

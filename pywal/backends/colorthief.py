@@ -36,23 +36,23 @@ def gen_colors(img):
     return [util.rgb_to_hex(color) for color in raw_colors]
 
 
-def adjust(colors, light):
+def adjust(cols, light):
     """Create palette."""
-    colors.sort(key=util.rgb_to_yiq)
-    raw_colors = [*colors, *colors]
+    cols.sort(key=util.rgb_to_yiq)
+    raw_colors = [*cols, *cols]
 
     if light:
-        raw_colors[0] = util.lighten_color(colors[0], 0.90)
-        raw_colors[7] = util.darken_color(colors[0], 0.75)
+        raw_colors[0] = util.lighten_color(cols[0], 0.90)
+        raw_colors[7] = util.darken_color(cols[0], 0.75)
 
     else:
         for color in raw_colors:
             color = util.lighten_color(color, 0.40)
 
-        raw_colors[0] = util.darken_color(colors[0], 0.80)
-        raw_colors[7] = util.lighten_color(colors[0], 0.60)
+        raw_colors[0] = util.darken_color(cols[0], 0.80)
+        raw_colors[7] = util.lighten_color(cols[0], 0.60)
 
-    raw_colors[8] = util.lighten_color(colors[0], 0.20)
+    raw_colors[8] = util.lighten_color(cols[0], 0.20)
     raw_colors[15] = raw_colors[7]
 
     return raw_colors
@@ -60,5 +60,5 @@ def adjust(colors, light):
 
 def get(img, light=False):
     """Get colorscheme."""
-    colors = gen_colors(img)
-    return adjust(colors, light)
+    cols = gen_colors(img)
+    return adjust(cols, light)
