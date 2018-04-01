@@ -1,6 +1,7 @@
 """
 Generate a palette using various backends.
 """
+import logging
 import os
 import random
 import re
@@ -90,17 +91,17 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     if os.path.isfile(cache_file):
         colors = theme.file(cache_file)
         util.Color.alpha_num = colors["alpha"]
-        print("colors: Found cached colorscheme.")
+        logging.info("Found cached colorscheme.")
 
     else:
-        print("wal: Generating a colorscheme...")
+        logging.info("Generating a colorscheme...")
 
         if backend == "random":
             backends = list_backends()
             random.shuffle(backends)
             backend = backends[0]
 
-        print("wal: Using", backend, "backend.")
+        logging.info("Using %s backend.", backend)
 
         # Dynamically import the backend we want to use.
         # This keeps the dependencies "optional".
@@ -113,7 +114,7 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
         colors = colors_to_dict(getattr(backend, "get")(img, light), img)
 
         util.save_file_json(colors, cache_file)
-        print("wal: Generation complete.")
+        logging.info("Generation complete.")
 
     return colors
 

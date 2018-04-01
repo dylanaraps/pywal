@@ -1,6 +1,7 @@
 """
 Reload programs.
 """
+import logging
 import os
 import shutil
 import subprocess
@@ -32,17 +33,17 @@ def oomox(gen_theme):
     """Call oomox to generate a theme."""
     if gen_theme:
         if not shutil.which("oomox-cli"):
-            print("gtk: oomox not found, skipping...")
+            logging.warning("Oomox not found, skipping...")
             return
 
         oomox_file = os.path.join(CACHE_DIR, "colors-oomox")
 
-        print("reload: Waiting for oomox...")
+        logging.info("Waiting for oomox...")
         subprocess.run(["oomox-cli", "-o", "wal", oomox_file],
                        stdout=subprocess.DEVNULL)
 
     else:
-        print("gtk: Use -g to generate an oomox theme.")
+        logging.info("Use -g to generate an oomox theme.")
 
 
 def gtk():
@@ -55,7 +56,7 @@ def gtk():
         util.disown(["python2", gtk_reload])
 
     else:
-        print("warning: GTK2 reload support requires Python 2.")
+        logging.warning("GTK2 reload support requires Python 2.")
 
 
 def i3():
@@ -93,5 +94,5 @@ def env(xrdb_file=None, tty_reload=True):
     i3()
     sway()
     polybar()
-    print("reload: Reloaded environment.")
+    logging.info("Reloaded environment.")
     tty(tty_reload)

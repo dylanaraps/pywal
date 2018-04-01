@@ -1,6 +1,7 @@
 """
 Theme file handling.
 """
+import logging
 import os
 import random
 import sys
@@ -72,5 +73,5 @@ def file(input_file):
         return parse_theme(theme_file)
 
     else:
-        print("No colorscheme file found, exiting...")
+        logging.error("No colorscheme file found, exiting...")
         sys.exit(1)

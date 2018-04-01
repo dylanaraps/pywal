@@ -2,6 +2,7 @@
 Send sequences to all open terminals.
 """
 import glob
+import logging
 import os
 
 from .settings import CACHE_DIR, OS
@@ -89,4 +90,4 @@ def send(colors, cache_dir=CACHE_DIR, to_send=True):
             util.save_file(sequences, term)
 
     util.save_file(sequences, os.path.join(cache_dir, "sequences"))
-    print("colors: Set terminal colors.")
+    logging.info("Set terminal colors.")

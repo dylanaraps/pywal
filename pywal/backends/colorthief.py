@@ -1,14 +1,15 @@
 """
 Generate a colorscheme using ColorThief.
 """
+import logging
 import sys
 
 try:
     from colorthief import ColorThief
 
 except ImportError:
-    print("error: ColorThief wasn't found on your system.",
-          "Try another backend. (wal --backend)")
+    logging.error("ColorThief wasn't found on your system.")
+    logging.error("Try another backend. (wal --backend)")
     sys.exit(1)
 
 from .. import util
@@ -25,13 +26,12 @@ def gen_colors(img):
             break
 
         elif i == 19:
-            print("colors: ColorThief couldn't generate a suitable palette",
-                  "for the image. Exiting...")
+            logging.error("ColorThief couldn't generate a suitable palette.")
             sys.exit(1)
 
         else:
-            print("colors: ColorThief couldn't create a suitable palette, "
-                  "trying a larger palette size", 8 + i)
+            logging.warning("ColorThief couldn't generate a palette.")
+            logging.warning("Trying a larger palette size %s", 8 + i)
 
     return [util.rgb_to_hex(color) for color in raw_colors]
 

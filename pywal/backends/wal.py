@@ -1,6 +1,7 @@
 """
 Generate a colorscheme using imagemagick.
 """
+import logging
 import re
 import shutil
 import subprocess
@@ -26,8 +27,8 @@ def has_im():
     elif shutil.which("convert"):
         return ["convert"]
 
-    print("error: ImageMagick wasn't found on your system.",
-          "Try another backend. (wal --backend)")
+    logging.error("Imagemagick wasn't found on your system.")
+    logging.error("Try another backend. (wal --backend)")
     sys.exit(1)
 
 
@@ -43,13 +44,12 @@ def gen_colors(img):
             break
 
         elif i == 19:
-            print("colors: Imagemagick couldn't generate a suitable palette",
-                  "for the image. Exiting...")
+            logging.error("Imagemagick couldn't generate a suitable palette.")
             sys.exit(1)
 
         else:
-            print("colors: Imagemagick couldn't generate a suitable palette, "
-                  "trying a larger palette size", 16 + i)
+            logging.warning("Imagemagick couldn't generate a palette.")
+            logging.warning("Trying a larger palette size %s", 16 + i)
 
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
