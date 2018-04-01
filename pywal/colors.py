@@ -2,6 +2,7 @@
 Generate a palette using various backends.
 """
 import os
+import random
 import re
 import sys
 
@@ -93,6 +94,13 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
 
     else:
         print("wal: Generating a colorscheme...")
+
+        if backend == "random":
+            backends = list_backends()
+            random.shuffle(backends)
+            backend = backends[0]
+
+        print("wal: Using", backend, "backend.")
 
         # Dynamically import the backend we want to use.
         # This keeps the dependencies "optional".

@@ -38,12 +38,13 @@ def get_args(args):
                      help="Custom background color to use.")
 
     arg.add_argument("--backend", metavar="backend",
-                     help="Which color backend to use.",
+                     help="Which color backend to use. \
+                           Use 'wal --backend' to list backends.",
                      const="list_backends", type=str, nargs="?", default="wal")
 
     arg.add_argument("--theme", metavar="/path/to/file or theme_name",
                      help="Which colorscheme file to use. \
-                           Use 'wal -f' to list available builtin themes.",
+                           Use 'wal --theme' to list builtin themes.",
                      const="list_themes", nargs="?")
 
     arg.add_argument("-c", action="store_true",
