@@ -1,7 +1,6 @@
 """Test export functions."""
 import unittest
 import unittest.mock
-import io
 import shutil
 import os
 
@@ -51,21 +50,6 @@ class TestExportColors(unittest.TestCase):
 
         self.is_file(tmp_file)
         self.is_file_contents(tmp_file, "    --background: #1F211E;")
-
-
-class TestInvalidExport(unittest.TestCase):
-    """Test export function error handling."""
-
-    def test_invalid_template(self):
-        """> Test template validation."""
-        error_msg = "warning: template 'dummy' doesn't exist."
-        tmp_file = os.path.join(TMP_DIR, "test.css")
-
-        # Since this function prints a message on fail we redirect
-        # it's output so that we can read it.
-        with unittest.mock.patch('sys.stdout', new=io.StringIO()) as fake_out:
-            export.color(COLORS, "dummy", tmp_file)
-            self.assertEqual(fake_out.getvalue().strip(), error_msg)
 
 
 if __name__ == "__main__":
