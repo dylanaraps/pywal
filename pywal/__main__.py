@@ -10,6 +10,7 @@ Created by Dylan Araps.
 """
 
 import argparse
+import logging
 import os
 import shutil
 import sys
@@ -122,6 +123,7 @@ def process_args(args):
         sys.exit(0)
 
     if args.q:
+        logging.getLogger().disabled = True
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
     if args.c:
