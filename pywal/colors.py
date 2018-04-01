@@ -89,6 +89,24 @@ def get_backend(backend):
         random.shuffle(backends)
         return backends[0]
 
+    return backend
+
+
+def palette():
+    """Generate a palette from the colors."""
+    col_width = " " * (os.get_terminal_size().columns // 8)
+
+    for i in range(0, 16):
+        if i % 8 == 0:
+            print()
+
+        if i > 7:
+            i = "8;5;%s" % i
+
+        print("\033[4%sm%s\033[0m" % (i, col_width), end="")
+
+    print("\n")
+
 
 def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     """Generate a palette."""
