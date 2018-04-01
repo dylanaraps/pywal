@@ -8,7 +8,7 @@ import sys
 
 from . import theme
 from . import util
-from .settings import CACHE_DIR, MODULE_DIR, __cache_version__
+from .settings import CACHE_DIR, MODULE_DIR, CONFIG, __cache_version__
 
 
 def list_backends():
@@ -81,8 +81,27 @@ def cache_fname(img, backend, light, cache_dir):
     return [cache_dir, "schemes", "%s_%s_%s_%s.json" % (*file_parts,)]
 
 
-def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
+def get_backend(backend):
+    """Figure out which backend to use."""
+    if CONFIG.get("colors", "backend") and backend == "default":
+        return CONFIG.get("colors", "backend")
+
+    elif backend == "default":
+        return "wal"
+
+    if backend == "random":
+        backends = list_backends()
+        random.shuffle(backends)
+        return backends[0]
+
+    return backend
+
+
+def get(img, light=False, backend="default", cache_dir=CACHE_DIR):
     """Generate a palette."""
+    backend = get_backend(backend)
+    print("wal: Using", backend, "backend.")
+
     # home_dylan_img_jpg_backend_1.2.2.json
     cache_name = cache_fname(img, backend, light, cache_dir)
     cache_file = os.path.join(*cache_name)
@@ -94,13 +113,6 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
 
     else:
         print("wal: Generating a colorscheme...")
-
-        if backend == "random":
-            backends = list_backends()
-            random.shuffle(backends)
-            backend = backends[0]
-
-        print("wal: Using", backend, "backend.")
 
         # Dynamically import the backend we want to use.
         # This keeps the dependencies "optional".

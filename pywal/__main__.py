@@ -40,7 +40,8 @@ def get_args(args):
     arg.add_argument("--backend", metavar="backend",
                      help="Which color backend to use. \
                            Use 'wal --backend' to list backends.",
-                     const="list_backends", type=str, nargs="?", default="wal")
+                     const="list_backends", type=str,
+                     nargs="?", default="default")
 
     arg.add_argument("--theme", metavar="/path/to/file or theme_name",
                      help="Which colorscheme file to use. \
