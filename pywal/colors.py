@@ -82,6 +82,14 @@ def cache_fname(img, backend, light, cache_dir):
     return [cache_dir, "schemes", "%s_%s_%s_%s.json" % (*file_parts,)]
 
 
+def get_backend(backend):
+    """Figure out which backend to use."""
+    if backend == "random":
+        backends = list_backends()
+        random.shuffle(backends)
+        return backends[0]
+
+
 def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     """Generate a palette."""
     # home_dylan_img_jpg_backend_1.2.2.json
@@ -95,21 +103,17 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
 
     else:
         logging.info("Generating a colorscheme...")
-
-        if backend == "random":
-            backends = list_backends()
-            random.shuffle(backends)
-            backend = backends[0]
-
-        logging.info("Using %s backend.", backend)
+        backend = get_backend(backend)
 
         # Dynamically import the backend we want to use.
         # This keeps the dependencies "optional".
         try:
             __import__("pywal.backends.%s" % backend)
         except ImportError:
+            __import__("pywal.backends.wal")
             backend = "wal"
 
+        logging.info("Using %s backend.", backend)
         backend = sys.modules["pywal.backends.%s" % backend]
         colors = colors_to_dict(getattr(backend, "get")(img, light), img)
 
