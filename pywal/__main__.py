@@ -174,6 +174,7 @@ def process_args(args):
 
 def main():
     """Main script function."""
+    util.setup_logging()
     args = get_args(sys.argv[1:])
     process_args(args)
 

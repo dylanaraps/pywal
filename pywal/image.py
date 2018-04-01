@@ -1,6 +1,7 @@
 """
 Get the image file.
 """
+import logging
 import os
 import random
 import sys
@@ -24,7 +25,7 @@ def get_random_image(img_dir):
         images.remove(current_wall)
 
     elif not images:
-        print("error: No images found in directory.")
+        logging.error("No images found in directory.")
         sys.exit(1)
 
     random.shuffle(images)
@@ -41,7 +42,7 @@ def get(img, cache_dir=CACHE_DIR):
         wal_img = get_random_image(img)
 
     else:
-        print("error: No valid image file found.")
+        logging.error("No valid image file found.")
         sys.exit(1)
 
     wal_img = os.path.abspath(wal_img)
@@ -49,5 +50,5 @@ def get(img, cache_dir=CACHE_DIR):
     # Cache the image file path.
     util.save_file(wal_img, os.path.join(cache_dir, "wal"))
 
-    print("image: Using image", wal_img)
+    logging.info("Using image %s.", wal_img)
     return wal_img

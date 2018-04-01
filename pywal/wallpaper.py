@@ -1,5 +1,6 @@
 """Set the wallpaper."""
 import ctypes
+import logging
 import os
 import shutil
 import subprocess
@@ -61,7 +62,7 @@ def set_wm_wallpaper(img):
         util.disown(["display", "-backdrop", "-window", "root", img])
 
     else:
-        print("error: No wallpaper setter found.")
+        logging.error("No wallpaper setter found.")
         return
 
 
@@ -139,7 +140,7 @@ def change(img):
     else:
         set_desktop_wallpaper(desktop, img)
 
-    print("wallpaper: Set the new wallpaper.")
+    logging.info("Set the new wallpaper.")
 
 
 def get(cache_dir=CACHE_DIR):

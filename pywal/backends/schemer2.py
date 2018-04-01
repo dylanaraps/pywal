@@ -1,6 +1,7 @@
 """
 Generate a colorscheme using Schemer2.
 """
+import logging
 import shutil
 import subprocess
 import sys
@@ -26,8 +27,8 @@ def adjust(cols, light):
 def get(img, light=False):
     """Get colorscheme."""
     if not shutil.which("schemer2"):
-        print("error: Schemer2 wasn't found on your system.",
-              "Try another backend. (wal --backend)")
+        logging.error("Schemer2 wasn't found on your system.")
+        logging.error("Try another backend. (wal --backend)")
         sys.exit(1)
 
     cols = [col.decode('UTF-8') for col in gen_colors(img)]

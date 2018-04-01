@@ -1,6 +1,7 @@
 """
 Generate a palette using various backends.
 """
+import logging
 import os
 import random
 import re
@@ -100,7 +101,6 @@ def get_backend(backend):
 def get(img, light=False, backend="default", cache_dir=CACHE_DIR):
     """Generate a palette."""
     backend = get_backend(backend)
-    print("wal: Using", backend, "backend.")
 
     # home_dylan_img_jpg_backend_1.2.2.json
     cache_name = cache_fname(img, backend, light, cache_dir)
@@ -109,10 +109,10 @@ def get(img, light=False, backend="default", cache_dir=CACHE_DIR):
     if os.path.isfile(cache_file):
         colors = theme.file(cache_file)
         util.Color.alpha_num = colors["alpha"]
-        print("colors: Found cached colorscheme.")
+        logging.info("Found cached colorscheme.")
 
     else:
-        print("wal: Generating a colorscheme...")
+        logging.info("Generating a colorscheme...")
 
         # Dynamically import the backend we want to use.
         # This keeps the dependencies "optional".
@@ -120,12 +120,14 @@ def get(img, light=False, backend="default", cache_dir=CACHE_DIR):
             __import__("pywal.backends.%s" % backend)
         except ImportError:
             backend = "wal"
+            __import__("pywal.backends.%s" % backend)
 
+        logging.info("Using %s backend.", backend)
         backend = sys.modules["pywal.backends.%s" % backend]
         colors = colors_to_dict(getattr(backend, "get")(img, light), img)
 
         util.save_file_json(colors, cache_file)
-        print("wal: Generation complete.")
+        logging.info("Generation complete.")
 
     return colors
 

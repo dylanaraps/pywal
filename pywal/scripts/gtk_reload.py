@@ -10,7 +10,7 @@ Original source: https://crunchbang.org/forums/viewtopic.php?id=39646
 try:
     import gtk
 except ImportError:
-    print("error: GTK reload requires PyGTK.")
+    print("[ERROR] gtk_reload: GTK reload requires PyGTK.")
     exit(1)
 
 
