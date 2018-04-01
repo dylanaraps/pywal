@@ -1,14 +1,15 @@
 """
 Generate a colorscheme using Haishoku.
 """
+import logging
 import sys
 
 try:
     from haishoku.haishoku import Haishoku
 
 except ImportError:
-    print("error: Haishoku wasn't found on your system.",
-          "Try another backend. (wal --backend)")
+    logging.error("Haishoku wasn't found on your system.")
+    logging.error("Try another backend. (wal --backend)")
     sys.exit(1)
 
 from .. import colors

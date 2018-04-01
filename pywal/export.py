@@ -1,6 +1,7 @@
 """
 Export colors in various formats.
 """
+import logging
 import os
 
 from .settings import CACHE_DIR, MODULE_DIR, CONF_DIR
@@ -65,8 +66,8 @@ def every(colors, output_dir=CACHE_DIR):
         if file.name != '.DS_Store':
             template(colors, file.path, join(output_dir, file.name))
 
-    print("export: Exported all files.")
-    print("export: Exported all user files.")
+    logging.info("Exported all files.")
+    logging.info("Exported all user files.")
 
 
 def color(colors, export_type, output_file=None):
@@ -79,6 +80,6 @@ def color(colors, export_type, output_file=None):
 
     if os.path.isfile(template_file):
         template(all_colors, template_file, output_file)
-        print("export: Exported %s." % export_type)
+        logging.info("Exported %s.", export_type)
     else:
-        print("warning: template '%s' doesn't exist." % export_type)
+        logging.warning("Template '%s' doesn't exist.", export_type)
