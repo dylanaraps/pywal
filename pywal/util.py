@@ -92,6 +92,11 @@ def create_dir(directory):
     os.makedirs(directory, exist_ok=True)
 
 
+def variable_import(module):
+    """Import a module dynamically."""
+    __import__(module)
+
+
 def setup_logging():
     """Logging config."""
     logging.basicConfig(format=("[%(levelname)s\033[0m] "

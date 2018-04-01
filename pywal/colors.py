@@ -117,10 +117,10 @@ def get(img, light=False, backend="default", cache_dir=CACHE_DIR):
         # Dynamically import the backend we want to use.
         # This keeps the dependencies "optional".
         try:
-            __import__("pywal.backends.%s" % backend)
+            util.variable_import("pywal.backends.%s" % backend)
         except ImportError:
+            util.variable_import("pywal.backends.wal")
             backend = "wal"
-            __import__("pywal.backends.%s" % backend)
 
         logging.info("Using %s backend.", backend)
         backend = sys.modules["pywal.backends.%s" % backend]
