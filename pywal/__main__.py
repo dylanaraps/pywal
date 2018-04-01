@@ -128,21 +128,22 @@ def process_args(args):
         scheme_dir = os.path.join(CACHE_DIR, "schemes")
         shutil.rmtree(scheme_dir, ignore_errors=True)
 
-    if args.R:
-        image_file = os.path.join(CACHE_DIR, "wal")
-
-        if os.path.isfile(image_file):
-            args.i = util.read_file(image_file)[0]
-        else:
-            print("image: No colorscheme to restore, try 'wal -i' first.")
-            sys.exit(1)
-
     if args.i:
         image_file = image.get(args.i)
         colors_plain = colors.get(image_file, args.l, args.backend)
 
     if args.theme:
         colors_plain = theme.file(args.theme)
+
+    if args.R:
+        cache_file = os.path.join(CACHE_DIR, "colors.json")
+
+        if os.path.isfile(cache_file):
+            colors_plain = theme.file(cache_file)
+
+        else:
+            print("image: No colorscheme to restore, try 'wal -i' first.")
+            sys.exit(1)
 
     if args.a:
         util.Color.alpha_num = args.a
@@ -152,7 +153,7 @@ def process_args(args):
         colors_plain["special"]["background"] = args.b
         colors_plain["colors"]["color0"] = args.b
 
-    if args.i or args.theme:
+    if args.i or args.theme or args.R:
         if not args.n:
             wallpaper.change(colors_plain["wallpaper"])
 
