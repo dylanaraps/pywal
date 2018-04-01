@@ -42,7 +42,7 @@ def get_args(args):
                            Use 'wal --backend' to list backends.",
                      const="list_backends", type=str, nargs="?", default="wal")
 
-    arg.add_argument("--theme", metavar="/path/to/file or theme_name",
+    arg.add_argument("--theme", "-f", metavar="/path/to/file or theme_name",
                      help="Which colorscheme file to use. \
                            Use 'wal --theme' to list builtin themes.",
                      const="list_themes", nargs="?")
