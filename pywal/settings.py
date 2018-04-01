@@ -9,6 +9,7 @@
 Created by Dylan Araps.
 """
 
+import configparser
 import os
 import platform
 
@@ -22,3 +23,6 @@ CACHE_DIR = os.path.join(HOME, ".cache", "wal")
 MODULE_DIR = os.path.dirname(__file__)
 CONF_DIR = os.path.join(HOME, ".config", "wal")
 OS = platform.uname()[0]
+
+CONFIG = configparser.ConfigParser()
+CONFIG.read("/home/black/.config/wal/config.ini")

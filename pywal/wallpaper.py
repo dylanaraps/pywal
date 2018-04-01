@@ -5,7 +5,7 @@ import shutil
 import subprocess
 import urllib.parse
 
-from .settings import CACHE_DIR, HOME, OS
+from .settings import CACHE_DIR, HOME, OS, CONFIG
 from . import util
 
 
@@ -122,6 +122,10 @@ def set_win_wallpaper(img):
 def change(img):
     """Set the wallpaper."""
     if not os.path.isfile(img):
+        return
+
+    if CONFIG.get("wallpaper", "setter"):
+        util.disown([*CONFIG.get("wallpaper", "setter").split(), img])
         return
 
     desktop = get_desktop_env()
