@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import sys
 
-from .settings import CACHE_DIR, MODULE_DIR, OS
+from .settings import CACHE_DIR, MODULE_DIR, OS, CONFIG
 from . import util
 
 
@@ -86,6 +86,15 @@ def colors(cache_dir=CACHE_DIR):
 
     if os.path.isfile(sequences):
         print("".join(util.read_file(sequences)), end="")
+
+
+def external_script(cmd_hook):
+    """Launch an external process after pywal."""
+    if cmd_hook:
+        util.disown([cmd_hook])
+
+    if CONFIG.get("general", "cmd_hook"):
+        util.disown(CONFIG.get("general", "cmd_hook").split())
 
 
 def env(xrdb_file=None, tty_reload=True):

@@ -164,8 +164,7 @@ def process_args(args):
         if not args.e:
             reload.env(tty_reload=not args.t)
 
-    if args.o:
-        util.disown([args.o])
+    reload.external_script(args.o)
 
     if not args.e:
         reload.oomox(args.g)
