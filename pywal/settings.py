@@ -34,6 +34,5 @@ if not os.path.isfile(CONF_FILE):
     util.create_dir(CONF_DIR)
     shutil.copy2(DEFAULT_CONF_FILE, CONF_DIR)
 
-
 CONFIG = configparser.ConfigParser()
 CONFIG.read(CONF_FILE)
