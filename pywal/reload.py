@@ -90,11 +90,11 @@ def colors(cache_dir=CACHE_DIR):
 
 def external_script(cmd_hook):
     """Launch an external process after pywal."""
-    if cmd_hook:
-        util.disown([cmd_hook])
-
     if CONFIG.get("general", "cmd_hook"):
         util.disown(CONFIG.get("general", "cmd_hook").split())
+
+    if cmd_hook:
+        util.disown([cmd_hook])
 
 
 def env(xrdb_file=None, tty_reload=True):
