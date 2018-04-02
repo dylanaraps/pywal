@@ -120,7 +120,7 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
         logging.info("Found cached colorscheme.")
 
     else:
-        logging.info("Generating a colorscheme...")
+        logging.info("Generating a colorscheme.")
         backend = get_backend(backend)
 
         # Dynamically import the backend we want to use.

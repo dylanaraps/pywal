@@ -33,12 +33,12 @@ def oomox(gen_theme):
     """Call oomox to generate a theme."""
     if gen_theme:
         if not shutil.which("oomox-cli"):
-            logging.warning("Oomox not found, skipping...")
+            logging.warning("Oomox not found, skipping.")
             return
 
         oomox_file = os.path.join(CACHE_DIR, "colors-oomox")
 
-        logging.info("Waiting for oomox...")
+        logging.info("Waiting for Oomox.")
         subprocess.run(["oomox-cli", "-o", "wal", oomox_file],
                        stdout=subprocess.DEVNULL)
 
