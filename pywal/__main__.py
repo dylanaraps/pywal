@@ -17,6 +17,7 @@ import sys
 
 from .settings import __version__, CACHE_DIR
 from . import colors
+from . import config
 from . import export
 from . import image
 from . import reload
@@ -127,63 +128,117 @@ def parse_args_exit(parser):
         sys.exit(0)
 
 
-def parse_args(parser):
+def parse_args(parser, conf):
     """Process args."""
     args = parser.parse_args()
 
+    if args.a:
+        conf["alpha"] = args.a
+
+    if args.backend:
+        conf["backend"] = args.backend
+
+    if args.b:
+        conf["background"] = "#%s" % (args.b.strip("#"))
+
+    if args.c:
+        conf["cache"] = False
+
+    if args.e:
+        conf["reload"] = False
+
+    if args.g:
+        conf["oomox"] = True
+
+    if args.i:
+        conf["image"] = args.i
+
+    if args.theme:
+        conf["theme"] = args.theme
+
+    if args.l:
+        conf["type"] = "light" if args.l else "dark"
+
+    if args.n:
+        conf["wallpaper"] = False
+
+    if args.o:
+        conf["cmd_hook"] = args.o
+
     if args.q:
+        conf["quiet"] = True
+
+    if args.s:
+        conf["sequences"] = False
+
+    if args.t:
+        conf["tty"] = False
+
+    if args.R:
+        conf["restore"] = True
+
+    return conf
+
+
+def wal(conf):
+    """Start the show."""
+    if conf.get("quiet", False):
         logging.getLogger().disabled = True
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
-    if args.c:
+    if not conf.get("cache", True):
         scheme_dir = os.path.join(CACHE_DIR, "schemes")
         shutil.rmtree(scheme_dir, ignore_errors=True)
 
-    if args.i:
-        image_file = image.get(args.i)
-        colors_plain = colors.get(image_file, args.l, args.backend)
+    if conf.get("image"):
+        image_file = image.get(conf.get("image"))
+        cols = colors.get(image_file, conf.get("type"), conf.get("backend"))
 
-    if args.theme:
-        colors_plain = theme.file(args.theme)
+    if conf.get("theme"):
+        cols = theme.file(conf.get("theme"))
 
-    if args.R:
-        colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
+    if conf.get("restore"):
+        cols = theme.file(os.path.join(CACHE_DIR, "colors.json"))
 
-    if args.a:
-        util.Color.alpha_num = args.a
+    if conf.get("alpha"):
+        util.Color.alpha_num = conf.get("alpha", "100")
 
-    if args.b:
-        args.b = "#%s" % (args.b.strip("#"))
-        colors_plain["special"]["background"] = args.b
-        colors_plain["colors"]["color0"] = args.b
+    if conf.get("background"):
+        cols["special"]["background"] = conf.get("background")
+        cols["colors"]["color0"] = conf.get("background")
 
-    if not args.n:
-        wallpaper.change(colors_plain["wallpaper"])
+    if conf.get("wallpaper"):
+        wallpaper.change(cols["wallpaper"])
 
-    sequences.send(colors_plain, to_send=not args.s)
+    sequences.send(cols, to_send=conf.get("sequences"))
 
     if sys.stdout.isatty():
         colors.palette()
 
-    export.every(colors_plain)
+    export.every(cols)
 
-    if not args.e:
-        reload.env(tty_reload=not args.t)
+    if conf.get("reload"):
+        reload.env(tty_reload=conf.get("tty"))
 
-    reload.external_script(args.o)
+    if conf.get("cmd_hook"):
+        util.disown(conf.get("cmd_hook"))
 
-    if not args.e:
-        reload.oomox(args.g)
+    if conf.get("reload"):
+        reload.oomox(conf.get("oomox"))
         reload.gtk()
 
 
 def main():
     """Main script function."""
     util.setup_logging()
-    parser = get_args()
 
+    parser = get_args()
     parse_args_exit(parser)
-    parse_args(parser)
+
+    conf = config.load()
+    conf = parse_args(parser, conf)
+
+    wal(conf)
 
 
 if __name__ == "__main__":

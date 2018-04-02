@@ -5,6 +5,7 @@ import colorsys
 import json
 import logging
 import os
+import shutil
 import subprocess
 import sys
 
@@ -91,6 +92,13 @@ def save_file_json(data, export_file):
 def create_dir(directory):
     """Alias to create the cache dir."""
     os.makedirs(directory, exist_ok=True)
+
+
+def copy_file_if(input_file, export_file):
+    """Copy file to dir if it doesn't exist."""
+    if not os.path.isfile(export_file):
+        create_dir(os.path.dirname(export_file))
+        shutil.copy2(input_file, export_file)
 
 
 def setup_logging():

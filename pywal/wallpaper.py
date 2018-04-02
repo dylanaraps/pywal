@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import urllib.parse
 
-from .settings import CACHE_DIR, HOME, OS, CONFIG
+from .settings import CACHE_DIR, HOME, OS
 from . import util
 
 
@@ -125,9 +125,9 @@ def change(img):
     if not os.path.isfile(img):
         return
 
-    if CONFIG.get("wallpaper", "setter"):
-        util.disown([*CONFIG.get("wallpaper", "setter").split(), img])
-        return
+    # if CONFIG.get("wallpaper", "setter"):
+    #     util.disown([*CONFIG.get("wallpaper", "setter").split(), img])
+    #     return
 
     desktop = get_desktop_env()
 

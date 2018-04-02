@@ -9,7 +9,7 @@ import sys
 
 from . import theme
 from . import util
-from .settings import CACHE_DIR, MODULE_DIR, CONFIG, __cache_version__
+from .settings import CACHE_DIR, MODULE_DIR, __cache_version__
 
 
 def list_backends():
@@ -84,11 +84,11 @@ def cache_fname(img, backend, light, cache_dir):
 
 def get_backend(backend):
     """Figure out which backend to use."""
-    if CONFIG.get("colors", "backend") and backend == "default":
-        return CONFIG.get("colors", "backend")
+    # if CONFIG.get("colors", "backend") and backend == "default":
+    #     return CONFIG.get("colors", "backend")
 
-    elif backend == "default":
-        return "wal"
+    # elif backend == "default":
+    #     return "wal"
 
     if backend == "random":
         backends = list_backends()
