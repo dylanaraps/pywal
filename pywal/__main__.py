@@ -103,6 +103,12 @@ def process_args(args):
               "       Refer to \"wal -h\" for more info.")
         sys.exit(1)
 
+    if not args.i and not args.theme:
+        print("error: No input specified.\n"
+              "       --theme and -i are required.\n"
+              "       Refer to \"wal -h\" for more info.")
+        sys.exit(1)
+
     if args.v:
         print("wal", __version__)
         sys.exit(0)
