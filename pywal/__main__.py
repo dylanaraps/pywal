@@ -91,8 +91,8 @@ def get_args(args):
     return arg.parse_args(args)
 
 
-def process_args(args):
-    """Process args."""
+def process_args_exit(args):
+    """Process args that exit."""
     if not len(sys.argv) > 1:
         print("error: wal needs to be given arguments to run.\n"
               "       Refer to \"wal -h\" for more info.")
@@ -103,9 +103,9 @@ def process_args(args):
               "       Refer to \"wal -h\" for more info.")
         sys.exit(1)
 
-    if not args.i and not args.theme:
+    if not args.i and not args.theme and not args.R:
         print("error: No input specified.\n"
-              "       --theme and -i are required.\n"
+              "       --theme, -i or -R are required.\n"
               "       Refer to \"wal -h\" for more info.")
         sys.exit(1)
 
@@ -128,6 +128,9 @@ def process_args(args):
         print("Backends:", colors.list_backends())
         sys.exit(0)
 
+
+def process_args(args):
+    """Process args."""
     if args.q:
         logging.getLogger().disabled = True
         sys.stdout = sys.stderr = open(os.devnull, "w")
@@ -144,14 +147,7 @@ def process_args(args):
         colors_plain = theme.file(args.theme)
 
     if args.R:
-        cache_file = os.path.join(CACHE_DIR, "colors.json")
-
-        if os.path.isfile(cache_file):
-            colors_plain = theme.file(cache_file)
-
-        else:
-            print("image: No colorscheme to restore, try 'wal -i' first.")
-            sys.exit(1)
+        colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
 
     if args.a:
         util.Color.alpha_num = args.a
@@ -161,19 +157,18 @@ def process_args(args):
         colors_plain["special"]["background"] = args.b
         colors_plain["colors"]["color0"] = args.b
 
-    if args.i or args.theme or args.R:
-        if not args.n:
-            wallpaper.change(colors_plain["wallpaper"])
+    if not args.n:
+        wallpaper.change(colors_plain["wallpaper"])
 
-        sequences.send(colors_plain, to_send=not args.s)
+    sequences.send(colors_plain, to_send=not args.s)
 
-        if sys.stdout.isatty():
-            colors.palette()
+    if sys.stdout.isatty():
+        colors.palette()
 
-        export.every(colors_plain)
+    export.every(colors_plain)
 
-        if not args.e:
-            reload.env(tty_reload=not args.t)
+    if not args.e:
+        reload.env(tty_reload=not args.t)
 
     if args.o:
         util.disown([args.o])
@@ -187,6 +182,7 @@ def main():
     """Main script function."""
     util.setup_logging()
     args = get_args(sys.argv[1:])
+    process_args_exit(args)
     process_args(args)
 
 
