@@ -16,13 +16,13 @@ class TestMain(unittest.TestCase):
 
     def test_args_a(self):
         """> Test arg parsing (-a)."""
-        args = __main__.get_args(["-a", "50"])
+        args = __main__.get_args(["-a", "100", "-R"])
         __main__.process_args(args)
-        self.assertEqual(util.Color.alpha_num, "50")
+        self.assertEqual(util.Color.alpha_num, "100")
 
     def test_args_c(self):
         """> Test arg parsing (-c)."""
-        args = __main__.get_args(["-c"])
+        args = __main__.get_args(["-c", "-R"])
         __main__.process_args(args)
         scheme_dir = os.path.join(CACHE_DIR, "schemes")
         self.assertFalse(os.path.isdir(scheme_dir))
@@ -30,14 +30,14 @@ class TestMain(unittest.TestCase):
     def test_args_e(self):
         """> Test arg parsing (-e)."""
         reload.env = unittest.mock.MagicMock()
-        args = __main__.get_args(["-e"])
+        args = __main__.get_args(["-e", "-R"])
         __main__.process_args(args)
         self.assertFalse(reload.env.called)
 
     def test_args_n(self):
         """> Test arg parsing (-n)."""
         wallpaper.change = unittest.mock.MagicMock()
-        args = __main__.get_args(["-n"])
+        args = __main__.get_args(["-n", "-R"])
         __main__.process_args(args)
         self.assertFalse(wallpaper.change.called)
 
