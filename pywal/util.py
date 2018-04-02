@@ -6,6 +6,7 @@ import json
 import logging
 import os
 import subprocess
+import sys
 
 
 class Color:
@@ -92,17 +93,13 @@ def create_dir(directory):
     os.makedirs(directory, exist_ok=True)
 
 
-def variable_import(module):
-    """Import a module dynamically."""
-    __import__(module)
-
-
 def setup_logging():
     """Logging config."""
     logging.basicConfig(format=("[%(levelname)s\033[0m] "
                                 "\033[1;31m%(module)s\033[0m: "
                                 "%(message)s"),
-                        level=logging.INFO)
+                        level=logging.INFO,
+                        stream=sys.stdout)
     logging.addLevelName(logging.ERROR, '\033[1;31mE')
     logging.addLevelName(logging.INFO, '\033[1;32mI')
     logging.addLevelName(logging.WARNING, '\033[1;33mW')

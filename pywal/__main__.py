@@ -10,6 +10,7 @@ Created by Dylan Araps.
 """
 
 import argparse
+import logging
 import os
 import shutil
 import sys
@@ -25,7 +26,7 @@ from . import util
 from . import wallpaper
 
 
-def get_args(args):
+def get_args():
     """Get the script arguments."""
     description = "wal - Generate colorschemes on the fly"
     arg = argparse.ArgumentParser(description=description)
@@ -40,10 +41,9 @@ def get_args(args):
     arg.add_argument("--backend", metavar="backend",
                      help="Which color backend to use. \
                            Use 'wal --backend' to list backends.",
-                     const="list_backends", type=str,
-                     nargs="?", default="default")
+                     const="list_backends", type=str, nargs="?")
 
-    arg.add_argument("--theme", metavar="/path/to/file or theme_name",
+    arg.add_argument("--theme", "-f", metavar="/path/to/file or theme_name",
                      help="Which colorscheme file to use. \
                            Use 'wal --theme' to list builtin themes.",
                      const="list_themes", nargs="?")
@@ -88,24 +88,28 @@ def get_args(args):
     arg.add_argument("-e", action="store_true",
                      help="Skip reloading gtk/xrdb/i3/sway/polybar")
 
-    return arg.parse_args(args)
+    return arg
 
 
-def process_args(args):
-    """Process args."""
+def parse_args_exit(parser):
+    """Process args that exit."""
+    args = parser.parse_args()
+
     if not len(sys.argv) > 1:
-        print("error: wal needs to be given arguments to run.\n"
-              "       Refer to \"wal -h\" for more info.")
-        sys.exit(1)
-
-    if args.i and args.theme:
-        print("error: Conflicting arguments -i and -f.\n"
-              "       Refer to \"wal -h\" for more info.")
-        sys.exit(1)
+        parser.error("wal needs to be given arguments to run.")
 
     if args.v:
-        print("wal", __version__)
-        sys.exit(0)
+        parser.exit(0, "wal %s\n" % __version__)
+
+    if args.i and args.theme:
+        parser.error("Conflicting arguments -i and -f.")
+
+    if not args.i and \
+       not args.theme and \
+       not args.R and \
+       not args.backend:
+        parser.error("No input specified.\n"
+                     "--backend, --theme, -i or -R are required.")
 
     if args.r:
         reload.colors()
@@ -122,21 +126,18 @@ def process_args(args):
         print("Backends:", colors.list_backends())
         sys.exit(0)
 
+
+def parse_args(parser):
+    """Process args."""
+    args = parser.parse_args()
+
     if args.q:
+        logging.getLogger().disabled = True
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
     if args.c:
         scheme_dir = os.path.join(CACHE_DIR, "schemes")
         shutil.rmtree(scheme_dir, ignore_errors=True)
-
-    if args.R:
-        image_file = os.path.join(CACHE_DIR, "wal")
-
-        if os.path.isfile(image_file):
-            args.i = util.read_file(image_file)[0]
-        else:
-            print("image: No colorscheme to restore, try 'wal -i' first.")
-            sys.exit(1)
 
     if args.i:
         image_file = image.get(args.i)
@@ -144,6 +145,9 @@ def process_args(args):
 
     if args.theme:
         colors_plain = theme.file(args.theme)
+
+    if args.R:
+        colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
 
     if args.a:
         util.Color.alpha_num = args.a
@@ -153,15 +157,18 @@ def process_args(args):
         colors_plain["special"]["background"] = args.b
         colors_plain["colors"]["color0"] = args.b
 
-    if args.i or args.theme:
-        if not args.n:
-            wallpaper.change(colors_plain["wallpaper"])
+    if not args.n:
+        wallpaper.change(colors_plain["wallpaper"])
 
-        sequences.send(colors_plain, to_send=not args.s)
-        export.every(colors_plain)
+    sequences.send(colors_plain, to_send=not args.s)
 
-        if not args.e:
-            reload.env(tty_reload=not args.t)
+    if sys.stdout.isatty():
+        colors.palette()
+
+    export.every(colors_plain)
+
+    if not args.e:
+        reload.env(tty_reload=not args.t)
 
     reload.external_script(args.o)
 
@@ -173,8 +180,10 @@ def process_args(args):
 def main():
     """Main script function."""
     util.setup_logging()
-    args = get_args(sys.argv[1:])
-    process_args(args)
+    parser = get_args()
+
+    parse_args_exit(parser)
+    parse_args(parser)
 
 
 if __name__ == "__main__":

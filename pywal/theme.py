@@ -31,7 +31,7 @@ def terminal_sexy_to_wal(data):
     return data
 
 
-def parse_theme(theme_file):
+def parse(theme_file):
     """Parse the theme file."""
     data = util.read_file_json(theme_file)
 
@@ -70,8 +70,8 @@ def file(input_file):
 
     # Parse the theme file.
     if os.path.isfile(theme_file):
-        return parse_theme(theme_file)
+        return parse(theme_file)
 
     else:
-        logging.error("No colorscheme file found, exiting...")
+        logging.error("No colorscheme file found.")
         sys.exit(1)

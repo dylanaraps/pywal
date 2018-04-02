@@ -17,8 +17,8 @@ import shutil
 from . import util
 
 
-__version__ = "1.3.3"
-__cache_version__ = "1.0.0"
+__version__ = "2.0.3"
+__cache_version__ = "1.1.0"
 
 
 HOME = os.getenv("HOME", os.getenv("USERPROFILE"))
