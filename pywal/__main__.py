@@ -26,7 +26,7 @@ from . import util
 from . import wallpaper
 
 
-def get_args(args):
+def get_args():
     """Get the script arguments."""
     description = "wal - Generate colorschemes on the fly"
     arg = argparse.ArgumentParser(description=description)
@@ -88,30 +88,26 @@ def get_args(args):
     arg.add_argument("-e", action="store_true",
                      help="Skip reloading gtk/xrdb/i3/sway/polybar")
 
-    return arg.parse_args(args)
+    return arg
 
 
-def process_args_exit(args):
+def parse_args_exit(parser):
     """Process args that exit."""
+    args = parser.parse_args()
+
     if not len(sys.argv) > 1:
-        print("error: wal needs to be given arguments to run.\n"
-              "       Refer to \"wal -h\" for more info.")
-        sys.exit(1)
-
-    if args.i and args.theme:
-        print("error: Conflicting arguments -i and -f.\n"
-              "       Refer to \"wal -h\" for more info.")
-        sys.exit(1)
-
-    if not args.i and not args.theme and not args.R:
-        print("error: No input specified.\n"
-              "       --theme, -i or -R are required.\n"
-              "       Refer to \"wal -h\" for more info.")
-        sys.exit(1)
+        parser.error("wal needs to be given arguments to run.")
 
     if args.v:
         print("wal", __version__)
         sys.exit(0)
+
+    if args.i and args.theme:
+        parser.error("Conflicting arguments -i and -f.")
+
+    if not args.i and not args.theme and not args.R:
+        parser.error("No input specified.\n"
+                     "--theme, -i or -R are required.")
 
     if args.r:
         reload.colors()
@@ -129,8 +125,10 @@ def process_args_exit(args):
         sys.exit(0)
 
 
-def process_args(args):
+def parse_args(parser):
     """Process args."""
+    args = parser.parse_args()
+
     if args.q:
         logging.getLogger().disabled = True
         sys.stdout = sys.stderr = open(os.devnull, "w")
@@ -181,9 +179,10 @@ def process_args(args):
 def main():
     """Main script function."""
     util.setup_logging()
-    args = get_args(sys.argv[1:])
-    process_args_exit(args)
-    process_args(args)
+    parser = get_args()
+
+    parse_args_exit(parser)
+    parse_args(parser)
 
 
 if __name__ == "__main__":
