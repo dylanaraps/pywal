@@ -41,7 +41,7 @@ def get_args():
     arg.add_argument("--backend", metavar="backend",
                      help="Which color backend to use. \
                            Use 'wal --backend' to list backends.",
-                     const="list_backends", type=str, nargs="?", default="wal")
+                     const="list_backends", type=str, nargs="?")
 
     arg.add_argument("--theme", "-f", metavar="/path/to/file or theme_name",
                      help="Which colorscheme file to use. \
@@ -104,9 +104,12 @@ def parse_args_exit(parser):
     if args.i and args.theme:
         parser.error("Conflicting arguments -i and -f.")
 
-    if not args.i and not args.theme and not args.R:
+    if not args.i and \
+       not args.theme and \
+       not args.R and \
+       not args.backend:
         parser.error("No input specified.\n"
-                     "--theme, -i or -R are required.")
+                     "--backend, --theme, -i or -R are required.")
 
     if args.r:
         reload.colors()
