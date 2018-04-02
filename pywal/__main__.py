@@ -99,8 +99,7 @@ def parse_args_exit(parser):
         parser.error("wal needs to be given arguments to run.")
 
     if args.v:
-        print("wal", __version__)
-        sys.exit(0)
+        parser.exit(0, "wal %s\n" % __version__)
 
     if args.i and args.theme:
         parser.error("Conflicting arguments -i and -f.")
