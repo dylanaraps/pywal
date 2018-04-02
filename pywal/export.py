@@ -57,13 +57,9 @@ def every(colors, output_dir=CACHE_DIR):
     util.create_dir(template_dir_user)
 
     join = os.path.join  # Minor optimization.
-
-    for file in os.scandir(template_dir):
-        if file.name != '.DS_Store':
-            template(colors, file.path, join(output_dir, file.name))
-
-    for file in os.scandir(template_dir_user):
-        if file.name != '.DS_Store':
+    for file in [*os.scandir(template_dir),
+                 *os.scandir(template_dir_user)]:
+        if file.name != ".DS_Store":
             template(colors, file.path, join(output_dir, file.name))
 
     logging.info("Exported all files.")
