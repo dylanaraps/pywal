@@ -118,12 +118,13 @@ def parse_args_exit(parser):
     if args.theme == "list_themes":
         themes = [theme.name.replace(".json", "")
                   for theme in theme.list_themes()]
-        print("Themes:", themes)
-        print("Extra: 'random' (select a random theme)")
+        print("\n - ".join(["\033[1;32mThemes\033[0m:", *sorted(themes)]))
+        print("\033[1;32mExtra\033[0m:\n - random (select a random theme)")
         sys.exit(0)
 
     if args.backend == "list_backends":
-        print("Backends:", colors.list_backends())
+        print("\n - ".join(["\033[1;32mBackends\033[0m:",
+                            *colors.list_backends()]))
         sys.exit(0)
 
 
