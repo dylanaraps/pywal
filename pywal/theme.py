@@ -72,6 +72,8 @@ def file(input_file):
 
     # Parse the theme file.
     if os.path.isfile(theme_file):
+        logging.info("Set theme to \033[1;37m%s\033[0m.",
+                     os.path.basename(theme_file))
         return parse(theme_file)
 
     else:

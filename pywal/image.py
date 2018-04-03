@@ -50,5 +50,5 @@ def get(img, cache_dir=CACHE_DIR):
     # Cache the image file path.
     util.save_file(wal_img, os.path.join(cache_dir, "wal"))
 
-    logging.info("Using image %s.", wal_img)
+    logging.info("Using image \033[1;37m%s\033[0m.", wal_img)
     return wal_img
