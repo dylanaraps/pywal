@@ -2,7 +2,7 @@
     "special": {
         "background": "#282828",
         "foreground": "#a89984",
-        "cursor": "#cc241d"
+        "cursor": "#a89984"
     },
     "colors": {
         "color0": "#282828",

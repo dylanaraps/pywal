@@ -28,7 +28,7 @@ def colors_to_dict(colors, img):
         "special": {
             "background": colors[0],
             "foreground": colors[15],
-            "cursor": colors[1]
+            "cursor": colors[15]
         },
 
         "colors": {
