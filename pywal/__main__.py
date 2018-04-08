@@ -104,16 +104,16 @@ def parse_args_exit(parser):
     if args.i and args.theme:
         parser.error("Conflicting arguments -i and -f.")
 
+    if args.r:
+        reload.colors()
+        sys.exit(0)
+
     if not args.i and \
        not args.theme and \
        not args.R and \
        not args.backend:
         parser.error("No input specified.\n"
                      "--backend, --theme, -i or -R are required.")
-
-    if args.r:
-        reload.colors()
-        sys.exit(0)
 
     if args.theme == "list_themes":
         themes = [theme.name.replace(".json", "")

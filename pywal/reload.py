@@ -14,8 +14,9 @@ from . import util
 def tty(tty_reload):
     """Load colors in tty."""
     tty_script = os.path.join(CACHE_DIR, "colors-tty.sh")
+    term = os.environ.get("TERM")
 
-    if os.path.isfile(tty_script) and tty_reload:
+    if tty_reload and term == "linux":
         subprocess.Popen(["sh", tty_script])
 
 
@@ -26,7 +27,7 @@ def xrdb(xrdb_files=None):
 
     if shutil.which("xrdb") and OS != "Darwin":
         for file in xrdb_files:
-            subprocess.run(["xrdb", "-merge", "-nocpp", file])
+            subprocess.run(["xrdb", "-merge", "-nocpp", "-quiet", file])
 
 
 def oomox(gen_theme):
@@ -81,8 +82,8 @@ def colors(cache_dir=CACHE_DIR):
     """Reload colors. (Deprecated)"""
     sequences = os.path.join(cache_dir, "sequences")
 
-    sys.stderr.write("'wal -r' is deprecated: "
-                     "Use 'cat %s' instead.\n" % sequences)
+    logging.error("'wal -r' is deprecated: "
+                  "Use 'cat %s' instead.", sequences)
 
     if os.path.isfile(sequences):
         print("".join(util.read_file(sequences)), end="")

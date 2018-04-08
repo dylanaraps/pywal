@@ -12,7 +12,7 @@ from .. import util
 
 def gen_colors(img):
     """Generate a colorscheme using Colorz."""
-    cmd = ["colorz", "-n", "6", "--bold", "0", "--no-preview"]
+    cmd = ["colorz", "-n", "6", "--bold", "0", "--no-preview", "--no-bg-img"]
     return subprocess.check_output([*cmd, img]).splitlines()
 
 
