@@ -5,7 +5,6 @@ import logging
 import os
 import shutil
 import subprocess
-import sys
 
 from .settings import CACHE_DIR, MODULE_DIR, OS
 from . import util
