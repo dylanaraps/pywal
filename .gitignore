@@ -6,3 +6,4 @@ re
 build/*
 .coverage
 .vscode/*
+__pycache__/*
