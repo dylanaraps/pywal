@@ -94,8 +94,6 @@ def get_backend(backend):
 
 def palette():
     """Generate a palette from the colors."""
-    col_width = " " * (os.get_terminal_size().columns // 8)
-
     for i in range(0, 16):
         if i % 8 == 0:
             print()
@@ -103,7 +101,7 @@ def palette():
         if i > 7:
             i = "8;5;%s" % i
 
-        print("\033[4%sm%s\033[0m" % (i, col_width), end="")
+        print("\033[4%sm%s\033[0m" % (i, " " * (80 // 20)), end="")
 
     print("\n")
 
