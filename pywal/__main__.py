@@ -48,6 +48,11 @@ def get_args():
                            Use 'wal --theme' to list builtin themes.",
                      const="list_themes", nargs="?")
 
+    arg.add_argument("--iterative", action="store_true",
+                     help="When pywal is given a directory as input and this "
+                          "flag is used: Go through the images in order "
+                          "instead of shuffled.")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -141,7 +146,7 @@ def parse_args(parser):
         shutil.rmtree(scheme_dir, ignore_errors=True)
 
     if args.i:
-        image_file = image.get(args.i)
+        image_file = image.get(args.i, iterative=args.iterative)
         colors_plain = colors.get(image_file, args.l, args.backend)
 
     if args.theme:
