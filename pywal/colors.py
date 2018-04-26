@@ -113,7 +113,12 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
     cache_file = os.path.join(*cache_name)
 
     if os.path.isfile(cache_file):
+        # Disable logging in theme.file().
+        logger = logging.getLogger()
+        logger.disabled = True
         colors = theme.file(cache_file)
+        logger.disabled = False
+
         util.Color.alpha_num = colors["alpha"]
         logging.info("Found cached colorscheme.")
 
