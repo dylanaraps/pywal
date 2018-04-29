@@ -56,8 +56,6 @@ def file(input_file):
     user_theme_file = os.path.join(CONF_DIR, "colorschemes", theme_name)
     theme_file = os.path.join(MODULE_DIR, "colorschemes", theme_name)
 
-    util.create_dir(os.path.dirname(user_theme_file))
-
     # Find the theme file.
     if os.path.isfile(input_file):
         theme_file = input_file

@@ -15,7 +15,7 @@ import os
 import shutil
 import sys
 
-from .settings import __version__, CACHE_DIR
+from .settings import __version__, CACHE_DIR, CONF_DIR
 from . import colors
 from . import export
 from . import image
@@ -186,6 +186,9 @@ def parse_args(parser):
 
 def main():
     """Main script function."""
+    util.create_dir(os.path.join(CONF_DIR, "templates"))
+    util.create_dir(os.path.join(CONF_DIR, "colorschemes"))
+
     util.setup_logging()
     parser = get_args()
 
