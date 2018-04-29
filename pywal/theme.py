@@ -55,6 +55,7 @@ def file(input_file):
     theme_name = ".".join((input_file, "json"))
     user_theme_file = os.path.join(CONF_DIR, "colorschemes", theme_name)
     theme_file = os.path.join(MODULE_DIR, "colorschemes", theme_name)
+    util.create_dir(os.path.dirname(user_theme_file))
 
     # Find the theme file.
     if os.path.isfile(input_file):
