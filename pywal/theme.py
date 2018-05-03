@@ -10,11 +10,42 @@ from .settings import CONF_DIR, MODULE_DIR
 from . import util
 
 
-def list_themes():
-    """List all installed theme files."""
-    themes = [*os.scandir(os.path.join(CONF_DIR, "colorschemes")),
-              *os.scandir(os.path.join(MODULE_DIR, "colorschemes"))]
+def list_out():
+    """List all themes in a pretty format."""
+    dark_themes = [theme.name.replace(".json", "")
+                   for theme in list_themes()]
+    ligh_themes = [theme.name.replace(".json", "")
+                   for theme in list_themes(dark=False)]
+    user_themes = [theme.name.replace(".json", "")
+                   for theme in list_themes_user()]
 
+    if user_themes:
+        print("\033[1;32mUser Themes\033[0m:")
+        print("\n - ".join(sorted(user_themes)))
+
+    print("\033[1;32mDark Themes\033[0m:")
+    print("\n - ".join(sorted(dark_themes)))
+
+    print("\033[1;32mLight Themes\033[0m:")
+    print("\n - ".join(sorted(ligh_themes)))
+
+    print("\033[1;32mExtra\033[0m:")
+    print(" - random (select a random dark theme)")
+    print(" - random_dark (select a random dark theme)")
+    print(" - random_light (select a random light theme)")
+
+
+def list_themes(dark=True):
+    """List all installed theme files."""
+    dark = "dark" if dark else "light"
+    themes = os.scandir(os.path.join(MODULE_DIR, "colorschemes", dark))
+    return [t for t in themes if os.path.isfile(t.path)]
+
+
+def list_themes_user():
+    """List user theme files."""
+    themes = [*os.scandir(os.path.join(CONF_DIR, "colorschemes/dark/")),
+              *os.scandir(os.path.join(CONF_DIR, "colorschemes/light/"))]
     return [t for t in themes if os.path.isfile(t.path)]
 
 
@@ -50,24 +81,36 @@ def parse(theme_file):
     return data
 
 
-def file(input_file):
+def get_random_theme(dark=True):
+    """Get a random theme file."""
+    themes = [theme.path for theme in list_themes(dark)]
+    random.shuffle(themes)
+    return themes[0]
+
+
+def file(input_file, light=False):
     """Import colorscheme from json file."""
+    util.create_dir(os.path.join(CONF_DIR, "colorschemes/light/"))
+    util.create_dir(os.path.join(CONF_DIR, "colorschemes/dark/"))
+
     theme_name = ".".join((input_file, "json"))
-    user_theme_file = os.path.join(CONF_DIR, "colorschemes", theme_name)
-    theme_file = os.path.join(MODULE_DIR, "colorschemes", theme_name)
-    util.create_dir(os.path.join(CONF_DIR, "colorschemes"))
+    bri = "light" if light else "dark"
+
+    user_theme_file = os.path.join(CONF_DIR, "colorschemes", bri, theme_name)
+    theme_file = os.path.join(MODULE_DIR, "colorschemes", bri, theme_name)
 
     # Find the theme file.
-    if os.path.isfile(input_file):
+    if input_file == "random" or input_file == "random_dark":
+        theme_file = get_random_theme()
+
+    elif input_file == "random_light":
+        theme_file = get_random_theme(light)
+
+    elif os.path.isfile(input_file):
         theme_file = input_file
 
     elif os.path.isfile(user_theme_file):
         theme_file = user_theme_file
-
-    elif input_file == "random":
-        themes = [theme.path for theme in list_themes()]
-        random.shuffle(themes)
-        theme_file = themes[0]
 
     # Parse the theme file.
     if os.path.isfile(theme_file):
@@ -76,5 +119,7 @@ def file(input_file):
         return parse(theme_file)
 
     else:
-        logging.error("No colorscheme file found.")
+        logging.error("No %s colorscheme file found.", bri)
+        logging.error("Try adding   '-l' to set light themes.")
+        logging.error("Try removing '-l' to set dark themes.")
         sys.exit(1)

@@ -121,10 +121,7 @@ def parse_args_exit(parser):
                      "--backend, --theme, -i or -R are required.")
 
     if args.theme == "list_themes":
-        themes = [theme.name.replace(".json", "")
-                  for theme in theme.list_themes()]
-        print("\n - ".join(["\033[1;32mThemes\033[0m:", *sorted(themes)]))
-        print("\033[1;32mExtra\033[0m:\n - random (select a random theme)")
+        theme.list_out()
         sys.exit(0)
 
     if args.backend == "list_backends":
@@ -150,7 +147,7 @@ def parse_args(parser):
         colors_plain = colors.get(image_file, args.l, args.backend)
 
     if args.theme:
-        colors_plain = theme.file(args.theme)
+        colors_plain = theme.file(args.theme, args.l)
 
     if args.R:
         colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
@@ -187,7 +184,8 @@ def parse_args(parser):
 def main():
     """Main script function."""
     util.create_dir(os.path.join(CONF_DIR, "templates"))
-    util.create_dir(os.path.join(CONF_DIR, "colorschemes"))
+    util.create_dir(os.path.join(CONF_DIR, "colorschemes/light/"))
+    util.create_dir(os.path.join(CONF_DIR, "colorschemes/dark/"))
 
     util.setup_logging()
     parser = get_args()
