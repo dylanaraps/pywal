@@ -6,6 +6,8 @@
 [![PyPI](https://img.shields.io/pypi/v/pywal.svg)](https://pypi.python.org/pypi/pywal/)
 [![Donate](https://img.shields.io/badge/donate-patreon-yellow.svg)](https://www.patreon.com/dyla)
 
+<img src="https://i.imgur.com/KeMah3u.gif" alt="gif" align="right" width="500px">
+
 Pywal is a tool that generates a color palette from the dominant colors in an image. It then applies the colors system-wide and on-the-fly in all of your favourite programs.
 
 There are currently 5 supported color generation backends, each providing a different palette of colors from each image. You're bound to find an appealing color-scheme.
