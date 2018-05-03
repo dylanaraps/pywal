@@ -21,13 +21,13 @@ def list_out():
 
     if user_themes:
         print("\033[1;32mUser Themes\033[0m:")
-        print("\n - ".join(sorted(user_themes)))
+        print(" -", "\n - ".join(sorted(user_themes)))
 
     print("\033[1;32mDark Themes\033[0m:")
-    print("\n - ".join(sorted(dark_themes)))
+    print(" -", "\n - ".join(sorted(dark_themes)))
 
     print("\033[1;32mLight Themes\033[0m:")
-    print("\n - ".join(sorted(ligh_themes)))
+    print(" -", "\n - ".join(sorted(ligh_themes)))
 
     print("\033[1;32mExtra\033[0m:")
     print(" - random (select a random dark theme)")
@@ -106,11 +106,11 @@ def file(input_file, light=False):
     elif input_file == "random_light":
         theme_file = get_random_theme(light)
 
-    elif os.path.isfile(input_file):
-        theme_file = input_file
-
     elif os.path.isfile(user_theme_file):
         theme_file = user_theme_file
+
+    elif os.path.isfile(input_file):
+        theme_file = input_file
 
     # Parse the theme file.
     if os.path.isfile(theme_file):
