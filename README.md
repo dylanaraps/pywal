@@ -1,7 +1,7 @@
 # pywal
 
+[![Discord](https://img.shields.io/discord/440354555197128704.svg)](https://discord.gg/BtnTPFF)
 [![Build Status](https://travis-ci.org/dylanaraps/pywal.svg?branch=master)](https://travis-ci.org/dylanaraps/pywal)
-[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)](https://github.com/dylanaraps/pywal)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
 [![PyPI](https://img.shields.io/pypi/v/pywal.svg)](https://pypi.python.org/pypi/pywal/)
 [![Donate](https://img.shields.io/badge/donate-patreon-yellow.svg)](https://www.patreon.com/dyla)
