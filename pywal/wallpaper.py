@@ -80,7 +80,7 @@ def set_desktop_wallpaper(desktop, img):
                      "org.cinnamon.desktop.background",
                      "picture-uri", "file://" + urllib.parse.quote(img)])
 
-    elif "gnome" in desktop or "ubuntu" in desktop:
+    elif "gnome" in desktop or "unity" in desktop:
         util.disown(["gsettings", "set",
                      "org.gnome.desktop.background",
                      "picture-uri", "file://" + urllib.parse.quote(img)])
