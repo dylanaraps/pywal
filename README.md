@@ -12,7 +12,7 @@ Pywal is a tool that generates a color palette from the dominant colors in an im
 
 There are currently 5 supported color generation backends, each providing a different palette of colors from each image. You're bound to find an appealing color-scheme.
 
-Pywal also supports predefined themes and has 250 themes built-in. You can also create your own theme files to share with others.
+Pywal also supports predefined themes and has over 250 themes built-in. You can also create your own theme files to share with others.
 
 The goal of Pywal was to be as out of the way as possible. It doesn't modify any of your existing configuration files. Instead it works around them and provides tools to integrate your system as you see fit.
 
