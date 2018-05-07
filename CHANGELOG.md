@@ -7,7 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-    
+
+## [3.0.0] - 2018-05-06
+
+Pywal now has **250** included themes! If there are any other themes
+you'd like to see added. Open an issue.
+
+- Added all of @dkeg's themes.
+- Added all themes from [terminal.sexy](https://terminal.sexy)
+- Themes are now split between `light` and `dark`.
+    - Local themes now need to be put into `~/.config/wal/colorschemes/{light,dark}`.
+- Added `unity` wallpaper support.
+
 ## [2.1.0] - 2018-04-29
 
 - Added all `base16` themes to `pywal`. @metalelf0
@@ -20,31 +31,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Limit color palette width in output.
 - Removed `-nocpp` from `xrdb` call.
 
-    
+
 ## [2.0.5] - 2018-04-05
 
 - Fixed crash when using `--theme` on Python `3.5`.
-    
+
 ## [2.0.4] - 2018-04-03
 
 - Fixed cursor color
 - Made output prettier
-    
+
 ## [2.0.3] - 2018-04-02
 
 -  args: Fixed bug where `--backend` wouldn't work.
-    
+
 ## [2.0.2] - 2018-04-02
 
 - Fixed bug where `wal -R` wouldn't work.
 - Various cleanup and refactoring.
 - Proper arg handling for `-R`, `-i` and `--theme`.
-    
+
 ## [2.0.1] - 2018-04-01
 
 - Fixed a bug where `pywal` wasn't updating files.
 - Fixed a bug where `pywal` would crash if you tried to redirect it's output.
-    
+
 ## [2.0.0] - 2018-04-01
 
 This is a big release and I've probably broken something. Expect a minor release or two to fix any bugs that arise. ~~Users of `wpgtk` I recommend not updating `pywal` until @deviantfero adds support for the new release.~~ `wpgtk` is now supported.
@@ -58,7 +69,7 @@ It's going to take me some time to update the documentation (*I've got a total r
 - image: Fixed crash when using light themes and gifs.
 - args: Added `-t` to disable `pywal` in ttys.
 - args: `-R` now works with theme files.
-- sequences: Save sequence file with `-s`. @Amar1729 
+- sequences: Save sequence file with `-s`. @Amar1729
 - misc: Added proper logging to `pywal`.
 - misc: Added palette to console output.
 - misc: Added colors/bold to console output.
@@ -66,7 +77,7 @@ It's going to take me some time to update the documentation (*I've got a total r
 
 ## Backends
 
-`pywal` now has support for different color generation backends. In addition to `pywal`'s default color generation, support was added for: 
+`pywal` now has support for different color generation backends. In addition to `pywal`'s default color generation, support was added for:
 
 - `schemer2`: https://github.com/thefryscorer/schemer2
 - `colorthief`: https://github.com/fengsp/color-thief-py
@@ -92,7 +103,7 @@ You can now store colorschemes in files and manage them using `pywal`. There are
 - Themes can be added locally at `~/.config/wal/colorschemes`.
 - `wal --theme` can be used with colorschemes exported in `json` format from https://terminal.sexy/.
 ` wal --theme /path/to/file` loads a scheme from a file.
-    
+
 ## [1.3.3] - 2018-03-03
 
 - rofi: Added colon to template.
@@ -102,13 +113,13 @@ You can now store colorschemes in files and manage them using `pywal`. There are
 - macOS: Fixed error with `.DS_Store` files. @blahsd
 - macOS: Disabled travis (*It's really broken*)
 
-    
+
 ## [1.3.2] - 2018-02-04
 
 - Fixed comment colors not being a shade of grey.
 - Added version to cache files.
 - Removed broken notifications.
-    
+
 ## [1.3.0] - 2018-02-03
 
 - Added light colorscheme support.
@@ -116,7 +127,7 @@ You can now store colorschemes in files and manage them using `pywal`. There are
     - You can use `wal -R -l` (swap to light) and `wal -R` (swap to dark) to swap between light and dark.
 
 ![scrot](https://i.imgur.com/VFzC7Vc.jpg)
-    
+
 ## [1.2.3] - 2018-02-01
 
 - Fixed typo in help. @gillescastel
@@ -126,17 +137,17 @@ You can now store colorschemes in files and manage them using `pywal`. There are
 - Added light/dark themes for rofi.
 - Oomox is now **off** by default.
     - `-g` now enables oomox.
-    
+
 ## [1.2.2] - 2018-01-09
 
 - Added `-g` to skip generating a theme with `oomox`.
-    
+
 ## [1.2.1] - 2018-01-08
 
 Remember to use wal -c after every release.
 
 - reload: Call oomox last so it doesn't block.
-    
+
 ## [1.2.0] - 2018-01-08
 
 Remember to use wal -c after every release.
@@ -144,18 +155,18 @@ Remember to use wal -c after every release.
 - Added support for `oomox`.
     - See: https://github.com/dylanaraps/pywal/wiki/Customization#gtk2gtk3
 - Removed support for `flatabulous-wal`.
-    
+
 ## [1.1.2] - 2018-01-07
 
 Remember to use `wal -c` after every release.
 
 - fixed bug related to palette sorting.
 - use color blending to create a better white.
-    
+
 ## [1.1.1] - 2018-01-06
 
 reload: Fixed permissions error.
-    
+
 ## [1.1.0] - 2018-01-03
 
 **general**
@@ -172,29 +183,29 @@ reload: Fixed permissions error.
 
 - Code cleanup.
 - Minor optimizations.
-    
+
 ## [1.0.4] - 2017-12-31
 
 - reload: Fixed issue with rofi.
 - reload: Speed up `xrdb` by using `-nocpp`
-    
+
 ## [1.0.3] - 2017-12-31
 
 - shuffle: Better error handling
 - export: Added missing rofi option.
-    
+
 ## [1.0.2] - 2017-12-29
 
 - Add back `-r` for compatibility with `wpgtk`.
     - It's still deprecated.
     - An error message is still displayed.
-    
+
 ## [1.0.1] - 2017-12-29
 
 - colors: Improve background contrast.
 - colors: Improve forground brightness and contrast.
 - general: Fix `pywal` causing pc beeps.
-    
+
 ## [1.0.0] - 2017-12-27
 
 \[[Installation](https://github.com/dylanaraps/pywal/wiki/Installation)\] \[[Getting Started](https://github.com/dylanaraps/pywal/wiki/Getting-Started)\] \[[Customization](https://github.com/dylanaraps/pywal/wiki/Customization)\] \[[Wiki](https://github.com/dylanaraps/pywal/wiki)\]
@@ -235,7 +246,7 @@ This took a lot of trial and error to make sure it works across all terminals an
 
 ### Added User Template Support
 
-You can now define your own custom `pywal` template files or you can overwrite the default template files. Any files stored in `~/.config/wal/templates` will be processed and exported to `~/.cache/wal/` under the same name. 
+You can now define your own custom `pywal` template files or you can overwrite the default template files. Any files stored in `~/.config/wal/templates` will be processed and exported to `~/.cache/wal/` under the same name.
 
 The user template files follow the exact same syntax as the built-in templates. See the built-in templates for syntax examples: https://github.com/dylanaraps/pywal/tree/master/pywal/templates
 
@@ -267,19 +278,19 @@ rofi.color-window: BG, BG, BG
 ### Args
 
 - Added `-s` to disable changing terminal colors on the fly.
-    
+
 ## [0.7.5] - 2017-12-19
 
 - Really fixed wallpaper bug.
-    
+
 ## [0.7.4] - 2017-12-19
 
 - Fixed wallpaper not changing in WMs.
-    
+
 ## [0.7.3] - 2017-12-17
 
 - Fixed lint error.
-    
+
 ## [0.7.2] - 2017-12-17
 
 - Fixed license file not appearing in release tarballs.
@@ -289,98 +300,98 @@ rofi.color-window: BG, BG, BG
 - Fixed sway error.
 - Added sway wallpaper support.
 - Made wallpaper setting faster for WMs.
-    
+
 ## [0.7.0] - 2017-10-19
 
 - Fixed failing tests on macOS. @linuxunil
 - Added workaround for cursor color issues.
 - Use run instead of popen so that things are closed correctly. @linuxunil
-- Added resource file for Sway. @ranisalt 
+- Added resource file for Sway. @ranisalt
 - Set `fzf` colors.
-    
+
 ## [0.6.9] - 2017-08-27
 
 - sequences: Fix flash on color reload.
-    
+
 ## [0.6.8] - 2017-08-27
 
 - Fixed `File not found` error on Windows.
-    
+
 ## [0.6.7] - 2017-08-25
 
 - os: Added support for Windows.
     - Cache dir on Windows is: `%UserProfile%\.cache\wal`
     - Wallpaper setting works on un-activated Windows copies (*neat*).
     - Note: Changing terminal colors doesn't work on Windows.
-- xres: Fixed URxvt border not having transparency applied. @JoshuaRLi 
-- xres: Added `emacs` background/foreground. @adamsdarlingtower 
+- xres: Fixed URxvt border not having transparency applied. @JoshuaRLi
+- xres: Added `emacs` background/foreground. @adamsdarlingtower
 
 
-    
+
 ## [0.6.6] - 2017-08-16
 
 - reload: Fixed bug on macOS systems with XQuartz.
-    
+
 ## [0.6.4] - 2017-08-15
 
 - image: Fixed issue with relative file paths.
-    
+
 ## [0.6.3] - 2017-08-13
 
 - wallpaper: Remove useless print.
-    
+
 ## [0.6.2] - 2017-08-13
 
 - wallpaper: Fix `urllib` error when using GNOME or MATE.
-    
+
 ## [0.6.1] - 2017-08-13
 
 - wallpaper: Correctly encode file path to URI.
-    
+
 ## [0.6.0] - 2017-08-12
 
 - python: Added support for Python 3.5.
 - api: `Path` types are no longer accepted by the api. Use `Strings` instead,
-    
+
 ## [0.5.13] - 2017-08-12
 
 - args: Added `-R` to restore the previous colorscheme.
-- reload: Theme is now option for GTK reload. @deviantfero 
+- reload: Theme is now option for GTK reload. @deviantfero
 - colors: Colors are now correctly set for UXTerm.
-- tests: Added more tests. @aeikenberry 
-    
+- tests: Added more tests. @aeikenberry
+
 ## [0.5.12] - 2017-08-03
 
-- Fix wallpaper on macOS. @aeikenberry 
-- Added `-e` to skip reloading the environment. @aeikenberry 
-    
+- Fix wallpaper on macOS. @aeikenberry
+- Added `-e` to skip reloading the environment. @aeikenberry
+
 ## [0.5.11] - 2017-08-02
 
-- colors: Un-hardcode `color8`. 
+- colors: Un-hardcode `color8`.
     - `color8` is now generated from `color0`.
-    
+
 ## [0.5.10] - 2017-08-02
 
-- `pywal` now colors iTerm2's window and tabs. @aeikenberry 
+- `pywal` now colors iTerm2's window and tabs. @aeikenberry
 - Fixed output message inconsistencies.
-    
+
 ## [0.5.9] - 2017-07-31
 
 - Fixed `hyper-wal` not working with `pywal`.
-    
+
 ## [0.5.8] - 2017-07-31
 
 - Added support for macOS (iTerm2 only)
     - Thanks to @aeikenberry for testing.
 - Fixed issue with `tk`.
 - Fixed bug with brighter background colors.
-    
+
 ## [0.5.7] - 2017-07-30
 
 - general: Use `sys.exit` everywhere instead of `exit`.
 - export: Export colors in `yaml` format.
 - wallpaper: Fix a crash on first run of `wal`.
-    
+
 ## [0.5.6] - 2017-07-28
 
 - css: Fixed wallpaper variable not working in `css`.
@@ -394,7 +405,7 @@ body {
   background-image: var(--wallpaper);
 }
 ```
-    
+
 ## [0.5.5] - 2017-07-28
 
 - pypi: Don't load a 3MB image on pypi or github.
@@ -403,7 +414,7 @@ body {
 - install: Fixed gtk-reload not being installed with pip.
 
 
-    
+
 ## [0.5.1] - 2017-07-28
 
 - export: Added GTK2 support.
@@ -413,10 +424,10 @@ body {
     - example: `wal -i img.jpg -b "#333333"`
 - colors: `wal` now darkens the background color if the contrast between the wallpaper is too low.
     - See: #60 for an example.
-    
+
 ## [0.5.0] - 2017-07-24
 
-There aren't any breaking changes in this release but due to 
+There aren't any breaking changes in this release but due to
 the size I've bumped the major version number.
 
 - api: `pywal` can now be imported and used as a module.
@@ -431,7 +442,7 @@ the size I've bumped the major version number.
     - Parent dirs are created on file save if they don't exist.
 
 
-    
+
 ## [0.4.0] - 2017-07-10
 
 - Wallpaper name/location is now cached in the export files.
@@ -470,54 +481,54 @@ Example coloscheme file with wallpaper:
     }
 }
 ```
-    
+
 ## [0.3.10] - 2017-07-08
 
 - Better outdated Python version error.
 - Fixed infinite loop when `wal` is given a very simple image.
 - `wal` will now abort if it can't find `16` colors after 20 loops.
 - Fixed a bug where a cached scheme would be used for the wrong image.
-    
+
 ## [0.3.8] - 2017-07-07
 
 - Added message to let the user know that `pywal` requires Python `3.6` or greater.
-    
+
 ## [0.3.7] - 2017-07-06
 
 - Remove executable permissions from Python files.
 - Fix `set_grey()` type mismatch.
 - Update docs.
 - Fix a bug causing the wallpaper to not be set correctly.
-    
+
 ## [0.3.6] - 2017-07-01
 
 - template: Export generic xrdb special colors.
-    
+
 ## [0.3.5] - 2017-06-30
 
 - Add back `MANIFEST.in` as it's actually needed.
-    
+
 ## [0.3.4] - 2017-06-30
 
 - colors: Fix bug with `i3` titlebars being given the wrong colors.
 - template: Added a template for Konsole theme generation.
 - general: Remove `MANIFEST.in`. Turns out it's uneeded.
-    
+
 ## [0.3.3] - 2017-06-30
 
-- Remove non-ascii char from package description. #23 
-    
+- Remove non-ascii char from package description. #23
+
 ## [0.3.2] - 2017-06-30
 
 - Really fix templates not being installed.
-    
+
 ## [0.3.1] - 2017-06-30
 
 - Fix templates not being installed with `pip`.
-    
+
 ## [0.3.0] - 2017-06-30
 
-- Add `-f` flag to read colorscheme from a file. @opatut 
+- Add `-f` flag to read colorscheme from a file. @opatut
     - Added support for importing colors in a `.json` format.
 - Exported files are now created using template files.
     - Added `json` export format. (`colors.json`)
@@ -552,65 +563,65 @@ You can now import your own colorschemes using a json file in the following form
     }
 }
 ```
-    
+
 ## [0.2.6] - 2017-06-28
 
 - Fix bug when shuffling images.
 - Use `os.scandir` for a speed boost.
 
-    
+
 ## [0.2.5] - 2017-06-27
 
 - Added unit tests.
-    
+
 ## [0.2.4] - 2017-06-27
 
 - Remove `find_packages()`.
 
 Note to self: Don't flag releases before coffee.
-    
+
 ## [0.2.3] - 2017-06-27
 
 - Fix missing import error.
-    
+
 ## [0.2.2] - 2017-06-27
 
 - Fix `console_script` `entry_point`.  #10 - @danielx
-    
+
 ## [0.2.1] - 2017-06-26
 
 - Fix bug with `vte` terminals.
-    
+
 ## [0.2.0] - 2017-06-26
 
 - Moved `wal` into a module and split the script into multiple files.
 - Removed all usage of global variables.
 - General cleanup.
-    
+
 ## [0.1.6] - 2017-06-25
 
 - Fix incorrect Python shebang #5.
 - [wallpaper] Surpress `xfconf` output.
-    
+
 ## [0.1.5] - 2017-06-23
 
 - Cleanup
 - Name change
-    
+
 ## [0.1.4] - 2017-06-22
 
 - Display a notification during generation.
 - Remove macOS code.
     - The main `wal` functions don't work on macOS so why support it in minor areas?
-    
+
 ## [0.1.3] - 2017-06-22
 
-- I love pypi! 
-    
+- I love pypi!
+
 ## [0.1.2] - 2017-06-22
 
-- Remove all markdown conversion from `setup.py`. 
-    
+- Remove all markdown conversion from `setup.py`.
+
 ## [0.1.1] - 2017-06-22
 
 - Fix pypi long description.
@@ -619,7 +630,8 @@ Note to self: Don't flag releases before coffee.
 
 
 
-[Unreleased]: https://github.com/dylanaraps/pywal/compare/2.1.0...HEAD
+[Unreleased]: https://github.com/dylanaraps/pywal/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/dylanaraps/pywal/compare/2.1.0...3.0.0
 [2.1.0]: https://github.com/dylanaraps/pywal/compare/2.0.5...2.1.0
 [2.0.5]: https://github.com/dylanaraps/pywal/compare/2.0.4...2.0.5
 [2.0.4]: https://github.com/dylanaraps/pywal/compare/2.0.3...2.0.4
