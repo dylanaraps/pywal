@@ -54,7 +54,8 @@ def create_sequences(colors):
                       set_special(12, colors["special"]["cursor"], "l"),
                       set_special(13, colors["special"]["foreground"], "l"),
                       set_special(17, colors["special"]["foreground"], "l"),
-                      set_special(19, colors["special"]["background"], "l")])
+                      set_special(19, colors["special"]["background"], "l"),
+                      set_color(232, colors["special"]["background"])])
 
     # This escape sequence doesn't work in VTE terminals and their parsing of
     # unknown sequences is garbage so we need to use some escape sequence
