@@ -1,10 +1,12 @@
-# pywal
+<h1 align="center"><img src="https://i.imgur.com/9cnHuu7.png" width="200px"></h1>
 
-[![Discord](https://img.shields.io/discord/440354555197128704.svg)](https://discord.gg/BtnTPFF)
-[![Build Status](https://travis-ci.org/dylanaraps/pywal.svg?branch=master)](https://travis-ci.org/dylanaraps/pywal)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
-[![PyPI](https://img.shields.io/pypi/v/pywal.svg)](https://pypi.python.org/pypi/pywal/)
-[![Donate](https://img.shields.io/badge/donate-patreon-yellow.svg)](https://www.patreon.com/dyla)
+<p align="center">
+<a href="https://discord.gg/BtnTPFF"><img src="https://img.shields.io/discord/440354555197128704.svg"></a>
+<a href="https://travis-ci.org/dylanaraps/pywal"><img src="https://travis-ci.org/dylanaraps/pywal.svg?branch=master"></a>
+<a href="./LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+<a href="https://pypi.python.org/pypi/pywal/"><img src="https://img.shields.io/pypi/v/pywal.svg"></a>
+<a href="https://www.patreon.com/dyla"><img src="https://img.shields.io/badge/donate-patreon-yellow.svg"></a>
+</p>
 
 <img src="https://i.imgur.com/uFhRiFB.gif" alt="gif" align="right" width="500px">
 
