@@ -1,4 +1,5 @@
-<h1 align="center"><img src="https://i.imgur.com/9cnHuu7.png" width="200px"></h1>
+<h3 align="center"><img src="https://i.imgur.com/9cnHuu7.png" width="200px"></h3>
+<p align="center">Generate and change color-schemes on the fly.</p>
 
 <p align="center">
 <a href="https://discord.gg/BtnTPFF"><img src="https://img.shields.io/discord/440354555197128704.svg"></a>
