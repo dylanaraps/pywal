@@ -9,7 +9,7 @@
 <a href="https://www.patreon.com/dyla"><img src="https://img.shields.io/badge/donate-patreon-yellow.svg"></a>
 </p>
 
-<img src="https://i.imgur.com/VfkgB1X.png" alt="gif" align="right" width="500px">
+<img src="https://i.imgur.com/HhK3LDv.jpg" alt="img" align="right" width="400px">
 
 Pywal is a tool that generates a color palette from the dominant colors in an image. It then applies the colors system-wide and on-the-fly in all of your favourite programs.
 
@@ -21,7 +21,7 @@ The goal of Pywal was to be as out of the way as possible. It doesn't modify any
 
 Terminal emulators and TTYs have their color-schemes updated in real-time with no delay. With minimal configuration this functionality can be extended to almost anything running on your system.
 
-### For more information: \[[Installation](https://github.com/dylanaraps/pywal/wiki/Installation)\] \[[Getting Started](https://github.com/dylanaraps/pywal/wiki/Getting-Started)\] \[[Customization](https://github.com/dylanaraps/pywal/wiki/Customization)\] \[[Wiki](https://github.com/dylanaraps/pywal/wiki)\]
+### More: \[[Installation](https://github.com/dylanaraps/pywal/wiki/Installation)\] \[[Getting Started](https://github.com/dylanaraps/pywal/wiki/Getting-Started)\] \[[Customization](https://github.com/dylanaraps/pywal/wiki/Customization)\] \[[Wiki](https://github.com/dylanaraps/pywal/wiki)\]
 
 
 <sub>[Screenshot Examples (Reddit)](https://www.reddit.com/r/unixporn/search?q=wal&restrict_sr=on&sort=relevance&t=all)</sub>
