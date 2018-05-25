@@ -14,8 +14,10 @@ class Testsequences(unittest.TestCase):
 
     def test_set_special(self):
         """> Create special escape sequence."""
-        util.Color.alpha_num = "100"
-        result = sequences.set_special(11, COLORS["special"]["background"])
+        alpha = "100"
+        result = sequences.set_special(11,
+                                       COLORS["special"]["background"],
+                                       "h", alpha)
 
         if platform.uname()[0] == "Darwin":
             self.assertEqual(result, "\033]Ph1F211E\033\\")
@@ -24,8 +26,10 @@ class Testsequences(unittest.TestCase):
 
     def test_set_special_alpha(self):
         """> Create special escape sequence with alpha."""
-        util.Color.alpha_num = "99"
-        result = sequences.set_special(11, COLORS["special"]["background"])
+        alpha = "99"
+        result = sequences.set_special(11,
+                                       COLORS["special"]["background"],
+                                       "h", alpha)
 
         if platform.uname()[0] == "Darwin":
             self.assertEqual(result, "\033]Ph1F211E\033\\")
