@@ -9,10 +9,8 @@ from .settings import CACHE_DIR, OS
 from . import util
 
 
-def set_special(index, color, iterm_name="h"):
+def set_special(index, color, iterm_name="h", alpha=100):
     """Convert a hex color to a special sequence."""
-    alpha = util.Color.alpha_num
-
     if OS == "Darwin":
         return "\033]P%s%s\033\\" % (iterm_name, color.strip("#"))
 
@@ -41,6 +39,8 @@ def set_iterm_tab_color(color):
 
 def create_sequences(colors):
     """Create the escape sequences."""
+    alpha = colors["alpha"]
+
     # Colors 0-15.
     sequences = [set_color(index, colors["colors"]["color%s" % index])
                  for index in range(16)]
@@ -49,13 +49,15 @@ def create_sequences(colors):
     # Source: https://goo.gl/KcoQgP
     # 10 = foreground, 11 = background, 12 = cursor foregound
     # 13 = mouse foreground
-    sequences.extend([set_special(10, colors["special"]["foreground"], "g"),
-                      set_special(11, colors["special"]["background"], "h"),
-                      set_special(12, colors["special"]["cursor"], "l"),
-                      set_special(13, colors["special"]["foreground"], "l"),
-                      set_special(17, colors["special"]["foreground"], "l"),
-                      set_special(19, colors["special"]["background"], "l"),
-                      set_color(232, colors["special"]["background"])])
+    sequences.extend([
+        set_special(10, colors["special"]["foreground"], "g"),
+        set_special(11, colors["special"]["background"], "h", alpha),
+        set_special(12, colors["special"]["cursor"], "l"),
+        set_special(13, colors["special"]["foreground"], "l"),
+        set_special(17, colors["special"]["foreground"], "l"),
+        set_special(19, colors["special"]["background"], "l"),
+        set_color(232, colors["special"]["background"])
+    ])
 
     # This escape sequence doesn't work in VTE terminals and their parsing of
     # unknown sequences is garbage so we need to use some escape sequence
@@ -65,9 +67,11 @@ def create_sequences(colors):
     # \033[8m                # Conceal text.
     # \033]708;#000000\033\\ # Garbage sequence.
     # \033[u                 # Restore cursor position.
-    sequences.extend(["\033[s\033[1000H\033[8m%s\033[u" %
-                      set_special(708, colors['special']['background']),
-                      set_special(13, colors["special"]["cursor"], "l")])
+    sequences.extend([
+        "\033[s\033[1000H\033[8m%s\033[u" %
+        set_special(708, colors["special"]["background"], "h", alpha),
+        set_special(13, colors["special"]["cursor"], "l")
+    ])
 
     if OS == "Darwin":
         sequences += set_iterm_tab_color(colors["special"]["background"])

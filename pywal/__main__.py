@@ -142,6 +142,9 @@ def parse_args(parser):
         scheme_dir = os.path.join(CACHE_DIR, "schemes")
         shutil.rmtree(scheme_dir, ignore_errors=True)
 
+    if args.a:
+        util.Color.alpha_num = args.a
+
     if args.i:
         image_file = image.get(args.i, iterative=args.iterative)
         colors_plain = colors.get(image_file, args.l, args.backend)
@@ -151,9 +154,6 @@ def parse_args(parser):
 
     if args.R:
         colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
-
-    if args.a:
-        util.Color.alpha_num = args.a
 
     if args.b:
         args.b = "#%s" % (args.b.strip("#"))
