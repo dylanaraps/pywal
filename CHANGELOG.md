@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Added Tempus themes.
+- Added `LS_COLORS` to `colors.sh` to fix color issues.
+- Compressed all theme files.
+- Don’t print directory of image used.
+- Fixed alpha value not persisting with `wal -R`.
+- Fixed vim-airline theme when used with light color-schemes.
+
 
 ## [3.0.0] - 2018-05-06
 
