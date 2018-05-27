@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+
+## [3.0.1] - 2018-05-27
+
 - Added Tempus themes.
 - Added `LS_COLORS` to `colors.sh` to fix color issues.
 - Compressed all theme files.
@@ -637,7 +640,8 @@ Note to self: Don't flag releases before coffee.
 
 
 
-[Unreleased]: https://github.com/dylanaraps/pywal/compare/3.0.0...HEAD
+[Unreleased]: https://github.com/dylanaraps/pywal/compare/3.0.1...HEAD
+[3.0.1]: https://github.com/dylanaraps/pywal/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/dylanaraps/pywal/compare/2.1.0...3.0.0
 [2.1.0]: https://github.com/dylanaraps/pywal/compare/2.0.5...2.1.0
 [2.0.5]: https://github.com/dylanaraps/pywal/compare/2.0.4...2.0.5
