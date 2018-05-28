@@ -186,6 +186,7 @@ def main():
     util.create_dir(os.path.join(CONF_DIR, "templates"))
     util.create_dir(os.path.join(CONF_DIR, "colorschemes/light/"))
     util.create_dir(os.path.join(CONF_DIR, "colorschemes/dark/"))
+    util.create_dir(os.path.join(CACHE_DIR, "wallpapers"))
 
     util.setup_logging()
     parser = get_args()
