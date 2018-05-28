@@ -35,21 +35,12 @@ def has_im():
 def gen_colors(img):
     """Format the output from imagemagick into a list
        of hex colors."""
-    magick_command = has_im()
+    raw_colors = imagemagick(20, img, has_im())
 
-    for i in range(0, 20, 1):
-        raw_colors = imagemagick(16 + i, img, magick_command)
-
-        if len(raw_colors) > 16:
-            break
-
-        elif i == 19:
-            logging.error("Imagemagick couldn't generate a suitable palette.")
-            sys.exit(1)
-
-        else:
-            logging.warning("Imagemagick couldn't generate a palette.")
-            logging.warning("Trying a larger palette size %s", 16 + i)
+    if len(raw_colors) < 16:
+        logging.error("Imagemagick couldn't generate a palette.")
+        logging.error("Try a different image or backend.")
+        sys.exit(1)
 
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
@@ -72,7 +63,7 @@ def adjust(colors, light):
     else:
         # Darken the background color slightly.
         if raw_colors[0][1] != "0":
-            raw_colors[0] = util.darken_color(raw_colors[0], 0.25)
+            raw_colors[0] = util.darken_color(raw_colors[0], 0.40)
 
         raw_colors[7] = util.blend_color(raw_colors[7], "#EEEEEE")
         raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
