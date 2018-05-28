@@ -4,6 +4,7 @@ Get the image file.
 import logging
 import os
 import random
+import requests
 import re
 import sys
 
@@ -71,6 +72,9 @@ def get(img, cache_dir=CACHE_DIR, iterative=False):
         else:
             wal_img = get_random_image(img)
 
+    elif re.match('^http[s]?.*\.(png|jpg|jpeg|jpe|gif)$', img):
+        wal_img = download_image(img, cache_dir)
+
     else:
         logging.error("No valid image file found.")
         sys.exit(1)
@@ -82,3 +86,21 @@ def get(img, cache_dir=CACHE_DIR, iterative=False):
 
     logging.info("Using image \033[1;37m%s\033[0m.", os.path.basename(wal_img))
     return wal_img
+
+
+def download_image(url, cache_dir=CACHE_DIR):
+    """Download image from url"""
+    fname = url.split('/')[-1]
+    img = os.path.join(cache_dir, "wallpapers", fname)
+    r = requests.get(url, stream=True)
+    try:
+        if r.ok:
+            with open(img, 'wb') as f:
+                for chunk in r.iter_content(1024):
+                    f.write(chunk)
+            return img
+        else:
+            raise r.status_code
+    except:
+        logging.error("No valid image file found.")
+        sys.exit(1)
