@@ -6,7 +6,6 @@
 <a href="https://travis-ci.org/dylanaraps/pywal"><img src="https://travis-ci.org/dylanaraps/pywal.svg?branch=master"></a>
 <a href="./LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
 <a href="https://pypi.python.org/pypi/pywal/"><img src="https://img.shields.io/pypi/v/pywal.svg"></a>
-<a href="http://pepy.tech/count/pywal"><img src="http://pepy.tech/badge/pywal"></a>
 <a href="https://www.patreon.com/dyla"><img src="https://img.shields.io/badge/donate-patreon-yellow.svg"></a>
 </p>
 
