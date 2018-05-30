@@ -2,8 +2,6 @@
 Generate a colorscheme using Colorz.
 """
 import logging
-import shutil
-import subprocess
 import sys
 
 try:
