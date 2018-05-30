@@ -44,6 +44,7 @@ def get_export_type(export_type):
         "shell": "colors.sh",
         "sway": "colors-sway",
         "tty": "colors-tty.sh",
+        "vscode": "colors-vscode.json",
         "xresources": "colors.Xresources",
         "yaml": "colors.yml",
     }.get(export_type, export_type)
