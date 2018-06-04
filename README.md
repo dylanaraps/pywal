@@ -7,6 +7,7 @@
 <a href="./LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
 <a href="https://pypi.python.org/pypi/pywal/"><img src="https://img.shields.io/pypi/v/pywal.svg"></a>
 <a href="https://www.patreon.com/dyla"><img src="https://img.shields.io/badge/donate-patreon-yellow.svg"></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=V7QNJNKS3WYVS"><img src="https://img.shields.io/badge/donate-paypal-green.svg"></a>
 </p>
 
 <img src="https://i.imgur.com/HhK3LDv.jpg" alt="img" align="right" width="400px">
@@ -26,9 +27,6 @@ Terminal emulators and TTYs have their color-schemes updated in real-time with n
 
 ## Donate
 
-Donations will allow me to spend more time working on `pywal`.
+Donations allow me to spend more time working on `pywal` and my other Open Source projects. If you like `pywal` and want to give back in some way you can donate at the links below.
 
-If you like `pywal` and want to give back in some way you can donate here:
-
-**https://patreon.com/dyla**
-
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=V7QNJNKS3WYVS"><img src="https://img.shields.io/badge/donate-paypal-green.svg"></a> <a href="https://www.patreon.com/dyla"><img src="https://img.shields.io/badge/donate-patreon-yellow.svg"></a>
