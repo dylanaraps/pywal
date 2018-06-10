@@ -15,8 +15,8 @@ def template(colors, input_file, output_file=None):
     template_data = util.read_file_raw(input_file)
 
     # Match all substitution markers
-    regex = r"(?<!{){[^{|}]+}"
-    matches = re.finditer(regex, "".join(template_data), re.MULTILINE)
+    matches = re.finditer(r"(?<!{){[^{|}]+}", "".join(template_data),
+        re.MULTILINE)
 
     for match in matches:
         # Check that this color doesn't already exist
@@ -32,8 +32,9 @@ def template(colors, input_file, output_file=None):
                 if not hasattr(attr, piece):
                     # Generate new color using function from util.py
                     func, arg = piece.strip(")").split("(")
+                    arg = arg.split(",")
                     new_color = util.Color(
-                        getattr(util, func)(attr.hex_color, arg))
+                        getattr(util, func)(attr.hex_color, *arg))
                     setattr(attr, piece, new_color)
                     attr = getattr(attr, piece)
 
