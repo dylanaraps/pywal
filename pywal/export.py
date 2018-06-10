@@ -23,16 +23,17 @@ def template(colors, input_file, output_file=None):
         match_str = match.group().strip("{}")
         if match_str not in colors:
             # Extract original color and functions
-            col,_,pieces = match_str.partition(".")
+            attr, _, pieces = match_str.partition(".")
+            attr = colors[attr]
             pieces = pieces.split(".")
-            attr = colors[col]
             # Apply every function to the original color
             for piece in pieces:
                 # Check if this sub-color has already been generated
                 if not hasattr(attr, piece):
                     # Generate new color using function from util.py
                     func, arg = piece.strip(")").split("(")
-                    new_color = util.Color(getattr(util, func)(attr.hex_color, arg))
+                    new_color = util.Color(
+                        getattr(util, func)(attr.hex_color, arg))
                     setattr(attr, piece, new_color)
                     attr = getattr(attr, piece)
 
