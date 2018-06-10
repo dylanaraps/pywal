@@ -123,7 +123,7 @@ def rgb_to_hex(color):
 
 def darken_color(color, amount):
     """Darken a hex color."""
-    if type(amount) is not float:
+    if not isinstance(amount, float):
         amount = float(amount) / 100.0
     color = [int(col * (1 - amount)) for col in hex_to_rgb(color)]
     return rgb_to_hex(color)
@@ -131,7 +131,7 @@ def darken_color(color, amount):
 
 def lighten_color(color, amount):
     """Lighten a hex color."""
-    if type(amount) is not float:
+    if not isinstance(amount, float):
         amount = float(amount) / 100.0
     color = [int(col + (255 - col) * amount) for col in hex_to_rgb(color)]
     return rgb_to_hex(color)
