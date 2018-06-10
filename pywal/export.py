@@ -16,7 +16,7 @@ def template(colors, input_file, output_file=None):
 
     # Match all substitution markers
     matches = re.finditer(r"(?<!{){[^{|}]+}", "".join(template_data),
-        re.MULTILINE)
+                          re.MULTILINE)
 
     for match in matches:
         # Check that this color doesn't already exist
