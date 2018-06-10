@@ -14,27 +14,13 @@ def template(colors, input_file, output_file=None):
        save the file elsewhere."""
     template_data = util.read_file_raw(input_file)
 
-    # Match all substitution markers
+    colors["function"] = dict()
     regex = r"(?<!{){[^{|}]+}"
     matches = re.finditer(regex, "".join(template_data), re.MULTILINE)
 
-    for match in matches:
-        # Check that this color doesn't already exist
-        match_str = match.group().strip("{}")
-        if match_str not in colors:
-            # Extract original color and functions
-            col,_,pieces = match_str.partition(".")
-            pieces = pieces.split(".")
-            attr = colors[col]
-            # Apply every function to the original color
-            for piece in pieces:
-                # Check if this sub-color has already been generated
-                if not hasattr(attr, piece):
-                    # Generate new color using function from util.py
-                    func, arg = piece.strip(")").split("(")
-                    new_color = util.Color(getattr(util, func)(attr.hex_color, arg))
-                    setattr(attr, piece, new_color)
-                    attr = getattr(attr, piece)
+    for i, match in enumerate(matches):
+        i += 1
+        colors["function"][match.group()] = util.Color("#This is a test")
 
     template_data = "".join(template_data).format(**colors)
     util.save_file(template_data, output_file)
@@ -47,6 +33,7 @@ def flatten_colors(colors):
                   "alpha": colors["alpha"],
                   **colors["special"],
                   **colors["colors"]}
+    print (all_colors.items())
     return {k: util.Color(v) for k, v in all_colors.items()}
 
 
