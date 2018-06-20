@@ -30,11 +30,9 @@ def set_color(index, color):
 
 def set_iterm_tab_color(color):
     """Set iTerm2 tab/window color"""
-    return """
-    \033]6;1;bg;red;brightness;%s\a
-    \033]6;1;bg;green;brightness;%s\a
-    \033]6;1;bg;blue;brightness;%s\a
-    """ % (*util.hex_to_rgb(color),)
+    return ("\033]6;1;bg;red;brightness;%s\a"
+            "\033]6;1;bg;green;brightness;%s\a"
+            "\033]6;1;bg;blue;brightness;%s\a") % (*util.hex_to_rgb(color),)
 
 
 def create_sequences(colors):
