@@ -22,8 +22,8 @@ def set_special(index, color, iterm_name="h", alpha=100):
 
 def set_color(index, color):
     """Convert a hex color to a text color sequence."""
-    if OS == "Darwin":
-        return "\033]P%x%s\033\\" % (index, color.strip("#"))
+    if OS == "Darwin" and index < 20:
+        return "\033]P%1x%s\033\\" % (index, color.strip("#"))
 
     return "\033]4;%s;%s\033\\" % (index, color)
 
