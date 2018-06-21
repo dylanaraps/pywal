@@ -116,6 +116,11 @@ def parse_args_exit(parser):
         reload.colors()
         sys.exit(0)
 
+    if args.c:
+        scheme_dir = os.path.join(CACHE_DIR, "schemes")
+        shutil.rmtree(scheme_dir, ignore_errors=True)
+        sys.exit(0)
+
     if not args.i and \
        not args.theme and \
        not args.R and \
@@ -140,10 +145,6 @@ def parse_args(parser):
     if args.q:
         logging.getLogger().disabled = True
         sys.stdout = sys.stderr = open(os.devnull, "w")
-
-    if args.c:
-        scheme_dir = os.path.join(CACHE_DIR, "schemes")
-        shutil.rmtree(scheme_dir, ignore_errors=True)
 
     if args.a:
         util.Color.alpha_num = args.a
