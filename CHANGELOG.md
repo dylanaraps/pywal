@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Added `--saturate` to change color saturation.
+    - Takes a float as its value: `0.0` to `1.0`.
+- Added `vim` output file.
+- Fixed `LS_COLORS` issue.
+- Fixed issues in iTerm2 on macOS.
+- Fixed hang caused by `imagemagick`.
+
 
 ## [3.0.1] - 2018-05-27
 
