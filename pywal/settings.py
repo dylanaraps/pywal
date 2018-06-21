@@ -13,7 +13,7 @@ import os
 import platform
 
 
-__version__ = "3.0.1"
+__version__ = "3.1.0"
 __cache_version__ = "1.1.0"
 
 
