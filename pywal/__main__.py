@@ -53,6 +53,9 @@ def get_args():
                           "flag is used: Go through the images in order "
                           "instead of shuffled.")
 
+    arg.add_argument("--saturate", metavar="0.0-1.0",
+                     help="Set the color saturation.")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -147,7 +150,8 @@ def parse_args(parser):
 
     if args.i:
         image_file = image.get(args.i, iterative=args.iterative)
-        colors_plain = colors.get(image_file, args.l, args.backend)
+        colors_plain = colors.get(image_file, args.l, args.backend,
+                                  sat=args.saturate)
 
     if args.theme:
         colors_plain = theme.file(args.theme, args.l)
