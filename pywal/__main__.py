@@ -104,7 +104,8 @@ def parse_args_exit(parser):
     args = parser.parse_args()
 
     if not len(sys.argv) > 1:
-        parser.error("wal needs to be given arguments to run.")
+        parser.print_help()
+        sys.exit(1)
 
     if args.v:
         parser.exit(0, "wal %s\n" % __version__)
