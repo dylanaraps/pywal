@@ -56,6 +56,9 @@ def get_args():
     arg.add_argument("--saturate", metavar="0.0-1.0",
                      help="Set the color saturation.")
 
+    arg.add_argument("--preview", action="store_true",
+                     help="Print the current color palette.")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -109,6 +112,11 @@ def parse_args_exit(parser):
 
     if args.v:
         parser.exit(0, "wal %s\n" % __version__)
+
+    if args.preview:
+        print("Current colorscheme:", sep='')
+        colors.palette()
+        sys.exit(0)
 
     if args.i and args.theme:
         parser.error("Conflicting arguments -i and -f.")
