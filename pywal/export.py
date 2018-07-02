@@ -37,6 +37,7 @@ def get_export_type(export_type):
         "gtk2": "colors-gtk2.rc",
         "json": "colors.json",
         "konsole": "colors-konsole.colorscheme",
+        "kitty": "colors-kitty.conf",
         "plain": "colors",
         "putty": "colors-putty.reg",
         "rofi": "colors-rofi.Xresources",
