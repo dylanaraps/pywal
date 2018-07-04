@@ -65,6 +65,12 @@ def i3():
         util.disown(["i3-msg", "reload"])
 
 
+def kitty():
+    """ Reload kitty colors. """
+    if shutil.which("kitty"):
+        util.disown(["kitty", "@", "set-colors", "--all"])
+
+
 def polybar():
     """Reload polybar colors."""
     if shutil.which("polybar"):
@@ -92,6 +98,7 @@ def env(xrdb_file=None, tty_reload=True):
     """Reload environment."""
     xrdb(xrdb_file)
     i3()
+    kitty()
     sway()
     polybar()
     logging.info("Reloaded environment.")
