@@ -61,25 +61,25 @@ def gtk():
 
 def i3():
     """Reload i3 colors."""
-    if shutil.which("i3-msg"):
+    if shutil.which("i3-msg") and util.get_pid("i3"):
         util.disown(["i3-msg", "reload"])
 
 
 def kitty():
     """ Reload kitty colors. """
-    if shutil.which("kitty"):
+    if shutil.which("kitty") and util.get_pid("kitty"):
         util.disown(["kitty", "@", "set-colors", "--all"])
 
 
 def polybar():
     """Reload polybar colors."""
-    if shutil.which("polybar"):
+    if shutil.which("polybar") and util.get_pid("polybar"):
         util.disown(["pkill", "-USR1", "polybar"])
 
 
 def sway():
     """Reload sway colors."""
-    if shutil.which("swaymsg"):
+    if shutil.which("swaymsg") and util.get_pid("sway"):
         util.disown(["swaymsg", "reload"])
 
 

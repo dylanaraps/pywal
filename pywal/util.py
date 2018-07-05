@@ -168,3 +168,11 @@ def disown(cmd):
     subprocess.Popen(cmd,
                      stdout=subprocess.DEVNULL,
                      stderr=subprocess.DEVNULL)
+
+
+def get_pid(name):
+    """Check if process is running by name."""
+    try:
+        subprocess.check_output(["pidof", "-s", name])
+    except subprocess.CalledProcessError:
+        return False
