@@ -6,6 +6,8 @@ matrix:
           python: 3.5
         - os: linux
           python: 3.6
+        - os: linux
+          python: 3.7
 
 before_install:
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
