@@ -18,6 +18,7 @@ from .. import util
 
 def gen_colors(img):
     """Generate a colorscheme using Colorz."""
+    # pylint: disable=not-callable
     raw_colors = colorz.colorz(img, n=6, bold_add=0)
     return [util.rgb_to_hex([*color[0]]) for color in raw_colors]
 
