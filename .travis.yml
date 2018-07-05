@@ -1,13 +1,15 @@
 language: python
+os: linux
+dist: xenial
+sudo: true
 
 matrix:
     include:
-        - os: linux
-          python: 3.5
-        - os: linux
-          python: 3.6
-        - os: linux
-          python: 3.7-dev
+        - python: 3.5
+        - python: 3.6
+        - python: 3.7
+          dist: xenial
+          sudo: true
 
 before_install:
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
