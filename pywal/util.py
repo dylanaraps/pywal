@@ -176,3 +176,5 @@ def get_pid(name):
         subprocess.check_output(["pidof", "-s", name])
     except subprocess.CalledProcessError:
         return False
+
+    return True
