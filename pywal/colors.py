@@ -6,6 +6,7 @@ import os
 import random
 import re
 import sys
+import hashlib
 
 from . import theme
 from . import util
@@ -86,11 +87,18 @@ def saturate_colors(colors, amount):
 def cache_fname(img, backend, light, cache_dir, sat=""):
     """Create the cache file name."""
     color_type = "light" if light else "dark"
-    file_name = re.sub("[/|\\|.]", "_", img)
+    file_hash = hashf(img)
 
-    file_parts = [file_name, color_type, backend, sat, __cache_version__]
+    file_parts = [file_hash, color_type, backend, sat, __cache_version__]
     return [cache_dir, "schemes", "%s_%s_%s_%s_%s.json" % (*file_parts,)]
 
+
+def hashf(fpath):
+    return hashlib.md5(file_bytes(open(fpath, 'rb'))).hexdigest()
+
+def file_bytes(fpath):
+    with fpath:
+        return fpath.read()
 
 def get_backend(backend):
     """Figure out which backend to use."""
