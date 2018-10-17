@@ -57,22 +57,23 @@ def create_sequences(colors):
         set_color(232, colors["special"]["background"])
     ])
 
-    # This escape sequence doesn't work in VTE terminals and their parsing of
-    # unknown sequences is garbage so we need to use some escape sequence
-    # M A G I C to hide the output.
-    # \033[s                 # Save cursor position.
-    # \033[1000H             # Move the cursor off screen.
-    # \033[8m                # Conceal text.
-    # \033]708;#000000\033\\ # Garbage sequence.
-    # \033[u                 # Restore cursor position.
-    sequences.extend([
-        "\033[s\033[1000H\033[8m%s\033[u" %
-        set_special(708, colors["special"]["background"], "h", alpha),
-        set_special(13, colors["special"]["cursor"], "l")
-    ])
-
     if OS == "Darwin":
         sequences += set_iterm_tab_color(colors["special"]["background"])
+
+    else:
+        # This escape sequence doesn't work in VTE terminals and their parsing of
+        # unknown sequences is garbage so we need to use some escape sequence
+        # M A G I C to hide the output.
+        # \033[s                 # Save cursor position.
+        # \033[1000H             # Move the cursor off screen.
+        # \033[8m                # Conceal text.
+        # \033]708;#000000\033\\ # Garbage sequence.
+        # \033[u                 # Restore cursor position.
+        sequences.extend([
+            "\033[s\033[1000H\033[8m%s\033[u" %
+            set_special(708, colors["special"]["background"], "h", alpha),
+            set_special(13, colors["special"]["cursor"], "l")
+        ])
 
     return "".join(sequences)
 
