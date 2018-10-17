@@ -4,7 +4,6 @@ Generate a palette using various backends.
 import logging
 import os
 import random
-import re
 import sys
 
 from . import theme

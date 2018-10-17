@@ -182,9 +182,11 @@ def get_pid(name):
 
 
 def hashf(fpath):
+    """Get the md5 hash of a file."""
     return hashlib.md5(file_bytes(open(fpath, 'rb'))).hexdigest()
 
 
 def file_bytes(fpath):
+    """Helper function to read file."""
     with fpath:
         return fpath.read()
