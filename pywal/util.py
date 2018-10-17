@@ -2,7 +2,6 @@
 Misc helper functions.
 """
 import colorsys
-import hashlib
 import json
 import logging
 import os
@@ -179,14 +178,3 @@ def get_pid(name):
         return False
 
     return True
-
-
-def hashf(fpath):
-    """Get the md5 hash of a file."""
-    return hashlib.md5(file_bytes(open(fpath, 'rb'))).hexdigest()
-
-
-def file_bytes(fpath):
-    """Helper function to read file."""
-    with fpath:
-        return fpath.read()
