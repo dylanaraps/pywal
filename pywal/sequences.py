@@ -54,7 +54,8 @@ def create_sequences(colors):
         set_special(13, colors["special"]["foreground"], "l"),
         set_special(17, colors["special"]["foreground"], "l"),
         set_special(19, colors["special"]["background"], "l"),
-        set_color(232, colors["special"]["background"])
+        set_color(232, colors["special"]["background"]),
+        set_color(256, colors["special"]["foreground"])
     ])
 
     if OS == "Darwin":
