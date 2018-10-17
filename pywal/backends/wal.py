@@ -12,7 +12,7 @@ from .. import util
 
 def imagemagick(color_count, img, magick_command):
     """Call Imagemagick to generate a scheme."""
-    flags = ["-resize", "25%", "-colors", str(color_count),
+    flags = ["-scale", "25%", "-colors", str(color_count),
              "-unique-colors", "txt:-"]
     img += "[0]"
 
