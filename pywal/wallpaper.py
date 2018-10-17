@@ -102,6 +102,7 @@ def set_desktop_wallpaper(desktop, img):
     else:
         set_wm_wallpaper(img)
 
+
 def set_mac_wallpaper(img):
     """Set the wallpaper on macOS."""
     db_file = "Library/Application Support/Dock/desktoppicture.db"
