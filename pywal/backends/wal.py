@@ -24,7 +24,7 @@ def has_im():
     if shutil.which("magick"):
         return ["magick", "convert"]
 
-    elif shutil.which("convert"):
+    if shutil.which("convert"):
         return ["convert"]
 
     logging.error("Imagemagick wasn't found on your system.")
