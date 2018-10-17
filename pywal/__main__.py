@@ -74,7 +74,7 @@ def get_args():
     arg.add_argument("-n", action="store_true",
                      help="Skip setting the wallpaper.")
 
-    arg.add_argument("-o", metavar="\"script_name\"",
+    arg.add_argument("-o", metavar="\"script_name\"", action="append",
                      help="External script to run after \"wal\".")
 
     arg.add_argument("-q", action="store_true",
@@ -188,7 +188,8 @@ def parse_args(parser):
         reload.env(tty_reload=not args.t)
 
     if args.o:
-        util.disown([args.o])
+        for cmd in args.o:
+            util.disown([cmd])
 
     if not args.e:
         reload.oomox(args.g)
