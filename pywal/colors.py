@@ -4,6 +4,7 @@ Generate a palette using various backends.
 import logging
 import os
 import random
+import re
 import sys
 
 from . import theme
@@ -85,9 +86,9 @@ def saturate_colors(colors, amount):
 def cache_fname(img, backend, light, cache_dir, sat=""):
     """Create the cache file name."""
     color_type = "light" if light else "dark"
-    file_hash = util.hashf(img)
+    file_name = re.sub("[/|\\|.]", "_", img)
 
-    file_parts = [file_hash, color_type, backend, sat, __cache_version__]
+    file_parts = [file_name, color_type, backend, sat, __cache_version__]
     return [cache_dir, "schemes", "%s_%s_%s_%s_%s.json" % (*file_parts,)]
 
 
