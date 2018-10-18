@@ -145,6 +145,13 @@ def parse_args_exit(parser):
         print("\n - ".join(["\033[1;32mBackends\033[0m:",
                             *colors.list_backends()]))
         sys.exit(0)
+        
+    if not args.i and \
+       not args.theme and \
+       not args.R and \
+       args.backend:
+        parser.error("Chosen backend needs to be given arguments to run.\n"
+                     "--theme, -i or -R are required.")
 
 
 def parse_args(parser):
