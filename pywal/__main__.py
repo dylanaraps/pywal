@@ -146,6 +146,13 @@ def parse_args_exit(parser):
                             *colors.list_backends()]))
         sys.exit(0)
 
+    if not args.i and \
+       not args.theme and \
+       not args.R and \
+       args.backend:
+        parser.error("Chosen backend needs to be given arguments to run.\n"
+                     "--theme, -i or -R are required.")
+
 
 def parse_args(parser):
     """Process args."""
