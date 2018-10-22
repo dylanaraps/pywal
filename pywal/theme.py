@@ -100,7 +100,7 @@ def file(input_file, light=False):
     theme_file = os.path.join(MODULE_DIR, "colorschemes", bri, theme_name)
 
     # Find the theme file.
-    if input_file == "random" or input_file == "random_dark":
+    if input_file in ("random", "random_dark"):
         theme_file = get_random_theme()
 
     elif input_file == "random_light":
@@ -118,8 +118,7 @@ def file(input_file, light=False):
                      os.path.basename(theme_file))
         return parse(theme_file)
 
-    else:
-        logging.error("No %s colorscheme file found.", bri)
-        logging.error("Try adding   '-l' to set light themes.")
-        logging.error("Try removing '-l' to set dark themes.")
-        sys.exit(1)
+    logging.error("No %s colorscheme file found.", bri)
+    logging.error("Try adding   '-l' to set light themes.")
+    logging.error("Try removing '-l' to set dark themes.")
+    sys.exit(1)

@@ -32,6 +32,10 @@ def get_desktop_env():
     if desktop:
         return "SWAY"
 
+    desktop = os.environ.get("DESKTOP_STARTUP_ID")
+    if desktop and "awesome" in desktop:
+        return "AWESOME"
+
     return None
 
 
@@ -91,6 +95,9 @@ def set_desktop_wallpaper(desktop, img):
 
     elif "sway" in desktop:
         util.disown(["swaymsg", "output", "*", "bg", img, "fill"])
+
+    elif "awesome" in desktop:
+        util.disown(["awesome-client", "gears.wallpaper.maximized(", img, ")"])
 
     else:
         set_wm_wallpaper(img)
