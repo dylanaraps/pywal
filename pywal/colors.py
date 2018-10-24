@@ -56,10 +56,10 @@ def generic_adjust(colors, light):
     """Generic color adjustment for themers."""
     if light:
         for color in colors:
-            color = util.saturate_color(color, 0.50)
-            color = util.darken_color(color, 0.4)
+            color = util.saturate_color(color, 0.60)
+            color = util.darken_color(color, 0.5)
 
-        colors[0] = util.lighten_color(colors[0], 0.9)
+        colors[0] = util.lighten_color(colors[0], 0.95)
         colors[7] = util.darken_color(colors[0], 0.75)
         colors[8] = util.darken_color(colors[0], 0.25)
         colors[15] = colors[7]

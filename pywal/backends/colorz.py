@@ -26,7 +26,7 @@ def gen_colors(img):
 def adjust(cols, light):
     """Create palette."""
     raw_colors = [cols[0], *cols, "#FFFFFF",
-                  "#333333", *cols, "#FFFFFF"]
+                  "#000000", *cols, "#FFFFFF"]
 
     return colors.generic_adjust(raw_colors, light)
 
