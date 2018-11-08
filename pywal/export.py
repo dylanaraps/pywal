@@ -47,6 +47,7 @@ def get_export_type(export_type):
         "tty": "colors-tty.sh",
         "xresources": "colors.Xresources",
         "yaml": "colors.yml",
+        "waybar": "colors-waybar.css",
     }.get(export_type, export_type)
 
 
