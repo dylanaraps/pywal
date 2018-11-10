@@ -4,7 +4,7 @@ Export colors in various formats.
 import logging
 import os
 
-from .settings import CACHE_DIR, MODULE_DIR, CONF_DIR
+from .settings import CACHE_DIR, MODULE_DIR, CONF_DIR, HOME
 from . import util
 
 
@@ -20,10 +20,12 @@ def template(colors, input_file, output_file=None):
 def flatten_colors(colors):
     """Prepare colors to be exported.
        Flatten dicts and convert colors to util.Color()"""
-    all_colors = {"wallpaper": colors["wallpaper"],
-                  "alpha": colors["alpha"],
-                  **colors["special"],
-                  **colors["colors"]}
+    all_colors = {
+        "wallpaper": colors["wallpaper"],
+        "alpha": colors["alpha"],
+        **colors["special"],
+        **colors["colors"]
+    }
     return {k: util.Color(v) for k, v in all_colors.items()}
 
 
@@ -59,10 +61,29 @@ def every(colors, output_dir=CACHE_DIR):
     util.create_dir(template_dir_user)
 
     join = os.path.join  # Minor optimization.
-    for file in [*os.scandir(template_dir),
-                 *os.scandir(template_dir_user)]:
+    for file in [*os.scandir(template_dir), *os.scandir(template_dir_user)]:
         if file.name != ".DS_Store":
             template(colors, file.path, join(output_dir, file.name))
+
+    # Termite specific as author is too stubborn to include 'include' directive
+    # in config file: https://github.com/thestinger/termite/issues/260
+    # Only triggered if user has pywal.conf in Termite config as will be
+    # explained in the Wiki.
+    # The following merges cached Termite colors and the pywal.conf file in
+    # ~/.config/termite/ into the standard ~/.config/termite/config
+
+    TERMITE_CONFIG = os.path.join(HOME, '.config/termite/config')
+    TERMITE_PYWAL_CONFIG = os.path.join(HOME, '.config/termite/pywal.conf')
+    TERMITE_PYWAL_CACHE = os.path.join(CACHE_DIR, 'colors-termite.conf')
+    if os.path.isfile(TERMITE_PYWAL_CONFIG):
+        configs = [TERMITE_PYWAL_CONFIG, TERMITE_PYWAL_CACHE]
+        if not os.path.isfile(TERMITE_CONFIG):
+            os.mknod(TERMITE_CONFIG)
+        with open(TERMITE_CONFIG, 'w') as outfile:
+            for config in configs:
+                with open(config) as infile:
+                    for line in infile:
+                        outfile.write(line)
 
     logging.info("Exported all files.")
     logging.info("Exported all user files.")
