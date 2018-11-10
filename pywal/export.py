@@ -38,6 +38,7 @@ def get_export_type(export_type):
         "json": "colors.json",
         "konsole": "colors-konsole.colorscheme",
         "kitty": "colors-kitty.conf",
+        "termite": "colors-termite.conf",
         "plain": "colors",
         "putty": "colors-putty.reg",
         "rofi": "colors-rofi.Xresources",
