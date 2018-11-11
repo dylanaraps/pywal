@@ -54,7 +54,7 @@ def create_sequences(colors):
         set_special(13, colors["special"]["foreground"], "l"),
         set_special(17, colors["special"]["foreground"], "l"),
         set_special(19, colors["special"]["background"], "l"),
-        set_special(708, colors["special"]["background"], "l"),
+        set_special(708, colors["special"]["background"], "l", alpha),
         set_color(232, colors["special"]["background"]),
         set_color(256, colors["special"]["foreground"])
     ])
