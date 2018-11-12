@@ -77,9 +77,8 @@ def every(colors, output_dir=CACHE_DIR):
     if os.path.isfile(termite_pywal_config):
         termite_pywal_cache = os.path.join(CACHE_DIR, 'colors-termite.conf')
         with open(termite_pywal_config, 'r') as termite_config:
-            termite_config_lines = termite_config.readlines()
+            termite_config_lines = ['\n'] + termite_config.readlines()
         with open(termite_pywal_cache, 'a') as termite_colors:
-            termite_colors.write('\n')
             termite_colors.writelines(termite_config_lines)
 
     logging.info("Exported all files.")
