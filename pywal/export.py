@@ -67,23 +67,20 @@ def every(colors, output_dir=CACHE_DIR):
 
     # Termite specific as author is too stubborn to include 'include' directive
     # in config file: https://github.com/thestinger/termite/issues/260
-    # Only triggered if user has pywal.conf in Termite config as will be
-    # explained in the Wiki.
-    # The following merges cached Termite colors and the pywal.conf file in
-    # ~/.config/termite/ into the standard ~/.config/termite/config
+    # Only triggered if user has termite-pywal.conf in ~/.config/termite as
+    # will be explained in the Wiki.
+    # `ln -s ~/.cache/wal/colors-termite.conf ~/.config/termite/config`
+    # This uses pywal colors to which termite-pywal.conf is appended as the
+    # default config file.
 
-    TERMITE_CONFIG = os.path.join(HOME, '.config/termite/config')
-    TERMITE_PYWAL_CONFIG = os.path.join(HOME, '.config/termite/pywal.conf')
-    TERMITE_PYWAL_CACHE = os.path.join(CACHE_DIR, 'colors-termite.conf')
-    if os.path.isfile(TERMITE_PYWAL_CONFIG):
-        configs = [TERMITE_PYWAL_CONFIG, TERMITE_PYWAL_CACHE]
-        if not os.path.isfile(TERMITE_CONFIG):
-            os.mknod(TERMITE_CONFIG)
-        with open(TERMITE_CONFIG, 'w') as outfile:
-            for config in configs:
-                with open(config) as infile:
-                    for line in infile:
-                        outfile.write(line)
+    termite_pywal_config = join(HOME, '.config/termite/termite-pywal.conf')
+    if os.path.isfile(termite_pywal_config):
+        termite_pywal_cache = os.path.join(CACHE_DIR, 'colors-termite.conf')
+        with open(termite_pywal_config, 'r') as not_color:
+            not_color_lines = not_color.readlines()
+        with open(termite_pywal_cache, 'a') as color:
+            color.write('\n')
+            color.writelines(not_color_lines)
 
     logging.info("Exported all files.")
     logging.info("Exported all user files.")
