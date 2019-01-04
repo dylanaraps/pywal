@@ -1,0 +1,15 @@
+{{
+    "cursor": "{cursor}",
+    "number": "{foreground}",
+    "parens": "{color13}",
+    "result": "{color12}",
+    "comment": "{color8}",
+    "matched": "{color4}",
+    "function": "{color1}",
+    "operator": "{color3}",
+    "variable": "{color2}",
+    "scrollbar": "{color3}",
+    "separator": "{color3}",
+    "background": "{background}",
+    "editorbackground": "{background}"
+}}
