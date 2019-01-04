@@ -48,6 +48,7 @@ def get_export_type(export_type):
         "tty": "colors-tty.sh",
         "xresources": "colors.Xresources",
         "yaml": "colors.yml",
+        "xmonad": "colors.hs",
     }.get(export_type, export_type)
 
 
