@@ -30,6 +30,12 @@ class Color:
         return hex_to_xrgba(self.hex_color)
 
     @property
+    def rgba(self):
+        """Convert a hex color to rgba."""
+        return "rgba(%s,%s,%s,%s)" % (*hex_to_rgb(self.hex_color),
+                                      int(self.alpha_num)/100)
+
+    @property
     def alpha(self):
         """Add URxvt alpha value to color."""
         return "[%s]%s" % (self.alpha_num, self.hex_color)
