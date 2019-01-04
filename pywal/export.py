@@ -46,9 +46,10 @@ def get_export_type(export_type):
         "shell": "colors.sh",
         "sway": "colors-sway",
         "tty": "colors-tty.sh",
+        "waybar": "colors-waybar.css",
         "xresources": "colors.Xresources",
-        "yaml": "colors.yml",
         "xmonad": "colors.hs",
+        "yaml": "colors.yml",
     }.get(export_type, export_type)
 
 
