@@ -31,6 +31,7 @@ def get_export_type(export_type):
     """Convert template type to the right filename."""
     return {
         "css": "colors.css",
+        "dmenu": "colors-wal-dmenu.h",
         "dwm": "colors-wal-dwm.h",
         "st": "colors-wal-st.h",
         "tabbed": "colors-wal-tabbed.h",
