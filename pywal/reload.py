@@ -29,23 +29,6 @@ def xrdb(xrdb_files=None):
             subprocess.run(["xrdb", "-merge", "-quiet", file])
 
 
-def oomox(gen_theme):
-    """Call oomox to generate a theme."""
-    if gen_theme:
-        if not shutil.which("oomox-cli"):
-            logging.warning("Oomox not found, skipping.")
-            return
-
-        oomox_file = os.path.join(CACHE_DIR, "colors-oomox")
-
-        logging.info("Waiting for Oomox.")
-        subprocess.run(["oomox-cli", "-o", "wal", oomox_file],
-                       stdout=subprocess.DEVNULL)
-
-    else:
-        logging.info("Use -g to generate an oomox theme.")
-
-
 def gtk():
     """Reload GTK theme on the fly."""
     # Here we call a Python 2 script to reload the GTK themes.

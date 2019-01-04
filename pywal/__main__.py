@@ -65,9 +65,6 @@ def get_args():
     arg.add_argument("-i", metavar="\"/path/to/img.jpg\"",
                      help="Which image or directory to use.")
 
-    arg.add_argument("-g", action="store_true",
-                     help="Generate an oomox theme.")
-
     arg.add_argument("-l", action="store_true",
                      help="Generate a light colorscheme.")
 
@@ -192,7 +189,6 @@ def parse_args(parser):
             util.disown([cmd])
 
     if not args.e:
-        reload.oomox(args.g)
         reload.gtk()
 
 
