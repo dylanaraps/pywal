@@ -44,11 +44,13 @@ def get_export_type(export_type):
         "rofi": "colors-rofi.Xresources",
         "scss": "colors.scss",
         "shell": "colors.sh",
+        "speedcrunch": "colors-speedcrunch.json",
         "sway": "colors-sway",
         "tty": "colors-tty.sh",
+        "waybar": "colors-waybar.css",
         "xresources": "colors.Xresources",
-        "yaml": "colors.yml",
         "xmonad": "colors.hs",
+        "yaml": "colors.yml",
     }.get(export_type, export_type)
 
 
