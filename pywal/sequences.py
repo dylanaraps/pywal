@@ -35,7 +35,7 @@ def set_iterm_tab_color(color):
             "\033]6;1;bg;blue;brightness;%s\a") % (*util.hex_to_rgb(color),)
 
 
-def create_sequences(colors):
+def create_sequences(colors, vte_fix=False):
     """Create the escape sequences."""
     alpha = colors["alpha"]
 
@@ -54,10 +54,14 @@ def create_sequences(colors):
         set_special(13, colors["special"]["foreground"], "l"),
         set_special(17, colors["special"]["foreground"], "l"),
         set_special(19, colors["special"]["background"], "l"),
-        set_special(708, colors["special"]["background"], "l", alpha),
         set_color(232, colors["special"]["background"]),
         set_color(256, colors["special"]["foreground"])
     ])
+
+    if not vte_fix:
+        sequences.extend(
+                set_special(708, colors["special"]["background"], "l", alpha)
+        )
 
     if OS == "Darwin":
         sequences += set_iterm_tab_color(colors["special"]["background"])
@@ -65,7 +69,7 @@ def create_sequences(colors):
     return "".join(sequences)
 
 
-def send(colors, cache_dir=CACHE_DIR, to_send=True):
+def send(colors, cache_dir=CACHE_DIR, to_send=True, vte_fix=False):
     """Send colors to all open terminals."""
     if OS == "Darwin":
         tty_pattern = "/dev/ttys00[0-9]*"
@@ -73,7 +77,7 @@ def send(colors, cache_dir=CACHE_DIR, to_send=True):
     else:
         tty_pattern = "/dev/pts/[0-9]*"
 
-    sequences = create_sequences(colors)
+    sequences = create_sequences(colors, vte_fix)
 
     # Writing to "/dev/pts/[0-9] lets you send data to open terminals.
     if to_send:

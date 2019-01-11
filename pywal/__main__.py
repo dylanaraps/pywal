@@ -59,6 +59,9 @@ def get_args():
     arg.add_argument("--preview", action="store_true",
                      help="Print the current color palette.")
 
+    arg.add_argument("--vte", action="store_true",
+                     help="Fix text-artifacts printed in VTE terminals.")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -174,7 +177,7 @@ def parse_args(parser):
     if not args.n:
         wallpaper.change(colors_plain["wallpaper"])
 
-    sequences.send(colors_plain, to_send=not args.s)
+    sequences.send(colors_plain, to_send=not args.s, vte_fix=args.vte)
 
     if sys.stdout.isatty():
         colors.palette()
