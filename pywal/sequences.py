@@ -60,7 +60,7 @@ def create_sequences(colors, vte_fix=False):
 
     if not vte_fix:
         sequences.extend(
-                set_special(708, colors["special"]["background"], "l", alpha)
+            set_special(708, colors["special"]["background"], "l", alpha)
         )
 
     if OS == "Darwin":
