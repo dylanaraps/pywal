@@ -97,7 +97,9 @@ def set_desktop_wallpaper(desktop, img):
         util.disown(["swaymsg", "output", "*", "bg", img, "fill"])
 
     elif "awesome" in desktop:
-        util.disown(["awesome-client", "gears.wallpaper.maximized(", img, ")"])
+        util.disown(["awesome-client",
+                     "require('gears').wallpaper.maximized('{img}')"
+                     .format(**locals())])
 
     else:
         set_wm_wallpaper(img)
