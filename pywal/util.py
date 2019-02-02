@@ -5,6 +5,7 @@ import colorsys
 import json
 import logging
 import os
+import shutil
 import subprocess
 import sys
 
@@ -178,6 +179,9 @@ def disown(cmd):
 
 def get_pid(name):
     """Check if process is running by name."""
+    if not shutil.which("pidof"):
+        return False
+
     try:
         subprocess.check_output(["pidof", "-s", name])
     except subprocess.CalledProcessError:
