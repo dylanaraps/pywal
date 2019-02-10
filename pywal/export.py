@@ -12,7 +12,13 @@ def template(colors, input_file, output_file=None):
     """Read template file, substitute markers and
        save the file elsewhere."""
     template_data = util.read_file_raw(input_file)
-    template_data = "".join(template_data).format(**colors)
+
+    try:
+        template_data = "".join(template_data).format(**colors)
+    except ValueError:
+        logging.error("Syntax error in template file '%s'. "
+                      "Are non-marker braces escaped? '{{}}'?" % input_file)
+        return
 
     util.save_file(template_data, output_file)
 
