@@ -109,10 +109,10 @@ def set_mac_wallpaper(img):
     """Set the wallpaper on macOS."""
     db_file = "Library/Application Support/Dock/desktoppicture.db"
     db_path = os.path.join(HOME, db_file)
-    img_dir, _ = os.path.split(img);
+    img_dir, _ = os.path.split(img)
 
     #Clear the existing picture data and write the image paths
-    sql =  "delete from data; "
+    sql = "delete from data; "
     sql += "insert into data values(\"%s\"); " % img_dir
     sql += "insert into data values(\"%s\"); " % img
 
