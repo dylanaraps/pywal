@@ -33,6 +33,7 @@ def list_out():
     print(" - random (select a random dark theme)")
     print(" - random_dark (select a random dark theme)")
     print(" - random_light (select a random light theme)")
+    print(" - random_user (select a random user theme)")
 
 
 def list_themes(dark=True):
@@ -88,6 +89,13 @@ def get_random_theme(dark=True):
     return themes[0]
 
 
+def get_random_theme_user():
+    """Get a random theme file from user theme directories."""
+    themes = [theme.path for theme in list_themes_user()]
+    random.shuffle(themes)
+    return themes[0]
+
+
 def file(input_file, light=False):
     """Import colorscheme from json file."""
     util.create_dir(os.path.join(CONF_DIR, "colorschemes/light/"))
@@ -106,6 +114,9 @@ def file(input_file, light=False):
     elif input_file == "random_light":
         theme_file = get_random_theme(light)
 
+    elif input_file == "random_user":
+        theme_file = get_random_theme_user()
+
     elif os.path.isfile(user_theme_file):
         theme_file = user_theme_file
 
@@ -122,3 +133,11 @@ def file(input_file, light=False):
     logging.error("Try adding   '-l' to set light themes.")
     logging.error("Try removing '-l' to set dark themes.")
     sys.exit(1)
+
+
+def save(colors, theme_name, light=False):
+    """Save colors to a theme file."""
+    theme_file = theme_name + ".json"
+    theme_path = os.path.join(CONF_DIR, "colorschemes",
+                              "light" if light else "dark", theme_file)
+    util.save_file_json(colors, theme_path)

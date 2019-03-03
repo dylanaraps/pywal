@@ -45,7 +45,7 @@ def get_args():
 
     arg.add_argument("--theme", "-f", metavar="/path/to/file or theme_name",
                      help="Which colorscheme file to use. \
-                           Use 'wal --theme' to list builtin themes.",
+                           Use 'wal --theme' to list builtin and user themes.",
                      const="list_themes", nargs="?")
 
     arg.add_argument("--iterative", action="store_true",
@@ -76,6 +76,11 @@ def get_args():
 
     arg.add_argument("-o", metavar="\"script_name\"", action="append",
                      help="External script to run after \"wal\".")
+
+    arg.add_argument("-p", metavar="\"theme_name\"",
+                     help="permanently save theme to "
+                     "$XDG_CONFIG_HOME/wal/colorschemes with "
+                     "the specified name")
 
     arg.add_argument("-q", action="store_true",
                      help="Quiet mode, don\'t print anything.")
@@ -176,6 +181,9 @@ def parse_args(parser):
 
     if not args.n:
         wallpaper.change(colors_plain["wallpaper"])
+
+    if args.p:
+        theme.save(colors_plain, args.p, args.l)
 
     sequences.send(colors_plain, to_send=not args.s, vte_fix=args.vte)
 
