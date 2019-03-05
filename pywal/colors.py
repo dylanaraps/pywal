@@ -87,9 +87,11 @@ def cache_fname(img, backend, light, cache_dir, sat=""):
     """Create the cache file name."""
     color_type = "light" if light else "dark"
     file_name = re.sub("[/|\\|.]", "_", img)
+    file_size = os.path.getsize(img)
 
-    file_parts = [file_name, color_type, backend, sat, __cache_version__]
-    return [cache_dir, "schemes", "%s_%s_%s_%s_%s.json" % (*file_parts,)]
+    file_parts = [file_name, color_type, backend,
+                  sat, file_size, __cache_version__]
+    return [cache_dir, "schemes", "%s_%s_%s_%s_%s_%s.json" % (*file_parts,)]
 
 
 def get_backend(backend):
