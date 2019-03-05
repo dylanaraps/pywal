@@ -16,8 +16,7 @@ def template(colors, input_file, output_file=None):
     try:
         template_data = "".join(template_data).format(**colors)
     except ValueError:
-        logging.error("Syntax error in template file '%s'. ", input_file,
-                      "Are non-marker braces escaped? '{{}}'?")
+        logging.error("Syntax error in template file '%s'.", input_file)
         return
 
     util.save_file(template_data, output_file)
