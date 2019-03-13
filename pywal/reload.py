@@ -48,6 +48,12 @@ def i3():
         util.disown(["i3-msg", "reload"])
 
 
+def bspwm():
+    """Reload bspwm colors."""
+    if shutil.which("bspc") and util.get_pid("bspwm"):
+        util.disown(["bspc", "wm", "-r"])
+
+
 def kitty():
     """ Reload kitty colors. """
     if shutil.which("kitty") and util.get_pid("kitty"):
@@ -81,6 +87,7 @@ def env(xrdb_file=None, tty_reload=True):
     """Reload environment."""
     xrdb(xrdb_file)
     i3()
+    bspwm()
     kitty()
     sway()
     polybar()
