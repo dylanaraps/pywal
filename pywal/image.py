@@ -31,7 +31,10 @@ def get_random_image(img_dir):
         images.remove(current_wall)
 
     elif not images:
-        logging.error("No images found in directory.")
+        logging.error("No images found in directory, picking random directory.")
+        logging.info("Found dirs: {}".format([dir_file.name for dir_file in
+            os.scandir(img_dir)]))
+
         sys.exit(1)
 
     random.shuffle(images)
@@ -59,7 +62,7 @@ def get_next_image(img_dir):
     return os.path.join(img_dir, image)
 
 
-def get(img, cache_dir=CACHE_DIR, iterative=False):
+def get(img, cache_dir=CACHE_DIR, iterative=False, recursive=False):
     """Validate image input."""
     if os.path.isfile(img):
         wal_img = img
