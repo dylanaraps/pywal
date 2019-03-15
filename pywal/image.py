@@ -22,8 +22,9 @@ def get_image_dir_recursive(img_dir):
     images = []
     for path, subdirs, files in os.walk(img_dir):
         for name in files:
-            if name.lower().endswith(file_types):
+            if name.lower().endswith(file_types) and not name.endswith(current_wall):
               images.append(os.path.join(path, name))
+
 
     return images, current_wall
 
@@ -58,10 +59,7 @@ def get_random_image_recursive(img_dir):
     """Pick a random image file from a directory recursively."""
     images, current_wall = get_image_dir_recursive(img_dir)
 
-    if len(images) > 2 and current_wall in images:
-        images.remove(current_wall)
-
-    elif not images:
+    if not images:
         logging.error("No images found in directory.")
         sys.exit(1)
 
