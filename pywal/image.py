@@ -22,9 +22,10 @@ def get_image_dir_recursive(img_dir):
     images = []
     for path, subdirs, files in os.walk(img_dir):
         for name in files:
-            if name.lower().endswith(file_types) and not name.endswith(current_wall):
-              images.append(os.path.join(path, name))
-
+            if name.lower().endswith(file_types):
+                if name.endswith(current_wall):
+                    current_wall = os.path.join(path, name)
+                images.append(os.path.join(path, name))
 
     return images, current_wall
 
@@ -59,18 +60,24 @@ def get_random_image_recursive(img_dir):
     """Pick a random image file from a directory recursively."""
     images, current_wall = get_image_dir_recursive(img_dir)
 
+    if len(images) > 2 and current_wall in images:
+        images.remove(current_wall)
+
     if not images:
         logging.error("No images found in directory.")
         sys.exit(1)
 
-    print(images)
     random.shuffle(images)
     return os.path.join("", images[0])
 
 
-def get_next_image(img_dir):
+def get_next_image(img_dir, recursive):
     """Get the next image in a dir."""
-    images, current_wall = get_image_dir(img_dir)
+    if recursive:
+        images, current_wall = get_image_dir_recursive(img_dir)
+    else:
+        images, current_wall = get_image_dir(img_dir)
+
     images.sort(key=lambda img: [int(x) if x.isdigit() else x
                                  for x in re.split('([0-9]+)', img)])
 
@@ -86,7 +93,7 @@ def get_next_image(img_dir):
     except IndexError:
         image = images[0]
 
-    return os.path.join(img_dir, image)
+    return os.path.join(img_dir if not recursive else "", image)
 
 
 def get(img, cache_dir=CACHE_DIR, iterative=False, recursive=False):
@@ -97,7 +104,7 @@ def get(img, cache_dir=CACHE_DIR, iterative=False, recursive=False):
 
     elif os.path.isdir(img):
         if iterative:
-            wal_img = get_next_image(img)
+            wal_img = get_next_image(img, recursive)
 
         else:
             if recursive:
