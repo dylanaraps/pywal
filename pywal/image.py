@@ -20,7 +20,7 @@ def get_image_dir_recursive(img_dir):
     file_types = (".png", ".jpg", ".jpeg", ".jpe", ".gif")
 
     images = []
-    for path, subdirs, files in os.walk(img_dir):
+    for path, _, files in os.walk(img_dir):
         for name in files:
             if name.lower().endswith(file_types):
                 if name.endswith(current_wall):
