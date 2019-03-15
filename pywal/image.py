@@ -22,8 +22,8 @@ def get_image_dir_recursive(img_dir):
     images = []
     for path, subdirs, files in os.walk(img_dir):
         for name in files:
-            print(os.path.join(path, name))
-            images.append(os.path.join(path, name))
+            if name.lower().endswith(file_types):
+              images.append(os.path.join(path, name))
 
     return images, current_wall
 
