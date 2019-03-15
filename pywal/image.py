@@ -41,9 +41,12 @@ def get_image_dir(img_dir):
             if img.name.lower().endswith(file_types)], current_wall
 
 
-def get_random_image(img_dir):
+def get_random_image(img_dir, recursive):
     """Pick a random image file from a directory."""
-    images, current_wall = get_image_dir(img_dir)
+    if recursive:
+        images, current_wall = get_image_dir_recursive(img_dir)
+    else:
+        images, current_wall = get_image_dir(img_dir)
 
     if len(images) > 2 and current_wall in images:
         images.remove(current_wall)
@@ -53,22 +56,7 @@ def get_random_image(img_dir):
         sys.exit(1)
 
     random.shuffle(images)
-    return os.path.join(img_dir, images[0])
-
-
-def get_random_image_recursive(img_dir):
-    """Pick a random image file from a directory recursively."""
-    images, current_wall = get_image_dir_recursive(img_dir)
-
-    if len(images) > 2 and current_wall in images:
-        images.remove(current_wall)
-
-    if not images:
-        logging.error("No images found in directory.")
-        sys.exit(1)
-
-    random.shuffle(images)
-    return os.path.join("", images[0])
+    return os.path.join(img_dir if not recursive else "", images[0])
 
 
 def get_next_image(img_dir, recursive):
@@ -106,10 +94,7 @@ def get(img, cache_dir=CACHE_DIR, iterative=False, recursive=False):
             wal_img = get_next_image(img, recursive)
 
         else:
-            if recursive:
-                wal_img = get_random_image_recursive(img)
-            else:
-                wal_img = get_random_image(img)
+            wal_img = get_random_image(img, recursive)
 
     else:
         logging.error("No valid image file found.")
