@@ -98,7 +98,6 @@ def get_next_image(img_dir, recursive):
 
 def get(img, cache_dir=CACHE_DIR, iterative=False, recursive=False):
     """Validate image input."""
-    recursive = True # TODO: Remove
     if os.path.isfile(img):
         wal_img = img
 
