@@ -165,7 +165,7 @@ def parse_args(parser):
 
     if args.i:
         image_file = image.get(args.i, iterative=args.iterative,
-                                recursive=args.recursive)
+                               recursive=args.recursive)
         colors_plain = colors.get(image_file, args.l, args.backend,
                                   sat=args.saturate)
 
