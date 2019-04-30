@@ -2,6 +2,7 @@
 import ctypes
 import logging
 import os
+import re
 import shutil
 import subprocess
 import urllib.parse
@@ -39,10 +40,21 @@ def get_desktop_env():
     return None
 
 
-def xfconf(path, img):
+def xfconf(img):
     """Call xfconf to set the wallpaper on XFCE."""
-    util.disown(["xfconf-query", "--channel", "xfce4-desktop",
-                 "--property", path, "--set", img])
+    xfconf_re = re.compile(
+        r"^/backdrop/screen\d/monitor(?:0|\w*)/"
+        r"(?:(?:image-path|last-image)|workspace\d/last-image)$",
+        flags=re.M
+    )
+    xfconf_data = subprocess.check_output(
+        ["xfconf-query", "--channel", "xfce4-desktop", "--list"],
+        stderr=subprocess.DEVNULL
+    ).decode('utf8')
+    paths = xfconf_re.findall(xfconf_data)
+    for path in paths:
+        util.disown(["xfconf-query", "--channel", "xfce4-desktop",
+                     "--property", path, "--set", img])
 
 
 def set_wm_wallpaper(img):
@@ -75,9 +87,7 @@ def set_desktop_wallpaper(desktop, img):
     desktop = str(desktop).lower()
 
     if "xfce" in desktop or "xubuntu" in desktop:
-        # XFCE requires two commands since they differ between versions.
-        xfconf("/backdrop/screen0/monitor0/image-path", img)
-        xfconf("/backdrop/screen0/monitor0/workspace0/last-image", img)
+        xfconf(img)
 
     elif "muffin" in desktop or "cinnamon" in desktop:
         util.disown(["gsettings", "set",
