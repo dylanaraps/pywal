@@ -53,6 +53,11 @@ def get_args():
                           "flag is used: Go through the images in order "
                           "instead of shuffled.")
 
+    arg.add_argument("--recursive", action="store_true",
+                     help="When pywal is given a directory as input and this "
+                          "flag is used: Search for images recursively in "
+                          "subdirectories instead of the root only.")
+
     arg.add_argument("--saturate", metavar="0.0-1.0",
                      help="Set the color saturation.")
 
@@ -159,7 +164,8 @@ def parse_args(parser):
         util.Color.alpha_num = args.a
 
     if args.i:
-        image_file = image.get(args.i, iterative=args.iterative)
+        image_file = image.get(args.i, iterative=args.iterative,
+                               recursive=args.recursive)
         colors_plain = colors.get(image_file, args.l, args.backend,
                                   sat=args.saturate)
 
