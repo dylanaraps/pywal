@@ -57,6 +57,11 @@ class Color:
         """Strip '#' from color."""
         return self.hex_color[1:]
 
+def delete_random_file(filename):
+    """Deletes file cached from random unsplash search."""
+    os.remove(filename)
+    exit(0)
+
 
 def read_file(input_file):
     """Read data from a file and trim newlines."""

@@ -58,6 +58,9 @@ def get_args():
                           "flag is used: Search for images recursively in "
                           "subdirectories instead of the root only.")
 
+    arg.add_argument("--random", metavar="[searchterm]", action="store",
+                     help="Provide a search term and get random result from unsplash")
+
     arg.add_argument("--saturate", metavar="0.0-1.0",
                      help="Set the color saturation.")
 
@@ -138,7 +141,8 @@ def parse_args_exit(parser):
     if not args.i and \
        not args.theme and \
        not args.R and \
-       not args.backend:
+       not args.backend and \
+       not args.random:
         parser.error("No input specified.\n"
                      "--backend, --theme, -i or -R are required.")
 
@@ -156,6 +160,11 @@ def parse_args(parser):
     """Process args."""
     args = parser.parse_args()
 
+    if args.random:
+        colors_plain = colors.get(image.get(image.get_random_unsplash(args.random)), args.l, args.backend)
+        sequences.send(colors_plain)
+        util.delete_random_file("temp.jpg")
+
     if args.q:
         logging.getLogger().disabled = True
         sys.stdout = sys.stderr = open(os.devnull, "w")
@@ -164,10 +173,8 @@ def parse_args(parser):
         util.Color.alpha_num = args.a
 
     if args.i:
-        image_file = image.get(args.i, iterative=args.iterative,
-                               recursive=args.recursive)
-        colors_plain = colors.get(image_file, args.l, args.backend,
-                                  sat=args.saturate)
+        image_file = image.get(args.i, iterative=args.iterative, recursive=args.recursive)
+        colors_plain = colors.get(image_file, args.l, args.backend, sat=args.saturate)
 
     if args.theme:
         colors_plain = theme.file(args.theme, args.l)
