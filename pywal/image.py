@@ -13,7 +13,8 @@ from . import wallpaper
 
 
 def get_random_unsplash(search_term):
-    """Search unsplash for a random image relevant to user provided searchterm"""
+    """Search unsplash for a random image
+    relevant to user provided searchterm"""
     import urllib.request
     base_url = "https://source.unsplash.com/1600x900/?"
     final_url = base_url + search_term

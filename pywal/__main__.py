@@ -59,7 +59,8 @@ def get_args():
                           "subdirectories instead of the root only.")
 
     arg.add_argument("--random", metavar="[searchterm]", action="store",
-                     help="Provide a search term and get random result from unsplash")
+                     help="Provide a search term"
+                          "and get random result from unsplash")
 
     arg.add_argument("--saturate", metavar="0.0-1.0",
                      help="Set the color saturation.")
@@ -161,8 +162,8 @@ def parse_args(parser):
     args = parser.parse_args()
 
     if args.random:
-        colors_plain = colors.get(image.get(image.get_random_unsplash(args.random)), args.l,
-                                  args.backend)
+        random_file = image.get_random_unsplash(args.random)
+        colors_plain = colors.get(random_file, args.l, args.backend)
         sequences.send(colors_plain)
         util.delete_random_file("temp.jpg")
 
