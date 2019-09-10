@@ -76,6 +76,9 @@ def get_args():
     arg.add_argument("-l", action="store_true",
                      help="Generate a light colorscheme.")
 
+    arg.add_argument("-d", action="store_true",
+                     help="Generate a dark colorscheme. Default.")
+
     arg.add_argument("-n", action="store_true",
                      help="Skip setting the wallpaper.")
 
@@ -174,6 +177,17 @@ def parse_args(parser):
 
     if args.R:
         colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
+
+        if args.l:
+            f = open(os.path.join(CACHE_DIR, "wal"))
+            cached_wallpaper = f.read()
+            colors_plain = colors.get(cached_wallpaper, True, args.backend,
+                                      sat=args.saturate)
+        elif args.d:
+            f = open(os.path.join(CACHE_DIR, "wal"))
+            cached_wallpaper = f.read()
+            colors_plain = colors.get(cached_wallpaper, False, args.backend,
+                                      sat=args.saturate)
 
     if args.b:
         args.b = "#%s" % (args.b.strip("#"))
