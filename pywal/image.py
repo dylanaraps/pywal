@@ -17,17 +17,8 @@ def get_random_unsplash(search_term):
     import urllib.request
     base_url = "https://source.unsplash.com/1600x900/?"
     final_url = base_url + search_term
-    # returns a tuple of ("imagename", "request_object")
     random_image = urllib.request.urlretrieve(final_url, "temp.jpg")
     return random_image[0]
-
-    #return image_file
-         #colors_plain = colors.get(image_file, args.l, args.backend)
-         #sequences.send(colors_plain)
-         #delete temp file
-         #dir_path = os.path.dirname(os.path.realpath(__file__))
-         #os.remove("temp.jpg")
-         #exit(0)
 
 
 def get_image_dir_recursive(img_dir):
