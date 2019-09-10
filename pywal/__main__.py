@@ -161,7 +161,8 @@ def parse_args(parser):
     args = parser.parse_args()
 
     if args.random:
-        colors_plain = colors.get(image.get(image.get_random_unsplash(args.random)), args.l, args.backend)
+        colors_plain = colors.get(image.get(image.get_random_unsplash(args.random)), args.l,
+                                  args.backend)
         sequences.send(colors_plain)
         util.delete_random_file("temp.jpg")
 
@@ -173,8 +174,10 @@ def parse_args(parser):
         util.Color.alpha_num = args.a
 
     if args.i:
-        image_file = image.get(args.i, iterative=args.iterative, recursive=args.recursive)
-        colors_plain = colors.get(image_file, args.l, args.backend, sat=args.saturate)
+        image_file = image.get(args.i, iterative=args.iterative,
+                               recursive=args.recursive)
+        colors_plain = colors.get(image_file, args.l, args.backend,
+                                  sat=args.saturate)
 
     if args.theme:
         colors_plain = theme.file(args.theme, args.l)
