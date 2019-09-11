@@ -179,14 +179,12 @@ def parse_args(parser):
         colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
 
         if args.l:
-            wallpaper_cache = open(os.path.join(CACHE_DIR, "wal"))
-            cached_wallpaper = wallpaper_cache.read()
-            colors_plain = colors.get(cached_wallpaper, True, args.backend,
+            cached_wallpaper = util.read_file(os.path.join(CACHE_DIR, "wal"))
+            colors_plain = colors.get(cached_wallpaper[0], True, args.backend,
                                       sat=args.saturate)
         elif args.d:
-            wallpaper_cache = open(os.path.join(CACHE_DIR, "wal"))
-            cached_wallpaper = wallpaper_cache.read()
-            colors_plain = colors.get(cached_wallpaper, False, args.backend,
+            cached_wallpaper = util.read_file(os.path.join(CACHE_DIR, "wal"))
+            colors_plain = colors.get(cached_wallpaper[0], False, args.backend,
                                       sat=args.saturate)
 
     if args.b:
