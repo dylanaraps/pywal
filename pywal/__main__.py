@@ -76,9 +76,6 @@ def get_args():
     arg.add_argument("-l", action="store_true",
                      help="Generate a light colorscheme.")
 
-    arg.add_argument("-d", action="store_true",
-                     help="Generate a dark colorscheme. Default.")
-
     arg.add_argument("-n", action="store_true",
                      help="Skip setting the wallpaper.")
 
@@ -103,6 +100,9 @@ def get_args():
 
     arg.add_argument("-v", action="store_true",
                      help="Print \"wal\" version.")
+
+    arg.add_argument("-w", action="store_true",
+                     help="Use last used wallpaper for color generation.")
 
     arg.add_argument("-e", action="store_true",
                      help="Skip reloading gtk/xrdb/i3/sway/polybar")
@@ -141,6 +141,7 @@ def parse_args_exit(parser):
     if not args.i and \
        not args.theme and \
        not args.R and \
+       not args.w and \
        not args.backend:
         parser.error("No input specified.\n"
                      "--backend, --theme, -i or -R are required.")
@@ -178,14 +179,10 @@ def parse_args(parser):
     if args.R:
         colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
 
-        if args.l:
-            cached_wallpaper = util.read_file(os.path.join(CACHE_DIR, "wal"))
-            colors_plain = colors.get(cached_wallpaper[0], True, args.backend,
-                                      sat=args.saturate)
-        elif args.d:
-            cached_wallpaper = util.read_file(os.path.join(CACHE_DIR, "wal"))
-            colors_plain = colors.get(cached_wallpaper[0], False, args.backend,
-                                      sat=args.saturate)
+    if args.w:
+        cached_wallpaper = util.read_file(os.path.join(CACHE_DIR, "wal"))
+        colors_plain = colors.get(cached_wallpaper[0], args.l, args.backend,
+                                  sat=args.saturate)
 
     if args.b:
         args.b = "#%s" % (args.b.strip("#"))
