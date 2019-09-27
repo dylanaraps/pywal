@@ -1,6 +1,6 @@
 """wal - setup.py"""
-import setuptools
 import sys
+import setuptools
 
 try:
     import pywal
