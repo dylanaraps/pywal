@@ -24,14 +24,16 @@ def list_out():
 
     if user_themes:
         print("\033[1;32mUser Themes\033[0m:")
-        print(" -", "\n - ".join(sorted(user_themes)))
+        print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
+            for t in sorted(user_themes)))
 
     print("\033[1;32mDark Themes\033[0m:")
-    print(" -", "\n - ".join(sorted(dark_themes)))
-    print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t for t in sorted(dark_themes)))
+    print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
+        for t in sorted(dark_themes)))
 
     print("\033[1;32mLight Themes\033[0m:")
-    print(" -", "\n - ".join(sorted(ligh_themes)))
+    print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
+        for t in sorted(ligh_themes)))
 
     print("\033[1;32mExtra\033[0m:")
     print(" - random (select a random dark theme)")
