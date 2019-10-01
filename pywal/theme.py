@@ -6,7 +6,7 @@ import os
 import random
 import sys
 
-from .settings import CONF_DIR, MODULE_DIR
+from .settings import CACHE_DIR, CONF_DIR, MODULE_DIR
 from . import util
 
 
@@ -116,6 +116,7 @@ def file(input_file, light=False):
     if os.path.isfile(theme_file):
         logging.info("Set theme to \033[1;37m%s\033[0m.",
                      os.path.basename(theme_file))
+        util.save_file(os.path.basename(theme_file), os.path.join(CACHE_DIR, "theme"))
         return parse(theme_file)
 
     logging.error("No %s colorscheme file found.", bri)
