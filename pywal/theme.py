@@ -19,8 +19,11 @@ def list_out():
     user_themes = [theme.name.replace(".json", "")
                    for theme in list_themes_user()]
 
-    last_used_theme = util.read_file(os.path.join(
-        CACHE_DIR, "last_used_theme"))[0].replace(".json", "")
+    try:
+        last_used_theme = util.read_file(os.path.join(
+            CACHE_DIR, "last_used_theme"))[0].replace(".json", "")
+    except FileNotFoundError:
+        last_used_theme = ""
 
     if user_themes:
         print("\033[1;32mUser Themes\033[0m:")
