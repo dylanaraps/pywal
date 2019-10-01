@@ -19,14 +19,13 @@ def list_out():
     user_themes = [theme.name.replace(".json", "")
                    for theme in list_themes_user()]
 
-
     last_used_theme = util.read_file(os.path.join(
         CACHE_DIR, "last_used_theme"))[0].replace(".json", "")
 
     if user_themes:
         print("\033[1;32mUser Themes\033[0m:")
-        print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
-                                 for t in sorted(user_themes)))
+        print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme
+                                 else t for t in sorted(user_themes)))
 
     print("\033[1;32mDark Themes\033[0m:")
     print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
