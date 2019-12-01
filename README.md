@@ -2,7 +2,6 @@
 <p align="center">Generate and change color-schemes on the fly.</p>
 
 <p align="center">
-<a href="https://discord.gg/fK3RhsD"><img src="https://img.shields.io/discord/440354555197128704.svg"></a>
 <a href="https://travis-ci.org/dylanaraps/pywal"><img src="https://travis-ci.org/dylanaraps/pywal.svg?branch=master"></a>
 <a href="./LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
 <a href="https://pypi.python.org/pypi/pywal/"><img src="https://img.shields.io/pypi/v/pywal.svg"></a>

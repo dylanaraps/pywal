@@ -6,7 +6,7 @@ import os
 import random
 import sys
 
-from .settings import CONF_DIR, MODULE_DIR
+from .settings import CACHE_DIR, CONF_DIR, MODULE_DIR
 from . import util
 
 
@@ -19,15 +19,24 @@ def list_out():
     user_themes = [theme.name.replace(".json", "")
                    for theme in list_themes_user()]
 
+    try:
+        last_used_theme = util.read_file(os.path.join(
+            CACHE_DIR, "last_used_theme"))[0].replace(".json", "")
+    except FileNotFoundError:
+        last_used_theme = ""
+
     if user_themes:
         print("\033[1;32mUser Themes\033[0m:")
-        print(" -", "\n - ".join(sorted(user_themes)))
+        print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme
+                                 else t for t in sorted(user_themes)))
 
     print("\033[1;32mDark Themes\033[0m:")
-    print(" -", "\n - ".join(sorted(dark_themes)))
+    print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
+                             for t in sorted(dark_themes)))
 
     print("\033[1;32mLight Themes\033[0m:")
-    print(" -", "\n - ".join(sorted(ligh_themes)))
+    print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
+                             for t in sorted(ligh_themes)))
 
     print("\033[1;32mExtra\033[0m:")
     print(" - random (select a random dark theme)")
@@ -127,6 +136,8 @@ def file(input_file, light=False):
     if os.path.isfile(theme_file):
         logging.info("Set theme to \033[1;37m%s\033[0m.",
                      os.path.basename(theme_file))
+        util.save_file(os.path.basename(theme_file),
+                       os.path.join(CACHE_DIR, "last_used_theme"))
         return parse(theme_file)
 
     logging.error("No %s colorscheme file found.", bri)

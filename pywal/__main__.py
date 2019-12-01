@@ -53,6 +53,11 @@ def get_args():
                           "flag is used: Go through the images in order "
                           "instead of shuffled.")
 
+    arg.add_argument("--recursive", action="store_true",
+                     help="When pywal is given a directory as input and this "
+                          "flag is used: Search for images recursively in "
+                          "subdirectories instead of the root only.")
+
     arg.add_argument("--saturate", metavar="0.0-1.0",
                      help="Set the color saturation.")
 
@@ -101,6 +106,9 @@ def get_args():
     arg.add_argument("-v", action="store_true",
                      help="Print \"wal\" version.")
 
+    arg.add_argument("-w", action="store_true",
+                     help="Use last used wallpaper for color generation.")
+
     arg.add_argument("-e", action="store_true",
                      help="Skip reloading gtk/xrdb/i3/sway/polybar")
 
@@ -138,6 +146,7 @@ def parse_args_exit(parser):
     if not args.i and \
        not args.theme and \
        not args.R and \
+       not args.w and \
        not args.backend:
         parser.error("No input specified.\n"
                      "--backend, --theme, -i or -R are required.")
@@ -164,7 +173,8 @@ def parse_args(parser):
         util.Color.alpha_num = args.a
 
     if args.i:
-        image_file = image.get(args.i, iterative=args.iterative)
+        image_file = image.get(args.i, iterative=args.iterative,
+                               recursive=args.recursive)
         colors_plain = colors.get(image_file, args.l, args.backend,
                                   sat=args.saturate)
 
@@ -173,6 +183,11 @@ def parse_args(parser):
 
     if args.R:
         colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
+
+    if args.w:
+        cached_wallpaper = util.read_file(os.path.join(CACHE_DIR, "wal"))
+        colors_plain = colors.get(cached_wallpaper[0], args.l, args.backend,
+                                  sat=args.saturate)
 
     if args.b:
         args.b = "#%s" % (args.b.strip("#"))

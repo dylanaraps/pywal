@@ -8,6 +8,7 @@ import os
 import shutil
 import subprocess
 import sys
+import platform
 
 
 class Color:
@@ -183,7 +184,11 @@ def get_pid(name):
         return False
 
     try:
-        subprocess.check_output(["pidof", "-s", name])
+        if platform.system() != 'Darwin':
+            subprocess.check_output(["pidof", "-s", name])
+        else:
+            subprocess.check_output(["pidof", name])
+
     except subprocess.CalledProcessError:
         return False
 

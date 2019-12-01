@@ -11,7 +11,7 @@ from . import util
 
 def set_special(index, color, iterm_name="h", alpha=100):
     """Convert a hex color to a special sequence."""
-    if OS == "Darwin":
+    if OS == "Darwin" and iterm_name:
         return "\033]P%s%s\033\\" % (iterm_name, color.strip("#"))
 
     if index in [11, 708] and alpha != "100":
@@ -51,16 +51,16 @@ def create_sequences(colors, vte_fix=False):
         set_special(10, colors["special"]["foreground"], "g"),
         set_special(11, colors["special"]["background"], "h", alpha),
         set_special(12, colors["special"]["cursor"], "l"),
-        set_special(13, colors["special"]["foreground"], "l"),
-        set_special(17, colors["special"]["foreground"], "l"),
-        set_special(19, colors["special"]["background"], "l"),
+        set_special(13, colors["special"]["foreground"], "j"),
+        set_special(17, colors["special"]["foreground"], "k"),
+        set_special(19, colors["special"]["background"], "m"),
         set_color(232, colors["special"]["background"]),
         set_color(256, colors["special"]["foreground"])
     ])
 
     if not vte_fix:
         sequences.extend(
-            set_special(708, colors["special"]["background"], "l", alpha)
+            set_special(708, colors["special"]["background"], "", alpha)
         )
 
     if OS == "Darwin":

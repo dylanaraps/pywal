@@ -26,7 +26,7 @@ def xrdb(xrdb_files=None):
 
     if shutil.which("xrdb") and OS != "Darwin":
         for file in xrdb_files:
-            subprocess.run(["xrdb", "-merge", "-quiet", file])
+            subprocess.Popen(["xrdb", "-merge", "-quiet", file])
 
 
 def gtk():
@@ -56,8 +56,13 @@ def bspwm():
 
 def kitty():
     """ Reload kitty colors. """
-    if shutil.which("kitty") and util.get_pid("kitty"):
-        util.disown(["kitty", "@", "set-colors", "--all"])
+    if (shutil.which("kitty")
+            and util.get_pid("kitty")
+            and os.getenv('TERM') == 'xterm-kitty'):
+        subprocess.call([
+            "kitty", "@", "set-colors", "--all",
+            os.path.join(CACHE_DIR, "colors-kitty.conf")
+        ])
 
 
 def polybar():
