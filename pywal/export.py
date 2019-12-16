@@ -3,6 +3,7 @@ Export colors in various formats.
 """
 import logging
 import os
+import re
 
 from .settings import CACHE_DIR, MODULE_DIR, CONF_DIR
 from . import util
@@ -12,7 +13,32 @@ def template(colors, input_file, output_file=None):
     """Read template file, substitute markers and
        save the file elsewhere."""
     template_data = util.read_file_raw(input_file)
+    matches = re.finditer(r"(?<=(?<!\{))(\{([^{}]+)\})(?=(?!\}))", "".join(template_data), re.MULTILINE)
+    print(colors)
+    for match in matches:
+        # Check that this color doesn't already exist
+        match_str = match.group(2)
+        color, _, funcs = match_str.partition(".")
+        #if len(funcs) != 0:
+            #print(funcs)
+        #print(colors[color].hex_color,input_file)
 
+        '''if match_str not in colors:
+            # Extract original color and functions
+            attr, _, funcs = match_str.partition(".")
+            original_color = colors[attr]
+            funcs = funcs.split(".")
+            # Apply every function to the original color
+            for func in funcs:
+                # Check if this sub-color has already been generated
+                if not hasattr(original_color, func):
+                    # Generate new color using function from util.py
+                    func, arg = func.strip(")").split("(")
+                    arg = arg.split(",")
+                    new_color = util.Color(
+                        getattr(util, func)(original_color.hex_color, *arg))
+                    setattr(original_color, func, new_color)
+                    original_color = getattr(original_color, func)'''
     try:
         template_data = "".join(template_data).format(**colors)
     except ValueError:

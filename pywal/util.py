@@ -57,6 +57,11 @@ class Color:
         """Strip '#' from color."""
         return self.hex_color[1:]
 
+    @property
+    def lighten(self,percent):
+        """Lighten color by percent"""
+        return lighten_color(self.hex_color,percent/100)
+
 
 def read_file(input_file):
     """Read data from a file and trim newlines."""
