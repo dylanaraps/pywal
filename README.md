@@ -16,7 +16,8 @@ Pywal is a tool that generates a color palette from the dominant colors in an im
 This fork of Pywal aims to create a more versatile system, by being able to modify colors in templates. Currently supported functions include:  
 * `lighten`  
 * `darken`  
-* `saturate`
+* `saturate`  
+(More coming)
 
 There are currently 5 supported color generation backends, each providing a different palette of colors from each image. You're bound to find an appealing color-scheme.
 
