@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import platform
+import re
 
 
 class Color:
@@ -57,17 +58,23 @@ class Color:
         """Strip '#' from color."""
         return self.hex_color[1:]
 
-    @property
     def lighten(self,percent):
         """Lighten color by percent"""
-        return lighten_color(self.hex_color,percent/100)
+        return Color(lighten_color(self.hex_color,float(re.sub(r'[\D\.]','',percent))/100))
+
+    def darken(self,percent):
+        """Darken color by percent"""
+        return Color(darken_color(self.hex_color,float(re.sub(r'[\D\.]','',percent))/100))
+
+    def saturate(self,percent):
+        """Saturate a color"""
+        return Color(saturate_color(self.hex_color,float(re.sub(r'[\D\.]','',percent))/100))
 
 
 def read_file(input_file):
     """Read data from a file and trim newlines."""
     with open(input_file, "r") as file:
         return file.read().splitlines()
-
 
 def read_file_json(input_file):
     """Read data from a json file."""

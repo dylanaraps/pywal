@@ -48,6 +48,9 @@ def colors_to_dict(colors, img):
             "color13": colors[13],
             "color14": colors[14],
             "color15": colors[15]
+        },
+        "modified": {
+
         }
     }
 
