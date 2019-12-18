@@ -17,33 +17,34 @@ def template(colors, input_file, output_file=None):
         line = template_data[i]
         matches = re.finditer(r"(?<=(?<!\{))(\{([^{}]+)\})(?=(?!\}))", line)
         for match in matches:
-            # Check that this color doesn't already exist
+            # Get the color, and the functions associated with it
             color, _, funcs = match.group(2).partition(".")
+            #Check that functions are needed for this color
             if len(funcs) != 0:
-                to_replace = color
-                new_color = None
-                for func in funcs.split(")"):
-                    if len(func) == 0:
-                        continue
+                #Build up a string which will be replaced when the color is done processing
+                replace_str = color
+                #The modified color
+                new_color = colors[color]
+                #Execute each function to be done
+                for func in filter(None,funcs.split(")")):
+                    ### Get function name and arguments
                     func_split = func.split("(")
-                    if len(func_split) > 1:
-                        args = func_split[1].split(",")
-                    else:
-                        args = []
-                    name = func_split[0]
-                    if name[0] == '.':
-                        name = name[1:]
-                    x = getattr(colors[color], name)
-                    if callable(x):
-                        new_color = x(*args)
-                        if func[0] != '.':
-                            to_replace += "."
-                        to_replace += func + ")"
-                    else:
-                        pass
-                if not new_color is None:
+                    args = []
+                    if len(func_split) > 1: args = func_split[1].split(",")
+                    fname = func_split[0]
+                    if fname[0] == '.': fname = fname[1:]
+                    f = getattr(new_color, fname)
+
+                    # If the function is callable, call it
+                    if callable(f):
+                        new_color = f(*args)
+                        #add to the string that will replace the function calls with the generated function.
+                        if func[0] != '.': replace_str += "."
+                        replace_str += func + ")"
+                #If the color was changed, replace the template with a unique identifier for the new color.
+                if not new_color is colors[color]:
                     cname = "color" + new_color.strip
-                    template_data[i] = line.replace(to_replace, cname)
+                    template_data[i] = line.replace(replace_str, cname)
                     colors[cname] = new_color
     try:
         template_data = "".join(template_data).format(**colors)
