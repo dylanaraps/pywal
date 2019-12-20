@@ -5,11 +5,11 @@ import colorsys
 import json
 import logging
 import os
+import platform
+import re
 import shutil
 import subprocess
 import sys
-import platform
-import re
 
 
 class Color:
@@ -60,15 +60,18 @@ class Color:
 
     def lighten(self, percent):
         """Lighten color by percent"""
-        return Color(lighten_color(self.hex_color, float(re.sub(r'[\D\.]', '', percent)) / 100))
+        percent = float(re.sub(r'[\D\.]', '', str(percent)))
+        return Color(lighten_color(self.hex_color, percent / 100))
 
     def darken(self, percent):
         """Darken color by percent"""
-        return Color(darken_color(self.hex_color, float(re.sub(r'[\D\.]', '', percent)) / 100))
+        percent = float(re.sub(r'[\D\.]', '', str(percent)))
+        return Color(darken_color(self.hex_color, percent / 100))
 
     def saturate(self, percent):
         """Saturate a color"""
-        return Color(saturate_color(self.hex_color, float(re.sub(r'[\D\.]', '', percent)) / 100))
+        percent = float(re.sub(r'[\D\.]', '', str(percent)))
+        return Color(saturate_color(self.hex_color, percent / 100))
 
 
 def read_file(input_file):

@@ -5,53 +5,53 @@ import logging
 import os
 import re
 
-from .settings import CACHE_DIR, MODULE_DIR, CONF_DIR
 from . import util
+from .settings import CACHE_DIR, CONF_DIR, MODULE_DIR
 
 
 def template(colors, input_file, output_file=None):
     """Read template file, substitute markers and
        save the file elsewhere."""
     template_data = util.read_file_raw(input_file)
-    for i in range(len(template_data)):
-        line = template_data[i]
-        matches = re.finditer(r"(?<=(?<!\{))(\{([^{}]+)\})(?=(?!\}))", line)
-        for match in matches:
+    for i, l in enumerate(template_data):
+        for match in re.finditer(r"(?<=(?<!\{))(\{([^{}]+)\})(?=(?!\}))", l):
             # Get the color, and the functions associated with it
-            color, _, funcs = match.group(2).partition(".")
+            cname, _, funcs = match.group(2).partition(".")
             # Check that functions are needed for this color
-            if len(funcs) != 0:
-                # Build up a string which will be replaced when the color is done processing
-                replace_str = color
-                # The modified color
-                new_color = colors[color]
-                # Execute each function to be done
-                for func in filter(None, funcs.split(")")):
-                    # Get function name and arguments
-                    func_split = func.split("(")
-                    args = []
-                    if len(func_split) > 1:
-                        args = func_split[1].split(",")
-                    fname = func_split[0]
-                    if fname[0] == '.':
-                        fname = fname[1:]
-                    if not hasattr(new_color, fname):
-                        logging.error(
-                            "Syntax error in template file '%s' on line '%s'", input_file, i)
-                    f = getattr(new_color, fname)
+            if len(funcs) == 0:
+                continue
+            # Build up a string which will be replaced with the new color
+            replace_str = cname
+            # Color to be modified copied into new one
+            new_color = util.Color(colors[cname].hex_color)
+            # Execute each function to be done
+            for func in filter(None, funcs.split(")")):
+                # Get function name and arguments
+                func = func.split("(")
+                fname = func[0]
+                if fname[0] == '.':
+                    fname = fname[1:]
+                if not hasattr(new_color, fname):
+                    logging.error(
+                        "Syntax error in template file '%s' on line '%s'",
+                        input_file, i)
+                function = getattr(new_color, fname)
 
-                    # If the function is callable, call it
-                    if callable(f):
-                        new_color = f(*args)
-                        # add to the string that will replace the function calls with the generated function.
-                        if func[0] != '.':
-                            replace_str += "."
-                        replace_str += func + ")"
-                # If the color was changed, replace the template with a unique identifier for the new color.
-                if not new_color is colors[color]:
-                    cname = "color" + new_color.strip
-                    template_data[i] = line.replace(replace_str, cname)
-                    colors[cname] = new_color
+                # If the function is callable, call it
+                if callable(function):
+                    if len(func) > 1:
+                        new_color = function(*func[1].split(","))
+                    else:
+                        new_color = function()
+                    # string to replace generated colors
+                    if func[0] != '.':
+                        replace_str += "."
+                    replace_str += "(".join(func) + ")"
+            # If the color was changed, replace with a unique identifier.
+            if new_color is not colors[cname]:
+                template_data[i] = l.replace(
+                    replace_str, "color" + new_color.strip)
+                colors["color" + new_color.strip] = new_color
     try:
         template_data = "".join(template_data).format(**colors)
     except ValueError:
