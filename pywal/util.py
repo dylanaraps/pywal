@@ -5,6 +5,9 @@ import colorsys
 import json
 import logging
 import os
+import platform
+import re
+import shutil
 import subprocess
 import sys
 
@@ -30,6 +33,12 @@ class Color:
         return hex_to_xrgba(self.hex_color)
 
     @property
+    def rgba(self):
+        """Convert a hex color to rgba."""
+        return "rgba(%s,%s,%s,%s)" % (*hex_to_rgb(self.hex_color),
+                                      int(self.alpha_num) / 100)
+
+    @property
     def alpha(self):
         """Add URxvt alpha value to color."""
         return "[%s]%s" % (self.alpha_num, self.hex_color)
@@ -48,6 +57,21 @@ class Color:
     def strip(self):
         """Strip '#' from color."""
         return self.hex_color[1:]
+
+    def lighten(self, percent):
+        """Lighten color by percent"""
+        percent = float(re.sub(r'[\D\.]', '', str(percent)))
+        return Color(lighten_color(self.hex_color, percent / 100))
+
+    def darken(self, percent):
+        """Darken color by percent"""
+        percent = float(re.sub(r'[\D\.]', '', str(percent)))
+        return Color(darken_color(self.hex_color, percent / 100))
+
+    def saturate(self, percent):
+        """Saturate a color"""
+        percent = float(re.sub(r'[\D\.]', '', str(percent)))
+        return Color(saturate_color(self.hex_color, percent / 100))
 
 
 def read_file(input_file):
@@ -148,12 +172,11 @@ def blend_color(color, color2):
 def saturate_color(color, amount):
     """Saturate a hex color."""
     r, g, b = hex_to_rgb(color)
-    r, g, b = [x/255.0 for x in (r, g, b)]
-    h, s, v = colorsys.rgb_to_hsv(r, g, b)
+    r, g, b = [x / 255.0 for x in (r, g, b)]
+    h, l, s = colorsys.rgb_to_hls(r, g, b)
     s = amount
-    v = 0.2
-    r, g, b = colorsys.hls_to_rgb(h, s, v)
-    r, g, b = [x*255.0 for x in (r, g, b)]
+    r, g, b = colorsys.hls_to_rgb(h, l, s)
+    r, g, b = [x * 255.0 for x in (r, g, b)]
 
     return rgb_to_hex((int(r), int(g), int(b)))
 
@@ -169,3 +192,20 @@ def disown(cmd):
     subprocess.Popen(cmd,
                      stdout=subprocess.DEVNULL,
                      stderr=subprocess.DEVNULL)
+
+
+def get_pid(name):
+    """Check if process is running by name."""
+    if not shutil.which("pidof"):
+        return False
+
+    try:
+        if platform.system() != 'Darwin':
+            subprocess.check_output(["pidof", "-s", name])
+        else:
+            subprocess.check_output(["pidof", name])
+
+    except subprocess.CalledProcessError:
+        return False
+
+    return True

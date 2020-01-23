@@ -2,6 +2,7 @@
 import ctypes
 import logging
 import os
+import re
 import shutil
 import subprocess
 import urllib.parse
@@ -32,13 +33,28 @@ def get_desktop_env():
     if desktop:
         return "SWAY"
 
+    desktop = os.environ.get("DESKTOP_STARTUP_ID")
+    if desktop and "awesome" in desktop:
+        return "AWESOME"
+
     return None
 
 
-def xfconf(path, img):
+def xfconf(img):
     """Call xfconf to set the wallpaper on XFCE."""
-    util.disown(["xfconf-query", "--channel", "xfce4-desktop",
-                 "--property", path, "--set", img])
+    xfconf_re = re.compile(
+        r"^/backdrop/screen\d/monitor(?:0|\w*)/"
+        r"(?:(?:image-path|last-image)|workspace\d/last-image)$",
+        flags=re.M
+    )
+    xfconf_data = subprocess.check_output(
+        ["xfconf-query", "--channel", "xfce4-desktop", "--list"],
+        stderr=subprocess.DEVNULL
+    ).decode('utf8')
+    paths = xfconf_re.findall(xfconf_data)
+    for path in paths:
+        util.disown(["xfconf-query", "--channel", "xfce4-desktop",
+                     "--property", path, "--set", img])
 
 
 def set_wm_wallpaper(img):
@@ -71,9 +87,7 @@ def set_desktop_wallpaper(desktop, img):
     desktop = str(desktop).lower()
 
     if "xfce" in desktop or "xubuntu" in desktop:
-        # XFCE requires two commands since they differ between versions.
-        xfconf("/backdrop/screen0/monitor0/image-path", img)
-        xfconf("/backdrop/screen0/monitor0/workspace0/last-image", img)
+        xfconf(img)
 
     elif "muffin" in desktop or "cinnamon" in desktop:
         util.disown(["gsettings", "set",
@@ -92,6 +106,11 @@ def set_desktop_wallpaper(desktop, img):
     elif "sway" in desktop:
         util.disown(["swaymsg", "output", "*", "bg", img, "fill"])
 
+    elif "awesome" in desktop:
+        util.disown(["awesome-client",
+                     "require('gears').wallpaper.maximized('{img}')"
+                     .format(**locals())])
+
     else:
         set_wm_wallpaper(img)
 
@@ -100,7 +119,18 @@ def set_mac_wallpaper(img):
     """Set the wallpaper on macOS."""
     db_file = "Library/Application Support/Dock/desktoppicture.db"
     db_path = os.path.join(HOME, db_file)
-    subprocess.call(["sqlite3", db_path, "update data set value = '%s'" % img])
+    img_dir, _ = os.path.split(img)
+
+    # Clear the existing picture data and write the image paths
+    sql = "delete from data; "
+    sql += "insert into data values(\"%s\"); " % img_dir
+    sql += "insert into data values(\"%s\"); " % img
+
+    # Set all monitors/workspaces to the selected image
+    sql += "update preferences set data_id=2 where key=1 or key=2 or key=3; "
+    sql += "update preferences set data_id=1 where key=10 or key=20 or key=30;"
+
+    subprocess.call(["sqlite3", db_path, sql])
 
     # Kill the dock to fix issues with cached wallpapers.
     # macOS caches wallpapers and if a wallpaper is set that shares

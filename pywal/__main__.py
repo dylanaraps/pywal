@@ -45,7 +45,7 @@ def get_args():
 
     arg.add_argument("--theme", "-f", metavar="/path/to/file or theme_name",
                      help="Which colorscheme file to use. \
-                           Use 'wal --theme' to list builtin themes.",
+                           Use 'wal --theme' to list builtin and user themes.",
                      const="list_themes", nargs="?")
 
     arg.add_argument("--iterative", action="store_true",
@@ -53,14 +53,25 @@ def get_args():
                           "flag is used: Go through the images in order "
                           "instead of shuffled.")
 
+    arg.add_argument("--recursive", action="store_true",
+                     help="When pywal is given a directory as input and this "
+                          "flag is used: Search for images recursively in "
+                          "subdirectories instead of the root only.")
+
+    arg.add_argument("--saturate", metavar="0.0-1.0",
+                     help="Set the color saturation.")
+
+    arg.add_argument("--preview", action="store_true",
+                     help="Print the current color palette.")
+
+    arg.add_argument("--vte", action="store_true",
+                     help="Fix text-artifacts printed in VTE terminals.")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
     arg.add_argument("-i", metavar="\"/path/to/img.jpg\"",
                      help="Which image or directory to use.")
-
-    arg.add_argument("-g", action="store_true",
-                     help="Generate an oomox theme.")
 
     arg.add_argument("-l", action="store_true",
                      help="Generate a light colorscheme.")
@@ -68,8 +79,13 @@ def get_args():
     arg.add_argument("-n", action="store_true",
                      help="Skip setting the wallpaper.")
 
-    arg.add_argument("-o", metavar="\"script_name\"",
+    arg.add_argument("-o", metavar="\"script_name\"", action="append",
                      help="External script to run after \"wal\".")
+
+    arg.add_argument("-p", metavar="\"theme_name\"",
+                     help="permanently save theme to "
+                     "$XDG_CONFIG_HOME/wal/colorschemes with "
+                     "the specified name")
 
     arg.add_argument("-q", action="store_true",
                      help="Quiet mode, don\'t print anything.")
@@ -90,6 +106,9 @@ def get_args():
     arg.add_argument("-v", action="store_true",
                      help="Print \"wal\" version.")
 
+    arg.add_argument("-w", action="store_true",
+                     help="Use last used wallpaper for color generation.")
+
     arg.add_argument("-e", action="store_true",
                      help="Skip reloading gtk/xrdb/i3/sway/polybar")
 
@@ -100,11 +119,17 @@ def parse_args_exit(parser):
     """Process args that exit."""
     args = parser.parse_args()
 
-    if not len(sys.argv) > 1:
-        parser.error("wal needs to be given arguments to run.")
+    if len(sys.argv) <= 1:
+        parser.print_help()
+        sys.exit(1)
 
     if args.v:
         parser.exit(0, "wal %s\n" % __version__)
+
+    if args.preview:
+        print("Current colorscheme:", sep='')
+        colors.palette()
+        sys.exit(0)
 
     if args.i and args.theme:
         parser.error("Conflicting arguments -i and -f.")
@@ -113,9 +138,15 @@ def parse_args_exit(parser):
         reload.colors()
         sys.exit(0)
 
+    if args.c:
+        scheme_dir = os.path.join(CACHE_DIR, "schemes")
+        shutil.rmtree(scheme_dir, ignore_errors=True)
+        sys.exit(0)
+
     if not args.i and \
        not args.theme and \
        not args.R and \
+       not args.w and \
        not args.backend:
         parser.error("No input specified.\n"
                      "--backend, --theme, -i or -R are required.")
@@ -138,22 +169,25 @@ def parse_args(parser):
         logging.getLogger().disabled = True
         sys.stdout = sys.stderr = open(os.devnull, "w")
 
-    if args.c:
-        scheme_dir = os.path.join(CACHE_DIR, "schemes")
-        shutil.rmtree(scheme_dir, ignore_errors=True)
-
     if args.a:
         util.Color.alpha_num = args.a
 
     if args.i:
-        image_file = image.get(args.i, iterative=args.iterative)
-        colors_plain = colors.get(image_file, args.l, args.backend)
+        image_file = image.get(args.i, iterative=args.iterative,
+                               recursive=args.recursive)
+        colors_plain = colors.get(image_file, args.l, args.backend,
+                                  sat=args.saturate)
 
     if args.theme:
         colors_plain = theme.file(args.theme, args.l)
 
     if args.R:
         colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
+
+    if args.w:
+        cached_wallpaper = util.read_file(os.path.join(CACHE_DIR, "wal"))
+        colors_plain = colors.get(cached_wallpaper[0], args.l, args.backend,
+                                  sat=args.saturate)
 
     if args.b:
         args.b = "#%s" % (args.b.strip("#"))
@@ -163,7 +197,10 @@ def parse_args(parser):
     if not args.n:
         wallpaper.change(colors_plain["wallpaper"])
 
-    sequences.send(colors_plain, to_send=not args.s)
+    if args.p:
+        theme.save(colors_plain, args.p, args.l)
+
+    sequences.send(colors_plain, to_send=not args.s, vte_fix=args.vte)
 
     if sys.stdout.isatty():
         colors.palette()
@@ -174,10 +211,10 @@ def parse_args(parser):
         reload.env(tty_reload=not args.t)
 
     if args.o:
-        util.disown([args.o])
+        for cmd in args.o:
+            util.disown([cmd])
 
     if not args.e:
-        reload.oomox(args.g)
         reload.gtk()
 
 

@@ -24,7 +24,7 @@ def has_im():
     if shutil.which("magick"):
         return ["magick", "convert"]
 
-    elif shutil.which("convert"):
+    if shutil.which("convert"):
         return ["convert"]
 
     logging.error("Imagemagick wasn't found on your system.")
@@ -35,12 +35,21 @@ def has_im():
 def gen_colors(img):
     """Format the output from imagemagick into a list
        of hex colors."""
-    raw_colors = imagemagick(20, img, has_im())
+    magick_command = has_im()
 
-    if len(raw_colors) < 16:
-        logging.error("Imagemagick couldn't generate a palette.")
-        logging.error("Try a different image or backend.")
-        sys.exit(1)
+    for i in range(0, 20, 1):
+        raw_colors = imagemagick(16 + i, img, magick_command)
+
+        if len(raw_colors) > 16:
+            break
+
+        if i == 19:
+            logging.error("Imagemagick couldn't generate a suitable palette.")
+            sys.exit(1)
+
+        else:
+            logging.warning("Imagemagick couldn't generate a palette.")
+            logging.warning("Trying a larger palette size %s", 16 + i)
 
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 

@@ -26,24 +26,7 @@ def xrdb(xrdb_files=None):
 
     if shutil.which("xrdb") and OS != "Darwin":
         for file in xrdb_files:
-            subprocess.run(["xrdb", "-merge", "-quiet", file])
-
-
-def oomox(gen_theme):
-    """Call oomox to generate a theme."""
-    if gen_theme:
-        if not shutil.which("oomox-cli"):
-            logging.warning("Oomox not found, skipping.")
-            return
-
-        oomox_file = os.path.join(CACHE_DIR, "colors-oomox")
-
-        logging.info("Waiting for Oomox.")
-        subprocess.run(["oomox-cli", "-o", "wal", oomox_file],
-                       stdout=subprocess.DEVNULL)
-
-    else:
-        logging.info("Use -g to generate an oomox theme.")
+            subprocess.Popen(["xrdb", "-merge", "-quiet", file])
 
 
 def gtk():
@@ -61,19 +44,36 @@ def gtk():
 
 def i3():
     """Reload i3 colors."""
-    if shutil.which("i3-msg"):
+    if shutil.which("i3-msg") and util.get_pid("i3"):
         util.disown(["i3-msg", "reload"])
+
+
+def bspwm():
+    """Reload bspwm colors."""
+    if shutil.which("bspc") and util.get_pid("bspwm"):
+        util.disown(["bspc", "wm", "-r"])
+
+
+def kitty():
+    """ Reload kitty colors. """
+    if (shutil.which("kitty")
+            and util.get_pid("kitty")
+            and os.getenv('TERM') == 'xterm-kitty'):
+        subprocess.call([
+            "kitty", "@", "set-colors", "--all",
+            os.path.join(CACHE_DIR, "colors-kitty.conf")
+        ])
 
 
 def polybar():
     """Reload polybar colors."""
-    if shutil.which("polybar"):
+    if shutil.which("polybar") and util.get_pid("polybar"):
         util.disown(["pkill", "-USR1", "polybar"])
 
 
 def sway():
     """Reload sway colors."""
-    if shutil.which("swaymsg"):
+    if shutil.which("swaymsg") and util.get_pid("sway"):
         util.disown(["swaymsg", "reload"])
 
 
@@ -92,6 +92,8 @@ def env(xrdb_file=None, tty_reload=True):
     """Reload environment."""
     xrdb(xrdb_file)
     i3()
+    bspwm()
+    kitty()
     sway()
     polybar()
     logging.info("Reloaded environment.")

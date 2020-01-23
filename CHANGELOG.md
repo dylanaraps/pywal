@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 
+## [3.1.0] - 2018-06-21
+
+- Added `--saturate` to change color saturation.
+    - Takes a float as its value: `0.0` to `1.0`.
+- Added `vim` output file.
+- Fixed `LS_COLORS` issue.
+- Fixed issues in iTerm2 on macOS.
+- Fixed hang caused by `imagemagick`.
+- Fixed issue with `-i` and transparency.
+
+
 ## [3.0.1] - 2018-05-27
 
 - Added Tempus themes.
@@ -640,7 +651,8 @@ Note to self: Don't flag releases before coffee.
 
 
 
-[Unreleased]: https://github.com/dylanaraps/pywal/compare/3.0.1...HEAD
+[Unreleased]: https://github.com/dylanaraps/pywal/compare/3.1.0...HEAD
+[3.1.0]: https://github.com/dylanaraps/pywal/compare/3.0.1...3.1.0
 [3.0.1]: https://github.com/dylanaraps/pywal/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/dylanaraps/pywal/compare/2.1.0...3.0.0
 [2.1.0]: https://github.com/dylanaraps/pywal/compare/2.0.5...2.1.0

@@ -56,16 +56,16 @@ def generic_adjust(colors, light):
     """Generic color adjustment for themers."""
     if light:
         for color in colors:
-            color = util.saturate_color(color, 0.50)
-            color = util.darken_color(color, 0.4)
+            color = util.saturate_color(color, 0.60)
+            color = util.darken_color(color, 0.5)
 
-        colors[0] = util.lighten_color(colors[0], 0.9)
+        colors[0] = util.lighten_color(colors[0], 0.95)
         colors[7] = util.darken_color(colors[0], 0.75)
         colors[8] = util.darken_color(colors[0], 0.25)
         colors[15] = colors[7]
 
     else:
-        colors[0] = util.darken_color(colors[0], 0.75)
+        colors[0] = util.darken_color(colors[0], 0.80)
         colors[7] = util.lighten_color(colors[0], 0.75)
         colors[8] = util.lighten_color(colors[0], 0.25)
         colors[15] = colors[7]
@@ -73,13 +73,25 @@ def generic_adjust(colors, light):
     return colors
 
 
-def cache_fname(img, backend, light, cache_dir):
+def saturate_colors(colors, amount):
+    """Saturate all colors."""
+    if amount and float(amount) <= 1.0:
+        for i, _ in enumerate(colors):
+            if i not in [0, 7, 8, 15]:
+                colors[i] = util.saturate_color(colors[i], float(amount))
+
+    return colors
+
+
+def cache_fname(img, backend, light, cache_dir, sat=""):
     """Create the cache file name."""
     color_type = "light" if light else "dark"
     file_name = re.sub("[/|\\|.]", "_", img)
+    file_size = os.path.getsize(img)
 
-    file_parts = [file_name, color_type, backend, __cache_version__]
-    return [cache_dir, "schemes", "%s_%s_%s_%s.json" % (*file_parts,)]
+    file_parts = [file_name, color_type, backend,
+                  sat, file_size, __cache_version__]
+    return [cache_dir, "schemes", "%s_%s_%s_%s_%s_%s.json" % (*file_parts,)]
 
 
 def get_backend(backend):
@@ -106,20 +118,15 @@ def palette():
     print("\n")
 
 
-def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
+def get(img, light=False, backend="wal", cache_dir=CACHE_DIR, sat=""):
     """Generate a palette."""
     # home_dylan_img_jpg_backend_1.2.2.json
-    cache_name = cache_fname(img, backend, light, cache_dir)
+    cache_name = cache_fname(img, backend, light, cache_dir, sat)
     cache_file = os.path.join(*cache_name)
 
     if os.path.isfile(cache_file):
-        # Disable logging in theme.file().
-        logger = logging.getLogger()
-        logger.disabled = True
         colors = theme.file(cache_file)
-        logger.disabled = False
-
-        util.Color.alpha_num = colors["alpha"]
+        colors["alpha"] = util.Color.alpha_num
         logging.info("Found cached colorscheme.")
 
     else:
@@ -136,7 +143,8 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR):
 
         logging.info("Using %s backend.", backend)
         backend = sys.modules["pywal.backends.%s" % backend]
-        colors = colors_to_dict(getattr(backend, "get")(img, light), img)
+        colors = getattr(backend, "get")(img, light)
+        colors = colors_to_dict(saturate_colors(colors, sat), img)
 
         util.save_file_json(colors, cache_file)
         logging.info("Generation complete.")

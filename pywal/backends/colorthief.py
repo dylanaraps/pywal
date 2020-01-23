@@ -25,7 +25,7 @@ def gen_colors(img):
         if len(raw_colors) >= 8:
             break
 
-        elif i == 10:
+        if i == 10:
             logging.error("ColorThief couldn't generate a suitable palette.")
             sys.exit(1)
 
