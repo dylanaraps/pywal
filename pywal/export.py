@@ -90,6 +90,7 @@ def get_export_type(export_type):
         "speedcrunch": "colors-speedcrunch.json",
         "sway": "colors-sway",
         "tty": "colors-tty.sh",
+        "vscode": "colors-vscode.json",
         "waybar": "colors-waybar.css",
         "xresources": "colors.Xresources",
         "xmonad": "colors.hs",
