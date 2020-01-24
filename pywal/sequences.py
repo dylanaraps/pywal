@@ -55,7 +55,8 @@ def create_sequences(colors, vte_fix=False):
         set_special(17, colors["special"]["foreground"], "k"),
         set_special(19, colors["special"]["background"], "m"),
         set_color(232, colors["special"]["background"]),
-        set_color(256, colors["special"]["foreground"])
+        set_color(256, colors["special"]["foreground"]),
+        set_color(257, colors["special"]["background"]),
     ])
 
     if not vte_fix:
