@@ -25,7 +25,7 @@ def template(colors, input_file, output_file=None):
             # Color to be modified copied into new one
             new_color = util.Color(colors[cname].hex_color)
             # Execute each function to be done
-            for func in filter(None, funcs.split(")")):
+            for func in filter(None, re.split("\)|\.", funcs)):
                 # Get function name and arguments
                 func = func.split("(")
                 fname = func[0]
@@ -47,11 +47,18 @@ def template(colors, input_file, output_file=None):
                     if func[0] != '.':
                         replace_str += "."
                     replace_str += "(".join(func) + ")"
+                else:
+                    # if it is an attribute i.e. rgb
+                    replace_str += '.' + fname
+                    new_color = function
+
+            if not isinstance(new_color, str):
+                new_color = new_color.strip
             # If the color was changed, replace with a unique identifier.
             if new_color is not colors[cname]:
-                template_data[i] = l.replace(
-                    replace_str, "color" + new_color.strip)
-                colors["color" + new_color.strip] = new_color
+                new_color_clean = new_color.replace('[', '_').replace(']', '_')
+                template_data[i] = l.replace(replace_str, "color" + new_color_clean)
+                colors["color" + new_color_clean] = new_color
     try:
         template_data = "".join(template_data).format(**colors)
     except ValueError:
