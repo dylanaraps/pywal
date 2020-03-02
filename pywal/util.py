@@ -58,6 +58,21 @@ class Color:
         """Strip '#' from color."""
         return self.hex_color[1:]
 
+    @property
+    def red(self):
+        """Red value as float between 0 and 1."""
+        return "%.3f" % (hex_to_rgb(self.hex_color)[0]/255.)
+
+    @property
+    def green(self):
+        """Green value as float between 0 and 1."""
+        return "%.3f" % (hex_to_rgb(self.hex_color)[1]/255.)
+
+    @property
+    def blue(self):
+        """Blue value as float between 0 and 1."""
+        return "%.3f" % (hex_to_rgb(self.hex_color)[2]/255.)
+
     def lighten(self, percent):
         """Lighten color by percent"""
         percent = float(re.sub(r'[\D\.]', '', str(percent)))
