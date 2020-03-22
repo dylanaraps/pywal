@@ -14,7 +14,7 @@ def template(colors, input_file, output_file=None):
        save the file elsewhere."""
     template_data = util.read_file_raw(input_file)
     for i, l in enumerate(template_data):
-        for match in re.finditer(r"(?<=(?<!\{))(\{([^{}]+)\})(?=(?!\}))", l):
+        for match in re.finditer(r"(?<=(?<!{))({([^{}]+)\})(?=(?!\}))", l):
             # Get the color, and the functions associated with it
             cname, _, funcs = match.group(2).partition(".")
             # Check that functions are needed for this color
