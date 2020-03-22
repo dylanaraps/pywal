@@ -49,9 +49,12 @@ def template(colors, input_file, output_file=None):
                     replace_str += "(".join(func) + ")"
             # If the color was changed, replace with a unique identifier.
             if new_color is not colors[cname]:
+                new_id = "color" + new_color.strip
                 template_data[i] = l.replace(
-                    replace_str, "color" + new_color.strip)
-                colors["color" + new_color.strip] = new_color
+                    match.group(2),
+                    match.group(2).replace(replace_str, new_id)
+                )
+                colors[new_id] = new_color
     try:
         template_data = "".join(template_data).format(**colors)
     except ValueError:
