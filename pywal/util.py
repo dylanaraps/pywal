@@ -45,6 +45,7 @@ class Color:
 
     @property
     def alpha_dec(self):
+        """Export the alpha value as a decimal number in [0, 1]."""
         return int(self.alpha_num) / 100
     
     @property
