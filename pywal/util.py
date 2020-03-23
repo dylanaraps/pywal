@@ -36,13 +36,17 @@ class Color:
     def rgba(self):
         """Convert a hex color to rgba."""
         return "rgba(%s,%s,%s,%s)" % (*hex_to_rgb(self.hex_color),
-                                      int(self.alpha_num) / 100)
+                                      self.alpha_dec)
 
     @property
     def alpha(self):
         """Add URxvt alpha value to color."""
         return "[%s]%s" % (self.alpha_num, self.hex_color)
 
+    @property
+    def alpha_dec(self):
+        return int(self.alpha_num) / 100
+    
     @property
     def octal(self):
         """Export color in octal"""
