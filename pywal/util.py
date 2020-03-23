@@ -50,7 +50,7 @@ class Color:
     
     @property
     def octal(self):
-        """Export color in octal"""
+        """Export color in octal."""
         return "%s%s" % ("#", oct(int(self.hex_color[1:], 16))[2:])
 
     @property
@@ -79,17 +79,17 @@ class Color:
         return "%.3f" % (hex_to_rgb(self.hex_color)[2]/255.)
 
     def lighten(self, percent):
-        """Lighten color by percent"""
+        """Lighten color by percent."""
         percent = float(re.sub(r'[\D\.]', '', str(percent)))
         return Color(lighten_color(self.hex_color, percent / 100))
 
     def darken(self, percent):
-        """Darken color by percent"""
+        """Darken color by percent."""
         percent = float(re.sub(r'[\D\.]', '', str(percent)))
         return Color(darken_color(self.hex_color, percent / 100))
 
     def saturate(self, percent):
-        """Saturate a color"""
+        """Saturate a color."""
         percent = float(re.sub(r'[\D\.]', '', str(percent)))
         return Color(saturate_color(self.hex_color, percent / 100))
 
@@ -108,7 +108,7 @@ def read_file_json(input_file):
 
 def read_file_raw(input_file):
     """Read data from a file as is, don't strip
-       newlines or other special characters.."""
+       newlines or other special characters."""
     with open(input_file, "r") as file:
         return file.readlines()
 
