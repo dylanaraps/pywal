@@ -62,6 +62,9 @@ def set_wm_wallpaper(img):
     if shutil.which("feh"):
         util.disown(["feh", "--bg-fill", img])
 
+    elif shutil.which("xwallpaper"):
+        util.disown(["xwallpaper", "--zoom", img])
+
     elif shutil.which("nitrogen"):
         util.disown(["nitrogen", "--set-zoom-fill", img])
 
