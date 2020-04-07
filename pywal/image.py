@@ -79,7 +79,11 @@ def get_next_image(img_dir, recursive):
         image = images[next_index]
 
     except IndexError:
-        image = images[0]
+        if images:
+            image = images[0]
+        else:
+            logging.error("No images found in directory.")
+            sys.exit(1)
 
     return os.path.join(img_dir if not recursive else "", image)
 
