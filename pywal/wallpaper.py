@@ -144,7 +144,7 @@ def set_mac_wallpaper(img):
     for pic in pictures:
         if pic:
             sql += 'insert into preferences (key, data_id, picture_id) '
-            sql += f'values(1, {new_entry}, {pic}); '
+            sql += 'values(1, %s, %s); ' % (new_entry, pic)
 
     subprocess.call(["sqlite3", db_path, sql])
 
