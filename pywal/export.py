@@ -9,6 +9,7 @@ from . import util
 from .settings import CACHE_DIR, CONF_DIR, MODULE_DIR
 
 
+# pylint: disable-msg=too-many-locals
 def template(colors, input_file, output_file=None):
     """Read template file, substitute markers and
        save the file elsewhere."""
