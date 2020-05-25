@@ -49,6 +49,16 @@ class Color:
         return int(self.alpha_num) / 100
 
     @property
+    def decimal(self):
+        """Export color in decimal."""
+        return "%s%s" % ("#", int(self.hex_color[1:], 16))
+
+    @property
+    def decimal_strip(self):
+        """Strip '#' from decimal color."""
+        return int(self.hex_color[1:], 16)
+
+    @property
     def octal(self):
         """Export color in octal."""
         return "%s%s" % ("#", oct(int(self.hex_color[1:], 16))[2:])
