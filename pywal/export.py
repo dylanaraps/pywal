@@ -77,6 +77,7 @@ def flatten_colors(colors):
                   "alpha": colors["alpha"],
                   **colors["special"],
                   **colors["colors"]}
+    util.Color.alpha_num = all_colors["alpha"]
     return {k: util.Color(v) for k, v in all_colors.items()}
 
 
