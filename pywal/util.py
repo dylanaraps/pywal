@@ -14,6 +14,7 @@ import sys
 
 class Color:
     """Color formats."""
+    alpha_num = "100"
 
     def __init__(self, hex_color):
         self.hex_color = hex_color
