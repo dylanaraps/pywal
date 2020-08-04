@@ -115,17 +115,18 @@ def set_desktop_wallpaper(desktop, img):
     elif "awesome" in desktop:
         util.disown(["awesome-client",
                      "require('gears').wallpaper.maximized('{img}')"
-                    .format(**locals())])
+                     .format(**locals())])
 
     elif "kde" in desktop:
         string = """
             var allDesktops = desktops();for (i=0;i<allDesktops.length;i++){
             d = allDesktops[i];d.wallpaperPlugin = "org.kde.image";
             d.currentConfigGroup = Array("Wallpaper", "org.kde.image",
-            "General");d.writeConfig("Image", "%s")};
+            "General"); d.writeConfig("Image", "%s")};
         """
         util.disown(["qdbus", "org.kde.plasmashell", "/PlasmaShell",
                      "org.kde.PlasmaShell.evaluateScript", string % img])
+
     else:
         set_wm_wallpaper(img)
 
