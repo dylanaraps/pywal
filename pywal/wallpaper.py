@@ -7,8 +7,8 @@ import shutil
 import subprocess
 import urllib.parse
 
-import settings
-import util
+from .settings import HOME, OS, CACHE_DIR
+from . import util
 
 
 def get_desktop_env():
@@ -134,7 +134,7 @@ def set_desktop_wallpaper(desktop, img):
 def set_mac_wallpaper(img):
     """Set the wallpaper on macOS."""
     db_file = "Library/Application Support/Dock/desktoppicture.db"
-    db_path = os.path.join(settings.HOME, db_file)
+    db_path = os.path.join(HOME, db_file)
     img_dir, _ = os.path.split(img)
 
     # Clear the existing picture data and write the image paths
@@ -173,19 +173,19 @@ def change(img):
 
     desktop = get_desktop_env()
 
-    if settings.OS == "Darwin":
+    if OS == "Darwin":
         set_mac_wallpaper(img)
 
-    elif settings.OS == "Windows":
+    elif OS == "Windows":
         set_win_wallpaper(img)
 
     else:
         set_desktop_wallpaper(desktop, img)
 
-    logging.info("Desktop is " + desktop)
+    logging.info("Set the new wallpaper.")
 
 
-def get(cache_dir=settings.CACHE_DIR):
+def get(cache_dir=CACHE_DIR):
     """Get the current wallpaper."""
     current_wall = os.path.join(cache_dir, "wal")
 
