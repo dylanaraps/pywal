@@ -115,7 +115,7 @@ def set_desktop_wallpaper(desktop, img):
     elif "awesome" in desktop:
         util.disown(["awesome-client",
                      "require('gears').wallpaper.maximized('{img}')"
-                    .format(**locals())])
+                     .format(**locals())])
 
     elif "kde" in desktop:
         string = """
@@ -124,8 +124,9 @@ def set_desktop_wallpaper(desktop, img):
             d.currentConfigGroup = Array("Wallpaper", "org.kde.image", "General");
             d.writeConfig("Image", "%s")};
         """
-        util.disown(["qdbus", "org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell.evaluateScript",
-                    string % img])
+        util.disown(["qdbus", "org.kde.plasmashell", "/PlasmaShell",
+                     "org.kde.PlasmaShell.evaluateScript", string % img])
+
     else:
         set_wm_wallpaper(img)
 
