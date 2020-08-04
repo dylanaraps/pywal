@@ -91,7 +91,7 @@ def set_wm_wallpaper(img):
 def set_desktop_wallpaper(desktop, img):
     """Set the wallpaper for the desktop environment."""
     desktop = str(desktop).lower()
-	
+
     if "xfce" in desktop or "xubuntu" in desktop:
         xfconf(img)
 
@@ -125,8 +125,7 @@ def set_desktop_wallpaper(desktop, img):
             d.writeConfig("Image", "%s")};
         """
         util.disown(["qdbus", "org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell.evaluateScript",
-                          string % img])
-		
+                    string % img])
     else:
         set_wm_wallpaper(img)
 

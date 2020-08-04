@@ -92,7 +92,7 @@ def get_export_type(export_type):
         "json": "colors.json",
         "konsole": "colors-konsole.colorscheme",
         "kitty": "colors-kitty.conf",
-		"nqq": "colors-nqq.css",
+        "nqq": "colors-nqq.css",
         "plain": "colors",
         "putty": "colors-putty.reg",
         "rofi": "colors-rofi.Xresources",
