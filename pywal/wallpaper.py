@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import urllib.parse
 
-from .settings import CACHE_DIR, HOME, OS
+from .settings import HOME, OS, CACHE_DIR
 from . import util
 
 
@@ -67,7 +67,7 @@ def set_wm_wallpaper(img):
 
     elif shutil.which("hsetroot"):
         util.disown(["hsetroot", "-fill", img])
-      
+
     elif shutil.which("nitrogen"):
         util.disown(["nitrogen", "--set-zoom-fill", img])
 
@@ -115,8 +115,17 @@ def set_desktop_wallpaper(desktop, img):
     elif "awesome" in desktop:
         util.disown(["awesome-client",
                      "require('gears').wallpaper.maximized('{img}')"
-                     .format(**locals())])
+                    .format(**locals())])
 
+    elif "kde" in desktop:
+        string = """
+            var allDesktops = desktops();for (i=0;i<allDesktops.length;i++){
+            d = allDesktops[i];d.wallpaperPlugin = "org.kde.image";
+            d.currentConfigGroup = Array("Wallpaper", "org.kde.image",
+            "General");d.writeConfig("Image", "%s")};
+        """
+        util.disown(["qdbus", "org.kde.plasmashell", "/PlasmaShell",
+                     "org.kde.PlasmaShell.evaluateScript", string % img])
     else:
         set_wm_wallpaper(img)
 

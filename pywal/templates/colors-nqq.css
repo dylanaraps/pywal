@@ -1,0 +1,31 @@
+/*
+ *		pywal theme template for notepadqq by threadreaper
+ *		https://github.com/threadreaper
+ */
+
+.cm-s-nqqwal .CodeMirror-gutters {{ background: {background} !important; }}
+.cm-s-nqqwal .CodeMirror-foldgutter-open, .CodeMirror-foldgutter-folded {{ color: {foreground}; }}
+.cm-s-nqqwal .CodeMirror-cursor {{ border-left: 1px solid {foreground}; background-color: rgba({color6.rgb},0.4)}}
+.cm-s-nqqwal {{ background-color: {background}; color: {foreground}; }}
+.cm-s-nqqwal span.cm-builtin {{ color: {color2}; font-weight: bold; }}
+.cm-s-nqqwal span.cm-comment {{ color: {color8}; }}
+.cm-s-nqqwal span.cm-keyword {{ color: {color3}; font-weight: bold; }}
+.cm-s-nqqwal span.cm-atom {{ color: {color4}; }}
+.cm-s-nqqwal span.cm-def {{ color: {color5}; }}
+.cm-s-nqqwal span.cm-variable {{ color: {color6}; }}
+.cm-s-nqqwal span.cm-variable-2 {{ color: {color5}; }}
+.cm-s-nqqwal span.cm-string {{ color: {color2}; }}
+.cm-s-nqqwal span.cm-string-2 {{ color: {color2}; }}
+.cm-s-nqqwal span.cm-number {{ color: {color5}; }}
+.cm-s-nqqwal span.cm-tag {{ color: {color3}; }}
+.cm-s-nqqwal span.cm-property {{ color: {color6}; }}
+.cm-s-nqqwal span.cm-attribute {{ color: {color6}; }}
+.cm-s-nqqwal span.cm-qualifier {{ color: {color4}; }}
+.cm-s-nqqwal span.cm-meta {{ color: {color5}; }}
+.cm-s-nqqwal span.cm-header {{ color: {color3}; }}
+.cm-s-nqqwal span.cm-operator {{ color: {color3}; }}
+.cm-s-nqqwal span.CodeMirror-matchingbracket {{ box-sizing: border-box; background: transparent; border-bottom: 1px solid; }}
+.cm-s-nqqwal span.CodeMirror-nonmatchingbracket {{ border-bottom: 1px solid; background: none; }}
+.cm-s-nqqwal .CodeMirror-activeline-background {{ background: rgba({color5.rgb},0.4); }}
+.cm-s-nqqwal div.CodeMirror-selected {{ background: {color3}; }}
+.cm-s-nqqwal .CodeMirror-focused div.CodeMirror-selected {{ background: {color0}); }}
