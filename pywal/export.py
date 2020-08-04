@@ -106,6 +106,7 @@ def get_export_type(export_type):
         "vscode": "colors-vscode.json",
         "waybar": "colors-waybar.css",
         "xresources": "colors.Xresources",
+        "haskell": "Colors.hs",
         "xmonad": "colors.hs",
         "yaml": "colors.yml",
     }.get(export_type, export_type)
