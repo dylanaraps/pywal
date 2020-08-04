@@ -7,8 +7,8 @@ import shutil
 import subprocess
 import urllib.parse
 
-from .settings import CACHE_DIR, HOME, OS
-from . import util
+import settings
+import util
 
 
 def get_desktop_env():
@@ -67,7 +67,7 @@ def set_wm_wallpaper(img):
 
     elif shutil.which("hsetroot"):
         util.disown(["hsetroot", "-fill", img])
-      
+
     elif shutil.which("nitrogen"):
         util.disown(["nitrogen", "--set-zoom-fill", img])
 
@@ -91,7 +91,7 @@ def set_wm_wallpaper(img):
 def set_desktop_wallpaper(desktop, img):
     """Set the wallpaper for the desktop environment."""
     desktop = str(desktop).lower()
-
+	
     if "xfce" in desktop or "xubuntu" in desktop:
         xfconf(img)
 
@@ -115,8 +115,18 @@ def set_desktop_wallpaper(desktop, img):
     elif "awesome" in desktop:
         util.disown(["awesome-client",
                      "require('gears').wallpaper.maximized('{img}')"
-                     .format(**locals())])
+                    .format(**locals())])
 
+    elif "kde" in desktop:
+        string = """
+            var allDesktops = desktops();for (i=0;i<allDesktops.length;i++){
+            d = allDesktops[i];d.wallpaperPlugin = "org.kde.image";
+            d.currentConfigGroup = Array("Wallpaper", "org.kde.image", "General");
+            d.writeConfig("Image", "%s")};
+        """
+        util.disown(["qdbus", "org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell.evaluateScript",
+                          string % img])
+		
     else:
         set_wm_wallpaper(img)
 
@@ -124,7 +134,7 @@ def set_desktop_wallpaper(desktop, img):
 def set_mac_wallpaper(img):
     """Set the wallpaper on macOS."""
     db_file = "Library/Application Support/Dock/desktoppicture.db"
-    db_path = os.path.join(HOME, db_file)
+    db_path = os.path.join(settings.HOME, db_file)
     img_dir, _ = os.path.split(img)
 
     # Clear the existing picture data and write the image paths
@@ -163,19 +173,19 @@ def change(img):
 
     desktop = get_desktop_env()
 
-    if OS == "Darwin":
+    if settings.OS == "Darwin":
         set_mac_wallpaper(img)
 
-    elif OS == "Windows":
+    elif settings.OS == "Windows":
         set_win_wallpaper(img)
 
     else:
         set_desktop_wallpaper(desktop, img)
 
-    logging.info("Set the new wallpaper.")
+    logging.info("Desktop is " + desktop)
 
 
-def get(cache_dir=CACHE_DIR):
+def get(cache_dir=settings.CACHE_DIR):
     """Get the current wallpaper."""
     current_wall = os.path.join(cache_dir, "wal")
 
