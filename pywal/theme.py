@@ -19,11 +19,7 @@ def list_out():
     user_themes = [theme.name.replace(".json", "")
                    for theme in list_themes_user()]
 
-    try:
-        last_used_theme = util.read_file(os.path.join(
-            CACHE_DIR, "last_used_theme"))[0].replace(".json", "")
-    except FileNotFoundError:
-        last_used_theme = ""
+    last_used_theme = get_last_used_theme()
 
     if user_themes:
         print("\033[1;32mUser Themes\033[0m:")
@@ -152,3 +148,14 @@ def save(colors, theme_name, light=False):
     theme_path = os.path.join(CONF_DIR, "colorschemes",
                               "light" if light else "dark", theme_file)
     util.save_file_json(colors, theme_path)
+
+
+def get_last_used_theme():
+    """Get the name of the current / last used theme."""
+    try:
+        last_used_theme = util.read_file(os.path.join(
+            CACHE_DIR, "last_used_theme"))[0].replace(".json", "")
+    except FileNotFoundError:
+        last_used_theme = ""
+
+    return last_used_theme

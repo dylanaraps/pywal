@@ -67,6 +67,9 @@ def get_args():
     arg.add_argument("--vte", action="store_true",
                      help="Fix text-artifacts printed in VTE terminals.")
 
+    arg.add_argument("--current", action="store_true",
+                     help="Print the current / last used theme name.")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -142,6 +145,13 @@ def parse_args_exit(parser):
         scheme_dir = os.path.join(CACHE_DIR, "schemes")
         shutil.rmtree(scheme_dir, ignore_errors=True)
         sys.exit(0)
+
+    if args.current:
+        theme_name = theme.get_last_used_theme()
+        if theme_name:
+            print(theme_name)
+            sys.exit(0)
+        sys.exit(1)
 
     if not args.i and \
        not args.theme and \
