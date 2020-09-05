@@ -1,5 +1,5 @@
-module.exports.colors = {
-  dark: {
+module.exports.colors = {{
+  dark: {{
     accent0: "{color0}",
     accent1: "{color1}",
     accent2: "{color2}",
@@ -16,5 +16,5 @@ module.exports.colors = {
     shade5:  "{color13}",
     shade6:  "{color14}",
     shade7:  "{foreground}"
-  },
-};
+  }},
+}};
