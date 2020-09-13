@@ -134,16 +134,29 @@ def set_mac_wallpaper(img):
     """Set the wallpaper on macOS."""
     db_file = "Library/Application Support/Dock/desktoppicture.db"
     db_path = os.path.join(HOME, db_file)
-    img_dir, _ = os.path.split(img)
 
-    # Clear the existing picture data and write the image paths
-    sql = "delete from data; "
-    sql += "insert into data values(\"%s\"); " % img_dir
-    sql += "insert into data values(\"%s\"); " % img
+    # Put the image path in the database
+    sql = "insert into data values(\"%s\"); " % img
+    subprocess.call(["sqlite3", db_path, sql])
 
-    # Set all monitors/workspaces to the selected image
-    sql += "update preferences set data_id=2 where key=1 or key=2 or key=3; "
-    sql += "update preferences set data_id=1 where key=10 or key=20 or key=30;"
+    # Get the index of the new entry
+    sql = "select max(rowid) from data;"
+    new_entry = subprocess.check_output(["sqlite3", db_path, sql])
+    new_entry = new_entry.decode('utf8').strip('\n')
+
+    # Get all picture ids (monitor/space pairs)
+    get_pics_cmd = ['sqlite3', db_path, "select rowid from pictures;"]
+    pictures = subprocess.check_output(get_pics_cmd)
+    pictures = pictures.decode('utf8').split('\n')
+
+    # Clear all existing preferences
+    sql += "delete from preferences; "
+
+    # Write all pictures to the new image
+    for pic in pictures:
+        if pic:
+            sql += 'insert into preferences (key, data_id, picture_id) '
+            sql += 'values(1, %s, %s); ' % (new_entry, pic)
 
     subprocess.call(["sqlite3", db_path, sql])
 
