@@ -45,7 +45,7 @@ def create_sequences(colors, vte_fix=False):
 
     # Special colors.
     # Source: https://goo.gl/KcoQgP
-    # 10 = foreground, 11 = background, 12 = cursor foregound
+    # 10 = foreground, 11 = background, 12 = cursor foreground
     # 13 = mouse foreground, 708 = background border color.
     sequences.extend([
         set_special(10, colors["special"]["foreground"], "g"),
