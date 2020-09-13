@@ -58,14 +58,18 @@ def template(colors, input_file, output_file=None):
             # If the color was changed, replace with a unique identifier.
             if new_color is not colors[cname]:
                 new_color = str(new_color)
-                new_color_clean = new_color.replace('[', '_').replace(']', '_').replace('.', '_')
+                new_color_clean = (new_color.replace('[', '_')
+                                            .replace(']', '_')
+                                            .replace('.', '_'))
                 template_data[i] = l.replace(replace_str,
                                              "color" + new_color_clean)
                 colors["color" + new_color_clean] = new_color
     try:
         template_data = "".join(template_data).format(**colors)
     except (ValueError, KeyError, AttributeError) as exc:
-        logging.error("Syntax error in template file '%s': %r.", input_file, exc)
+        logging.error(
+            "Syntax error in template file '%s': %r.",
+            input_file, exc)
         return
     util.save_file(template_data, output_file)
 
