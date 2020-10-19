@@ -107,6 +107,7 @@ def get_export_type(export_type):
         "tty": "colors-tty.sh",
         "vscode": "colors-vscode.json",
         "waybar": "colors-waybar.css",
+        "xdefines" : "colors.Xdefines",
         "xresources": "colors.Xresources",
         "xmonad": "colors.hs",
         "yaml": "colors.yml",
