@@ -7,3 +7,5 @@ build/*
 .coverage
 .vscode/*
 __pycache__/*
+.idea
+venv

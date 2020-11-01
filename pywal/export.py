@@ -7,6 +7,13 @@ import re
 
 from . import util
 from .settings import CACHE_DIR, CONF_DIR, MODULE_DIR
+from jinja2 import Template
+
+
+def template_jinja(colors, input_file, output_file=None):
+    data = util.read_file_raw(input_file)
+    t = Template("".join(data))
+    util.save_file(t.render(**colors), output_file.replace(".jinja", ""))
 
 
 def template(colors, input_file, output_file=None):
@@ -123,7 +130,11 @@ def every(colors, output_dir=CACHE_DIR):
     join = os.path.join  # Minor optimization.
     for file in [*os.scandir(template_dir),
                  *os.scandir(template_dir_user)]:
-        if file.name != ".DS_Store" and not file.name.endswith(".swp"):
+        if file.name == ".DS_Store" or file.name.endswith(".swp"):
+            continue
+        if file.name.endswith(".jinja"):
+            template_jinja(colors, file.path, join(output_dir, file.name))
+        else:
             template(colors, file.path, join(output_dir, file.name))
 
     logging.info("Exported all files.")
