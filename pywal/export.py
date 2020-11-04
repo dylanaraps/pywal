@@ -4,16 +4,17 @@ Export colors in various formats.
 import logging
 import os
 import re
+from jinja2 import Template
 
 from . import util
 from .settings import CACHE_DIR, CONF_DIR, MODULE_DIR
-from jinja2 import Template
 
 
 def template_jinja(colors, input_file, output_file=None):
+    """Read template file, process jinja2 template and
+       save the file elsewhere."""
     data = util.read_file_raw(input_file)
-    t = Template("".join(data))
-    util.save_file(t.render(**colors), output_file.replace(".jinja", ""))
+    util.save_file(Template("".join(data)).render(**colors), output_file.replace(".jinja", ""))
 
 
 def template(colors, input_file, output_file=None):
@@ -66,8 +67,8 @@ def template(colors, input_file, output_file=None):
             if new_color is not colors[cname]:
                 new_color = str(new_color)
                 new_color_clean = (new_color.replace('[', '_')
-                                            .replace(']', '_')
-                                            .replace('.', '_'))
+                                   .replace(']', '_')
+                                   .replace('.', '_'))
                 template_data[i] = l.replace(replace_str,
                                              "color" + new_color_clean)
                 colors["color" + new_color_clean] = new_color
