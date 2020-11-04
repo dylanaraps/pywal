@@ -14,7 +14,8 @@ def template_jinja(colors, input_file, output_file=None):
     """Read template file, process jinja2 template and
        save the file elsewhere."""
     data = util.read_file_raw(input_file)
-    util.save_file(Template("".join(data)).render(**colors), output_file.replace(".jinja", ""))
+    tpl = Template("".join(data))
+    util.save_file(tpl.render(**colors), output_file.replace(".jinja", ""))
 
 
 def template(colors, input_file, output_file=None):
