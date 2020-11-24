@@ -6,7 +6,7 @@ import os
 import re
 
 from . import util
-from .settings import CACHE_DIR, CONF_DIR, MODULE_DIR
+from .settings import CACHE_DIR, CONF_DIR, MODULE_DIR, OS
 
 
 def template(colors, input_file, output_file=None):
@@ -79,7 +79,7 @@ def flatten_colors(colors):
        Flatten dicts and convert colors to util.Color()"""
     wallpaper_path = colors["wallpaper"]
 
-    if os == "Windows":
+    if OS == "Windows":
         wallpaper_path = wallpaper_path.replace("\\", "\\\\")
 
     all_colors = {"wallpaper": wallpaper_path,
