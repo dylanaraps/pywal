@@ -79,8 +79,8 @@ def flatten_colors(colors):
        Flatten dicts and convert colors to util.Color()"""
     wallpaper_path = colors["wallpaper"]
 
-    if os == "Windows" :
-        wallpaper_path = wallpaper_path.replace("\\","\\\\")
+    if os == "Windows":
+        wallpaper_path = wallpaper_path.replace("\\", "\\\\")
 
     all_colors = {"wallpaper": wallpaper_path,
                   "alpha": colors["alpha"],
