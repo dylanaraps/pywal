@@ -67,6 +67,9 @@ def get_args():
     arg.add_argument("--vte", action="store_true",
                      help="Fix text-artifacts printed in VTE terminals.")
 
+    arg.add_argument("--active-only", action="store_true",
+                     help="Only send sequences to active terminals.")
+
     arg.add_argument("-c", action="store_true",
                      help="Delete all cached colorschemes.")
 
@@ -200,7 +203,9 @@ def parse_args(parser):
     if args.p:
         theme.save(colors_plain, args.p, args.l)
 
-    sequences.send(colors_plain, to_send=not args.s, vte_fix=args.vte)
+    sequences.send(
+        colors_plain, to_send=not args.s,
+        vte_fix=args.vte, only_active=args.active_only)
 
     if sys.stdout.isatty():
         colors.palette()

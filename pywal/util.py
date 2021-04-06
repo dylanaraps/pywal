@@ -134,6 +134,33 @@ def save_file(data, export_file):
         logging.warning("Couldn't write to %s.", export_file)
 
 
+def save_to_tty(data, tty_name, active_ttys=[]):
+    """Write data to a tty."""
+    if active_ttys:
+        if os.path.basename(tty_name) not in active_ttys:
+            logging.info("Not saving to inactive tty %s.", tty_name)
+            return
+    save_file(data, tty_name)
+
+
+def fetch_active_ttys():
+    try:
+        out, err = subprocess.Popen(
+                ["who"], stdout=subprocess.PIPE).communicate()
+    except FileNotFoundError:
+        # who is not installed on the machine
+        return None
+
+    if err:
+        logging.warning(
+            "Received stderr output while checking active ttys: %s",
+            err.decode('utf-8'))
+        return None
+    lines = out.decode('utf-8').split("\n")
+    # The format is `username tty ...` and we just want tty
+    return [line.split(' ')[1] for line in lines if line]
+
+
 def save_file_json(data, export_file):
     """Write data to a json file."""
     create_dir(os.path.dirname(export_file))
