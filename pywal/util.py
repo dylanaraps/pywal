@@ -134,7 +134,7 @@ def save_file(data, export_file):
         logging.warning("Couldn't write to %s.", export_file)
 
 
-def save_to_tty(data, tty_name, active_ttys=[]):
+def save_to_tty(data, tty_name, active_ttys=None):
     """Write data to a tty."""
     if active_ttys:
         if os.path.basename(tty_name) not in active_ttys:
@@ -144,6 +144,8 @@ def save_to_tty(data, tty_name, active_ttys=[]):
 
 
 def fetch_active_ttys():
+    """Fetches the active ttys as determined
+       by the `who` utility. On failure, we return None."""
     try:
         out, err = subprocess.Popen(
                 ["who"], stdout=subprocess.PIPE).communicate()

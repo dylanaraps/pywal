@@ -83,7 +83,7 @@ def send(colors, cache_dir=CACHE_DIR, to_send=True,
 
     # Writing to "/dev/pts/[0-9] lets you send data to open terminals.
     if to_send:
-        ttys = []
+        ttys = None
         if only_active:
             ttys = util.fetch_active_ttys()
 
