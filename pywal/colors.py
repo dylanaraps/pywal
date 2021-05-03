@@ -67,16 +67,31 @@ def generic_adjust(colors, light):
             color = util.saturate_color(color, 0.60)
             color = util.darken_color(color, 0.5)
 
-        colors[0] = util.lighten_color(colors[0], 0.95)
-        colors[7] = util.darken_color(colors[0], 0.75)
+
+        colors[0] = util.lighten_color(colors[0], 0.75)
+        colors[7] = util.darken_color(colors[0], 0.50)
         colors[8] = util.darken_color(colors[0], 0.25)
-        colors[15] = colors[7]
+        colors[1] = util.darken_color(colors[9], 0.25)
+        colors[2] = util.darken_color(colors[10], 0.25)
+        colors[3] = util.darken_color(colors[11], 0.25)
+        colors[4] = util.darken_color(colors[12], 0.25)
+        colors[5] = util.darken_color(colors[13], 0.25)
+        colors[6] = util.darken_color(colors[14], 0.25)
+        colors[15] = util.darken_color(colors[0], 0.75)
 
     else:
-        colors[0] = util.darken_color(colors[0], 0.80)
-        colors[7] = util.lighten_color(colors[0], 0.75)
+
+        colors[0] = util.darken_color(colors[0], 0.75)
+        colors[7] = util.lighten_color(colors[0], 0.50)
         colors[8] = util.lighten_color(colors[0], 0.25)
-        colors[15] = colors[7]
+        colors[1] = util.darken_color(colors[9], 0.25)
+        colors[2] = util.darken_color(colors[10], 0.25)
+        colors[3] = util.darken_color(colors[11], 0.25)
+        colors[4] = util.darken_color(colors[12], 0.25)
+        colors[5] = util.darken_color(colors[13], 0.25)
+        colors[6] = util.darken_color(colors[14], 0.25)
+        colors[15] = util.lighten_color(colors[0], 0.75)
+
 
     return colors
 
@@ -95,11 +110,9 @@ def cache_fname(img, backend, light, cache_dir, sat=""):
     """Create the cache file name."""
     color_type = "light" if light else "dark"
     file_name = re.sub("[/|\\|.]", "_", img)
-    file_size = os.path.getsize(img)
 
-    file_parts = [file_name, color_type, backend,
-                  sat, file_size, __cache_version__]
-    return [cache_dir, "schemes", "%s_%s_%s_%s_%s_%s.json" % (*file_parts,)]
+    file_parts = [file_name, color_type, backend, sat, __cache_version__]
+    return [cache_dir, "schemes", "%s_%s_%s_%s_%s.json" % (*file_parts,)]
 
 
 def get_backend(backend):
