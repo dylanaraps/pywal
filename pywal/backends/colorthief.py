@@ -13,6 +13,7 @@ except ImportError:
     sys.exit(1)
 
 from .. import util
+from .. import colors
 
 
 def gen_colors(img):
@@ -25,7 +26,7 @@ def gen_colors(img):
         if len(raw_colors) >= 8:
             break
 
-        if i == 10:
+        elif i == 10:
             logging.error("ColorThief couldn't generate a suitable palette.")
             sys.exit(1)
 
@@ -41,21 +42,7 @@ def adjust(cols, light):
     cols.sort(key=util.rgb_to_yiq)
     raw_colors = [*cols, *cols]
 
-    if light:
-        raw_colors[0] = util.lighten_color(cols[0], 0.90)
-        raw_colors[7] = util.darken_color(cols[0], 0.75)
-
-    else:
-        for color in raw_colors:
-            color = util.lighten_color(color, 0.40)
-
-        raw_colors[0] = util.darken_color(cols[0], 0.80)
-        raw_colors[7] = util.lighten_color(cols[0], 0.60)
-
-    raw_colors[8] = util.lighten_color(cols[0], 0.20)
-    raw_colors[15] = raw_colors[7]
-
-    return raw_colors
+    return colors.generic_adjust(raw_colors, light)
 
 
 def get(img, light=False):
