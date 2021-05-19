@@ -7,8 +7,8 @@ import shutil
 import subprocess
 import sys
 
-from .. import util
 from .. import colors
+from .. import util
 
 
 def imagemagick(color_count, img, magick_command):
@@ -44,7 +44,7 @@ def gen_colors(img):
         if len(raw_colors) > 16:
             break
 
-        elif i == 19:
+        if i == 19:
             logging.error("Imagemagick couldn't generate a suitable palette.")
             sys.exit(1)
 
