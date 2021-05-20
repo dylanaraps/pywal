@@ -23,15 +23,15 @@ def gen_colors(img):
     return [util.rgb_to_hex([*color[0]]) for color in raw_colors]
 
 
-def adjust(cols, light):
+def adjust(cols, light, nine):
     """Create palette."""
     raw_colors = [cols[0], *cols, "#FFFFFF",
                   "#000000", *cols, "#FFFFFF"]
 
-    return colors.generic_adjust(raw_colors, light)
+    return colors.generic_adjust(raw_colors, light, nine)
 
 
-def get(img, light=False):
+def get(img, light=False, nine=False):
     """Get colorscheme."""
     cols = gen_colors(img)
 
@@ -40,4 +40,4 @@ def get(img, light=False):
         logging.error("Try another backend or another image. (wal --backend)")
         sys.exit(1)
 
-    return adjust(cols, light)
+    return adjust(cols, light, nine)
