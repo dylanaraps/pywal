@@ -70,7 +70,8 @@ def create_sequences(colors, vte_fix=False):
     return "".join(sequences)
 
 
-def send(colors, cache_dir=CACHE_DIR, to_send=True, vte_fix=False):
+def send(colors, cache_dir=CACHE_DIR, to_send=True,
+         vte_fix=False, only_active=False):
     """Send colors to all open terminals."""
     if OS == "Darwin":
         tty_pattern = "/dev/ttys00[0-9]*"
@@ -82,8 +83,13 @@ def send(colors, cache_dir=CACHE_DIR, to_send=True, vte_fix=False):
 
     # Writing to "/dev/pts/[0-9] lets you send data to open terminals.
     if to_send:
+        ttys = None
+        if only_active:
+            ttys = util.fetch_active_ttys()
+
         for term in glob.glob(tty_pattern):
-            util.save_file(sequences, term)
+            util.save_to_tty(
+                    sequences, term, active_ttys=ttys)
 
     util.save_file(sequences, os.path.join(cache_dir, "sequences"))
     logging.info("Set terminal colors.")

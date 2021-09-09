@@ -46,6 +46,26 @@ class TestUtil(unittest.TestCase):
         result = os.path.isfile(tmp_file)
         self.assertTrue(result)
 
+    def test_save_to_tty_active_tty_saves(self):
+        """> Save colors to an active tty."""
+        tmp_file = "/tmp/test_tty_file_active"
+        util.save_to_tty("Hello, World!", tmp_file, ["test_tty_file_active"])
+        result = os.path.isfile(tmp_file)
+        self.assertTrue(result)
+
+    def test_save_to_tty_inactive_does_not_save(self):
+        """> Does not save colors to an inactive tty."""
+        tmp_file = "/tmp/test_tty_file_inactive"
+        util.save_to_tty("Hello, World!", tmp_file, ["test_tty_file_active"])
+        result = os.path.isfile(tmp_file)
+        self.assertFalse(result)
+
+    def test_save_to_tty_inactive_no_ttys_saves(self):
+        tmp_file = "/tmp/test_tty_file_inactive_save"
+        util.save_to_tty("Hello, World!", tmp_file, [])
+        result = os.path.isfile(tmp_file)
+        self.assertTrue(result)
+
     def test_create_dir(self):
         """> Create a directory."""
         tmp_dir = "/tmp/test_dir"
