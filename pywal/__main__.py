@@ -112,6 +112,9 @@ def get_args():
     arg.add_argument("-e", action="store_true",
                      help="Skip reloading gtk/xrdb/i3/sway/polybar")
 
+    arg.add_argument("-g", action="store_true",
+                     help="Reload the gtk3 theme")
+
     return arg
 
 
@@ -216,6 +219,9 @@ def parse_args(parser):
 
     if not args.e:
         reload.gtk()
+    
+    if args.g:
+        reload.gtk3()
 
 
 def main():
