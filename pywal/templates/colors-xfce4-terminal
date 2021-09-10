@@ -1,0 +1,3 @@
+ColorForeground={foreground}
+ColorBackground={background}
+ColorPalette=rgb({color0.rgb});rgb({color1.rgb});rgb({color2.rgb});rgb({color3.rgb});rgb({color4.rgb});rgb({color5.rgb});rgb({color6.rgb});rgb({color7.rgb});rgb({color8.rgb});rgb({color9.rgb});rgb({color10.rgb});rgb({color11.rgb});rgb({color12.rgb});rgb({color13.rgb});rgb({color14.rgb});rgb({color15.rgb})
