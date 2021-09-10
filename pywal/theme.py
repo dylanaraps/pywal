@@ -82,7 +82,7 @@ def parse(theme_file):
         data["wallpaper"] = "None"
 
     if "alpha" not in data:
-        data["alpha"] = util.Color.alpha_num
+        data["alpha"] = "100"
 
     # Terminal.sexy format.
     if "color" in data:
