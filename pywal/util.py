@@ -39,6 +39,12 @@ class Color:
                                       self.alpha_dec)
 
     @property
+    def hex_argb(self):
+        """Convert an alpha hex color to argb hex."""
+        return "#%02X%s" % (int(int(self.alpha_num) * 255 / 100),
+                            self.hex_color[1:])
+
+    @property
     def alpha(self):
         """Add URxvt alpha value to color."""
         return "[%s]%s" % (self.alpha_num, self.hex_color)
@@ -47,6 +53,11 @@ class Color:
     def alpha_dec(self):
         """Export the alpha value as a decimal number in [0, 1]."""
         return int(self.alpha_num) / 100
+
+    @property
+    def alpha_hex(self):
+        """Export the alpha value as a hexdecimal number in [00, FF]."""
+        return "%02X" % (int(int(self.alpha_num) * 255 / 100))
 
     @property
     def decimal(self):
