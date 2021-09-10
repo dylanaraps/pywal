@@ -16,6 +16,10 @@ def list_out():
                    for theme in list_themes()]
     ligh_themes = [theme.name.replace(".json", "")
                    for theme in list_themes(dark=False)]
+    dark9_themes = [theme.name.replace(".json", "")
+                   for theme in list_themes(nine=True)]
+    ligh9_themes = [theme.name.replace(".json", "")
+                   for theme in list_themes(dark=False,nine=True)]
     user_themes = [theme.name.replace(".json", "")
                    for theme in list_themes_user()]
 
@@ -33,8 +37,14 @@ def list_out():
     print("\033[1;32mDark Themes\033[0m:")
     print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
                              for t in sorted(dark_themes)))
+    print("\033[1;32mDark9 Themes\033[0m:")
+    print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
+                             for t in sorted(dark9_themes)))
 
     print("\033[1;32mLight Themes\033[0m:")
+    print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
+                             for t in sorted(ligh_themes)))
+    print("\033[1;32mLight9 Themes\033[0m:")
     print(" -", "\n - ".join(t + " (last used)" if t == last_used_theme else t
                              for t in sorted(ligh_themes)))
 
@@ -45,17 +55,20 @@ def list_out():
     print(" - random_user (select a random user theme)")
 
 
-def list_themes(dark=True):
+def list_themes(dark=True, nine=False):
     """List all installed theme files."""
     dark = "dark" if dark else "light"
-    themes = os.scandir(os.path.join(MODULE_DIR, "colorschemes", dark))
+    nine = "9" if nine else "16"
+    themes = os.scandir(os.path.join(MODULE_DIR, "colorschemes", dark, nine))
     return [t for t in themes if os.path.isfile(t.path)]
 
 
 def list_themes_user():
     """List user theme files."""
-    themes = [*os.scandir(os.path.join(CONF_DIR, "colorschemes/dark/")),
-              *os.scandir(os.path.join(CONF_DIR, "colorschemes/light/"))]
+    themes = [*os.scandir(os.path.join(CONF_DIR, "colorschemes/dark/9")),
+              *os.scandir(os.path.join(CONF_DIR, "colorschemes/dark/16")),
+              *os.scandir(os.path.join(CONF_DIR, "colorschemes/light/9")),
+              *os.scandir(os.path.join(CONF_DIR, "colorschemes/light/16"))]
     return [t for t in themes if os.path.isfile(t.path)]
 
 
@@ -91,7 +104,7 @@ def parse(theme_file):
     return data
 
 
-def get_random_theme(dark=True):
+def get_random_theme(dark=True, nine=False):
     """Get a random theme file."""
     themes = [theme.path for theme in list_themes(dark)]
     random.shuffle(themes)
@@ -105,16 +118,17 @@ def get_random_theme_user():
     return themes[0]
 
 
-def file(input_file, light=False):
+def file(input_file, light=False, nine=False):
     """Import colorscheme from json file."""
     util.create_dir(os.path.join(CONF_DIR, "colorschemes/light/"))
     util.create_dir(os.path.join(CONF_DIR, "colorschemes/dark/"))
 
     theme_name = ".".join((input_file, "json"))
     bri = "light" if light else "dark"
+    full16 = "9" if nine else "16"
 
-    user_theme_file = os.path.join(CONF_DIR, "colorschemes", bri, theme_name)
-    theme_file = os.path.join(MODULE_DIR, "colorschemes", bri, theme_name)
+    user_theme_file = os.path.join(CONF_DIR, "colorschemes", full16, bri, theme_name)
+    theme_file = os.path.join(MODULE_DIR, "colorschemes", full16, bri, theme_name)
 
     # Find the theme file.
     if input_file in ("random", "random_dark"):
@@ -146,9 +160,11 @@ def file(input_file, light=False):
     sys.exit(1)
 
 
-def save(colors, theme_name, light=False):
+def save(colors, theme_name, light=False, nine=False):
     """Save colors to a theme file."""
     theme_file = theme_name + ".json"
     theme_path = os.path.join(CONF_DIR, "colorschemes",
-                              "light" if light else "dark", theme_file)
+                              "9" if nine else "16",
+                              "light" if light else "dark",
+                              theme_file)
     util.save_file_json(colors, theme_path)
