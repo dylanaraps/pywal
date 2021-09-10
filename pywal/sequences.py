@@ -4,6 +4,7 @@ Send sequences to all open terminals.
 import glob
 import logging
 import os
+import subprocess
 
 from .settings import CACHE_DIR, OS
 from . import util
@@ -73,17 +74,22 @@ def create_sequences(colors, vte_fix=False):
 def send(colors, cache_dir=CACHE_DIR, to_send=True, vte_fix=False):
     """Send colors to all open terminals."""
     if OS == "Darwin":
-        tty_pattern = "/dev/ttys00[0-9]*"
-
+        devices = glob.glob("/dev/ttys00[0-9]*")
+    elif OS == "OpenBSD":
+        devices = subprocess.check_output(
+            "ps -o tty | sed -e 1d -e s#^#/dev/# | sort | uniq",
+            shell=True,
+            universal_newlines=True,
+        ).split()
     else:
-        tty_pattern = "/dev/pts/[0-9]*"
+        devices = glob.glob("/dev/pts/[0-9]*")
 
     sequences = create_sequences(colors, vte_fix)
 
-    # Writing to "/dev/pts/[0-9] lets you send data to open terminals.
+    # Send data to open terminal devices.
     if to_send:
-        for term in glob.glob(tty_pattern):
-            util.save_file(sequences, term)
+        for dev in devices:
+            util.save_file(sequences, dev)
 
     util.save_file(sequences, os.path.join(cache_dir, "sequences"))
     logging.info("Set terminal colors.")
