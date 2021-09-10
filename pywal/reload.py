@@ -57,12 +57,17 @@ def bspwm():
 def kitty():
     """ Reload kitty colors. """
     if (shutil.which("kitty")
-            and util.get_pid("kitty")
-            and os.getenv('TERM') == 'xterm-kitty'):
-        subprocess.call([
-            "kitty", "@", "set-colors", "--all",
-            os.path.join(CACHE_DIR, "colors-kitty.conf")
-        ])
+            and util.get_pid("kitty")):
+        if os.getenv('TERM') == 'xterm-kitty':
+            subprocess.call([
+                "kitty", "@", "set-colors", "--all",
+                os.path.join(CACHE_DIR, "colors-kitty.conf")
+            ])
+        else:
+            subprocess.call([
+                "kitty", "@", "--to", "unix:/tmp/kitty_pywal", "set-colors", "--all",
+                os.path.join(CACHE_DIR, "colors-kitty.conf")
+            ])
 
 
 def polybar():
