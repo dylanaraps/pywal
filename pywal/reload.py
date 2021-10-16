@@ -15,7 +15,7 @@ def tty(tty_reload):
     tty_script = os.path.join(CACHE_DIR, "colors-tty.sh")
     term = os.environ.get("TERM")
 
-    if tty_reload and term == "linux":
+    if tty_reload and (term == "linux" or term == "linux-16color"):
         subprocess.Popen(["sh", tty_script])
 
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-[ "${{TERM:-none}}" = "linux" ] && \
+if [ "${{TERM:-none}}" = "linux" ] || [ "${{TERM:-none}}" = "linux-16color" ]; then
     printf '%b' '\e]P0{color0.strip}
                  \e]P1{color1.strip}
                  \e]P2{color2.strip}
@@ -17,3 +17,4 @@
                  \e]PE{color14.strip}
                  \e]PF{color15.strip}
                  \ec'
+fi
