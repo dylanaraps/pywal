@@ -46,7 +46,8 @@ def create_sequences(colors, vte_fix=False):
     # Special colors.
     # Source: https://goo.gl/KcoQgP
     # 10 = foreground, 11 = background, 12 = cursor foreground
-    # 13 = mouse foreground, 708 = background border color.
+    # 13 = mouse foreground, 708 = background border color,
+    # 706 = bold color.
     sequences.extend([
         set_special(10, colors["special"]["foreground"], "g"),
         set_special(11, colors["special"]["background"], "h", alpha),
@@ -54,6 +55,7 @@ def create_sequences(colors, vte_fix=False):
         set_special(13, colors["special"]["foreground"], "j"),
         set_special(17, colors["special"]["foreground"], "k"),
         set_special(19, colors["special"]["background"], "m"),
+        set_special(706, colors["special"]["foreground"], "i"),
         set_color(232, colors["special"]["background"]),
         set_color(256, colors["special"]["foreground"]),
         set_color(257, colors["special"]["background"]),
