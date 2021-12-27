@@ -65,10 +65,8 @@ def list_themes(dark=True, nine=False):
 
 def list_themes_user():
     """List user theme files."""
-    themes = [*os.scandir(os.path.join(CONF_DIR, "colorschemes/dark/9")),
-              *os.scandir(os.path.join(CONF_DIR, "colorschemes/dark/16")),
-              *os.scandir(os.path.join(CONF_DIR, "colorschemes/light/9")),
-              *os.scandir(os.path.join(CONF_DIR, "colorschemes/light/16"))]
+    themes = [*os.scandir(os.path.join(CONF_DIR, "colorschemes/dark/")),
+              *os.scandir(os.path.join(CONF_DIR, "colorschemes/light/"))]
     return [t for t in themes if os.path.isfile(t.path)]
 
 
