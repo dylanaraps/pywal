@@ -96,6 +96,7 @@ def get_export_type(export_type):
         "json": "colors.json",
         "konsole": "colors-konsole.colorscheme",
         "kitty": "colors-kitty.conf",
+        "kthm": "colors-wal-kristall.kthm",
         "nqq": "colors-nqq.css",
         "plain": "colors",
         "putty": "colors-putty.reg",

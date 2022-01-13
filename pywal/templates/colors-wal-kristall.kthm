@@ -1,0 +1,21 @@
+[General]
+background_color={background}
+blockquote_color={color0}
+cross_scheme_link_color={color1}
+external_link_color={color2}
+external_link_prefix="\x21d2 "
+h1_color={color3}
+h1_font="Sans Serif,20,-1,5,50,0,0,0,0,0"
+h2_color={color4}
+h2_font="Sans Serif,15,-1,5,50,0,0,0,0,0"
+h3_color={color5}
+h3_font="Sans Serif,12,-1,5,50,0,0,0,0,0"
+internal_link_color={color6}
+internal_link_prefix="\x2192 "
+margins=55
+name=Pywal
+preformatted_color={color7}
+preformatted_font="Source Code Pro,10,-1,5,50,0,0,0,0,0,Regular"
+standard_color={color8}
+standard_font="Fira Sans,10,-1,5,50,0,0,0,0,0,Regular"
+theme=0
