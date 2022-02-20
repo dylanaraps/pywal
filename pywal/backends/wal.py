@@ -55,15 +55,15 @@ def gen_colors(img):
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
 
-def adjust(cols, light, nine):
+def adjust(cols, light, cols16):
     """Adjust the generated colors and store them in a dict that
        we will later save in json format."""
     raw_colors = cols[:1] + cols[8:16] + cols[8:-1]
 
-    return colors.generic_adjust(raw_colors, light, nine)
+    return colors.generic_adjust(raw_colors, light, cols16)
 
 
-def get(img, light=False, nine=False):
+def get(img, light=False, cols16=False):
     """Get colorscheme."""
     colors = gen_colors(img)
-    return adjust(colors, light, nine)
+    return adjust(colors, light, cols16)

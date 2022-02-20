@@ -37,15 +37,15 @@ def gen_colors(img):
     return [util.rgb_to_hex(color) for color in raw_colors]
 
 
-def adjust(cols, light, nine):
+def adjust(cols, light, cols16):
     """Create palette."""
     cols.sort(key=util.rgb_to_yiq)
     raw_colors = [*cols, *cols]
 
-    return colors.generic_adjust(raw_colors, light, nine)
+    return colors.generic_adjust(raw_colors, light, cols16)
 
 
-def get(img, light=False, nine=False):
+def get(img, light=False, cols16=False):
     """Get colorscheme."""
     cols = gen_colors(img)
-    return adjust(cols, light, nine)
+    return adjust(cols, light, cols16)
