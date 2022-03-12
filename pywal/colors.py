@@ -121,7 +121,7 @@ def saturate_colors(colors, amount):
 def cache_fname(img, backend, cols16, light, cache_dir, sat=""):
     """Create the cache file name."""
     color_type = "light" if light else "dark"
-    color_num = "9" if cols16 else "16"
+    color_num = "16" if cols16 else "9"
     file_name = re.sub("[/|\\|.]", "_", img)
     file_size = os.path.getsize(img)
 
