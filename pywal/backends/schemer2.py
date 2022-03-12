@@ -16,15 +16,15 @@ def gen_colors(img):
     return subprocess.check_output([*cmd, img]).splitlines()
 
 
-def adjust(cols, light):
+def adjust(cols, light, cols16):
     """Create palette."""
     cols.sort(key=util.rgb_to_yiq)
     raw_colors = [*cols[8:], *cols[8:]]
 
-    return colors.generic_adjust(raw_colors, light)
+    return colors.generic_adjust(raw_colors, light, cols16)
 
 
-def get(img, light=False):
+def get(img, light=False, cols16=False):
     """Get colorscheme."""
     if not shutil.which("schemer2"):
         logging.error("Schemer2 wasn't found on your system.")
@@ -32,4 +32,4 @@ def get(img, light=False):
         sys.exit(1)
 
     cols = [col.decode('UTF-8') for col in gen_colors(img)]
-    return adjust(cols, light)
+    return adjust(cols, light, cols16)

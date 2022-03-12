@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 
+from .. import colors
 from .. import util
 
 
@@ -54,34 +55,15 @@ def gen_colors(img):
     return [re.search("#.{6}", str(col)).group(0) for col in raw_colors[1:]]
 
 
-def adjust(colors, light):
+def adjust(cols, light, cols16):
     """Adjust the generated colors and store them in a dict that
        we will later save in json format."""
-    raw_colors = colors[:1] + colors[8:16] + colors[8:-1]
+    raw_colors = cols[:1] + cols[8:16] + cols[8:-1]
 
-    # Manually adjust colors.
-    if light:
-        for color in raw_colors:
-            color = util.saturate_color(color, 0.5)
-
-        raw_colors[0] = util.lighten_color(colors[-1], 0.85)
-        raw_colors[7] = colors[0]
-        raw_colors[8] = util.darken_color(colors[-1], 0.4)
-        raw_colors[15] = colors[0]
-
-    else:
-        # Darken the background color slightly.
-        if raw_colors[0][1] != "0":
-            raw_colors[0] = util.darken_color(raw_colors[0], 0.40)
-
-        raw_colors[7] = util.blend_color(raw_colors[7], "#EEEEEE")
-        raw_colors[8] = util.darken_color(raw_colors[7], 0.30)
-        raw_colors[15] = util.blend_color(raw_colors[15], "#EEEEEE")
-
-    return raw_colors
+    return colors.generic_adjust(raw_colors, light, cols16)
 
 
-def get(img, light=False):
+def get(img, light=False, cols16=False):
     """Get colorscheme."""
     colors = gen_colors(img)
-    return adjust(colors, light)
+    return adjust(colors, light, cols16)

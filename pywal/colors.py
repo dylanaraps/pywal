@@ -60,23 +60,50 @@ def colors_to_dict(colors, img):
     }
 
 
-def generic_adjust(colors, light):
+def generic_adjust(colors, light, cols16):
     """Generic color adjustment for themers."""
     if light:
         for color in colors:
             color = util.saturate_color(color, 0.60)
             color = util.darken_color(color, 0.5)
+        
+        if cols16:
+            colors[0] = util.lighten_color(colors[0], 0.95)
+            colors[7] = util.darken_color(colors[0], 0.50)
+            colors[8] = util.darken_color(colors[0], 0.25)
+            colors[1] = util.darken_color(colors[1], 0.25)
+            colors[2] = util.darken_color(colors[2], 0.25)
+            colors[3] = util.darken_color(colors[3], 0.25)
+            colors[4] = util.darken_color(colors[4], 0.25)
+            colors[5] = util.darken_color(colors[5], 0.25)
+            colors[6] = util.darken_color(colors[6], 0.25)
+            colors[15] = util.darken_color(colors[0], 0.75)
 
-        colors[0] = util.lighten_color(colors[0], 0.95)
-        colors[7] = util.darken_color(colors[0], 0.75)
-        colors[8] = util.darken_color(colors[0], 0.25)
-        colors[15] = colors[7]
+        else:
+            colors[0] = util.lighten_color(colors[0], 0.95)
+            colors[7] = util.darken_color(colors[0], 0.75)
+            colors[8] = util.darken_color(colors[0], 0.25)
+            colors[15] = colors[7]
 
     else:
-        colors[0] = util.darken_color(colors[0], 0.80)
-        colors[7] = util.lighten_color(colors[0], 0.75)
-        colors[8] = util.lighten_color(colors[0], 0.25)
-        colors[15] = colors[7]
+        if cols16:
+            colors[0] = util.darken_color(colors[0], 0.80)
+            colors[7] = util.lighten_color(colors[0], 0.50)
+            colors[8] = util.lighten_color(colors[0], 0.25)
+            colors[1] = util.darken_color(colors[1], 0.25)
+            colors[2] = util.darken_color(colors[2], 0.25)
+            colors[3] = util.darken_color(colors[3], 0.25)
+            colors[4] = util.darken_color(colors[4], 0.25)
+            colors[5] = util.darken_color(colors[5], 0.25)
+            colors[6] = util.darken_color(colors[6], 0.25)
+            colors[15] = util.lighten_color(colors[0], 0.75)
+
+        else:
+            colors[0] = util.darken_color(colors[0], 0.80)
+            colors[7] = util.lighten_color(colors[0], 0.75)
+            colors[8] = util.lighten_color(colors[0], 0.25)
+            colors[15] = colors[7]
+
 
     return colors
 
@@ -91,15 +118,16 @@ def saturate_colors(colors, amount):
     return colors
 
 
-def cache_fname(img, backend, light, cache_dir, sat=""):
+def cache_fname(img, backend, cols16, light, cache_dir, sat=""):
     """Create the cache file name."""
     color_type = "light" if light else "dark"
+    color_num = "16" if cols16 else "9"
     file_name = re.sub("[/|\\|.]", "_", img)
     file_size = os.path.getsize(img)
 
-    file_parts = [file_name, color_type, backend,
+    file_parts = [file_name, color_num, color_type, backend,
                   sat, file_size, __cache_version__]
-    return [cache_dir, "schemes", "%s_%s_%s_%s_%s_%s.json" % (*file_parts,)]
+    return [cache_dir, "schemes", "%s_%s_%s_%s_%s_%s_%s.json" % (*file_parts,)]
 
 
 def get_backend(backend):
@@ -126,10 +154,10 @@ def palette():
     print("\n")
 
 
-def get(img, light=False, backend="wal", cache_dir=CACHE_DIR, sat=""):
+def get(img, light=False, cols16=False, backend="wal", cache_dir=CACHE_DIR, sat=""):
     """Generate a palette."""
     # home_dylan_img_jpg_backend_1.2.2.json
-    cache_name = cache_fname(img, backend, light, cache_dir, sat)
+    cache_name = cache_fname(img, backend, cols16, light, cache_dir, sat)
     cache_file = os.path.join(*cache_name)
 
     if os.path.isfile(cache_file):
@@ -151,7 +179,7 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR, sat=""):
 
         logging.info("Using %s backend.", backend)
         backend = sys.modules["pywal.backends.%s" % backend]
-        colors = getattr(backend, "get")(img, light)
+        colors = getattr(backend, "get")(img, light, cols16)
         colors = colors_to_dict(saturate_colors(colors, sat), img)
 
         util.save_file_json(colors, cache_file)

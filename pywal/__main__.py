@@ -53,6 +53,9 @@ def get_args():
                           "flag is used: Go through the images in order "
                           "instead of shuffled.")
 
+    arg.add_argument("--cols16", action="store_true",
+                     help="Use 16 color output. ")
+
     arg.add_argument("--recursive", action="store_true",
                      help="When pywal is given a directory as input and this "
                           "flag is used: Search for images recursively in "
@@ -175,7 +178,7 @@ def parse_args(parser):
     if args.i:
         image_file = image.get(args.i, iterative=args.iterative,
                                recursive=args.recursive)
-        colors_plain = colors.get(image_file, args.l, args.backend,
+        colors_plain = colors.get(image_file, args.l, args.cols16, args.backend,
                                   sat=args.saturate)
 
     if args.theme:
@@ -186,7 +189,7 @@ def parse_args(parser):
 
     if args.w:
         cached_wallpaper = util.read_file(os.path.join(CACHE_DIR, "wal"))
-        colors_plain = colors.get(cached_wallpaper[0], args.l, args.backend,
+        colors_plain = colors.get(cached_wallpaper[0], args.l, args.cols16, args.backend,
                                   sat=args.saturate)
 
     if args.b:
