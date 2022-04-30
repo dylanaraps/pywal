@@ -202,6 +202,10 @@ def get(cache_dir=CACHE_DIR):
     current_wall = os.path.join(cache_dir, "wal")
 
     if os.path.isfile(current_wall):
-        return util.read_file(current_wall)[0]
+        # make sure the file has some content in it,
+        contents = util.read_file(current_wall)
+        
+        if len(contents) > 0:
+            return contents [0]
 
     return "None"
