@@ -102,6 +102,7 @@ def get_export_type(export_type):
         "rofi": "colors-rofi.Xresources",
         "scss": "colors.scss",
         "shell": "colors.sh",
+        "fishshell": "colors.fish",
         "speedcrunch": "colors-speedcrunch.json",
         "sway": "colors-sway",
         "tty": "colors-tty.sh",
