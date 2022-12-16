@@ -18,11 +18,19 @@ def list_backends():
             os.scandir(os.path.join(MODULE_DIR, "backends"))
             if "__" not in b.name]
 
+def normalize_img_path(img: str):
+    """Normalizes the image path for output."""
+    if os.name == 'nt':
+        # On Windows, the JSON.dump ends up outputting un-escaped backslash breaking
+        # the ability to read colors.json. Windows supports forward slash, so we can
+        # use that for now
+        return img.replace('\\', '/')
+    return img
 
 def colors_to_dict(colors, img):
     """Convert list of colors to pywal format."""
     return {
-        "wallpaper": img,
+        "wallpaper": normalize_img_path(img),
         "alpha": util.Color.alpha_num,
 
         "special": {
