@@ -74,9 +74,6 @@ def set_wm_wallpaper(img):
     elif shutil.which("bgs"):
         util.disown(["bgs", "-z", img])
 
-    elif shutil.which("hsetroot"):
-        util.disown(["hsetroot", "-fill", img])
-
     elif shutil.which("habak"):
         util.disown(["habak", "-mS", img])
 
