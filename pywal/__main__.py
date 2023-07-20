@@ -131,9 +131,6 @@ def parse_args_exit(parser):
         colors.palette()
         sys.exit(0)
 
-    if args.i and args.theme:
-        parser.error("Conflicting arguments -i and -f.")
-
     if args.r:
         reload.colors()
         sys.exit(0)
@@ -172,7 +169,7 @@ def parse_args(parser):
     if args.a:
         util.Color.alpha_num = args.a
 
-    if args.i:
+    if args.i and not args.theme:
         image_file = image.get(args.i, iterative=args.iterative,
                                recursive=args.recursive)
         colors_plain = colors.get(image_file, args.l, args.backend,
@@ -180,6 +177,8 @@ def parse_args(parser):
 
     if args.theme:
         colors_plain = theme.file(args.theme, args.l)
+        if args.i:
+            colors_plain["wallpaper"] = args.i
 
     if args.R:
         colors_plain = theme.file(os.path.join(CACHE_DIR, "colors.json"))
