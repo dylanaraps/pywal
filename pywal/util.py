@@ -10,6 +10,7 @@ import re
 import shutil
 import subprocess
 import sys
+from hashlib import md5
 
 
 class Color:
@@ -140,6 +141,13 @@ def save_file_json(data, export_file):
 
     with open(export_file, "w") as file:
         json.dump(data, file, indent=4)
+
+def get_img_checksum(img):
+    checksum = md5()
+    with open(img, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            checksum.update(chunk)
+    return checksum.hexdigest()
 
 
 def create_dir(directory):

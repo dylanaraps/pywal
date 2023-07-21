@@ -30,6 +30,7 @@ def normalize_img_path(img: str):
 def colors_to_dict(colors, img):
     """Convert list of colors to pywal format."""
     return {
+        "checksum": util.get_img_checksum(img),
         "wallpaper": normalize_img_path(img),
         "alpha": util.Color.alpha_num,
 
@@ -132,7 +133,7 @@ def get(img, light=False, backend="wal", cache_dir=CACHE_DIR, sat=""):
     cache_name = cache_fname(img, backend, light, cache_dir, sat)
     cache_file = os.path.join(*cache_name)
 
-    if os.path.isfile(cache_file):
+    if os.path.isfile(cache_file) and theme.parse(cache_file)["checksum"] == util.get_img_checksum(img):
         colors = theme.file(cache_file)
         colors["alpha"] = util.Color.alpha_num
         logging.info("Found cached colorscheme.")

@@ -78,6 +78,9 @@ def parse(theme_file):
     """Parse the theme file."""
     data = util.read_file_json(theme_file)
 
+    if "checksum" not in data:
+        data["checksum"] = "None"
+
     if "wallpaper" not in data:
         data["wallpaper"] = "None"
 
