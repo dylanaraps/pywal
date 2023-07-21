@@ -88,6 +88,10 @@ class TestUtil(unittest.TestCase):
         result = util.lighten_color("#000000", 0.25)
         self.assertEqual(result, "#3f3f3f")
 
+    def test_gen_color_checksum(self):
+        """> Generate checksum from image file"""
+        result = util.gen_color_checksum("tests/test_files/test.jpg")
+        self.assertEqual(result, "8e21a704294404a9084375f1761aaa51")
 
 if __name__ == "__main__":
     unittest.main()

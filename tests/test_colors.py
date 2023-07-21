@@ -27,6 +27,16 @@ class TestGenColors(unittest.TestCase):
         result = colors.file("tests/test_files/test_file2.json")
         self.assertEqual(result["alpha"], "100")
 
+    def test_color_import_no_checkum(self):
+        """> Read checksum from a file with no checksum"""
+        result = colors.file("tests/test_files/test_file.json")
+        self.assertEqual(result["checksum"], "None")
+
+    def test_gen_colors_checksum(self):
+        """> Generate a colorscheme with the wallpaper's checksum"""
+        result = colors.get("tests/test_files/test.jpg")
+        self.assertEqual(len(result["checksum"]), 32)
+
 
 if __name__ == "__main__":
     unittest.main()
