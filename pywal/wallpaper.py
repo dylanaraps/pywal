@@ -175,7 +175,10 @@ def set_win_wallpaper(img):
     if "x86" in os.environ["PROGRAMFILES"]:
         ctypes.windll.user32.SystemParametersInfoW(20, 0, img, 3)
     else:
-        ctypes.windll.user32.SystemParametersInfoA(20, 0, img, 3)
+        # 'W' funcitons take Unicode strings,
+        # while 'A' functions take UTF-8 bytestrings.
+        # (Python 3 strings are Unicode by default.)
+        ctypes.windll.user32.SystemParametersInfoA(20, 0, str.encode(img), 3)
 
 
 def change(img):
