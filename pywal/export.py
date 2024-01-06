@@ -135,7 +135,12 @@ def color(colors, export_type, output_file=None):
     all_colors = flatten_colors(colors)
 
     template_name = get_export_type(export_type)
-    template_file = os.path.join(MODULE_DIR, "templates", template_name)
+
+    if template_name == export_type:
+        template_file = os.path.join(CONF_DIR, "templates", template_name)
+    else:
+        template_file = os.path.join(MODULE_DIR, "templates", template_name)
+
     output_file = output_file or os.path.join(CACHE_DIR, template_name)
 
     if os.path.isfile(template_file):
