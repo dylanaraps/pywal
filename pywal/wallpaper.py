@@ -59,7 +59,11 @@ def xfconf(img):
 
 def set_wm_wallpaper(img):
     """Set the wallpaper for non desktop environments."""
-    if shutil.which("feh"):
+    if shutil.which("swaybg"):
+        subprocess.call(["killall", "swaybg"])
+        util.disown(["swaybg", "-m", "fill", "-i", img])
+
+    elif shutil.which("feh"):
         util.disown(["feh", "--bg-fill", img])
 
     elif shutil.which("xwallpaper"):
